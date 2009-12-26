@@ -3,25 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using Camlex.NET.Interfaces;
+using Microsoft.SharePoint;
 
 
 namespace Camlex.NET
 {
-    // todo: temp
-    public class SPItem
-    {
-        public object this[string fieldName]
-        {
-            get { return ""; }
-            set {}
-        }
-    }
-
     public static class Camlex
     {
-        public static string Where(Expression<Func<SPItem, bool>> expression)
+        public static ITranslatorFactory TranslatorFactory = new TranslatorFactory();
+
+        public static string Where(Expression<Func<SPItem, bool>> expr)
         {
-            return "";
+            var translator = TranslatorFactory.Create(expr.Body.NodeType);
+            return translator.Translate(expr);
         }
     }
 }
