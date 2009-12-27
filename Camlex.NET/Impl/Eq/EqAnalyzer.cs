@@ -15,12 +15,12 @@ namespace Camlex.NET.Impl.Eq
             throw new NotImplementedException();
         }
 
-        public IOperand GetLeftOperand(Expression<Func<SPItem, bool>> expr)
+        public ILeftOperand GetLeftOperand(Expression<Func<SPItem, bool>> expr)
         {
             throw new NotImplementedException();
         }
 
-        public IOperand GetRightOperand(Expression<Func<SPItem, bool>> expr)
+        public IRightOperand GetRightOperand(Expression<Func<SPItem, bool>> expr)
         {
             throw new NotImplementedException();
         }

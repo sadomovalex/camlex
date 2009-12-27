@@ -10,7 +10,7 @@ namespace Camlex.NET.Interfaces
     public interface IAnalyzer
     {
         bool IsValid(Expression<Func<SPItem, bool>> expr);
-        IOperand GetLeftOperand(Expression<Func<SPItem, bool>> expr);
-        IOperand GetRightOperand(Expression<Func<SPItem, bool>> expr);
+        ILeftOperand GetLeftOperand(Expression<Func<SPItem, bool>> expr);
+        IRightOperand GetRightOperand(Expression<Func<SPItem, bool>> expr);
     }
 }
