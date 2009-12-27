@@ -9,11 +9,13 @@ namespace Camlex.NET.Impl
 {
     public class ConstantOperand : IOperand
     {
-        private readonly string val;
+        private readonly object val;
+        private readonly string type;
 
-        public ConstantOperand(string val)
+        public ConstantOperand(string type, object val)
         {
             this.val = val;
+            this.type = type;
         }
 
         public XElement ToCaml()

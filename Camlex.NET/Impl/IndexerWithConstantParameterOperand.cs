@@ -9,12 +9,10 @@ namespace Camlex.NET.Impl
 {
     public class IndexerWithConstantParameterOperand : IOperand
     {
-        private readonly string type;
         private readonly string fieldName;
 
-        public IndexerWithConstantParameterOperand(string type, string fieldName)
+        public IndexerWithConstantParameterOperand(string fieldName)
         {
-            this.type = type;
             this.fieldName = fieldName;
         }
 
