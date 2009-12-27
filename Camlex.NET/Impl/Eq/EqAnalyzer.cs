@@ -8,21 +8,15 @@ using Microsoft.SharePoint;
 
 namespace Camlex.NET.Impl.Eq
 {
-    public class EqAnalyzer : IAnalyzer
+    public class EqAnalyzer : BinaryExpressionBaseAnalyzer
     {
-        public bool IsValid(Expression<Func<SPItem, bool>> expr)
+        public override bool IsValid(Expression<Func<SPItem, bool>> expr)
         {
-            throw new NotImplementedException();
-        }
-
-        public ILeftOperand GetLeftOperand(Expression<Func<SPItem, bool>> expr)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IRightOperand GetRightOperand(Expression<Func<SPItem, bool>> expr)
-        {
-            throw new NotImplementedException();
+            if (expr.Body.NodeType != ExpressionType.Equal)
+            {
+                return false;
+            }
+            return base.IsValid(expr);
         }
     }
 }
