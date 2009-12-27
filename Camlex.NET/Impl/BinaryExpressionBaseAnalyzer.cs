@@ -65,9 +65,8 @@ namespace Camlex.NET.Impl
                 throw new NonSupportedExpressionException(expr);
             }
             var leftExpression = (UnaryExpression)((BinaryExpression)expr.Body).Left;
-            var dataType = leftExpression.Type.Name;
             var fieldName = ((ConstantExpression)((MethodCallExpression)leftExpression.Operand).Arguments[0]).Value as string;
-            return new IndexerWithConstantParameterOperand(dataType, fieldName);
+            return new IndexerWithConstantParameterOperand(fieldName);
         }
 
         public IOperand GetRightOperand(Expression<Func<SPItem, bool>> expr)
@@ -77,7 +76,7 @@ namespace Camlex.NET.Impl
                 throw new NonSupportedExpressionException(expr);
             }
             var rightExpression = (ConstantExpression)((BinaryExpression)expr.Body).Right;
-            return new ConstantOperand((string)rightExpression.Value);
+            return new ConstantOperand(null, (string)rightExpression.Value);
         }
     }
 }
