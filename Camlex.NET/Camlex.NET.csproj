@@ -52,8 +52,13 @@
   <ItemGroup>
     <Compile Include="Attributes.cs" />
     <Compile Include="Camlex.cs" />
-    <Compile Include="Impl\EqTranslator.cs" />
+    <Compile Include="ErrorMessages.cs" />
+    <Compile Include="Exceptions.cs" />
+    <Compile Include="Impl\Eq\EqAnalyzer.cs" />
+    <Compile Include="Impl\Eq\EqTranslator.cs" />
     <Compile Include="Impl\TranslatorFactory.cs" />
+    <Compile Include="Interfaces\IAnalyzer.cs" />
+    <Compile Include="Interfaces\IOperand.cs" />
     <Compile Include="Interfaces\ITranslator.cs" />
     <Compile Include="Interfaces\ITranslatorFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
