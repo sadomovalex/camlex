@@ -21,4 +21,12 @@ namespace Camlex.NET
         {
         }
     }
+
+//    public class NonBinaryExpressionException : GenericException
+//    {
+//        public NonBinaryExpressionException(Expression<Func<SPItem, bool>> expr) :
+//            base(ErrorMessages.NON_SUPPORTED_EXPRESSION, expr)
+//        {
+//        }
+//    }
 }
