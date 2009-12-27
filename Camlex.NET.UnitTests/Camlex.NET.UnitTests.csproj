@@ -55,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CamlexTests.cs" />
+    <Compile Include="Eq\EqAnalyzerTests.cs" />
     <Compile Include="TranslatorFactoryTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

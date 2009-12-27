@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
-using Camlex.NET.Interfaces;
+using Camlex.NET.Impl;
+using Camlex.NET.Impl.Eq;
 using NUnit.Framework;
 
 namespace Camlex.NET.UnitTests

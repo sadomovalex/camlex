@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using Camlex.NET.Impl.Eq;
+using Camlex.NET.Interfaces;
 
-namespace Camlex.NET.Interfaces
+namespace Camlex.NET.Impl
 {
     public class TranslatorFactory : ITranslatorFactory
     {
@@ -12,7 +14,8 @@ namespace Camlex.NET.Interfaces
         {
             if (exprType == ExpressionType.Equal)
             {
-                return new EqTranslator();
+                var analyzer = new EqAnalyzer();
+                return new EqTranslator(analyzer);
             }
             throw new NotImplementedException();
         }
