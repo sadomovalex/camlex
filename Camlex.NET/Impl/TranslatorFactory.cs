@@ -12,11 +12,11 @@ namespace Camlex.NET.Impl
     {
         public ITranslator Create(ExpressionType exprType)
         {
-            if (exprType == ExpressionType.Equal)
-            {
-                var analyzer = new EqAnalyzer();
-                return new EqTranslator(analyzer);
-            }
+//            if (exprType == ExpressionType.Equal)
+//            {
+//                var analyzer = new EqAnalyzer();
+//                return new EqTranslator(analyzer);
+//            }
             throw new NotImplementedException();
         }
     }

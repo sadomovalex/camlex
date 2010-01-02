@@ -21,22 +21,22 @@ namespace Camlex.NET.UnitTests.Eq
             Assert.That(analyzer.IsValid(expr), Is.True);
         }
 
-        [Test]
-        public void test_THAT_left_operand_IS_recognized_properly()
-        {
-            var analyzer = new EqAnalyzer();
-            Expression<Func<SPItem, bool>> expr = x => (string)x["Title"] == "testValue";
-            var leftOperand = analyzer.GetLeftOperand(expr);
-            Assert.That(leftOperand, Is.InstanceOf(typeof(IndexerWithConstantParameterOperand)));
-        }
-
-        [Test]
-        public void test_THAT_right_operand_IS_recognized_properly()
-        {
-            var analyzer = new EqAnalyzer();
-            Expression<Func<SPItem, bool>> expr = x => (string)x["Title"] == "testValue";
-            var rightOperand = analyzer.GetRightOperand(expr);
-            Assert.That(rightOperand, Is.InstanceOf(typeof(ConstantOperand)));
-        }
+//        [Test]
+//        public void test_THAT_left_operand_IS_recognized_properly()
+//        {
+//            var analyzer = new EqAnalyzer();
+//            Expression<Func<SPItem, bool>> expr = x => (string)x["Title"] == "testValue";
+//            var leftOperand = analyzer.GetLeftOperand(expr);
+//            Assert.That(leftOperand, Is.InstanceOf(typeof(IndexerWithConstantParameterOperand)));
+//        }
+//
+//        [Test]
+//        public void test_THAT_right_operand_IS_recognized_properly()
+//        {
+//            var analyzer = new EqAnalyzer();
+//            Expression<Func<SPItem, bool>> expr = x => (string)x["Title"] == "testValue";
+//            var rightOperand = analyzer.GetRightOperand(expr);
+//            Assert.That(rightOperand, Is.InstanceOf(typeof(ConstantOperand)));
+//        }
     }
 }
