@@ -25,7 +25,13 @@ namespace Camlex.NET.Impl.Eq
 
         public override IOperation GetOperation(Expression<Func<SPItem, bool>> expr)
         {
-            throw new NotImplementedException();
+            if (!this.IsValid(expr))
+            {
+                throw new NonSupportedExpressionException(expr);
+            }
+            var fieldRefOperand = this.getFieldRefOperand(expr);
+            var valueOperand = this.getValueOperand(expr);
+            return new EqOperation(fieldRefOperand, valueOperand);
         }
     }
 }
