@@ -57,6 +57,8 @@
     </Compile>
     <Compile Include="ErrorMessages.cs" />
     <Compile Include="Exceptions.cs" />
+    <Compile Include="Impl\Array\ArrayAnalyzer.cs" />
+    <Compile Include="Impl\Array\ArrayOperation.cs" />
     <Compile Include="Impl\BinaryExpressionBaseAnalyzer.cs" />
     <Compile Include="Impl\Eq\EqAnalyzer.cs" />
     <Compile Include="Impl\Eq\EqOperation.cs" />
