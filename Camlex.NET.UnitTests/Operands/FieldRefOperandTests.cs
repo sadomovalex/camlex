@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Camlex.NET.Impl;
-using Camlex.NET.Impl.Operands;
+﻿using Camlex.NET.Impl.Operands;
 using NUnit.Framework;
 
-namespace Camlex.NET.UnitTests
+namespace Camlex.NET.UnitTests.Operands
 {
     [TestFixture]
     public class FieldRefOperandTests
@@ -20,3 +15,5 @@ namespace Camlex.NET.UnitTests
         }
     }
 }
+
+

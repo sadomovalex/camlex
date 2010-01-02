@@ -61,12 +61,12 @@
     <Compile Include="CamlexTests.cs" />
     <Compile Include="Eq\EqAnalyzerTests.cs" />
     <Compile Include="Eq\EqOperationTests.cs" />
-    <Compile Include="FieldRefOperandTests.cs" />
     <Compile Include="Helpers\CamlComparer.cs" />
+    <Compile Include="Operands\FieldRefOperandTests.cs" />
     <Compile Include="Operands\OperandBuilderTests.cs" />
+    <Compile Include="Operands\ValueOperandTests.cs" />
     <Compile Include="TranslatorFactoryTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ValueOperandTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Camlex.NET\Camlex.NET.csproj">
