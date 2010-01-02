@@ -25,7 +25,8 @@ namespace Camlex.NET.Impl
             }
 
             var operation = this.analyzer.GetOperation(expr);
-            return operation.ToCaml();
+            var caml = operation.ToCaml();
+            return caml.ToString();
         }
     }
 }

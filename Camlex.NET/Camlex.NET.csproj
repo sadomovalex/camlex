@@ -59,6 +59,7 @@
     <Compile Include="Exceptions.cs" />
     <Compile Include="Impl\BinaryExpressionBaseAnalyzer.cs" />
     <Compile Include="Impl\Eq\EqAnalyzer.cs" />
+    <Compile Include="Impl\Eq\EqOperation.cs" />
     <Compile Include="Impl\Factories\AnalyzerFactory.cs" />
     <Compile Include="Impl\Factories\TranslatorFactory.cs" />
     <Compile Include="Impl\Operands\IntegerValueOperand.cs" />

@@ -8,8 +8,8 @@ namespace Camlex.NET.Impl.Operands
     {
         private readonly int value;
 
-        public IntegerValueOperand(DataType type, int value):
-            base(type)
+        public IntegerValueOperand(int value):
+            base(DataType.Integer)
         {
             this.type = type;
             this.value = value;
