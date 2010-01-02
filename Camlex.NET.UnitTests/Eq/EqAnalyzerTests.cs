@@ -5,8 +5,10 @@ using System.Linq.Expressions;
 using System.Text;
 using Camlex.NET.Impl;
 using Camlex.NET.Impl.Eq;
+using Camlex.NET.Interfaces;
 using Microsoft.SharePoint;
 using NUnit.Framework;
+using Rhino.Mocks;
 
 namespace Camlex.NET.UnitTests.Eq
 {
@@ -24,28 +26,20 @@ namespace Camlex.NET.UnitTests.Eq
         [Test]
         public void test_THAT_eq_expression_IS_determined_properly()
         {
-            var analyzer = new EqAnalyzer(null);
+            // arrange
             Expression<Func<SPItem, bool>> expr = x => (string)x["Title"] == "testValue";
+
+            var operandBuilder = MockRepository.GenerateStub<IOperandBuilder>();
+            operandBuilder.Stub(b => b.CreateFieldRefOperand(expr.Body)).Return(null);
+            operandBuilder.Stub(b => b.CreateValueOperand(expr.Body)).Return(null);
+
+            var analyzer = new EqAnalyzer(operandBuilder);
+
+            // act
             var operation = analyzer.GetOperation(expr);
+
+            //assert
             Assert.That(operation, Is.InstanceOf<EqOperation>());
         }
-
-//        [Test]
-//        public void test_THAT_left_operand_IS_recognized_properly()
-//        {
-//            var analyzer = new EqAnalyzer();
-//            Expression<Func<SPItem, bool>> expr = x => (string)x["Title"] == "testValue";
-//            var leftOperand = analyzer.GetLeftOperand(expr);
-//            Assert.That(leftOperand, Is.InstanceOf(typeof(IndexerWithConstantParameterOperand)));
-//        }
-//
-//        [Test]
-//        public void test_THAT_right_operand_IS_recognized_properly()
-//        {
-//            var analyzer = new EqAnalyzer();
-//            Expression<Func<SPItem, bool>> expr = x => (string)x["Title"] == "testValue";
-//            var rightOperand = analyzer.GetRightOperand(expr);
-//            Assert.That(rightOperand, Is.InstanceOf(typeof(ConstantOperand)));
-//        }
     }
 }
