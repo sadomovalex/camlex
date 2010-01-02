@@ -41,6 +41,7 @@ namespace Camlex.NET
         public Camlex OrderBy(Expression<Func<SPItem, object>> expr)
         {
             throw new NotImplementedException();
+            //var translator = translatorFactory.Create(expr.Body.NodeType);
         }
 
         public Camlex GroupBy(Expression<Func<SPItem, object>> expr)
