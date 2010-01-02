@@ -9,6 +9,6 @@ namespace Camlex.NET.Interfaces
 {
     public interface ITranslator
     {
-        string Translate(Expression<Func<SPItem, bool>> expr);
+        string TranslateWhere(Expression<Func<SPItem, bool>> expr);
     }
 }

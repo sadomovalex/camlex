@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Camlex.NET.UnitTests.Helpers;
 using NUnit.Framework;
 using Camlex.NET;
 
@@ -16,14 +17,14 @@ namespace Camlex.NET.UnitTests
             string caml = Camlex.Where(x => (string)x["Title"] == "testValue");
 
             string expected =
-               @"<Where>
-                  <Eq>
-                     <FieldRef Name='Title' />
-                     <Value Type='Text'>testValue</Value>
-                  </Eq>
-               </Where>";
+               "<Where>" +
+               "   <Eq>" +
+               "      <FieldRef Name=\"Title\" />" +
+               "      <Value Type=\"Text\">testValue</Value>" +
+               "   </Eq>" +
+               "</Where>";
 
-            Assert.That(caml, Is.EqualTo(expected));
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
         }
     }
 }
