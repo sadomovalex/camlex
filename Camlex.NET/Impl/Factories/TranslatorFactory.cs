@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using Camlex.NET.Impl.Eq;
+﻿using System.Linq.Expressions;
 using Camlex.NET.Interfaces;
 
-namespace Camlex.NET.Impl
+namespace Camlex.NET.Impl.Factories
 {
     public class TranslatorFactory : ITranslatorFactory
     {
