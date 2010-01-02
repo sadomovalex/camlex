@@ -4,10 +4,10 @@ using Camlex.NET.Interfaces;
 
 namespace Camlex.NET.Impl.Operands
 {
-    public class IntegerValueOperand : ValueOperand<int>
+    public class TextValueOperand : ValueOperand<string>
     {
-        public IntegerValueOperand(int value) :
-            base(DataType.Integer, value)
+        public TextValueOperand(string value) :
+            base(DataType.Text, value)
         {
         }
 
@@ -15,7 +15,7 @@ namespace Camlex.NET.Impl.Operands
         {
             return
                 new XElement(Tags.Value, new XAttribute(Attributes.Type, this.type),
-                    new XText(this.value.ToString()));
+                    new XText(this.value));
         }
     }
 }

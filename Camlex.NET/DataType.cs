@@ -7,7 +7,8 @@ namespace Camlex.NET
 {
     public enum DataType
     {
-        Integer
+        Integer = 0,
+        Text = 1
 //        Attachments,
 //        Boolean,
 //        Choice,

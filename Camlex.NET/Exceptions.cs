@@ -30,11 +30,11 @@ namespace Camlex.NET
         }
     }
 
-//    public class NonBinaryExpressionException : GenericException
-//    {
-//        public NonBinaryExpressionException(Expression<Func<SPItem, bool>> expr) :
-//            base(ErrorMessages.NON_SUPPORTED_EXPRESSION, expr)
-//        {
-//        }
-//    }
+    public class NonSupportedOperandTypeException : GenericException
+    {
+        public NonSupportedOperandTypeException(Type type) :
+            base(ErrorMessages.NON_SUPPORTED_OPERAND_TYPE, type)
+        {
+        }
+    }
 }

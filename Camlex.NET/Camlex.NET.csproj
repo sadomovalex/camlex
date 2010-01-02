@@ -63,6 +63,7 @@
     <Compile Include="Impl\Factories\AnalyzerFactory.cs" />
     <Compile Include="Impl\Factories\OperandBuilder.cs" />
     <Compile Include="Impl\Factories\TranslatorFactory.cs" />
+    <Compile Include="Impl\Operands\TextValueOperand.cs" />
     <Compile Include="Impl\Operands\IntegerValueOperand.cs" />
     <Compile Include="Impl\Operands\FieldRefOperand.cs" />
     <Compile Include="Impl\GenericTranslator.cs" />

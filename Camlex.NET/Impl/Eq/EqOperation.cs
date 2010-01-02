@@ -10,7 +10,8 @@ namespace Camlex.NET.Impl.Eq
 {
     public class EqOperation : OperationBase
     {
-        public EqOperation(FieldRefOperand fieldRefOperand, ValueOperand valueOperand) : base(fieldRefOperand, valueOperand)
+        public EqOperation(IOperand fieldRefOperand, IOperand valueOperand)
+            : base(fieldRefOperand, valueOperand)
         {
         }
 

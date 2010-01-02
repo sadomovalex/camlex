@@ -10,10 +10,10 @@ namespace Camlex.NET.Impl
 {
     public abstract class OperationBase : IOperation
     {
-        protected FieldRefOperand fieldRefOperand;
-        protected ValueOperand valueOperand;
+        protected IOperand fieldRefOperand;
+        protected IOperand valueOperand;
 
-        protected OperationBase(FieldRefOperand fieldRefOperand, ValueOperand valueOperand)
+        protected OperationBase(IOperand fieldRefOperand, IOperand valueOperand)
         {
             this.fieldRefOperand = fieldRefOperand;
             this.valueOperand = valueOperand;

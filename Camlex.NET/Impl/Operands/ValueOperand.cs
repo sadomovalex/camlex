@@ -4,23 +4,34 @@ using Camlex.NET.Interfaces;
 
 namespace Camlex.NET.Impl.Operands
 {
-    public class IntegerValueOperand : ValueOperand
+    public abstract class ValueOperand<T> : IOperand
     {
-        private readonly int value;
+        protected DataType type;
+        protected T value;
 
-        public IntegerValueOperand(int value):
-            base(DataType.Integer)
+        public DataType Type
+        {
+            get
+            {
+                return this.type;
+            }
+        }
+
+        public T Value
+        {
+            get
+            {
+                return this.value;
+            }
+        }
+
+        protected ValueOperand(DataType type, T value)
         {
             this.type = type;
             this.value = value;
         }
 
-        public override XElement ToCaml()
-        {
-            return
-                new XElement(Tags.Value, new XAttribute(Attributes.Type, this.type),
-                    new XText(this.value.ToString()));
-        }
+        public abstract XElement ToCaml();
     }
 }
 
