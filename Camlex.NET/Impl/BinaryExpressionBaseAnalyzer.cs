@@ -78,14 +78,14 @@ namespace Camlex.NET.Impl
             return this.operandBuilder.CreateFieldRefOperand(body.Left);
         }
 
-//        protected ValueOperand getValueOperand(Expression<Func<SPItem, bool>> expr)
-//        {
-//            if (!this.IsValid(expr))
-//            {
-//                throw new NonSupportedExpressionException(expr);
-//            }
-//            var rightExpression = (ConstantExpression)((BinaryExpression)expr.Body).Right;
-//            return new ConstantOperand(null, (string)rightExpression.Value);
-//        }
+        protected IOperand getValueOperand(Expression<Func<SPItem, bool>> expr)
+        {
+            if (!this.IsValid(expr))
+            {
+                throw new NonSupportedExpressionException(expr);
+            }
+            var body = expr.Body as BinaryExpression;
+            return this.operandBuilder.CreateValueOperand(body.Right);
+        }
     }
 }

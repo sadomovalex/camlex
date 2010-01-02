@@ -18,7 +18,16 @@ namespace Camlex.NET.Interfaces
 
         public IOperand CreateValueOperand(Expression expr)
         {
-            throw new NotImplementedException();
+            var constantExpression = (ConstantExpression)expr;
+            if (constantExpression.Type == typeof(string))
+            {
+                return new TextValueOperand((string) constantExpression.Value);
+            }
+            if (constantExpression.Type == typeof(int))
+            {
+                return new IntegerValueOperand((int)constantExpression.Value);
+            }
+            throw new NonSupportedOperandTypeException(expr.Type);
         }
     }
 }
