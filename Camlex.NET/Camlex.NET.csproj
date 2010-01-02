@@ -61,6 +61,7 @@
     <Compile Include="Impl\Eq\EqAnalyzer.cs" />
     <Compile Include="Impl\Eq\EqOperation.cs" />
     <Compile Include="Impl\Factories\AnalyzerFactory.cs" />
+    <Compile Include="Impl\Factories\OperandBuilder.cs" />
     <Compile Include="Impl\Factories\TranslatorFactory.cs" />
     <Compile Include="Impl\Operands\IntegerValueOperand.cs" />
     <Compile Include="Impl\Operands\FieldRefOperand.cs" />
@@ -70,6 +71,7 @@
     <Compile Include="Interfaces\IAnalyzer.cs" />
     <Compile Include="Interfaces\IAnalyzerFactory.cs" />
     <Compile Include="Interfaces\IOperand.cs" />
+    <Compile Include="Interfaces\IOperandBuilder.cs" />
     <Compile Include="Interfaces\IOperation.cs" />
     <Compile Include="Interfaces\ITranslator.cs" />
     <Compile Include="Interfaces\ITranslatorFactory.cs" />

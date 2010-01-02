@@ -10,6 +10,10 @@ namespace Camlex.NET.Impl.Eq
 {
     public class EqAnalyzer : BinaryExpressionBaseAnalyzer
     {
+        public EqAnalyzer(IOperandBuilder operandBuilder) : base(operandBuilder)
+        {
+        }
+
         public override bool IsValid(Expression<Func<SPItem, bool>> expr)
         {
             if (expr.Body.NodeType != ExpressionType.Equal)
@@ -17,6 +21,11 @@ namespace Camlex.NET.Impl.Eq
                 return false;
             }
             return base.IsValid(expr);
+        }
+
+        public override IOperation GetOperation(Expression<Func<SPItem, bool>> expr)
+        {
+            throw new NotImplementedException();
         }
     }
 }

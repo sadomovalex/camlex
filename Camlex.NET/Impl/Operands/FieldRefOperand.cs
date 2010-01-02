@@ -5,16 +5,24 @@ namespace Camlex.NET.Impl.Operands
 {
     public class FieldRefOperand : IOperand
     {
-        private string name;
+        private readonly string fieldName;
 
-        public FieldRefOperand(string name)
+        public string FieldName
         {
-            this.name = name;
+            get
+            {
+                return this.fieldName;
+            }
+        }
+
+        public FieldRefOperand(string fieldName)
+        {
+            this.fieldName = fieldName;
         }
 
         public virtual XElement ToCaml()
         {
-            return new XElement(Tags.FieldRef, new XAttribute(Attributes.Name, this.name));
+            return new XElement(Tags.FieldRef, new XAttribute(Attributes.Name, this.fieldName));
         }
     }
 }

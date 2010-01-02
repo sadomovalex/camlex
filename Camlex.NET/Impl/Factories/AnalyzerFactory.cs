@@ -10,11 +10,18 @@ namespace Camlex.NET.Impl.Factories
 {
     public class AnalyzerFactory : IAnalyzerFactory
     {
+        private IOperandBuilder operandBuilder;
+
+        public AnalyzerFactory(IOperandBuilder operandBuilder)
+        {
+            this.operandBuilder = operandBuilder;
+        }
+
         public IAnalyzer Create(ExpressionType exprType)
         {
             if (exprType == ExpressionType.Equal)
             {
-                return new EqAnalyzer();
+                return new EqAnalyzer(this.operandBuilder);
             }
             throw new NonSupportedExpressionTypeException(exprType);
         }

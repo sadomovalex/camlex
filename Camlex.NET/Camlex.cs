@@ -17,7 +17,8 @@ namespace Camlex.NET
         static Camlex()
         {
             // factories setup
-            var analyzerFactory = new AnalyzerFactory();
+            var operandBuilder = new OperandBuilder();
+            var analyzerFactory = new AnalyzerFactory(operandBuilder);
             translatorFactory = new TranslatorFactory(analyzerFactory);
         }
 
