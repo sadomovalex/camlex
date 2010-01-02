@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using Camlex.NET.Impl.Operands;
 using Camlex.NET.Interfaces;
 using Microsoft.SharePoint;
 
@@ -10,6 +11,13 @@ namespace Camlex.NET.Impl
 {
     public abstract class BinaryExpressionBaseAnalyzer : IAnalyzer
     {
+        private IOperandBuilder operandBuilder;
+
+        protected BinaryExpressionBaseAnalyzer(IOperandBuilder operandBuilder)
+        {
+            this.operandBuilder = operandBuilder;
+        }
+
         public virtual bool IsValid(Expression<Func<SPItem, bool>> expr)
         {
             if (!(expr.Body is BinaryExpression))
@@ -58,23 +66,19 @@ namespace Camlex.NET.Impl
             return true;
         }
 
-        public IOperation GetOperation(Expression<Func<SPItem, bool>> expr)
+        public abstract IOperation GetOperation(Expression<Func<SPItem, bool>> expr);
+
+        protected IOperand getFieldRefOperand(Expression<Func<SPItem, bool>> expr)
         {
-            throw new NotImplementedException();
+            if (!this.IsValid(expr))
+            {
+                throw new NonSupportedExpressionException(expr);
+            }
+            var body = expr.Body as BinaryExpression;
+            return this.operandBuilder.CreateFieldRefOperand(body.Left);
         }
 
-//        public IOperand GetLeftOperand(Expression<Func<SPItem, bool>> expr)
-//        {
-//            if (!this.IsValid(expr))
-//            {
-//                throw new NonSupportedExpressionException(expr);
-//            }
-//            var leftExpression = (UnaryExpression)((BinaryExpression)expr.Body).Left;
-//            var fieldName = ((ConstantExpression)((MethodCallExpression)leftExpression.Operand).Arguments[0]).Value as string;
-//            return new IndexerWithConstantParameterOperand(fieldName);
-//        }
-//
-//        public IOperand GetRightOperand(Expression<Func<SPItem, bool>> expr)
+//        protected ValueOperand getValueOperand(Expression<Func<SPItem, bool>> expr)
 //        {
 //            if (!this.IsValid(expr))
 //            {

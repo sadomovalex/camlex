@@ -63,6 +63,7 @@
     <Compile Include="Eq\EqOperationTests.cs" />
     <Compile Include="FieldRefOperandTests.cs" />
     <Compile Include="Helpers\CamlComparer.cs" />
+    <Compile Include="Operands\OperandBuilderTests.cs" />
     <Compile Include="TranslatorFactoryTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ValueOperandTests.cs" />

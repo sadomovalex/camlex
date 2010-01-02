@@ -26,7 +26,7 @@ namespace Camlex.NET.UnitTests
             var tr = new TranslatorFactory(analyzerFactory).Create(ExpressionType.Equal);
 
             // assert
-            Assert.That(tr, Is.InstanceOf(typeof(GenericTranslator)));
+            Assert.That(tr, Is.InstanceOf<GenericTranslator>());
         }
     }
 }

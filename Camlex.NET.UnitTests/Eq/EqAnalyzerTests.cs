@@ -16,9 +16,18 @@ namespace Camlex.NET.UnitTests.Eq
         [Test]
         public void test_THAT_eq_expression_IS_valid()
         {
-            var analyzer = new EqAnalyzer();
+            var analyzer = new EqAnalyzer(null);
             Expression<Func<SPItem, bool>> expr = x => (string) x["Title"] == "testValue";
             Assert.That(analyzer.IsValid(expr), Is.True);
+        }
+
+        [Test]
+        public void test_THAT_eq_expression_IS_determined_properly()
+        {
+            var analyzer = new EqAnalyzer(null);
+            Expression<Func<SPItem, bool>> expr = x => (string)x["Title"] == "testValue";
+            var operation = analyzer.GetOperation(expr);
+            Assert.That(operation, Is.InstanceOf<EqOperation>());
         }
 
 //        [Test]
