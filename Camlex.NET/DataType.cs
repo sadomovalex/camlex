@@ -7,18 +7,19 @@ namespace Camlex.NET
 {
     public enum DataType
     {
-        Attachments,
-        Boolean,
-        Choice,
-        Computed,
-        Counter,
-        DateTime,
-        Lookup,
-        ModStat,
-        MultiChoice,
-        Number,
-        Text,
-        User,
-        Note
+        Integer
+//        Attachments,
+//        Boolean,
+//        Choice,
+//        Computed,
+//        Counter,
+//        DateTime,
+//        Lookup,
+//        ModStat,
+//        MultiChoice,
+//        Number,
+//        Text,
+//        User,
+//        Note
     }
 }

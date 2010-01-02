@@ -58,25 +58,30 @@ namespace Camlex.NET.Impl
             return true;
         }
 
-        public IOperand GetLeftOperand(Expression<Func<SPItem, bool>> expr)
+        public IOperation GetOperation(Expression<Func<SPItem, bool>> expr)
         {
-            if (!this.IsValid(expr))
-            {
-                throw new NonSupportedExpressionException(expr);
-            }
-            var leftExpression = (UnaryExpression)((BinaryExpression)expr.Body).Left;
-            var fieldName = ((ConstantExpression)((MethodCallExpression)leftExpression.Operand).Arguments[0]).Value as string;
-            return new IndexerWithConstantParameterOperand(fieldName);
+            throw new NotImplementedException();
         }
 
-        public IOperand GetRightOperand(Expression<Func<SPItem, bool>> expr)
-        {
-            if (!this.IsValid(expr))
-            {
-                throw new NonSupportedExpressionException(expr);
-            }
-            var rightExpression = (ConstantExpression)((BinaryExpression)expr.Body).Right;
-            return new ConstantOperand(null, (string)rightExpression.Value);
-        }
+//        public IOperand GetLeftOperand(Expression<Func<SPItem, bool>> expr)
+//        {
+//            if (!this.IsValid(expr))
+//            {
+//                throw new NonSupportedExpressionException(expr);
+//            }
+//            var leftExpression = (UnaryExpression)((BinaryExpression)expr.Body).Left;
+//            var fieldName = ((ConstantExpression)((MethodCallExpression)leftExpression.Operand).Arguments[0]).Value as string;
+//            return new IndexerWithConstantParameterOperand(fieldName);
+//        }
+//
+//        public IOperand GetRightOperand(Expression<Func<SPItem, bool>> expr)
+//        {
+//            if (!this.IsValid(expr))
+//            {
+//                throw new NonSupportedExpressionException(expr);
+//            }
+//            var rightExpression = (ConstantExpression)((BinaryExpression)expr.Body).Right;
+//            return new ConstantOperand(null, (string)rightExpression.Value);
+//        }
     }
 }
