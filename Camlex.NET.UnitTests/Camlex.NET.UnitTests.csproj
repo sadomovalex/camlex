@@ -61,6 +61,7 @@
     <Compile Include="CamlexTests.cs" />
     <Compile Include="Eq\EqAnalyzerTests.cs" />
     <Compile Include="Eq\EqOperationTests.cs" />
+    <Compile Include="GenericTranslatorTests.cs" />
     <Compile Include="Helpers\CamlComparer.cs" />
     <Compile Include="Operands\FieldRefOperandTests.cs" />
     <Compile Include="Operands\OperandBuilderTests.cs" />
