@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml.Linq;
 using Camlex.NET.Impl.Operands;
 using Camlex.NET.Interfaces;
 
@@ -18,6 +19,6 @@ namespace Camlex.NET.Impl
             this.valueOperand = valueOperand;
         }
 
-        public abstract string ToCaml();
+        public abstract XElement ToCaml();
     }
 }

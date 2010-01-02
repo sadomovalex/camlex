@@ -12,7 +12,7 @@ namespace Camlex.NET.Impl.Operands
             this.name = name;
         }
 
-        public XElement ToCaml()
+        public virtual XElement ToCaml()
         {
             return new XElement(Tags.FieldRef, new XAttribute(Attributes.Name, this.name));
         }

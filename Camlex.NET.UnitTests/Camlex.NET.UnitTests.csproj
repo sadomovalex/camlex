@@ -60,7 +60,9 @@
   <ItemGroup>
     <Compile Include="CamlexTests.cs" />
     <Compile Include="Eq\EqAnalyzerTests.cs" />
+    <Compile Include="Eq\EqOperationTests.cs" />
     <Compile Include="FieldRefOperandTests.cs" />
+    <Compile Include="Helpers\CamlComparer.cs" />
     <Compile Include="TranslatorFactoryTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ValueOperandTests.cs" />
