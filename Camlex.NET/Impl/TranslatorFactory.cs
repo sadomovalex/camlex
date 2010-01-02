@@ -10,14 +10,17 @@ namespace Camlex.NET.Impl
 {
     public class TranslatorFactory : ITranslatorFactory
     {
+        private readonly IAnalyzerFactory analyzerFactory;
+
+        public TranslatorFactory(IAnalyzerFactory analyzerFactory)
+        {
+            this.analyzerFactory = analyzerFactory;
+        }
+
         public ITranslator Create(ExpressionType exprType)
         {
-//            if (exprType == ExpressionType.Equal)
-//            {
-//                var analyzer = new EqAnalyzer();
-//                return new EqTranslator(analyzer);
-//            }
-            throw new NotImplementedException();
+            var analyzer = this.analyzerFactory.Create(exprType);
+            return new GenericTranslator(analyzer);
         }
     }
 }
