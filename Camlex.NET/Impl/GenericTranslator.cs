@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using System.Xml.Linq;
 using Camlex.NET.Interfaces;
 using Microsoft.SharePoint;
 
@@ -17,7 +18,7 @@ namespace Camlex.NET.Impl
             this.analyzer = analyzer;
         }
 
-        public string Translate(Expression<Func<SPItem, bool>> expr)
+        public string TranslateWhere(Expression<Func<SPItem, bool>> expr)
         {
             if (!this.analyzer.IsValid(expr))
             {
@@ -25,7 +26,9 @@ namespace Camlex.NET.Impl
             }
 
             var operation = this.analyzer.GetOperation(expr);
-            var caml = operation.ToCaml();
+            var operationCaml = operation.ToCaml();
+
+            var caml = new XElement(Tags.Where, operationCaml);
             return caml.ToString();
         }
     }

@@ -11,9 +11,13 @@ using Microsoft.SharePoint;
 
 namespace Camlex.NET
 {
-    public static class Camlex
+    public class Camlex
     {
         private static ITranslatorFactory translatorFactory;
+        private string where;
+        private string orderBy;
+        private string groupBy;
+
         static Camlex()
         {
             // factories setup
@@ -22,10 +26,36 @@ namespace Camlex.NET
             translatorFactory = new TranslatorFactory(analyzerFactory);
         }
 
-        public static string Where(Expression<Func<SPItem, bool>> expr)
+        private Camlex(string where)
+        {
+            this.where = where;
+        }
+
+        public static Camlex Where(Expression<Func<SPItem, bool>> expr)
         {
             var translator = translatorFactory.Create(expr.Body.NodeType);
-            return translator.Translate(expr);
+            string where = translator.TranslateWhere(expr);
+            return new Camlex(where);
+        }
+
+        public Camlex OrderBy(Expression<Func<SPItem, object>> expr)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Camlex GroupBy(Expression<Func<SPItem, object>> expr)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override string ToString()
+        {
+            return string.Format("{0}{1}{2}", this.where, this.orderBy, this.groupBy);
+        }
+
+        public static implicit operator string(Camlex camlex)
+        {
+            return camlex.ToString();
         }
     }
 }
