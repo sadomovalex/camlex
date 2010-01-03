@@ -10,7 +10,7 @@ using Microsoft.SharePoint;
 namespace Camlex.NET.Impl
 {
     // Base class for all analyzers
-    public abstract class BinaryExpressionBaseAnalyzer : IAnalyzer
+    public abstract class BinaryExpressionBaseAnalyzer : ILogicalAnalyzer
     {
         private IOperandBuilder operandBuilder;
 

@@ -15,10 +15,10 @@ namespace Camlex.NET.UnitTests.Factories
         {
             // arrange
             var analyzerFactory = MockRepository.GenerateStub<IAnalyzerFactory>();
-            analyzerFactory.Stub(f => f.Create(ExpressionType.Equal)).Return(null);
+            analyzerFactory.Stub(f => f.CreateLogicalAnalyzer(ExpressionType.Equal)).Return(null);
 
             // act
-            var tr = new TranslatorFactory(analyzerFactory).Create(ExpressionType.Equal);
+            var tr = new TranslatorFactory(analyzerFactory).CreateLogicalTranslator(ExpressionType.Equal);
 
             // assert
             Assert.That(tr, Is.InstanceOf<GenericTranslator>());

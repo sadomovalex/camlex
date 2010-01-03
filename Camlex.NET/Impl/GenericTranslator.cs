@@ -11,25 +11,46 @@ namespace Camlex.NET.Impl
 {
     public class GenericTranslator : ITranslator
     {
-        private readonly IAnalyzer analyzer;
+        private readonly ILogicalAnalyzer logicalAnalyzer;
+        private readonly IArrayAnalyzer arrayAnalyzer;
 
-        public GenericTranslator(IAnalyzer analyzer)
+        public GenericTranslator(ILogicalAnalyzer logicalAnalyzer)
         {
-            this.analyzer = analyzer;
+            this.logicalAnalyzer = logicalAnalyzer;
+        }
+
+        public GenericTranslator(IArrayAnalyzer arrayAnalyzer)
+        {
+            this.arrayAnalyzer = arrayAnalyzer;
         }
 
         public string TranslateWhere(Expression<Func<SPItem, bool>> expr)
         {
-            if (!this.analyzer.IsValid(expr))
+            if (!this.logicalAnalyzer.IsValid(expr))
             {
                 throw new NonSupportedExpressionException(expr);
             }
 
-            var operation = this.analyzer.GetOperation(expr);
+            var operation = this.logicalAnalyzer.GetOperation(expr);
             var operationCaml = operation.ToCaml();
 
             var caml = new XElement(Tags.Where, operationCaml);
             return caml.ToString();
         }
+
+        public string TranslateOrderBy(Expression<Func<SPItem, object[]>> expr)
+        {
+            if (!this.arrayAnalyzer.IsValid(expr))
+            {
+                throw new NonSupportedExpressionException(expr);
+            }
+
+            var operation = this.arrayAnalyzer.GetOperation(expr);
+            var operationCaml = operation.ToCaml();
+
+            var caml = new XElement(Tags.OrderBy, operationCaml);
+            return caml.ToString();
+        }
+
     }
 }

@@ -9,7 +9,7 @@ using Microsoft.SharePoint;
 namespace Camlex.NET.Impl
 {
     // Base class for AndAlso and OrElse analyzers
-    public abstract class CompositeExpressionBaseAnalyzer : IAnalyzer
+    public abstract class CompositeExpressionBaseAnalyzer : ILogicalAnalyzer
     {
         protected IAnalyzerFactory analyzerFactory;
 
@@ -58,7 +58,7 @@ namespace Camlex.NET.Impl
 
         private bool isExpressionValid(BinaryExpression expr, ParameterExpression lambdaParam)
         {
-            var expressionAnalyzer = this.analyzerFactory.Create(expr.NodeType);
+            var expressionAnalyzer = this.analyzerFactory.CreateLogicalAnalyzer(expr.NodeType);
 
             // make Expression<Func<SPItem, bool>> expression from BinaryExpression
             Expression<Func<SPItem, bool>> subExpression = Expression.Lambda<Func<SPItem, bool>>(expr, lambdaParam);

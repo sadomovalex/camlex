@@ -48,18 +48,19 @@ namespace Camlex.NET
 
         public static Camlex Where(Expression<Func<SPItem, bool>> expr)
         {
-            var translator = translatorFactory.Create(expr.Body.NodeType);
+            var translator = translatorFactory.CreateLogicalTranslator(expr.Body.NodeType);
             string where = translator.TranslateWhere(expr);
             return new Camlex(where);
         }
 
-        public Camlex OrderBy(Expression<Func<SPItem, object>> expr)
+        public Camlex OrderBy(Expression<Func<SPItem, object[]>> expr)
         {
-            throw new NotImplementedException();
-            //var translator = translatorFactory.Create(expr.Body.NodeType);
+            var translator = translatorFactory.CreateArrayTranslator(expr.Body.NodeType);
+            string orderBy = translator.TranslateOrderBy(expr);
+            return new Camlex(orderBy);
         }
 
-        public Camlex GroupBy(Expression<Func<SPItem, object>> expr)
+        public Camlex GroupBy(Expression<Func<SPItem, object[]>> expr)
         {
             throw new NotImplementedException();
         }

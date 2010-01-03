@@ -8,7 +8,7 @@ using Microsoft.SharePoint;
 
 namespace Camlex.NET.Impl.Array
 {
-    public class ArrayAnalyzer : IAnalyzer
+    public class ArrayAnalyzer : IArrayAnalyzer
     {
         private IOperandBuilder _operandBuilder;
 
@@ -17,7 +17,7 @@ namespace Camlex.NET.Impl.Array
             _operandBuilder = operandBuilder;
         }
 
-        public bool IsValid(Expression<Func<SPItem, bool>> expr)
+        public bool IsValid(Expression<Func<SPItem, object[]>> expr)
         {
             var body = expr.Body as NewArrayExpression;
             if (body == null) return false;
@@ -41,7 +41,7 @@ namespace Camlex.NET.Impl.Array
             return (body.Expressions.Count == counter);
         }
 
-        public IOperation GetOperation(Expression<Func<SPItem, bool>> expr)
+        public IOperation GetOperation(Expression<Func<SPItem, object[]>> expr)
         {
             if (!IsValid(expr))
             {
@@ -51,7 +51,7 @@ namespace Camlex.NET.Impl.Array
             return new ArrayOperation(operands);
         }
 
-        private IOperand[] GetFieldRefOperandsWithOrdering(Expression<Func<SPItem, bool>> expr)
+        private IOperand[] GetFieldRefOperandsWithOrdering(Expression<Func<SPItem, object[]>> expr)
         {
             var operands = new List<IOperand>();
             ((NewArrayExpression)expr.Body).Expressions.ToList().ForEach(ex =>
