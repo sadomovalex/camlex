@@ -40,6 +40,11 @@ namespace Camlex.NET
 
         public Camlex OrderBy(Expression<Func<SPItem, object>> expr)
         {
+            return OrderBy(expr, OrderDirection.Ascedant);
+        }
+
+        public Camlex OrderBy(Expression<Func<SPItem, object>> expr, OrderDirection direction)
+        {
             throw new NotImplementedException();
             //var translator = translatorFactory.Create(expr.Body.NodeType);
         }
