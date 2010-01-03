@@ -5,7 +5,7 @@ namespace Camlex.NET.Impl.Operands
 {
     public class FieldRefOperand : IOperand
     {
-        private readonly string fieldName;
+        protected readonly string fieldName;
 
         public string FieldName
         {

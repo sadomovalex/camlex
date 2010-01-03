@@ -11,7 +11,7 @@ namespace Camlex.NET.Impl.Array
     {
         private readonly IOperand[] _fieldRefOperands;
 
-        protected ArrayOperation(params IOperand[] fieldRefOperands)
+        public ArrayOperation(params IOperand[] fieldRefOperands)
         {
             _fieldRefOperands = fieldRefOperands;
         }
