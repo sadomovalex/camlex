@@ -8,6 +8,7 @@ namespace Camlex.NET.Interfaces
 {
     public interface IAnalyzerFactory
     {
-        IAnalyzer Create(ExpressionType exprType);
+        ILogicalAnalyzer CreateLogicalAnalyzer(ExpressionType exprType);
+        IArrayAnalyzer CreateArrayAnalyzer(ExpressionType exprType);
     }
 }

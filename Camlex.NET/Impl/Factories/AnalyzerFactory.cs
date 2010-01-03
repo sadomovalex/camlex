@@ -19,19 +19,24 @@ namespace Camlex.NET.Impl.Factories
             this.operandBuilder = operandBuilder;
         }
 
-        public IAnalyzer Create(ExpressionType exprType)
+        public ILogicalAnalyzer CreateLogicalAnalyzer(ExpressionType exprType)
         {
             if (exprType == ExpressionType.Equal)
             {
                 return new EqAnalyzer(this.operandBuilder);
             }
-            if (exprType == ExpressionType.NewArrayInit)
-            {
-                return new ArrayAnalyzer(this.operandBuilder);
-            }
             if (exprType == ExpressionType.AndAlso)
             {
                 return new AndAlsoAnalyzer(this);
+            }
+            throw new NonSupportedExpressionTypeException(exprType);
+        }
+
+        public IArrayAnalyzer CreateArrayAnalyzer(ExpressionType exprType)
+        {
+            if (exprType == ExpressionType.NewArrayInit)
+            {
+                return new ArrayAnalyzer(this.operandBuilder);
             }
             throw new NonSupportedExpressionTypeException(exprType);
         }

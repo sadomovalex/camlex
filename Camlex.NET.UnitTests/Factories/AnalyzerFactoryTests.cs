@@ -17,7 +17,7 @@ namespace Camlex.NET.UnitTests.Factories
         public void test_WHEN_expression_is_eq_THEN_eq_analyzer_is_created()
         {
             var analyzerFactory = new AnalyzerFactory(null);
-            var analyzer = analyzerFactory.Create(ExpressionType.Equal);
+            var analyzer = analyzerFactory.CreateLogicalAnalyzer(ExpressionType.Equal);
             Assert.That(analyzer, Is.InstanceOf<EqAnalyzer>());
         }
 
@@ -25,7 +25,7 @@ namespace Camlex.NET.UnitTests.Factories
         public void test_WHEN_expression_is_andalso_THEN_andalso_analyzer_is_created()
         {
             var analyzerFactory = new AnalyzerFactory(null);
-            var analyzer = analyzerFactory.Create(ExpressionType.AndAlso);
+            var analyzer = analyzerFactory.CreateLogicalAnalyzer(ExpressionType.AndAlso);
             Assert.That(analyzer, Is.InstanceOf<AndAlsoAnalyzer>());
         }
     }

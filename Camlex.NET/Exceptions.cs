@@ -20,6 +20,10 @@ namespace Camlex.NET
             base(ErrorMessages.NON_SUPPORTED_EXPRESSION, expr)
         {
         }
+        public NonSupportedExpressionException(Expression<Func<SPItem, object[]>> expr) :
+            base(ErrorMessages.NON_SUPPORTED_EXPRESSION, expr)
+        {
+        }
     }
 
     public class NonSupportedExpressionTypeException : GenericException

@@ -7,9 +7,9 @@ using Microsoft.SharePoint;
 
 namespace Camlex.NET.Interfaces
 {
-    public interface ITranslator
+    public interface IArrayAnalyzer
     {
-        string TranslateWhere(Expression<Func<SPItem, bool>> expr);
-        string TranslateOrderBy(Expression<Func<SPItem, object[]>> expr);
+        bool IsValid(Expression<Func<SPItem, object[]>> expr);
+        IOperation GetOperation(Expression<Func<SPItem, object[]>> expr);
     }
 }
