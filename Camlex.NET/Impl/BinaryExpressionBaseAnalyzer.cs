@@ -9,6 +9,7 @@ using Microsoft.SharePoint;
 
 namespace Camlex.NET.Impl
 {
+    // Base class for all analyzers
     public abstract class BinaryExpressionBaseAnalyzer : IAnalyzer
     {
         private IOperandBuilder operandBuilder;
@@ -20,12 +21,14 @@ namespace Camlex.NET.Impl
 
         public virtual bool IsValid(Expression<Func<SPItem, bool>> expr)
         {
+            // body should be BinaryExpression
             if (!(expr.Body is BinaryExpression))
             {
                 return false;
             }
             var body = expr.Body as BinaryExpression;
             
+            // left operand should be unary expression (Convert of indexer - like (string)x["foo"])
             if (!(body.Left is UnaryExpression))
             {
                 return false;

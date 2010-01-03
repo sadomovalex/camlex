@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using NUnit.Framework;
 
 namespace Camlex.NET.UnitTests.Helpers
 {
@@ -10,20 +11,31 @@ namespace Camlex.NET.UnitTests.Helpers
     {
         public int Compare(string x, string y)
         {
-            x = this.removeSymbolsBetweenTags(x);
-            y = this.removeSymbolsBetweenTags(y);
+            x = this.removeSpacesBetweenTags(x);
+            y = this.removeSpacesBetweenTags(y);
             return string.Compare(x, y);
         }
 
-        private string removeSymbolsBetweenTags(string s)
+        private string removeSpacesBetweenTags(string s)
         {
-            var re = new Regex("<.+?>");
-            var sb = new StringBuilder();
-            foreach (Match matche in re.Matches(s))
-            {
-                sb.Append(matche.Value);
-            }
-            return sb.ToString();
+            var re = new Regex(">.+?<", RegexOptions.Singleline);
+            string result = re.Replace(s, m => string.Format(">{0}<", m.Value.Substring(1, m.Value.Length - 2).Trim(new [] {' ', '\n', '\r'})));
+            return result;
+        }
+    }
+
+    [TestFixture]
+    public class CamlComparerTests
+    {
+        [Test]
+        public void test_THAT_strings_ARE_equal()
+        {
+            string s1 = "<eq>1</eq>";
+            string s2 =
+                @"<eq>
+                    1
+                </eq>";
+            Assert.That(new CamlComparer().Compare(s1, s2), Is.EqualTo(0));
         }
     }
 }

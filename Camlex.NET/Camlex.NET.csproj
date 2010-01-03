@@ -57,9 +57,15 @@
     </Compile>
     <Compile Include="ErrorMessages.cs" />
     <Compile Include="Exceptions.cs" />
+    <Compile Include="Impl\AndAlso\AndAlsoAnalyzer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Impl\AndAlso\AndAlsoOperation.cs" />
     <Compile Include="Impl\Array\ArrayAnalyzer.cs" />
     <Compile Include="Impl\Array\ArrayOperation.cs" />
     <Compile Include="Impl\BinaryExpressionBaseAnalyzer.cs" />
+    <Compile Include="Impl\CompositeExpressionBaseAnalyzer.cs" />
+    <Compile Include="Impl\CompositeOperationBase.cs" />
     <Compile Include="Impl\Eq\EqAnalyzer.cs" />
     <Compile Include="Impl\Eq\EqOperation.cs" />
     <Compile Include="Impl\Factories\AnalyzerFactory.cs" />

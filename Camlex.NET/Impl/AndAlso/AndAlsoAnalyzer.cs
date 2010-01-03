@@ -1,16 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
+using Camlex.NET.Impl.Eq;
 using Camlex.NET.Interfaces;
 using Microsoft.SharePoint;
 
-namespace Camlex.NET.Impl.Eq
+namespace Camlex.NET.Impl.AndAlso
 {
-    public class EqAnalyzer : BinaryExpressionBaseAnalyzer
+    public class AndAlsoAnalyzer : CompositeExpressionBaseAnalyzer
     {
-        public EqAnalyzer(IOperandBuilder operandBuilder) : base(operandBuilder)
+        public AndAlsoAnalyzer(IAnalyzerFactory analyzerFactory, IOperandBuilder operandBuilder) :
+            base(analyzerFactory, operandBuilder)
         {
         }
 
@@ -20,7 +19,7 @@ namespace Camlex.NET.Impl.Eq
             {
                 return false;
             }
-            return (expr.Body.NodeType == ExpressionType.Equal);
+            return (expr.Body.NodeType == ExpressionType.AndAlso);
         }
 
         public override IOperation GetOperation(Expression<Func<SPItem, bool>> expr)
@@ -29,9 +28,9 @@ namespace Camlex.NET.Impl.Eq
             {
                 throw new NonSupportedExpressionException(expr);
             }
-            var fieldRefOperand = this.getFieldRefOperand(expr);
-            var valueOperand = this.getValueOperand(expr);
-            return new EqOperation(fieldRefOperand, valueOperand);
+            throw new NotImplementedException();
         }
     }
 }
+
+
