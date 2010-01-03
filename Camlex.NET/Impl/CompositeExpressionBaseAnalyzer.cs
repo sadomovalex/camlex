@@ -9,17 +9,16 @@ using Microsoft.SharePoint;
 namespace Camlex.NET.Impl
 {
     // Base class for AndAlso and OrElse analyzers
-    public abstract class CompositeExpressionBaseAnalyzer : BinaryExpressionBaseAnalyzer
+    public abstract class CompositeExpressionBaseAnalyzer : IAnalyzer
     {
         protected IAnalyzerFactory analyzerFactory;
 
-        protected CompositeExpressionBaseAnalyzer(IAnalyzerFactory analyzerFactory, IOperandBuilder operandBuilder)
-            : base(operandBuilder)
+        protected CompositeExpressionBaseAnalyzer(IAnalyzerFactory analyzerFactory)
         {
             this.analyzerFactory = analyzerFactory;
         }
 
-        public override bool IsValid(Expression<Func<SPItem, bool>> expr)
+        public virtual bool IsValid(Expression<Func<SPItem, bool>> expr)
         {
             // expression should be binary expresion
             if (!(expr.Body is BinaryExpression))
@@ -54,6 +53,8 @@ namespace Camlex.NET.Impl
             }
             return true;
         }
+
+        public abstract IOperation GetOperation(Expression<Func<SPItem, bool>> expr);
 
         private bool isExpressionValid(BinaryExpression expr, ParameterExpression lambdaParam)
         {
