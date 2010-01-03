@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
+﻿using System.Linq.Expressions;
 using Camlex.NET.Impl;
-using Camlex.NET.Impl.Eq;
 using Camlex.NET.Impl.Factories;
 using Camlex.NET.Interfaces;
 using NUnit.Framework;
 using Rhino.Mocks;
 
-namespace Camlex.NET.UnitTests
+namespace Camlex.NET.UnitTests.Factories
 {
     [TestFixture]
     public class TranslatorFactoryTests
@@ -30,3 +25,5 @@ namespace Camlex.NET.UnitTests
         }
     }
 }
+
+
