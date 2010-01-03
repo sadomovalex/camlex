@@ -8,8 +8,8 @@ namespace Camlex.NET.Impl.AndAlso
 {
     public class AndAlsoAnalyzer : CompositeExpressionBaseAnalyzer
     {
-        public AndAlsoAnalyzer(IAnalyzerFactory analyzerFactory, IOperandBuilder operandBuilder) :
-            base(analyzerFactory, operandBuilder)
+        public AndAlsoAnalyzer(IAnalyzerFactory analyzerFactory) :
+            base(analyzerFactory)
         {
         }
 

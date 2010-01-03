@@ -19,7 +19,8 @@ namespace Camlex.NET.UnitTests.AndAlso
         {
             Expression<Func<SPItem, bool>> expr = x => (string) x["Email"] == "test@example.com" &&
                                                        (int) x["Count1"] == 1;
-            var analyzer = new AndAlsoAnalyzer(new AnalyzerFactory(null), null);
+            var analyzerFactory = new AnalyzerFactory(null);
+            var analyzer = new AndAlsoAnalyzer(analyzerFactory);
             Assert.That(analyzer.IsValid(expr), Is.True);
         }
 
@@ -28,7 +29,8 @@ namespace Camlex.NET.UnitTests.AndAlso
         {
             Expression<Func<SPItem, bool>> expr = x => (string)x["Email"] == "test@example.com" &
                                                        (int)x["Count1"] == 1;
-            var analyzer = new AndAlsoAnalyzer(new AnalyzerFactory(null), null);
+            var analyzerFactory = new AnalyzerFactory(null);
+            var analyzer = new AndAlsoAnalyzer(analyzerFactory);
             Assert.That(analyzer.IsValid(expr), Is.False);
         }
     }
