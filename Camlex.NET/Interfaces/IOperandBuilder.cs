@@ -9,6 +9,7 @@ namespace Camlex.NET.Interfaces
     public interface IOperandBuilder
     {
         IOperand CreateFieldRefOperand(Expression expr);
+        IOperand CreateFieldRefOperandWithOrdering(Expression expr, Camlex.OrderDirection orderDirection);
         IOperand CreateValueOperand(Expression expr);
     }
 }

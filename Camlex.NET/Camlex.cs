@@ -8,11 +8,26 @@ using Camlex.NET.Impl.Factories;
 using Camlex.NET.Interfaces;
 using Microsoft.SharePoint;
 
-
 namespace Camlex.NET
 {
     public class Camlex
     {
+        #region OrderBy functionality
+        /// <summary>Marker class representing ASC order direction for "OrderBy" functionality</summary>
+        public class OrderDirection
+        {
+            public static OrderDirection Default { get { return new Asc(); } }
+            public static OrderDirection Convert(Type type)
+            {
+                return type == typeof (Asc) ? (OrderDirection) new Asc() : new Desc();
+            }
+        }
+        /// <summary>Marker class representing ASC order direction for "OrderBy" functionality</summary>
+        public class Asc : OrderDirection { }
+        /// <summary>Marker class representing DESC order direction for "OrderBy" functionality</summary>
+        public class Desc : OrderDirection { }
+        #endregion
+
         private static ITranslatorFactory translatorFactory;
         private string where;
         private string orderBy;
@@ -39,11 +54,6 @@ namespace Camlex.NET
         }
 
         public Camlex OrderBy(Expression<Func<SPItem, object>> expr)
-        {
-            return OrderBy(expr, OrderDirection.Ascedant);
-        }
-
-        public Camlex OrderBy(Expression<Func<SPItem, object>> expr, OrderDirection direction)
         {
             throw new NotImplementedException();
             //var translator = translatorFactory.Create(expr.Body.NodeType);

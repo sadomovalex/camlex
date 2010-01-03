@@ -16,6 +16,12 @@ namespace Camlex.NET.Interfaces
             return new FieldRefOperand(fieldName);
         }
 
+        public IOperand CreateFieldRefOperandWithOrdering(Expression expr, Camlex.OrderDirection orderDirection)
+        {
+            var fieldRefOperand = (FieldRefOperand)CreateFieldRefOperand(expr);
+            return new FieldRefOperandWithOrdering(fieldRefOperand, orderDirection);
+        }
+
         public IOperand CreateValueOperand(Expression expr)
         {
             var constantExpression = (ConstantExpression)expr;
