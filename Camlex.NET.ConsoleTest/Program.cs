@@ -10,8 +10,8 @@ namespace Camlex.NET
     {
         static void Main(string[] args)
         {
-            Camlex.Where(x => (string)x["Email"] == "test@example.com")
-                .OrderBy(x => new [] { x["Title"], x["Email"] });
+            Camlex.Where(x => (string) x["Email"] == "test@example.com" &&
+                              (int)x["Count1"] == 1 && (int)x["Count1"] == 1);
         }
     }
 }
