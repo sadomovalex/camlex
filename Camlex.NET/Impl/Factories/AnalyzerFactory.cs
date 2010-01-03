@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using Camlex.NET.Impl.AndAlso;
+using Camlex.NET.Impl.Array;
 using Camlex.NET.Impl.Eq;
 using Camlex.NET.Interfaces;
 
@@ -23,6 +24,10 @@ namespace Camlex.NET.Impl.Factories
             if (exprType == ExpressionType.Equal)
             {
                 return new EqAnalyzer(this.operandBuilder);
+            }
+            if (exprType == ExpressionType.NewArrayInit)
+            {
+                return new ArrayAnalyzer(this.operandBuilder);
             }
             if (exprType == ExpressionType.AndAlso)
             {
