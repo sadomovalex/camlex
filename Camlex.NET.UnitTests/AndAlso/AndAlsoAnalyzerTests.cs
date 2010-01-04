@@ -6,8 +6,10 @@ using System.Text;
 using Camlex.NET.Impl.AndAlso;
 using Camlex.NET.Impl.Eq;
 using Camlex.NET.Impl.Factories;
+using Camlex.NET.Interfaces;
 using Microsoft.SharePoint;
 using NUnit.Framework;
+using Rhino.Mocks;
 
 namespace Camlex.NET.UnitTests.AndAlso
 {
@@ -32,6 +34,26 @@ namespace Camlex.NET.UnitTests.AndAlso
             var analyzerFactory = new AnalyzerFactory(null);
             var analyzer = new AndAlsoAnalyzer(analyzerFactory);
             Assert.That(analyzer.IsValid(expr), Is.False);
+        }
+
+        [Test]
+        public void test_THAT_valid_andalso_expression_IS_recognized_successfully()
+        {
+            // arrange
+            var analyzerFactoryStub = MockRepository.GenerateStub<IAnalyzerFactory>();
+            var analyzerStub = MockRepository.GenerateStub<ILogicalAnalyzer>();
+            analyzerFactoryStub.Stub(f => f.CreateLogicalAnalyzer(ExpressionType.Equal)).Return(analyzerStub);
+            analyzerStub.Stub(a => a.IsValid(null)).Return(true).IgnoreArguments();
+            var analyzer = new AndAlsoAnalyzer(analyzerFactoryStub);
+
+
+            Expression<Func<SPItem, bool>> expr = x => (string)x["Email"] == "test@example.com" &&
+                                                       (int)x["Count1"] == 1;
+            // act
+            var operation = analyzer.GetOperation(expr);
+
+            // assert
+            Assert.That(operation, Is.InstanceOf<AndAlsoOperation>());
         }
     }
 }
