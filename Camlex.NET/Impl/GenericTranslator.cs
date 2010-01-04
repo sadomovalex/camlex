@@ -24,7 +24,7 @@ namespace Camlex.NET.Impl
             this.arrayAnalyzer = arrayAnalyzer;
         }
 
-        public string TranslateWhere(Expression<Func<SPItem, bool>> expr)
+        public XElement TranslateWhere(Expression<Func<SPItem, bool>> expr)
         {
             if (!this.logicalAnalyzer.IsValid(expr))
             {
@@ -35,10 +35,10 @@ namespace Camlex.NET.Impl
             var operationCaml = operation.ToCaml();
 
             var caml = new XElement(Tags.Where, operationCaml);
-            return caml.ToString();
+            return caml;
         }
 
-        public string TranslateOrderBy(Expression<Func<SPItem, object[]>> expr)
+        public XElement TranslateOrderBy(Expression<Func<SPItem, object[]>> expr)
         {
             if (!this.arrayAnalyzer.IsValid(expr))
             {
@@ -49,7 +49,7 @@ namespace Camlex.NET.Impl
             var operationCaml = operation.ToCaml();
 
             var caml = new XElement(Tags.OrderBy, operationCaml);
-            return caml.ToString();
+            return caml;
         }
 
     }

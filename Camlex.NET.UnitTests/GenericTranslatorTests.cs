@@ -28,7 +28,7 @@ namespace Camlex.NET.UnitTests
             analyzer.Stub(a => a.GetOperation(expr)).Return(operation);
             operation.Stub(o => o.ToCaml()).Return(new XElement("foo"));
 
-            string caml = translator.TranslateWhere(expr);
+            string caml = translator.TranslateWhere(expr).ToString();
             string expected = "<Where><foo /></Where>";
 
             Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
