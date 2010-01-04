@@ -8,7 +8,6 @@ namespace Camlex.NET.Interfaces
 {
     public interface ITranslatorFactory
     {
-        ITranslator CreateLogicalTranslator(ExpressionType exprType);
-        ITranslator CreateArrayTranslator(ExpressionType exprType);
+        ITranslator Create(ExpressionType exprType);
     }
 }

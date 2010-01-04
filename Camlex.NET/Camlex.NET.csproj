@@ -80,8 +80,7 @@
     <Compile Include="Impl\GenericTranslator.cs" />
     <Compile Include="Impl\OperationBase.cs" />
     <Compile Include="Impl\Operands\ValueOperand.cs" />
-    <Compile Include="Interfaces\IArrayAnalyzer.cs" />
-    <Compile Include="Interfaces\ILogicalAnalyzer.cs" />
+    <Compile Include="Interfaces\IAnalyzer.cs" />
     <Compile Include="Interfaces\IAnalyzerFactory.cs" />
     <Compile Include="Interfaces\IOperand.cs" />
     <Compile Include="Interfaces\IOperandBuilder.cs" />

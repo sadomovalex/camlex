@@ -9,7 +9,7 @@ using Microsoft.SharePoint;
 namespace Camlex.NET.Impl
 {
     // Base class for AndAlso and OrElse analyzers
-    public abstract class CompositeExpressionBaseAnalyzer : ILogicalAnalyzer
+    public abstract class CompositeExpressionBaseAnalyzer : IAnalyzer
     {
         protected IAnalyzerFactory analyzerFactory;
 
@@ -18,9 +18,9 @@ namespace Camlex.NET.Impl
             this.analyzerFactory = analyzerFactory;
         }
 
-        public abstract IOperation GetOperation(Expression<Func<SPItem, bool>> expr);
+        public abstract IOperation GetOperation(LambdaExpression expr);
 
-        public virtual bool IsValid(Expression<Func<SPItem, bool>> expr)
+        public virtual bool IsValid(LambdaExpression expr)
         {
             // expression should be binary expresion
             if (!(expr.Body is BinaryExpression))
@@ -58,10 +58,10 @@ namespace Camlex.NET.Impl
 
         private bool isExpressionValid(BinaryExpression subExpr, ParameterExpression lambdaParam)
         {
-            var subExpressionAnalyzer = this.analyzerFactory.CreateLogicalAnalyzer(subExpr.NodeType);
+            var subExpressionAnalyzer = this.analyzerFactory.Create(subExpr.NodeType);
 
             // make Expression<Func<SPItem, bool>> lambda expression from BinaryExpression
-            Expression<Func<SPItem, bool>> lambda = this.createLambdaFromExpression(subExpr, lambdaParam);
+            var lambda = this.createLambdaFromExpression(subExpr, lambdaParam);
             return subExpressionAnalyzer.IsValid(lambda);
         }
 
@@ -75,14 +75,14 @@ namespace Camlex.NET.Impl
 
         private IOperation createOperationFromExpression(BinaryExpression subExpr, ParameterExpression lambdaParam)
         {
-            var subExpressionAnalyzer = this.analyzerFactory.CreateLogicalAnalyzer(subExpr.NodeType);
+            var subExpressionAnalyzer = this.analyzerFactory.Create(subExpr.NodeType);
 
             // make Expression<Func<SPItem, bool>> lambda expression from BinaryExpression
-            Expression<Func<SPItem, bool>> lambda = this.createLambdaFromExpression(subExpr, lambdaParam);
+            var lambda = this.createLambdaFromExpression(subExpr, lambdaParam);
             return subExpressionAnalyzer.GetOperation(lambda);
         }
 
-        protected IOperation getLeftOperation(Expression<Func<SPItem, bool>> expr)
+        protected IOperation getLeftOperation(LambdaExpression expr)
         {
             if (!this.IsValid(expr))
             {
@@ -94,7 +94,7 @@ namespace Camlex.NET.Impl
             return operation;
         }
 
-        protected IOperation getRightOperation(Expression<Func<SPItem, bool>> expr)
+        protected IOperation getRightOperation(LambdaExpression expr)
         {
             if (!this.IsValid(expr))
             {

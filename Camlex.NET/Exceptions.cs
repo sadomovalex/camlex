@@ -16,11 +16,7 @@ namespace Camlex.NET
 
     public class NonSupportedExpressionException : GenericException
     {
-        public NonSupportedExpressionException(Expression<Func<SPItem, bool>> expr):
-            base(ErrorMessages.NON_SUPPORTED_EXPRESSION, expr)
-        {
-        }
-        public NonSupportedExpressionException(Expression<Func<SPItem, object[]>> expr) :
+        public NonSupportedExpressionException(LambdaExpression expr) :
             base(ErrorMessages.NON_SUPPORTED_EXPRESSION, expr)
         {
         }

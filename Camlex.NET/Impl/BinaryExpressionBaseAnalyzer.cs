@@ -10,7 +10,7 @@ using Microsoft.SharePoint;
 namespace Camlex.NET.Impl
 {
     // Base class for all analyzers
-    public abstract class BinaryExpressionBaseAnalyzer : ILogicalAnalyzer
+    public abstract class BinaryExpressionBaseAnalyzer : IAnalyzer
     {
         private IOperandBuilder operandBuilder;
 
@@ -19,7 +19,7 @@ namespace Camlex.NET.Impl
             this.operandBuilder = operandBuilder;
         }
 
-        public virtual bool IsValid(Expression<Func<SPItem, bool>> expr)
+        public virtual bool IsValid(LambdaExpression expr)
         {
             // body should be BinaryExpression
             if (!(expr.Body is BinaryExpression))
@@ -92,9 +92,9 @@ namespace Camlex.NET.Impl
             return false;
         }
 
-        public abstract IOperation GetOperation(Expression<Func<SPItem, bool>> expr);
+        public abstract IOperation GetOperation(LambdaExpression expr);
 
-        protected IOperand getFieldRefOperand(Expression<Func<SPItem, bool>> expr)
+        protected IOperand getFieldRefOperand(LambdaExpression expr)
         {
             if (!this.IsValid(expr))
             {
@@ -104,7 +104,7 @@ namespace Camlex.NET.Impl
             return this.operandBuilder.CreateFieldRefOperand(body.Left);
         }
 
-        protected IOperand getValueOperand(Expression<Func<SPItem, bool>> expr)
+        protected IOperand getValueOperand(LambdaExpression expr)
         {
             if (!this.IsValid(expr))
             {
