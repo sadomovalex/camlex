@@ -10,11 +10,11 @@ namespace Camlex.NET.Impl.Array
 {
     public class ArrayAnalyzer : IAnalyzer
     {
-        private IOperandBuilder _operandBuilder;
+        private IOperandBuilder operandBuilder;
 
         public ArrayAnalyzer(IOperandBuilder operandBuilder)
         {
-            _operandBuilder = operandBuilder;
+            this.operandBuilder = operandBuilder;
         }
 
         public bool IsValid(LambdaExpression expr)
@@ -47,11 +47,11 @@ namespace Camlex.NET.Impl.Array
             {
                 throw new NonSupportedExpressionException(expr);
             }
-            var operands = GetFieldRefOperandsWithOrdering(expr);
+            var operands = getFieldRefOperandsWithOrdering(expr);
             return new ArrayOperation(operands);
         }
 
-        private IOperand[] GetFieldRefOperandsWithOrdering(LambdaExpression expr)
+        private IOperand[] getFieldRefOperandsWithOrdering(LambdaExpression expr)
         {
             var operands = new List<IOperand>();
             ((NewArrayExpression)expr.Body).Expressions.ToList().ForEach(ex =>
@@ -62,7 +62,7 @@ namespace Camlex.NET.Impl.Array
                     ex = ((UnaryExpression)ex).Operand;
                     orderDirection = Camlex.OrderDirection.Convert(ex.Type);
                 }
-                operands.Add(_operandBuilder.CreateFieldRefOperandWithOrdering(ex, orderDirection));
+                operands.Add(this.operandBuilder.CreateFieldRefOperandWithOrdering(ex, orderDirection));
             });
             return operands.ToArray();
         }
