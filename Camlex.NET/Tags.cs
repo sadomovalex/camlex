@@ -13,5 +13,6 @@ namespace Camlex.NET
         public const string FieldRef = "FieldRef";
         public const string Value = "Value";
         public const string And = "And";
+        public const string Or = "Or";
     }
 }
