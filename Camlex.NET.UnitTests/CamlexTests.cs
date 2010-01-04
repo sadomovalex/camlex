@@ -78,5 +78,22 @@ namespace Camlex.NET.UnitTests
 
             Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
         }
+
+        [Test]
+        public void test_THAT_single_eq_expression_with_variable_IS_translated_sucessfully()
+        {
+            string val = "testValue";
+            string caml = Camlex.Where(x => (string)x["Title"] == val);
+
+            string expected =
+               "<Where>" +
+               "   <Eq>" +
+               "      <FieldRef Name=\"Title\" />" +
+               "      <Value Type=\"Text\">testValue</Value>" +
+               "   </Eq>" +
+               "</Where>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Text;
 using Camlex.NET.Impl.Operands;
 
@@ -24,16 +25,43 @@ namespace Camlex.NET.Interfaces
 
         public IOperand CreateValueOperand(Expression expr)
         {
-            var constantExpression = (ConstantExpression)expr;
-            if (constantExpression.Type == typeof(string))
+            if (expr is ConstantExpression)
             {
-                return new TextValueOperand((string) constantExpression.Value);
+                return this.createValueOperandFromConstantExpression(expr as ConstantExpression);
             }
-            if (constantExpression.Type == typeof(int))
+            if (expr is MemberExpression && ((MemberExpression)expr).Expression is ConstantExpression)
             {
-                return new IntegerValueOperand((int)constantExpression.Value);
+                return this.createValueOperandFromMemberExpression(expr as MemberExpression);
             }
-            throw new NonSupportedOperandTypeException(expr.Type);
+            throw new NonSupportedExpressionTypeException(expr.NodeType);
+        }
+
+        // Uses reflection to obtain actual value of member expression
+        private IOperand createValueOperandFromMemberExpression(MemberExpression expr)
+        {
+            var fieldInfo = (FieldInfo)expr.Member;
+            var constantExpression = (ConstantExpression)expr.Expression;
+            object innerObj = constantExpression.Value;
+            object value = fieldInfo.GetValue(innerObj);
+            return this.createValueOperand(value.GetType(), value);
+        }
+
+        private IOperand createValueOperandFromConstantExpression(ConstantExpression expr)
+        {
+            return this.createValueOperand(expr.Type, expr.Value);
+        }
+
+        private IOperand createValueOperand(Type type, object value)
+        {
+            if (type == typeof(string))
+            {
+                return new TextValueOperand((string)value);
+            }
+            if (type == typeof(int))
+            {
+                return new IntegerValueOperand((int)value);
+            }
+            throw new NonSupportedOperandTypeException(type);
         }
     }
 }

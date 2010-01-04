@@ -60,8 +60,10 @@ namespace Camlex.NET.Impl
                 return false;
             }
 
-            // currently only constants are supported as right operand
-            if (!(body.Right is ConstantExpression))
+            // right expression should be constant or variable
+            var rightExpression = body.Right;
+            if (!(rightExpression is ConstantExpression) &&
+                !(rightExpression is MemberExpression && ((MemberExpression)rightExpression).Expression is ConstantExpression))
             {
                 return false;
             }

@@ -10,6 +10,5 @@ namespace Camlex.NET
         public const string NON_SUPPORTED_EXPRESSION =  "Expression '{0}' can not be translated into CAML";
         public static string NON_SUPPORTED_EXPRESSION_TYPE = "Expression type '{0}' is not supported";
         public static string NON_SUPPORTED_OPERAND_TYPE = "Operand type '{0}' is not supported";
-//        public const string NON_BINARY_EXPRESSION =     "C0002: Expression '{0}' is not binary expression";
     }
 }
