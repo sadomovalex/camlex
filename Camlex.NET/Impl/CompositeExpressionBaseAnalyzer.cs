@@ -18,6 +18,8 @@ namespace Camlex.NET.Impl
             this.analyzerFactory = analyzerFactory;
         }
 
+        public abstract IOperation GetOperation(Expression<Func<SPItem, bool>> expr);
+
         public virtual bool IsValid(Expression<Func<SPItem, bool>> expr)
         {
             // expression should be binary expresion
@@ -54,15 +56,54 @@ namespace Camlex.NET.Impl
             return true;
         }
 
-        public abstract IOperation GetOperation(Expression<Func<SPItem, bool>> expr);
-
-        private bool isExpressionValid(BinaryExpression expr, ParameterExpression lambdaParam)
+        private bool isExpressionValid(BinaryExpression subExpr, ParameterExpression lambdaParam)
         {
-            var expressionAnalyzer = this.analyzerFactory.CreateLogicalAnalyzer(expr.NodeType);
+            var subExpressionAnalyzer = this.analyzerFactory.CreateLogicalAnalyzer(subExpr.NodeType);
 
-            // make Expression<Func<SPItem, bool>> expression from BinaryExpression
-            Expression<Func<SPItem, bool>> subExpression = Expression.Lambda<Func<SPItem, bool>>(expr, lambdaParam);
-            return expressionAnalyzer.IsValid(subExpression);
+            // make Expression<Func<SPItem, bool>> lambda expression from BinaryExpression
+            Expression<Func<SPItem, bool>> lambda = this.createLambdaFromExpression(subExpr, lambdaParam);
+            return subExpressionAnalyzer.IsValid(lambda);
+        }
+
+        // For composite expressions like x => (string)x["Email"] == "test@example.com" && (int)x["Count1"] == 1
+        // it creates 2 lambdas: x => (string)x["Email"] == "test@example.com" ; x => (int)x["Count1"] == 1
+        private Expression<Func<SPItem, bool>> createLambdaFromExpression(BinaryExpression subExpr,
+            ParameterExpression lambdaParam)
+        {
+            return Expression.Lambda<Func<SPItem, bool>>(subExpr, lambdaParam);
+        }
+
+        private IOperation createOperationFromExpression(BinaryExpression subExpr, ParameterExpression lambdaParam)
+        {
+            var subExpressionAnalyzer = this.analyzerFactory.CreateLogicalAnalyzer(subExpr.NodeType);
+
+            // make Expression<Func<SPItem, bool>> lambda expression from BinaryExpression
+            Expression<Func<SPItem, bool>> lambda = this.createLambdaFromExpression(subExpr, lambdaParam);
+            return subExpressionAnalyzer.GetOperation(lambda);
+        }
+
+        protected IOperation getLeftOperation(Expression<Func<SPItem, bool>> expr)
+        {
+            if (!this.IsValid(expr))
+            {
+                throw new NonSupportedExpressionException(expr);
+            }
+            var body = expr.Body as BinaryExpression;
+            var lambdaParam = expr.Parameters[0];
+            var operation = this.createOperationFromExpression(body.Left as BinaryExpression, lambdaParam);
+            return operation;
+        }
+
+        protected IOperation getRightOperation(Expression<Func<SPItem, bool>> expr)
+        {
+            if (!this.IsValid(expr))
+            {
+                throw new NonSupportedExpressionException(expr);
+            }
+            var body = expr.Body as BinaryExpression;
+            var lambdaParam = expr.Parameters[0];
+            var operation = this.createOperationFromExpression(body.Right as BinaryExpression, lambdaParam);
+            return operation;
         }
     }
 }

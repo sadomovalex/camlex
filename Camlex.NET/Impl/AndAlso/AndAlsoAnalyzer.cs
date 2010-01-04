@@ -28,7 +28,10 @@ namespace Camlex.NET.Impl.AndAlso
             {
                 throw new NonSupportedExpressionException(expr);
             }
-            throw new NotImplementedException();
+            var leftOperation = this.getLeftOperation(expr);
+            var rightOperation = this.getRightOperation(expr);
+            var operation = new AndAlsoOperation(leftOperation, rightOperation);
+            return operation;
         }
     }
 }
