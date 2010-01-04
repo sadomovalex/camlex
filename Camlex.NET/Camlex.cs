@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using System.Xml.Linq;
 using Camlex.NET.Impl;
 using Camlex.NET.Impl.Factories;
 using Camlex.NET.Interfaces;
@@ -29,9 +30,9 @@ namespace Camlex.NET
         #endregion
 
         private static ITranslatorFactory translatorFactory;
-        private string where;
-        private string orderBy;
-        private string groupBy;
+        private XElement where;
+        private XElement orderBy;
+        private XElement groupBy;
 
         static Camlex()
         {
@@ -41,7 +42,7 @@ namespace Camlex.NET
             translatorFactory = new TranslatorFactory(analyzerFactory);
         }
 
-        private Camlex(string where)
+        private Camlex(XElement where)
         {
             this.where = where;
         }
@@ -49,15 +50,16 @@ namespace Camlex.NET
         public static Camlex Where(Expression<Func<SPItem, bool>> expr)
         {
             var translator = translatorFactory.CreateLogicalTranslator(expr.Body.NodeType);
-            string where = translator.TranslateWhere(expr);
+            var where = translator.TranslateWhere(expr);
             return new Camlex(where);
         }
 
         public Camlex OrderBy(Expression<Func<SPItem, object[]>> expr)
         {
             var translator = translatorFactory.CreateArrayTranslator(expr.Body.NodeType);
-            string orderBy = translator.TranslateOrderBy(expr);
-            return new Camlex(orderBy);
+            var orderBy = translator.TranslateOrderBy(expr);
+            this.orderBy = orderBy;
+            return this;
         }
 
         public Camlex GroupBy(Expression<Func<SPItem, object[]>> expr)
