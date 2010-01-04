@@ -99,7 +99,7 @@ namespace Camlex.NET.UnitTests
         [Test]
         public void test_THAT_single_eq_expression_with_parameterless_method_call_IS_translated_sucessfully()
         {
-            string caml = Camlex.Where(x => (int)x["Count"] == val());
+            string caml = Camlex.Where(x => (int)x["Count"] == val1());
 
             string expected =
                "<Where>" +
@@ -112,9 +112,47 @@ namespace Camlex.NET.UnitTests
             Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
         }
 
-        private int val()
+        private int val1()
         {
             return 123;
+        }
+
+        [Test]
+        public void test_THAT_single_eq_expression_with_1_parameter_method_call_IS_translated_sucessfully()
+        {
+            string caml = Camlex.Where(x => (int)x["Count"] == val2(456));
+
+            string expected =
+               "<Where>" +
+               "   <Eq>" +
+               "      <FieldRef Name=\"Count\" />" +
+               "      <Value Type=\"Integer\">456</Value>" +
+               "   </Eq>" +
+               "</Where>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        private int val2(int someParam)
+        {
+            return someParam;
+        }
+
+        [Test]
+        public void test_THAT_single_eq_expression_with_2_parameters_internal_method_call_IS_translated_sucessfully()
+        {
+            Func<int, int, int> val3 = (i, j) => i + j;
+            string caml = Camlex.Where(x => (int) x["Count"] == val3(2, 3));
+
+            string expected =
+               "<Where>" +
+               "   <Eq>" +
+               "      <FieldRef Name=\"Count\" />" +
+               "      <Value Type=\"Integer\">5</Value>" +
+               "   </Eq>" +
+               "</Where>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
         }
     }
 }
