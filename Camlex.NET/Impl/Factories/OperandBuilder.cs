@@ -33,7 +33,20 @@ namespace Camlex.NET.Interfaces
             {
                 return this.createValueOperandFromMemberExpression(expr as MemberExpression);
             }
+            if (expr is MethodCallExpression && ((MethodCallExpression)expr).Object is ConstantExpression)
+            {
+                return this.createValueOperandFromMethodCallExpression(expr as MethodCallExpression);
+            }
             throw new NonSupportedExpressionTypeException(expr.NodeType);
+        }
+
+        private IOperand createValueOperandFromMethodCallExpression(MethodCallExpression expr)
+        {
+            var methodInfo = expr.Method;
+            var constantExpression = (ConstantExpression)expr.Object;
+            object innerObj = constantExpression.Value;
+            object value = methodInfo.Invoke(innerObj, null);
+            return this.createValueOperand(value.GetType(), value);
         }
 
         // Uses reflection to obtain actual value of member expression
