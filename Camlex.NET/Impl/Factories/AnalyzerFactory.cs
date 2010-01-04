@@ -6,6 +6,7 @@ using System.Text;
 using Camlex.NET.Impl.AndAlso;
 using Camlex.NET.Impl.Array;
 using Camlex.NET.Impl.Eq;
+using Camlex.NET.Impl.OrElse;
 using Camlex.NET.Interfaces;
 
 namespace Camlex.NET.Impl.Factories
@@ -28,6 +29,10 @@ namespace Camlex.NET.Impl.Factories
             if (exprType == ExpressionType.AndAlso)
             {
                 return new AndAlsoAnalyzer(this);
+            }
+            if (exprType == ExpressionType.OrElse)
+            {
+                return new OrElseAnalyzer(this);
             }
             throw new NonSupportedExpressionTypeException(exprType);
         }

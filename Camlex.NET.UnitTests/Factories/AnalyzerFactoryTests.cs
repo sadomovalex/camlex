@@ -6,6 +6,7 @@ using System.Text;
 using Camlex.NET.Impl.AndAlso;
 using Camlex.NET.Impl.Eq;
 using Camlex.NET.Impl.Factories;
+using Camlex.NET.Impl.OrElse;
 using NUnit.Framework;
 
 namespace Camlex.NET.UnitTests.Factories
@@ -27,6 +28,14 @@ namespace Camlex.NET.UnitTests.Factories
             var analyzerFactory = new AnalyzerFactory(null);
             var analyzer = analyzerFactory.CreateLogicalAnalyzer(ExpressionType.AndAlso);
             Assert.That(analyzer, Is.InstanceOf<AndAlsoAnalyzer>());
+        }
+
+        [Test]
+        public void test_WHEN_expression_is_orelse_THEN_orelse_analyzer_is_created()
+        {
+            var analyzerFactory = new AnalyzerFactory(null);
+            var analyzer = analyzerFactory.CreateLogicalAnalyzer(ExpressionType.OrElse);
+            Assert.That(analyzer, Is.InstanceOf<OrElseAnalyzer>());
         }
     }
 }
