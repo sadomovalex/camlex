@@ -77,11 +77,15 @@ namespace Camlex.NET.Impl
             {
                 return true;
             }
-            if (rightExpression is MemberExpression && ((MemberExpression)rightExpression).Expression is ConstantExpression)
+            if (rightExpression is MemberExpression/* && ((MemberExpression)rightExpression).Expression is ConstantExpression*/)
             {
                 return true;
             }
-            if (rightExpression is MethodCallExpression && ((MethodCallExpression)rightExpression).Object is ConstantExpression)
+            if (rightExpression is MethodCallExpression/* && ((MethodCallExpression)rightExpression).Object is ConstantExpression*/)
+            {
+                return true;
+            }
+            if (rightExpression is InvocationExpression)
             {
                 return true;
             }
