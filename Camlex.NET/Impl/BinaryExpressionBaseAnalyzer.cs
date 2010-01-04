@@ -60,15 +60,32 @@ namespace Camlex.NET.Impl
                 return false;
             }
 
-            // right expression should be constant or variable
+            // right expression should be constant, variable or method call
             var rightExpression = body.Right;
-            if (!(rightExpression is ConstantExpression) &&
-                !(rightExpression is MemberExpression && ((MemberExpression)rightExpression).Expression is ConstantExpression))
+            if (!this.isValidRightExpression(rightExpression))
             {
                 return false;
             }
 
             return true;
+        }
+
+        // Right expression should be constant, variable or method call
+        private bool isValidRightExpression(Expression rightExpression)
+        {
+            if (rightExpression is ConstantExpression)
+            {
+                return true;
+            }
+            if (rightExpression is MemberExpression && ((MemberExpression)rightExpression).Expression is ConstantExpression)
+            {
+                return true;
+            }
+            if (rightExpression is MethodCallExpression && ((MethodCallExpression)rightExpression).Object is ConstantExpression)
+            {
+                return true;
+            }
+            return false;
         }
 
         public abstract IOperation GetOperation(Expression<Func<SPItem, bool>> expr);

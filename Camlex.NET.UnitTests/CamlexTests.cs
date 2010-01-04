@@ -95,5 +95,26 @@ namespace Camlex.NET.UnitTests
 
             Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
         }
+
+        [Test]
+        public void test_THAT_single_eq_expression_with_parameterless_method_call_IS_translated_sucessfully()
+        {
+            string caml = Camlex.Where(x => (int)x["Count"] == val());
+
+            string expected =
+               "<Where>" +
+               "   <Eq>" +
+               "      <FieldRef Name=\"Count\" />" +
+               "      <Value Type=\"Integer\">123</Value>" +
+               "   </Eq>" +
+               "</Where>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        private int val()
+        {
+            return 123;
+        }
     }
 }
