@@ -154,5 +154,49 @@ namespace Camlex.NET.UnitTests
 
             Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
         }
+
+        class Foo
+        {
+            public int Prop { get; set; }
+            public string Func()
+            {
+                return string.Format("{0}", GetType());
+            }
+        }
+
+        [Test]
+        public void test_THAT_single_eq_expression_with_class_property_call_IS_translated_sucessfully()
+        {
+            Foo f = new Foo();
+            f.Prop = 1;
+            string caml = Camlex.Where(x => (int)x["Count"] == f.Prop);
+
+            string expected =
+               "<Where>" +
+               "   <Eq>" +
+               "      <FieldRef Name=\"Count\" />" +
+               "      <Value Type=\"Integer\">1</Value>" +
+               "   </Eq>" +
+               "</Where>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        [Test]
+        public void test_THAT_single_eq_expression_with_class_method_call_IS_translated_sucessfully()
+        {
+            Foo f = new Foo();
+            string caml = Camlex.Where(x => (string)x["Title"] == f.Func());
+
+            string expected =
+               "<Where>" +
+               "   <Eq>" +
+               "      <FieldRef Name=\"Title\" />" +
+               "      <Value Type=\"Text\">Camlex.NET.UnitTests.CamlexTests+Foo</Value>" +
+               "   </Eq>" +
+               "</Where>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
     }
 }
