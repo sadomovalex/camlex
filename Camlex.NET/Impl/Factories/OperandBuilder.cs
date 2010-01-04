@@ -12,8 +12,11 @@ namespace Camlex.NET.Interfaces
     {
         public IOperand CreateFieldRefOperand(Expression expr)
         {
-            var unaryExpression = (UnaryExpression)expr;
-            var fieldName = ((ConstantExpression)((MethodCallExpression)unaryExpression.Operand).Arguments[0]).Value as string;
+            if (expr is UnaryExpression)
+            {
+                expr = ((UnaryExpression)expr).Operand;
+            }
+            var fieldName = ((ConstantExpression)((MethodCallExpression)expr).Arguments[0]).Value as string;
             return new FieldRefOperand(fieldName);
         }
 
