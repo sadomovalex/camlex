@@ -11,41 +11,35 @@ namespace Camlex.NET.Impl
 {
     public class GenericTranslator : ITranslator
     {
-        private readonly ILogicalAnalyzer logicalAnalyzer;
-        private readonly IArrayAnalyzer arrayAnalyzer;
+        private readonly IAnalyzer analyzer;
 
-        public GenericTranslator(ILogicalAnalyzer logicalAnalyzer)
+        public GenericTranslator(IAnalyzer analyzer)
         {
-            this.logicalAnalyzer = logicalAnalyzer;
+            this.analyzer = analyzer;
         }
 
-        public GenericTranslator(IArrayAnalyzer arrayAnalyzer)
+        public XElement TranslateWhere(LambdaExpression expr)
         {
-            this.arrayAnalyzer = arrayAnalyzer;
-        }
-
-        public XElement TranslateWhere(Expression<Func<SPItem, bool>> expr)
-        {
-            if (!this.logicalAnalyzer.IsValid(expr))
+            if (!this.analyzer.IsValid(expr))
             {
                 throw new NonSupportedExpressionException(expr);
             }
 
-            var operation = this.logicalAnalyzer.GetOperation(expr);
+            var operation = this.analyzer.GetOperation(expr);
             var operationCaml = operation.ToCaml();
 
             var caml = new XElement(Tags.Where, operationCaml);
             return caml;
         }
 
-        public XElement TranslateOrderBy(Expression<Func<SPItem, object[]>> expr)
+        public XElement TranslateOrderBy(LambdaExpression expr)
         {
-            if (!this.arrayAnalyzer.IsValid(expr))
+            if (!this.analyzer.IsValid(expr))
             {
                 throw new NonSupportedExpressionException(expr);
             }
 
-            var operation = this.arrayAnalyzer.GetOperation(expr);
+            var operation = this.analyzer.GetOperation(expr);
             var operationCaml = operation.ToCaml();
 
             var caml = new XElement(Tags.OrderBy, operationCaml);

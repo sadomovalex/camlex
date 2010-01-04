@@ -12,15 +12,9 @@ namespace Camlex.NET.Impl.Factories
             this.analyzerFactory = analyzerFactory;
         }
 
-        public ITranslator CreateLogicalTranslator(ExpressionType exprType)
+        public ITranslator Create(ExpressionType exprType)
         {
-            var analyzer = this.analyzerFactory.CreateLogicalAnalyzer(exprType);
-            return new GenericTranslator(analyzer);
-        }
-
-        public ITranslator CreateArrayTranslator(ExpressionType exprType)
-        {
-            var analyzer = this.analyzerFactory.CreateArrayAnalyzer(exprType);
+            var analyzer = this.analyzerFactory.Create(exprType);
             return new GenericTranslator(analyzer);
         }
     }

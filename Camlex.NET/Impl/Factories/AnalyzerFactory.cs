@@ -20,7 +20,7 @@ namespace Camlex.NET.Impl.Factories
             this.operandBuilder = operandBuilder;
         }
 
-        public ILogicalAnalyzer CreateLogicalAnalyzer(ExpressionType exprType)
+        public IAnalyzer Create(ExpressionType exprType)
         {
             if (exprType == ExpressionType.Equal)
             {
@@ -34,11 +34,6 @@ namespace Camlex.NET.Impl.Factories
             {
                 return new OrElseAnalyzer(this);
             }
-            throw new NonSupportedExpressionTypeException(exprType);
-        }
-
-        public IArrayAnalyzer CreateArrayAnalyzer(ExpressionType exprType)
-        {
             if (exprType == ExpressionType.NewArrayInit)
             {
                 return new ArrayAnalyzer(this.operandBuilder);

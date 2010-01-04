@@ -14,7 +14,7 @@ namespace Camlex.NET.Impl.Eq
         {
         }
 
-        public override bool IsValid(Expression<Func<SPItem, bool>> expr)
+        public override bool IsValid(LambdaExpression expr)
         {
             if (!base.IsValid(expr))
             {
@@ -23,7 +23,7 @@ namespace Camlex.NET.Impl.Eq
             return (expr.Body.NodeType == ExpressionType.Equal);
         }
 
-        public override IOperation GetOperation(Expression<Func<SPItem, bool>> expr)
+        public override IOperation GetOperation(LambdaExpression expr)
         {
             if (!this.IsValid(expr))
             {

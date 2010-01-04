@@ -10,7 +10,7 @@ namespace Camlex.NET.Interfaces
 {
     public interface ITranslator
     {
-        XElement TranslateWhere(Expression<Func<SPItem, bool>> expr);
-        XElement TranslateOrderBy(Expression<Func<SPItem, object[]>> expr);
+        XElement TranslateWhere(LambdaExpression expr);
+        XElement TranslateOrderBy(LambdaExpression expr);
     }
 }

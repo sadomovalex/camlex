@@ -19,7 +19,7 @@ namespace Camlex.NET.UnitTests
         [Test]
         public void test_THAT_where_clause_IS_rendered_to_caml_properly()
         {
-            var analyzer = MockRepository.GenerateStub<ILogicalAnalyzer>();
+            var analyzer = MockRepository.GenerateStub<IAnalyzer>();
             var operation = MockRepository.GenerateStub<IOperation>();
             var translator = new GenericTranslator(analyzer);
 
