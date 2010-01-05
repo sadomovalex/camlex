@@ -71,7 +71,6 @@
     <Compile Include="Impl\Operands\IntegerValueOperand.cs" />
     <Compile Include="Impl\Operands\FieldRefOperand.cs" />
     <Compile Include="Impl\GenericTranslator.cs" />
-    <Compile Include="Impl\OperationBase.cs" />
     <Compile Include="Impl\Operands\ValueOperand.cs" />
     <Compile Include="Impl\Operations\AndAlso\AndAlsoAnalyzer.cs" />
     <Compile Include="Impl\Operations\AndAlso\AndAlsoOperation.cs" />
@@ -95,7 +94,8 @@
     <Compile Include="Impl\Operations\Geq\GeqOperation.cs" />
     <Compile Include="Impl\Operations\OrElse\OrElseAnalyzer.cs" />
     <Compile Include="Impl\Operations\OrElse\OrElseOperation.cs" />
-    <Compile Include="Impl\Operations\Results\OperationResult.cs" />
+    <Compile Include="Impl\Operations\Results\XElementArrayOperationResult.cs" />
+    <Compile Include="Impl\Operations\Results\XElementOperationResult.cs" />
     <Compile Include="Interfaces\IAnalyzer.cs" />
     <Compile Include="Interfaces\IAnalyzerFactory.cs" />
     <Compile Include="Interfaces\IOperand.cs" />

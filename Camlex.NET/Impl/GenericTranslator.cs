@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Xml.Linq;
+using Camlex.NET.Impl.Operations.Results;
 using Camlex.NET.Interfaces;
 using Microsoft.SharePoint;
 
@@ -40,9 +41,9 @@ namespace Camlex.NET.Impl
             }
 
             var operation = this.analyzer.GetOperation(expr);
-            var result = (IOperationMultipleResult)operation.ToResult();
+            var result = (XElementArrayOperationResult)operation.ToResult();
 
-            var caml = new XElement(Tags.OrderBy, result.Values);
+            var caml = new XElement(Tags.OrderBy, result.Value);
             return caml;
         }
 
