@@ -8,6 +8,7 @@ using Camlex.NET.Impl.Operations.Array;
 using Camlex.NET.Impl.Operations.Eq;
 using Camlex.NET.Impl.Operations.Geq;
 using Camlex.NET.Impl.Operations.Gt;
+using Camlex.NET.Impl.Operations.IsNotNull;
 using Camlex.NET.Impl.Operations.Leq;
 using Camlex.NET.Impl.Operations.Lt;
 using Camlex.NET.Impl.Operations.OrElse;
@@ -24,8 +25,10 @@ namespace Camlex.NET.Impl.Factories
             this.operandBuilder = operandBuilder;
         }
 
-        public IAnalyzer Create(ExpressionType exprType)
+        public IAnalyzer Create(LambdaExpression expr)
         {
+            ExpressionType exprType = expr.Body.NodeType;
+
             if (exprType == ExpressionType.Equal)
             {
                 return new EqAnalyzer(this.operandBuilder);
@@ -58,7 +61,22 @@ namespace Camlex.NET.Impl.Factories
             {
                 return new LtAnalyzer(this.operandBuilder);
             }
+
+            // it is not enough to check ExpressionType for IsNotNull operation.
+            // We need also to check that right operand is null
+            IsNotNullAnalyzer isNotNullAnalyzer;
+            if (this.isNotNullExpression(expr, out isNotNullAnalyzer))
+            {
+                return isNotNullAnalyzer;
+            }
             throw new NonSupportedExpressionTypeException(exprType);
+        }
+
+        private bool isNotNullExpression(LambdaExpression expr, out IsNotNullAnalyzer analyzer)
+        {
+            // the simplest way to check if this IsNotNull expression - is to reuse IsNotNullAnalyzer
+            analyzer = new IsNotNullAnalyzer(this.operandBuilder);
+            return analyzer.IsValid(expr);
         }
     }
 }

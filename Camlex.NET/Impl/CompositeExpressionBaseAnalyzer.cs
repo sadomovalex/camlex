@@ -58,10 +58,9 @@ namespace Camlex.NET.Impl
 
         private bool isExpressionValid(BinaryExpression subExpr, ParameterExpression lambdaParam)
         {
-            var subExpressionAnalyzer = this.analyzerFactory.Create(subExpr.NodeType);
-
             // make Expression<Func<SPItem, bool>> lambda expression from BinaryExpression
             var lambda = this.createLambdaFromExpression(subExpr, lambdaParam);
+            var subExpressionAnalyzer = this.analyzerFactory.Create(lambda);
             return subExpressionAnalyzer.IsValid(lambda);
         }
 
@@ -75,10 +74,9 @@ namespace Camlex.NET.Impl
 
         private IOperation createOperationFromExpression(BinaryExpression subExpr, ParameterExpression lambdaParam)
         {
-            var subExpressionAnalyzer = this.analyzerFactory.Create(subExpr.NodeType);
-
             // make Expression<Func<SPItem, bool>> lambda expression from BinaryExpression
             var lambda = this.createLambdaFromExpression(subExpr, lambdaParam);
+            var subExpressionAnalyzer = this.analyzerFactory.Create(lambda);
             return subExpressionAnalyzer.GetOperation(lambda);
         }
 

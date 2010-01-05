@@ -21,7 +21,7 @@ namespace Camlex.NET.UnitTests.Operations.Lt
         }
 
         [Test]
-        public void test_THAT_leq_expression_IS_determined_properly()
+        public void test_THAT_lt_expression_IS_determined_properly()
         {
             // arrange
             Expression<Func<SPItem, bool>> expr = x => (int)x["Count"] < 1;

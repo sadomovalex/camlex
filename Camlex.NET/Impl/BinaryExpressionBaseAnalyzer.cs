@@ -12,7 +12,7 @@ namespace Camlex.NET.Impl
     // Base class for all analyzers
     public abstract class BinaryExpressionBaseAnalyzer : IAnalyzer
     {
-        private IOperandBuilder operandBuilder;
+        protected IOperandBuilder operandBuilder;
 
         protected BinaryExpressionBaseAnalyzer(IOperandBuilder operandBuilder)
         {
@@ -71,7 +71,7 @@ namespace Camlex.NET.Impl
         }
 
         // Right expression should be constant, variable or method call
-        private bool isValidRightExpression(Expression rightExpression)
+        protected bool isValidRightExpression(Expression rightExpression)
         {
             if (rightExpression is ConstantExpression)
             {

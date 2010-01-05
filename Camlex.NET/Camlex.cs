@@ -49,14 +49,14 @@ namespace Camlex.NET
 
         public static Camlex Where(Expression<Func<SPItem, bool>> expr)
         {
-            var translator = translatorFactory.Create(expr.Body.NodeType);
+            var translator = translatorFactory.Create(expr);
             var where = translator.TranslateWhere(expr);
             return new Camlex(where);
         }
 
         public Camlex OrderBy(Expression<Func<SPItem, object[]>> expr)
         {
-            var translator = translatorFactory.Create(expr.Body.NodeType);
+            var translator = translatorFactory.Create(expr);
             var orderBy = translator.TranslateOrderBy(expr);
             this.orderBy = orderBy;
             return this;

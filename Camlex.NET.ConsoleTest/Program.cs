@@ -13,14 +13,8 @@ namespace Camlex.NET
     {
         static void Main(string[] args)
         {
-            var count = 123;
-            Camlex.Where(x => (int)x["Count"] == count)
-                  .OrderBy(x => new [] { x["field1"], x["field2"] as Camlex.Asc, x["field3"] as Camlex.Desc });
-        }
-
-        private static int getCount()
-        {
-            return new Random().Next() % 100;
+            Camlex.Where(x => x["Count"] != null);
+                  //.OrderBy(x => new [] { x["field1"], x["field2"] as Camlex.Asc, x["field3"] as Camlex.Desc });
         }
     }
 }
