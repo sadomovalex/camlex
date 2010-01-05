@@ -9,10 +9,11 @@ namespace Camlex.NET
     {
         public const string Where = "Where";
         public const string OrderBy = "OrderBy";
-        public const string Eq = "Eq";
         public const string FieldRef = "FieldRef";
         public const string Value = "Value";
         public const string And = "And";
         public const string Or = "Or";
+        public const string Eq = "Eq";
+        public const string Geq = "Geq";
     }
 }
