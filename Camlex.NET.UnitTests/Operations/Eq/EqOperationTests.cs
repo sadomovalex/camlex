@@ -11,7 +11,7 @@ namespace Camlex.NET.UnitTests.Operations.Eq
     public class EqOperationTests
     {
         [Test]
-        public void test_THAT_operation_IS_rendered_to_caml_properly()
+        public void test_THAT_eq_operation_IS_rendered_to_caml_properly()
         {
             // arrange
             var fieldRefOperandStub = MockRepository.GenerateStub<FieldRefOperand>("");

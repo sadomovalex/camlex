@@ -74,6 +74,8 @@
     <Compile Include="Impl\Operations\AndAlso\AndAlsoOperation.cs" />
     <Compile Include="Impl\Operations\Array\ArrayAnalyzer.cs" />
     <Compile Include="Impl\Operations\Array\ArrayOperation.cs" />
+    <Compile Include="Impl\Operations\Leq\LeqAnalyzer.cs" />
+    <Compile Include="Impl\Operations\Leq\LeqOperation.cs" />
     <Compile Include="Impl\Operations\Gt\GtAnalyzer.cs" />
     <Compile Include="Impl\Operations\Gt\GtOperation.cs" />
     <Compile Include="Impl\Operations\Eq\EqAnalyzer.cs" />

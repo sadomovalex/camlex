@@ -8,6 +8,8 @@ using Camlex.NET.Impl.Operations.AndAlso;
 using Camlex.NET.Impl.Operations.Array;
 using Camlex.NET.Impl.Operations.Eq;
 using Camlex.NET.Impl.Operations.Geq;
+using Camlex.NET.Impl.Operations.Gt;
+using Camlex.NET.Impl.Operations.Leq;
 using Camlex.NET.Impl.Operations.OrElse;
 using NUnit.Framework;
 
@@ -54,6 +56,22 @@ namespace Camlex.NET.UnitTests.Factories
             var analyzerFactory = new AnalyzerFactory(null);
             var analyzer = analyzerFactory.Create(ExpressionType.GreaterThanOrEqual);
             Assert.That(analyzer, Is.InstanceOf<GeqAnalyzer>());
+        }
+
+        [Test]
+        public void test_WHEN_expression_is_gt_THEN_gt_analyzer_is_created()
+        {
+            var analyzerFactory = new AnalyzerFactory(null);
+            var analyzer = analyzerFactory.Create(ExpressionType.GreaterThan);
+            Assert.That(analyzer, Is.InstanceOf<GtAnalyzer>());
+        }
+
+        [Test]
+        public void test_WHEN_expression_is_leq_THEN_leq_analyzer_is_created()
+        {
+            var analyzerFactory = new AnalyzerFactory(null);
+            var analyzer = analyzerFactory.Create(ExpressionType.LessThanOrEqual);
+            Assert.That(analyzer, Is.InstanceOf<LeqAnalyzer>());
         }
     }
 }
