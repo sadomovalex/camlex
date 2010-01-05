@@ -76,6 +76,8 @@
     <Compile Include="Impl\Operations\AndAlso\AndAlsoOperation.cs" />
     <Compile Include="Impl\Operations\Array\ArrayAnalyzer.cs" />
     <Compile Include="Impl\Operations\Array\ArrayOperation.cs" />
+    <Compile Include="Impl\Operations\Neq\NeqAnalyzer.cs" />
+    <Compile Include="Impl\Operations\Neq\NeqOperation.cs" />
     <Compile Include="Impl\Operations\IsNull\IsNullAnalyzer.cs" />
     <Compile Include="Impl\Operations\IsNull\IsNullOperation.cs" />
     <Compile Include="Impl\Operations\IsNotNull\IsNotNullAnalyzer.cs" />

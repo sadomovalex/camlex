@@ -14,6 +14,7 @@ using Camlex.NET.Impl.Operations.IsNotNull;
 using Camlex.NET.Impl.Operations.IsNull;
 using Camlex.NET.Impl.Operations.Leq;
 using Camlex.NET.Impl.Operations.Lt;
+using Camlex.NET.Impl.Operations.Neq;
 using Camlex.NET.Impl.Operations.OrElse;
 using Camlex.NET.Interfaces;
 using Microsoft.SharePoint;
@@ -32,6 +33,15 @@ namespace Camlex.NET.UnitTests.Factories
             var analyzerFactory = new AnalyzerFactory(null);
             var analyzer = analyzerFactory.Create(expr);
             Assert.That(analyzer, Is.InstanceOf<EqAnalyzer>());
+        }
+
+        [Test]
+        public void test_WHEN_expression_is_neq_THEN_neq_analyzer_is_created()
+        {
+            Expression<Func<SPItem, bool>> expr = x => (int)x["Count"] != 1;
+            var analyzerFactory = new AnalyzerFactory(null);
+            var analyzer = analyzerFactory.Create(expr);
+            Assert.That(analyzer, Is.InstanceOf<NeqAnalyzer>());
         }
 
         [Test]
