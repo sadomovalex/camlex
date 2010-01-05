@@ -26,7 +26,7 @@ namespace Camlex.NET.Impl
             }
 
             var operation = this.analyzer.GetOperation(expr);
-            var operationCaml = operation.ToCaml();
+            var operationCaml = operation.ToResult().Value;
 
             var caml = new XElement(Tags.Where, operationCaml);
             return caml;
@@ -40,9 +40,9 @@ namespace Camlex.NET.Impl
             }
 
             var operation = this.analyzer.GetOperation(expr);
-            var operationCaml = operation.ToCaml();
+            var result = (IOperationMultipleResult)operation.ToResult();
 
-            var caml = new XElement(Tags.OrderBy, operationCaml);
+            var caml = new XElement(Tags.OrderBy, result.Values);
             return caml;
         }
 

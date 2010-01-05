@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Xml.Linq;
+using Camlex.NET.Impl.Factories;
 using Camlex.NET.Interfaces;
 
 namespace Camlex.NET.Impl.Operations.Array
@@ -13,11 +14,11 @@ namespace Camlex.NET.Impl.Operations.Array
             this.fieldRefOperands = fieldRefOperands;
         }
 
-        public XElement ToCaml()
+        public IOperationResult ToResult()
         {
-            var content = new List<XElement>();
-            System.Array.ForEach(this.fieldRefOperands, x => content.Add(x.ToCaml()));
-            return new XElement(Tags.Eq, content);
+            var builder = new OperationResultBuilder();
+            System.Array.ForEach(this.fieldRefOperands, x => builder.Add(x.ToCaml()));
+            return builder.ToResult();
         }
     }
 }

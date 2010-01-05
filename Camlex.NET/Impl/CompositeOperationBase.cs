@@ -18,6 +18,6 @@ namespace Camlex.NET.Impl
             this.rightOperation = rightOperation;
         }
 
-        public abstract XElement ToCaml();
+        public abstract IOperationResult ToResult();
     }
 }

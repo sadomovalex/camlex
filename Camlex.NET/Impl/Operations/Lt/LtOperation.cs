@@ -1,4 +1,5 @@
 ﻿using System.Xml.Linq;
+using Camlex.NET.Impl.Factories;
 using Camlex.NET.Interfaces;
 
 namespace Camlex.NET.Impl.Operations.Lt
@@ -10,12 +11,12 @@ namespace Camlex.NET.Impl.Operations.Lt
         {
         }
 
-        public override XElement ToCaml()
+        public override IOperationResult ToResult()
         {
-            return
-                new XElement(Tags.Lt,
+            var result = new XElement(Tags.Lt,
                              this.fieldRefOperand.ToCaml(),
                              this.valueOperand.ToCaml());
+            return new OperationResultBuilder().Add(result).ToResult();
         }
     }
 }

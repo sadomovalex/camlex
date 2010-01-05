@@ -62,6 +62,7 @@
     <Compile Include="Impl\CompositeOperationBase.cs" />
     <Compile Include="Impl\Factories\AnalyzerFactory.cs" />
     <Compile Include="Impl\Factories\OperandBuilder.cs" />
+    <Compile Include="Impl\Factories\OperationResultBuilder.cs" />
     <Compile Include="Impl\Factories\TranslatorFactory.cs" />
     <Compile Include="Impl\NullabilityBaseAnalyzer.cs" />
     <Compile Include="Impl\Operands\FieldRefOperandWithOrdering.cs" />
@@ -94,11 +95,14 @@
     <Compile Include="Impl\Operations\Geq\GeqOperation.cs" />
     <Compile Include="Impl\Operations\OrElse\OrElseAnalyzer.cs" />
     <Compile Include="Impl\Operations\OrElse\OrElseOperation.cs" />
+    <Compile Include="Impl\Operations\Results\OperationResult.cs" />
     <Compile Include="Interfaces\IAnalyzer.cs" />
     <Compile Include="Interfaces\IAnalyzerFactory.cs" />
     <Compile Include="Interfaces\IOperand.cs" />
     <Compile Include="Interfaces\IOperandBuilder.cs" />
     <Compile Include="Interfaces\IOperation.cs" />
+    <Compile Include="Interfaces\IOperationResult.cs" />
+    <Compile Include="Interfaces\IOperationResultBuilder.cs" />
     <Compile Include="Interfaces\ITranslator.cs" />
     <Compile Include="Interfaces\ITranslatorFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
