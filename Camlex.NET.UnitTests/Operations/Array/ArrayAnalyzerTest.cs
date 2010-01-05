@@ -27,12 +27,9 @@ namespace Camlex.NET.UnitTests.Array
         {
             // arrange
             Expression<Func<SPItem, object[]>> expr = (x => new[] { x["field1"], x["field2"] as Camlex.Asc, x["field3"] as Camlex.Desc });
-            var expressions = ((NewArrayExpression)expr.Body).Expressions;
 
             var operandBuilder = MockRepository.GenerateStub<IOperandBuilder>();
-            operandBuilder.Stub(b => b.CreateFieldRefOperandWithOrdering(expressions[0], new Camlex.Asc())).Return(null);
-            operandBuilder.Stub(b => b.CreateFieldRefOperandWithOrdering(((UnaryExpression)expressions[1]).Operand, new Camlex.Desc())).Return(null);
-            operandBuilder.Stub(b => b.CreateFieldRefOperandWithOrdering(((UnaryExpression)expressions[2]).Operand, new Camlex.Desc())).Return(null);
+            operandBuilder.Stub(b => b.CreateFieldRefOperandWithOrdering(null, null)).Return(null).IgnoreArguments();
             var analyzer = new ArrayAnalyzer(operandBuilder);
 
             // act
