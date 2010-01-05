@@ -17,7 +17,7 @@ namespace Camlex.NET.Impl.Operations.Lt
             var result = new XElement(Tags.Lt,
                              this.fieldRefOperand.ToCaml(),
                              this.valueOperand.ToCaml());
-            return this.operationResultBuilder.Add(result).ToResult();
+            return this.operationResultBuilder.CreateResult(result);
         }
     }
 }

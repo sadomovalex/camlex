@@ -8,7 +8,7 @@ namespace Camlex.NET.Interfaces
 {
     public interface IOperationResultBuilder
     {
-        IOperationResultBuilder Add(XElement value);
-        IOperationResult ToResult();
+        IOperationResult CreateResult(XElement value);
+        IOperationResult CreateResult(XElement[] values);
     }
 }

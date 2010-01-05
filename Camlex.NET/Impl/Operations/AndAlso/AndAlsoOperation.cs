@@ -17,7 +17,7 @@ namespace Camlex.NET.Impl.Operations.AndAlso
             var result = new XElement(Tags.And,
                              this.leftOperation.ToResult().Value,
                              this.rightOperation.ToResult().Value);
-            return this.operationResultBuilder.Add(result).ToResult();
+            return this.operationResultBuilder.CreateResult(result);
         }
     }
 }

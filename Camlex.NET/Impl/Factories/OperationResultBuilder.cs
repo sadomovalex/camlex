@@ -10,24 +10,14 @@ namespace Camlex.NET.Impl.Factories
 {
     public class OperationResultBuilder : IOperationResultBuilder
     {
-        private List<XElement> values = new List<XElement>();
-
-        public IOperationResultBuilder Add(XElement value)
+        public IOperationResult CreateResult(XElement value)
         {
-            values.Add(value);
-            return this;
+            return new XElementOperationResult(value);
         }
 
-        public IOperationResult ToResult()
+        public IOperationResult CreateResult(XElement[] values)
         {
-            if (values.Count == 1)
-            {
-                return new XElementOperationResult(values[0]);
-            }
-            else
-            {
-                return new XElementArrayOperationResult(values.ToArray());
-            }
+            return new XElementArrayOperationResult(values);
         }
     }
 }
