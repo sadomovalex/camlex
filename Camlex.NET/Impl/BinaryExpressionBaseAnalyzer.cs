@@ -9,17 +9,19 @@ using Microsoft.SharePoint;
 
 namespace Camlex.NET.Impl
 {
-    // Base class for all analyzers
-    public abstract class BinaryExpressionBaseAnalyzer : IAnalyzer
+    // Base class for all binary analyzers
+    public abstract class BinaryExpressionBaseAnalyzer : BaseAnalyzer
     {
         protected IOperandBuilder operandBuilder;
 
-        protected BinaryExpressionBaseAnalyzer(IOperandBuilder operandBuilder)
+        protected BinaryExpressionBaseAnalyzer(IOperationResultBuilder operationResultBuilder,
+            IOperandBuilder operandBuilder) :
+            base(operationResultBuilder)
         {
             this.operandBuilder = operandBuilder;
         }
 
-        public virtual bool IsValid(LambdaExpression expr)
+        public override bool IsValid(LambdaExpression expr)
         {
             // body should be BinaryExpression
             if (!(expr.Body is BinaryExpression))
@@ -91,8 +93,6 @@ namespace Camlex.NET.Impl
             }
             return false;
         }
-
-        public abstract IOperation GetOperation(LambdaExpression expr);
 
         protected IOperand getFieldRefOperand(LambdaExpression expr)
         {

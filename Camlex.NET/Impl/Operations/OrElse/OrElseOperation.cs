@@ -6,8 +6,9 @@ namespace Camlex.NET.Impl.Operations.OrElse
 {
     public class OrElseOperation : CompositeOperationBase
     {
-        public OrElseOperation(IOperation leftOperation, IOperation rightOperation)
-            : base(leftOperation, rightOperation)
+        public OrElseOperation(IOperationResultBuilder operationResultBuilder,
+            IOperation leftOperation, IOperation rightOperation)
+            : base(operationResultBuilder, leftOperation, rightOperation)
         {
         }
 
@@ -16,7 +17,7 @@ namespace Camlex.NET.Impl.Operations.OrElse
             var result = new XElement(Tags.Or,
                              this.leftOperation.ToResult().Value,
                              this.rightOperation.ToResult().Value);
-            return new OperationResultBuilder().Add(result).ToResult();
+            return this.operationResultBuilder.Add(result).ToResult();
         }
     }
 }

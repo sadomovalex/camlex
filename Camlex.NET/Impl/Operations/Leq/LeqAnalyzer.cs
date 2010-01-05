@@ -5,8 +5,8 @@ namespace Camlex.NET.Impl.Operations.Leq
 {
     public class LeqAnalyzer : BinaryExpressionBaseAnalyzer
     {
-        public LeqAnalyzer(IOperandBuilder operandBuilder)
-            : base(operandBuilder)
+        public LeqAnalyzer(IOperationResultBuilder operationResultBuilder, IOperandBuilder operandBuilder)
+            : base(operationResultBuilder, operandBuilder)
         {
         }
 
@@ -27,7 +27,7 @@ namespace Camlex.NET.Impl.Operations.Leq
             }
             var fieldRefOperand = this.getFieldRefOperand(expr);
             var valueOperand = this.getValueOperand(expr);
-            return new LeqOperation(fieldRefOperand, valueOperand);
+            return new LeqOperation(this.operationResultBuilder, fieldRefOperand, valueOperand);
         }
     }
 }

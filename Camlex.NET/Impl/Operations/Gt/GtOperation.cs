@@ -4,10 +4,11 @@ using Camlex.NET.Interfaces;
 
 namespace Camlex.NET.Impl.Operations.Gt
 {
-    public class GtOperation : OperationBase
+    public class GtOperation : BinaryOperationBase
     {
-        public GtOperation(IOperand fieldRefOperand, IOperand valueOperand)
-            : base(fieldRefOperand, valueOperand)
+        public GtOperation(IOperationResultBuilder operationResultBuilder,
+            IOperand fieldRefOperand, IOperand valueOperand)
+            : base(operationResultBuilder, fieldRefOperand, valueOperand)
         {
         }
 
@@ -17,7 +18,7 @@ namespace Camlex.NET.Impl.Operations.Gt
                              this.fieldRefOperand.ToCaml(),
                              this.valueOperand.ToCaml());
 
-            return new OperationResultBuilder().Add(result).ToResult();
+            return this.operationResultBuilder.Add(result).ToResult();
         }
     }
 }

@@ -4,19 +4,19 @@ using Camlex.NET.Interfaces;
 
 namespace Camlex.NET.Impl.Operations.IsNotNull
 {
-    public class IsNotNullOperation : OperationBase
+    public class IsNotNullOperation : UnaryOperationBase
     {
-        public IsNotNullOperation(IOperand fieldRefOperand/*, IOperand valueOperand*/)
-            : base(fieldRefOperand, null)
+        public IsNotNullOperation(IOperationResultBuilder operationResultBuilder,
+            IOperand fieldRefOperand)
+            : base(operationResultBuilder, fieldRefOperand)
         {
         }
 
         public override IOperationResult ToResult()
         {
             var result = new XElement(Tags.IsNotNull,
-                             this.fieldRefOperand.ToCaml()/*,
-                             this.valueOperand.ToCaml()*/);
-            return new OperationResultBuilder().Add(result).ToResult();
+                             this.fieldRefOperand.ToCaml());
+            return this.operationResultBuilder.Add(result).ToResult();
         }
     }
 }

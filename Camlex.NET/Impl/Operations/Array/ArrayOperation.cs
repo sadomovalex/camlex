@@ -5,20 +5,21 @@ using Camlex.NET.Interfaces;
 
 namespace Camlex.NET.Impl.Operations.Array
 {
-    public class ArrayOperation : IOperation
+    public class ArrayOperation : OperationBase
     {
         private readonly IOperand[] fieldRefOperands;
 
-        public ArrayOperation(params IOperand[] fieldRefOperands)
+        public ArrayOperation(IOperationResultBuilder operationResultBuilder,
+            params IOperand[] fieldRefOperands) :
+            base(operationResultBuilder)
         {
             this.fieldRefOperands = fieldRefOperands;
         }
 
-        public IOperationResult ToResult()
+        public override IOperationResult ToResult()
         {
-            var builder = new OperationResultBuilder();
-            System.Array.ForEach(this.fieldRefOperands, x => builder.Add(x.ToCaml()));
-            return builder.ToResult();
+            System.Array.ForEach(this.fieldRefOperands, x => this.operationResultBuilder.Add(x.ToCaml()));
+            return this.operationResultBuilder.ToResult();
         }
     }
 }

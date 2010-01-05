@@ -4,10 +4,11 @@ using Camlex.NET.Interfaces;
 
 namespace Camlex.NET.Impl.Operations.Neq
 {
-    public class NeqOperation : OperationBase
+    public class NeqOperation : BinaryOperationBase
     {
-        public NeqOperation(IOperand fieldRefOperand, IOperand valueOperand)
-            : base(fieldRefOperand, valueOperand)
+        public NeqOperation(IOperationResultBuilder operationResultBuilder,
+            IOperand fieldRefOperand, IOperand valueOperand)
+            : base(operationResultBuilder, fieldRefOperand, valueOperand)
         {
         }
 
@@ -16,7 +17,7 @@ namespace Camlex.NET.Impl.Operations.Neq
             var result = new XElement(Tags.Neq,
                              this.fieldRefOperand.ToCaml(),
                              this.valueOperand.ToCaml());
-            return new OperationResultBuilder().Add(result).ToResult();
+            return this.operationResultBuilder.Add(result).ToResult();
         }
     }
 }

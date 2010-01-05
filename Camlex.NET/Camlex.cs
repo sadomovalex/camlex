@@ -38,7 +38,8 @@ namespace Camlex.NET
         {
             // factories setup
             var operandBuilder = new OperandBuilder();
-            var analyzerFactory = new AnalyzerFactory(operandBuilder);
+            var operationResultBuilder = new OperationResultBuilder();
+            var analyzerFactory = new AnalyzerFactory(operandBuilder, operationResultBuilder);
             translatorFactory = new TranslatorFactory(analyzerFactory);
         }
 

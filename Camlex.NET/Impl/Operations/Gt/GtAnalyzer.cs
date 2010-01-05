@@ -5,8 +5,8 @@ namespace Camlex.NET.Impl.Operations.Gt
 {
     public class GtAnalyzer : BinaryExpressionBaseAnalyzer
     {
-        public GtAnalyzer(IOperandBuilder operandBuilder)
-            : base(operandBuilder)
+        public GtAnalyzer(IOperationResultBuilder operationResultBuilder, IOperandBuilder operandBuilder)
+            : base(operationResultBuilder, operandBuilder)
         {
         }
 
@@ -27,7 +27,7 @@ namespace Camlex.NET.Impl.Operations.Gt
             }
             var fieldRefOperand = this.getFieldRefOperand(expr);
             var valueOperand = this.getValueOperand(expr);
-            return new GtOperation(fieldRefOperand, valueOperand);
+            return new GtOperation(this.operationResultBuilder, fieldRefOperand, valueOperand);
         }
     }
 }

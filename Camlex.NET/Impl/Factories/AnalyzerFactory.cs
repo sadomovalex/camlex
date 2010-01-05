@@ -21,10 +21,12 @@ namespace Camlex.NET.Impl.Factories
     public class AnalyzerFactory : IAnalyzerFactory
     {
         private readonly IOperandBuilder operandBuilder;
+        private readonly IOperationResultBuilder operationResultBuilder;
 
-        public AnalyzerFactory(IOperandBuilder operandBuilder)
+        public AnalyzerFactory(IOperandBuilder operandBuilder, IOperationResultBuilder operationResultBuilder)
         {
             this.operandBuilder = operandBuilder;
+            this.operationResultBuilder = operationResultBuilder;
         }
 
         public IAnalyzer Create(LambdaExpression expr)
@@ -33,31 +35,31 @@ namespace Camlex.NET.Impl.Factories
 
             if (exprType == ExpressionType.AndAlso)
             {
-                return new AndAlsoAnalyzer(this);
+                return new AndAlsoAnalyzer(this.operationResultBuilder, this);
             }
             if (exprType == ExpressionType.OrElse)
             {
-                return new OrElseAnalyzer(this);
+                return new OrElseAnalyzer(this.operationResultBuilder, this);
             }
             if (exprType == ExpressionType.NewArrayInit)
             {
-                return new ArrayAnalyzer(this.operandBuilder);
+                return new ArrayAnalyzer(this.operationResultBuilder, this.operandBuilder);
             }
             if (exprType == ExpressionType.GreaterThanOrEqual)
             {
-                return new GeqAnalyzer(this.operandBuilder);
+                return new GeqAnalyzer(this.operationResultBuilder, this.operandBuilder);
             }
             if (exprType == ExpressionType.GreaterThan)
             {
-                return new GtAnalyzer(this.operandBuilder);
+                return new GtAnalyzer(this.operationResultBuilder, this.operandBuilder);
             }
             if (exprType == ExpressionType.LessThanOrEqual)
             {
-                return new LeqAnalyzer(this.operandBuilder);
+                return new LeqAnalyzer(this.operationResultBuilder, this.operandBuilder);
             }
             if (exprType == ExpressionType.LessThan)
             {
-                return new LtAnalyzer(this.operandBuilder);
+                return new LtAnalyzer(this.operationResultBuilder, this.operandBuilder);
             }
 
             // it is not enough to check ExpressionType for IsNull operation.
@@ -72,7 +74,7 @@ namespace Camlex.NET.Impl.Factories
             // into <IsNull> instead of <Eq>
             if (exprType == ExpressionType.Equal)
             {
-                return new EqAnalyzer(this.operandBuilder);
+                return new EqAnalyzer(this.operationResultBuilder, this.operandBuilder);
             }
 
             // it is not enough to check ExpressionType for IsNotNull operation.
@@ -87,7 +89,7 @@ namespace Camlex.NET.Impl.Factories
             // into <IsNotNull> instead of <Neq>
             if (exprType == ExpressionType.NotEqual)
             {
-                return new NeqAnalyzer(this.operandBuilder);
+                return new NeqAnalyzer(this.operationResultBuilder, this.operandBuilder);
             }
 
             throw new NonSupportedExpressionTypeException(exprType);
@@ -96,14 +98,14 @@ namespace Camlex.NET.Impl.Factories
         private bool isNullExpression(LambdaExpression expr, out IsNullAnalyzer analyzer)
         {
             // the simplest way to check if this IsNotNull expression - is to reuse IsNotNullAnalyzer
-            analyzer = new IsNullAnalyzer(this.operandBuilder);
+            analyzer = new IsNullAnalyzer(this.operationResultBuilder, this.operandBuilder);
             return analyzer.IsValid(expr);
         }
 
         private bool isNotNullExpression(LambdaExpression expr, out IsNotNullAnalyzer analyzer)
         {
             // the simplest way to check if this IsNotNull expression - is to reuse IsNotNullAnalyzer
-            analyzer = new IsNotNullAnalyzer(this.operandBuilder);
+            analyzer = new IsNotNullAnalyzer(this.operationResultBuilder, this.operandBuilder);
             return analyzer.IsValid(expr);
         }
     }

@@ -8,17 +8,15 @@ using Camlex.NET.Interfaces;
 
 namespace Camlex.NET.Impl
 {
-    public abstract class BinaryOperationBase : OperationBase
+    public abstract class UnaryOperationBase : OperationBase
     {
         protected IOperand fieldRefOperand;
-        protected IOperand valueOperand;
 
-        protected BinaryOperationBase(IOperationResultBuilder operationResultBuilder,
-            IOperand fieldRefOperand, IOperand valueOperand) :
+        protected UnaryOperationBase(IOperationResultBuilder operationResultBuilder,
+            IOperand fieldRefOperand) :
             base(operationResultBuilder)
         {
             this.fieldRefOperand = fieldRefOperand;
-            this.valueOperand = valueOperand;
         }
     }
 }

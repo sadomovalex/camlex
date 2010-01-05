@@ -5,8 +5,9 @@ namespace Camlex.NET.Impl.Operations.AndAlso
 {
     public class AndAlsoAnalyzer : CompositeExpressionBaseAnalyzer
     {
-        public AndAlsoAnalyzer(IAnalyzerFactory analyzerFactory) :
-            base(analyzerFactory)
+        public AndAlsoAnalyzer(IOperationResultBuilder operationResultBuilder,
+            IAnalyzerFactory analyzerFactory) :
+            base(operationResultBuilder, analyzerFactory)
         {
         }
 
@@ -27,7 +28,7 @@ namespace Camlex.NET.Impl.Operations.AndAlso
             }
             var leftOperation = this.getLeftOperation(expr);
             var rightOperation = this.getRightOperation(expr);
-            var operation = new AndAlsoOperation(leftOperation, rightOperation);
+            var operation = new AndAlsoOperation(this.operationResultBuilder, leftOperation, rightOperation);
             return operation;
         }
     }

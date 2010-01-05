@@ -5,8 +5,8 @@ namespace Camlex.NET.Impl.Operations.OrElse
 {
     public class OrElseAnalyzer : CompositeExpressionBaseAnalyzer
     {
-        public OrElseAnalyzer(IAnalyzerFactory analyzerFactory) :
-            base(analyzerFactory)
+        public OrElseAnalyzer(IOperationResultBuilder operationResultBuilder, IAnalyzerFactory analyzerFactory) :
+            base(operationResultBuilder, analyzerFactory)
         {
         }
 
@@ -27,7 +27,7 @@ namespace Camlex.NET.Impl.Operations.OrElse
             }
             var leftOperation = this.getLeftOperation(expr);
             var rightOperation = this.getRightOperation(expr);
-            var operation = new OrElseOperation(leftOperation, rightOperation);
+            var operation = new OrElseOperation(this.operationResultBuilder, leftOperation, rightOperation);
             return operation;
         }
     }

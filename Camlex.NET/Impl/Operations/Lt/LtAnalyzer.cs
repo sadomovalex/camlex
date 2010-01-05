@@ -5,8 +5,8 @@ namespace Camlex.NET.Impl.Operations.Lt
 {
     public class LtAnalyzer : BinaryExpressionBaseAnalyzer
     {
-        public LtAnalyzer(IOperandBuilder operandBuilder)
-            : base(operandBuilder)
+        public LtAnalyzer(IOperationResultBuilder operationResultBuilder, IOperandBuilder operandBuilder)
+            : base(operationResultBuilder, operandBuilder)
         {
         }
 
@@ -27,7 +27,7 @@ namespace Camlex.NET.Impl.Operations.Lt
             }
             var fieldRefOperand = this.getFieldRefOperand(expr);
             var valueOperand = this.getValueOperand(expr);
-            return new LtOperation(fieldRefOperand, valueOperand);
+            return new LtOperation(this.operationResultBuilder, fieldRefOperand, valueOperand);
         }
     }
 }
