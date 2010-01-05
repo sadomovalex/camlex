@@ -19,6 +19,6 @@ namespace Camlex.NET.Impl
             this.valueOperand = valueOperand;
         }
 
-        public abstract XElement ToCaml();
+        public abstract IOperationResult ToResult();
     }
 }

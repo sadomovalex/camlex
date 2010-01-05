@@ -6,8 +6,9 @@ using System.Xml.Linq;
 
 namespace Camlex.NET.Interfaces
 {
-    public interface IOperation
+    public interface IOperationResultBuilder
     {
+        IOperationResultBuilder Add(XElement value);
         IOperationResult ToResult();
     }
 }
