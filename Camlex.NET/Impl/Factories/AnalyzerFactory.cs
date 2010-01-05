@@ -7,6 +7,7 @@ using Camlex.NET.Impl.Operations.AndAlso;
 using Camlex.NET.Impl.Operations.Array;
 using Camlex.NET.Impl.Operations.Eq;
 using Camlex.NET.Impl.Operations.Geq;
+using Camlex.NET.Impl.Operations.Gt;
 using Camlex.NET.Impl.Operations.OrElse;
 using Camlex.NET.Interfaces;
 
@@ -42,6 +43,10 @@ namespace Camlex.NET.Impl.Factories
             if (exprType == ExpressionType.GreaterThanOrEqual)
             {
                 return new GeqAnalyzer(this.operandBuilder);
+            }
+            if (exprType == ExpressionType.GreaterThan)
+            {
+                return new GtAnalyzer(this.operandBuilder);
             }
             throw new NonSupportedExpressionTypeException(exprType);
         }
