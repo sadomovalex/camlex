@@ -30,7 +30,7 @@ namespace Camlex.NET.UnitTests.Factories
         public void test_WHEN_expression_is_eq_THEN_eq_analyzer_is_created()
         {
             Expression<Func<SPItem, bool>> expr = x => (int)x["Count"] == 1;
-            var analyzerFactory = new AnalyzerFactory(null);
+            var analyzerFactory = new AnalyzerFactory(null, null);
             var analyzer = analyzerFactory.Create(expr);
             Assert.That(analyzer, Is.InstanceOf<EqAnalyzer>());
         }
@@ -39,7 +39,7 @@ namespace Camlex.NET.UnitTests.Factories
         public void test_WHEN_expression_is_neq_THEN_neq_analyzer_is_created()
         {
             Expression<Func<SPItem, bool>> expr = x => (int)x["Count"] != 1;
-            var analyzerFactory = new AnalyzerFactory(null);
+            var analyzerFactory = new AnalyzerFactory(null, null);
             var analyzer = analyzerFactory.Create(expr);
             Assert.That(analyzer, Is.InstanceOf<NeqAnalyzer>());
         }
@@ -48,7 +48,7 @@ namespace Camlex.NET.UnitTests.Factories
         public void test_WHEN_expression_is_andalso_THEN_andalso_analyzer_is_created()
         {
             Expression<Func<SPItem, bool>> expr = x => (int)x["Count"] == 1 && (int)x["Count"] == 1;
-            var analyzerFactory = new AnalyzerFactory(null);
+            var analyzerFactory = new AnalyzerFactory(null, null);
             var analyzer = analyzerFactory.Create(expr);
             Assert.That(analyzer, Is.InstanceOf<AndAlsoAnalyzer>());
         }
@@ -57,7 +57,7 @@ namespace Camlex.NET.UnitTests.Factories
         public void test_WHEN_expression_is_orelse_THEN_orelse_analyzer_is_created()
         {
             Expression<Func<SPItem, bool>> expr = x => (int)x["Count"] == 1 || (int)x["Count"] == 1;
-            var analyzerFactory = new AnalyzerFactory(null);
+            var analyzerFactory = new AnalyzerFactory(null, null);
             var analyzer = analyzerFactory.Create(expr);
             Assert.That(analyzer, Is.InstanceOf<OrElseAnalyzer>());
         }
@@ -66,7 +66,7 @@ namespace Camlex.NET.UnitTests.Factories
         public void test_WHEN_expression_is_array_THEN_array_analyzer_is_created()
         {
             Expression<Func<SPItem, object[]>> expr = x => new[] { x["Count"] };
-            var analyzerFactory = new AnalyzerFactory(null);
+            var analyzerFactory = new AnalyzerFactory(null, null);
             var analyzer = analyzerFactory.Create(expr);
             Assert.That(analyzer, Is.InstanceOf<ArrayAnalyzer>());
         }
@@ -75,7 +75,7 @@ namespace Camlex.NET.UnitTests.Factories
         public void test_WHEN_expression_is_geq_THEN_geq_analyzer_is_created()
         {
             Expression<Func<SPItem, bool>> expr = x => (int)x["Count"] >= 1;
-            var analyzerFactory = new AnalyzerFactory(null);
+            var analyzerFactory = new AnalyzerFactory(null, null);
             var analyzer = analyzerFactory.Create(expr);
             Assert.That(analyzer, Is.InstanceOf<GeqAnalyzer>());
         }
@@ -84,7 +84,7 @@ namespace Camlex.NET.UnitTests.Factories
         public void test_WHEN_expression_is_gt_THEN_gt_analyzer_is_created()
         {
             Expression<Func<SPItem, bool>> expr = x => (int)x["Count"] > 1;
-            var analyzerFactory = new AnalyzerFactory(null);
+            var analyzerFactory = new AnalyzerFactory(null, null);
             var analyzer = analyzerFactory.Create(expr);
             Assert.That(analyzer, Is.InstanceOf<GtAnalyzer>());
         }
@@ -93,7 +93,7 @@ namespace Camlex.NET.UnitTests.Factories
         public void test_WHEN_expression_is_leq_THEN_leq_analyzer_is_created()
         {
             Expression<Func<SPItem, bool>> expr = x => (int)x["Count"] <= 1;
-            var analyzerFactory = new AnalyzerFactory(null);
+            var analyzerFactory = new AnalyzerFactory(null, null);
             var analyzer = analyzerFactory.Create(expr);
             Assert.That(analyzer, Is.InstanceOf<LeqAnalyzer>());
         }
@@ -102,7 +102,7 @@ namespace Camlex.NET.UnitTests.Factories
         public void test_WHEN_expression_is_lt_THEN_lt_analyzer_is_created()
         {
             Expression<Func<SPItem, bool>> expr = x => (int)x["Count"] < 1;
-            var analyzerFactory = new AnalyzerFactory(null);
+            var analyzerFactory = new AnalyzerFactory(null, null);
             var analyzer = analyzerFactory.Create(expr);
             Assert.That(analyzer, Is.InstanceOf<LtAnalyzer>());
         }
@@ -115,7 +115,7 @@ namespace Camlex.NET.UnitTests.Factories
 
             Expression<Func<SPItem, bool>> expr = x => x["Count"] != null;
             
-            var analyzerFactory = new AnalyzerFactory(operandBuilder);
+            var analyzerFactory = new AnalyzerFactory(operandBuilder, null);
             var analyzer = analyzerFactory.Create(expr);
             Assert.That(analyzer, Is.InstanceOf<IsNotNullAnalyzer>());
         }
@@ -128,7 +128,7 @@ namespace Camlex.NET.UnitTests.Factories
 
             Expression<Func<SPItem, bool>> expr = x => x["Count"] == null;
 
-            var analyzerFactory = new AnalyzerFactory(operandBuilder);
+            var analyzerFactory = new AnalyzerFactory(operandBuilder, null);
             var analyzer = analyzerFactory.Create(expr);
             Assert.That(analyzer, Is.InstanceOf<IsNullAnalyzer>());
         }

@@ -14,7 +14,7 @@ namespace Camlex.NET.UnitTests.Operations.Geq
         [Test]
         public void test_THAT_geq_expression_IS_valid()
         {
-            var analyzer = new GeqAnalyzer(null);
+            var analyzer = new GeqAnalyzer(null, null);
             Expression<Func<SPItem, bool>> expr = x => (int) x["Count"] >= 1;
             Assert.That(analyzer.IsValid(expr), Is.True);
         }
@@ -29,7 +29,7 @@ namespace Camlex.NET.UnitTests.Operations.Geq
             operandBuilder.Stub(b => b.CreateFieldRefOperand(expr.Body)).Return(null);
             operandBuilder.Stub(b => b.CreateValueOperand(expr.Body)).Return(null);
 
-            var analyzer = new GeqAnalyzer(operandBuilder);
+            var analyzer = new GeqAnalyzer(null, operandBuilder);
 
             // act
             var operation = analyzer.GetOperation(expr);

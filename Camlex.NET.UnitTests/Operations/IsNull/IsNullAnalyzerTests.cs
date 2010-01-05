@@ -19,7 +19,7 @@ namespace Camlex.NET.UnitTests.Operations.IsNull
             var operandBuilder = MockRepository.GenerateStub<IOperandBuilder>();
             operandBuilder.Stub(b => b.CreateValueOperand(null)).Return(new NullValueOperand()).IgnoreArguments();
 
-            var analyzer = new IsNullAnalyzer(operandBuilder);
+            var analyzer = new IsNullAnalyzer(null, operandBuilder);
             Expression<Func<SPItem, bool>> expr = x => x["Count"] == null;
             Assert.That(analyzer.IsValid(expr), Is.True);
         }
@@ -34,7 +34,7 @@ namespace Camlex.NET.UnitTests.Operations.IsNull
             operandBuilder.Stub(b => b.CreateFieldRefOperand(expr.Body)).Return(null);
             operandBuilder.Stub(b => b.CreateValueOperand(expr.Body)).Return(new NullValueOperand()).IgnoreArguments();
 
-            var analyzer = new IsNullAnalyzer(operandBuilder);
+            var analyzer = new IsNullAnalyzer(null, operandBuilder);
 
             // act
             var operation = analyzer.GetOperation(expr);

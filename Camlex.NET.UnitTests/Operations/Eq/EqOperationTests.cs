@@ -20,10 +20,10 @@ namespace Camlex.NET.UnitTests.Operations.Eq
             fieldRefOperandStub.Stub(o => o.ToCaml()).Return(new XElement("fieldRefOperandStub"));
             valueOperandStub.Stub(o => o.ToCaml()).Return(new XElement("valueOperandStub"));
 
-            var operation =  new EqOperation(fieldRefOperandStub, valueOperandStub);
+            var operation = new EqOperation(null, fieldRefOperandStub, valueOperandStub);
 
             // act
-            string caml = operation.ToCaml().ToString();
+            string caml = operation.ToResult().ToString();
 
             // assert
             string expected =
