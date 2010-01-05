@@ -1,7 +1,7 @@
 ﻿using System.Xml.Linq;
 using Camlex.NET.Interfaces;
 
-namespace Camlex.NET.Impl.OrElse
+namespace Camlex.NET.Impl.Operations.OrElse
 {
     public class OrElseOperation : CompositeOperationBase
     {

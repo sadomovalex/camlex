@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
-using Camlex.NET.Impl.AndAlso;
-using Camlex.NET.Impl.Array;
-using Camlex.NET.Impl.Eq;
-using Camlex.NET.Impl.Geq;
-using Camlex.NET.Impl.OrElse;
+using Camlex.NET.Impl.Operations.AndAlso;
+using Camlex.NET.Impl.Operations.Array;
+using Camlex.NET.Impl.Operations.Eq;
+using Camlex.NET.Impl.Operations.Geq;
+using Camlex.NET.Impl.Operations.OrElse;
 using Camlex.NET.Interfaces;
 
 namespace Camlex.NET.Impl.Factories

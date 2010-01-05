@@ -58,15 +58,7 @@
     <Reference Include="TypeMock.ArrangeActAssert, Version=5.4.4.0, Culture=neutral, PublicKeyToken=3dae460033b8d8e2, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AndAlso\AndAlsoAnalyzerTests.cs" />
-    <Compile Include="AndAlso\AndAlsoOperationTests.cs" />
     <Compile Include="CamlexTests.cs" />
-    <Compile Include="Geq\GeqAnalyzerTests.cs" />
-    <Compile Include="Geq\GeqOperationTests.cs" />
-    <Compile Include="OrElse\OrElseAnalyzerTests.cs" />
-    <Compile Include="OrElse\OrElseOperationTests.cs" />
-    <Compile Include="Eq\EqAnalyzerTests.cs" />
-    <Compile Include="Eq\EqOperationTests.cs" />
     <Compile Include="Factories\AnalyzerFactoryTests.cs" />
     <Compile Include="Factories\TranslatorFactoryTests.cs" />
     <Compile Include="GenericTranslatorTests.cs" />
@@ -74,6 +66,14 @@
     <Compile Include="Operands\FieldRefOperandTests.cs" />
     <Compile Include="Operands\OperandBuilderTests.cs" />
     <Compile Include="Operands\ValueOperandTests.cs" />
+    <Compile Include="Operations\AndAlso\AndAlsoAnalyzerTests.cs" />
+    <Compile Include="Operations\AndAlso\AndAlsoOperationTests.cs" />
+    <Compile Include="Operations\Eq\EqAnalyzerTests.cs" />
+    <Compile Include="Operations\Eq\EqOperationTests.cs" />
+    <Compile Include="Operations\Geq\GeqAnalyzerTests.cs" />
+    <Compile Include="Operations\Geq\GeqOperationTests.cs" />
+    <Compile Include="Operations\OrElse\OrElseAnalyzerTests.cs" />
+    <Compile Include="Operations\OrElse\OrElseOperationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

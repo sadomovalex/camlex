@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Xml.Linq;
 using Camlex.NET.Interfaces;
 
-namespace Camlex.NET.Impl.Array
+namespace Camlex.NET.Impl.Operations.Array
 {
     public class ArrayOperation : IOperation
     {
@@ -24,3 +21,5 @@ namespace Camlex.NET.Impl.Array
         }
     }
 }
+
+

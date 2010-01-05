@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml.Linq;
-using Camlex.NET.Impl.Operands;
+﻿using System.Xml.Linq;
 using Camlex.NET.Interfaces;
 
-namespace Camlex.NET.Impl.Eq
+namespace Camlex.NET.Impl.Operations.Eq
 {
     public class EqOperation : OperationBase
     {
@@ -19,8 +14,10 @@ namespace Camlex.NET.Impl.Eq
         {
             return
                 new XElement(Tags.Eq,
-                    this.fieldRefOperand.ToCaml(),
-                    this.valueOperand.ToCaml());
+                             this.fieldRefOperand.ToCaml(),
+                             this.valueOperand.ToCaml());
         }
     }
 }
+
+

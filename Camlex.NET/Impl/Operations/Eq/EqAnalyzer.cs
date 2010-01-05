@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
+﻿using System.Linq.Expressions;
 using Camlex.NET.Interfaces;
-using Microsoft.SharePoint;
 
-namespace Camlex.NET.Impl.Eq
+namespace Camlex.NET.Impl.Operations.Eq
 {
     public class EqAnalyzer : BinaryExpressionBaseAnalyzer
     {
@@ -35,3 +30,5 @@ namespace Camlex.NET.Impl.Eq
         }
     }
 }
+
+

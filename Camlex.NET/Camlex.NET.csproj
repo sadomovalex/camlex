@@ -57,21 +57,9 @@
     </Compile>
     <Compile Include="ErrorMessages.cs" />
     <Compile Include="Exceptions.cs" />
-    <Compile Include="Impl\AndAlso\AndAlsoAnalyzer.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Impl\AndAlso\AndAlsoOperation.cs" />
-    <Compile Include="Impl\Array\ArrayAnalyzer.cs" />
-    <Compile Include="Impl\Array\ArrayOperation.cs" />
     <Compile Include="Impl\BinaryExpressionBaseAnalyzer.cs" />
     <Compile Include="Impl\CompositeExpressionBaseAnalyzer.cs" />
     <Compile Include="Impl\CompositeOperationBase.cs" />
-    <Compile Include="Impl\Geq\GeqAnalyzer.cs" />
-    <Compile Include="Impl\Geq\GeqOperation.cs" />
-    <Compile Include="Impl\OrElse\OrElseAnalyzer.cs" />
-    <Compile Include="Impl\OrElse\OrElseOperation.cs" />
-    <Compile Include="Impl\Eq\EqAnalyzer.cs" />
-    <Compile Include="Impl\Eq\EqOperation.cs" />
     <Compile Include="Impl\Factories\AnalyzerFactory.cs" />
     <Compile Include="Impl\Factories\OperandBuilder.cs" />
     <Compile Include="Impl\Factories\TranslatorFactory.cs" />
@@ -82,6 +70,16 @@
     <Compile Include="Impl\GenericTranslator.cs" />
     <Compile Include="Impl\OperationBase.cs" />
     <Compile Include="Impl\Operands\ValueOperand.cs" />
+    <Compile Include="Impl\Operations\AndAlso\AndAlsoAnalyzer.cs" />
+    <Compile Include="Impl\Operations\AndAlso\AndAlsoOperation.cs" />
+    <Compile Include="Impl\Operations\Array\ArrayAnalyzer.cs" />
+    <Compile Include="Impl\Operations\Array\ArrayOperation.cs" />
+    <Compile Include="Impl\Operations\Eq\EqAnalyzer.cs" />
+    <Compile Include="Impl\Operations\Eq\EqOperation.cs" />
+    <Compile Include="Impl\Operations\Geq\GeqAnalyzer.cs" />
+    <Compile Include="Impl\Operations\Geq\GeqOperation.cs" />
+    <Compile Include="Impl\Operations\OrElse\OrElseAnalyzer.cs" />
+    <Compile Include="Impl\Operations\OrElse\OrElseOperation.cs" />
     <Compile Include="Interfaces\IAnalyzer.cs" />
     <Compile Include="Interfaces\IAnalyzerFactory.cs" />
     <Compile Include="Interfaces\IOperand.cs" />

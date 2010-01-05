@@ -1,12 +1,11 @@
 ﻿using System.Xml.Linq;
-using Camlex.NET.Impl.Eq;
-using Camlex.NET.Impl.Geq;
 using Camlex.NET.Impl.Operands;
+using Camlex.NET.Impl.Operations.Geq;
 using Camlex.NET.UnitTests.Helpers;
 using NUnit.Framework;
 using Rhino.Mocks;
 
-namespace Camlex.NET.UnitTests.Geq
+namespace Camlex.NET.UnitTests.Operations.Geq
 {
     [TestFixture]
     public class GeqOperationTests

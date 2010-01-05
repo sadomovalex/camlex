@@ -1,7 +1,7 @@
 ﻿using System.Xml.Linq;
 using Camlex.NET.Interfaces;
 
-namespace Camlex.NET.Impl.Geq
+namespace Camlex.NET.Impl.Operations.Geq
 {
     public class GeqOperation : OperationBase
     {
