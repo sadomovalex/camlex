@@ -6,6 +6,7 @@ using System.Text;
 using Camlex.NET.Impl.AndAlso;
 using Camlex.NET.Impl.Array;
 using Camlex.NET.Impl.Eq;
+using Camlex.NET.Impl.Geq;
 using Camlex.NET.Impl.OrElse;
 using Camlex.NET.Interfaces;
 
@@ -37,6 +38,10 @@ namespace Camlex.NET.Impl.Factories
             if (exprType == ExpressionType.NewArrayInit)
             {
                 return new ArrayAnalyzer(this.operandBuilder);
+            }
+            if (exprType == ExpressionType.GreaterThanOrEqual)
+            {
+                return new GeqAnalyzer(this.operandBuilder);
             }
             throw new NonSupportedExpressionTypeException(exprType);
         }

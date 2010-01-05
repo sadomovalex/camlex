@@ -4,8 +4,10 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using Camlex.NET.Impl.AndAlso;
+using Camlex.NET.Impl.Array;
 using Camlex.NET.Impl.Eq;
 using Camlex.NET.Impl.Factories;
+using Camlex.NET.Impl.Geq;
 using Camlex.NET.Impl.OrElse;
 using NUnit.Framework;
 
@@ -36,6 +38,22 @@ namespace Camlex.NET.UnitTests.Factories
             var analyzerFactory = new AnalyzerFactory(null);
             var analyzer = analyzerFactory.Create(ExpressionType.OrElse);
             Assert.That(analyzer, Is.InstanceOf<OrElseAnalyzer>());
+        }
+
+        [Test]
+        public void test_WHEN_expression_is_array_THEN_array_analyzer_is_created()
+        {
+            var analyzerFactory = new AnalyzerFactory(null);
+            var analyzer = analyzerFactory.Create(ExpressionType.NewArrayInit);
+            Assert.That(analyzer, Is.InstanceOf<ArrayAnalyzer>());
+        }
+
+        [Test]
+        public void test_WHEN_expression_is_geq_THEN_geq_analyzer_is_created()
+        {
+            var analyzerFactory = new AnalyzerFactory(null);
+            var analyzer = analyzerFactory.Create(ExpressionType.GreaterThanOrEqual);
+            Assert.That(analyzer, Is.InstanceOf<GeqAnalyzer>());
         }
     }
 }

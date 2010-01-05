@@ -61,6 +61,8 @@
     <Compile Include="AndAlso\AndAlsoAnalyzerTests.cs" />
     <Compile Include="AndAlso\AndAlsoOperationTests.cs" />
     <Compile Include="CamlexTests.cs" />
+    <Compile Include="Geq\GeqAnalyzerTests.cs" />
+    <Compile Include="Geq\GeqOperationTests.cs" />
     <Compile Include="OrElse\OrElseAnalyzerTests.cs" />
     <Compile Include="OrElse\OrElseOperationTests.cs" />
     <Compile Include="Eq\EqAnalyzerTests.cs" />

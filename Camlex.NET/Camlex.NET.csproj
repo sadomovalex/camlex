@@ -66,6 +66,8 @@
     <Compile Include="Impl\BinaryExpressionBaseAnalyzer.cs" />
     <Compile Include="Impl\CompositeExpressionBaseAnalyzer.cs" />
     <Compile Include="Impl\CompositeOperationBase.cs" />
+    <Compile Include="Impl\Geq\GeqAnalyzer.cs" />
+    <Compile Include="Impl\Geq\GeqOperation.cs" />
     <Compile Include="Impl\OrElse\OrElseAnalyzer.cs" />
     <Compile Include="Impl\OrElse\OrElseOperation.cs" />
     <Compile Include="Impl\Eq\EqAnalyzer.cs" />
