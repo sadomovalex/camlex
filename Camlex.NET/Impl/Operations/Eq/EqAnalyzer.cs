@@ -5,7 +5,8 @@ namespace Camlex.NET.Impl.Operations.Eq
 {
     public class EqAnalyzer : BinaryExpressionBaseAnalyzer
     {
-        public EqAnalyzer(IOperandBuilder operandBuilder) : base(operandBuilder)
+        public EqAnalyzer(IOperationResultBuilder operationResultBuilder, IOperandBuilder operandBuilder)
+            : base(operationResultBuilder, operandBuilder)
         {
         }
 
@@ -26,7 +27,7 @@ namespace Camlex.NET.Impl.Operations.Eq
             }
             var fieldRefOperand = this.getFieldRefOperand(expr);
             var valueOperand = this.getValueOperand(expr);
-            return new EqOperation(fieldRefOperand, valueOperand);
+            return new EqOperation(this.operationResultBuilder, fieldRefOperand, valueOperand);
         }
     }
 }

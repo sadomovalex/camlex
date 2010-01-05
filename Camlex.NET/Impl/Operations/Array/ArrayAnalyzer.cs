@@ -5,16 +5,18 @@ using Camlex.NET.Interfaces;
 
 namespace Camlex.NET.Impl.Operations.Array
 {
-    public class ArrayAnalyzer : IAnalyzer
+    public class ArrayAnalyzer : BaseAnalyzer
     {
         private IOperandBuilder operandBuilder;
 
-        public ArrayAnalyzer(IOperandBuilder operandBuilder)
+        public ArrayAnalyzer(IOperationResultBuilder operationResultBuilder,
+            IOperandBuilder operandBuilder) :
+            base(operationResultBuilder)
         {
             this.operandBuilder = operandBuilder;
         }
 
-        public bool IsValid(LambdaExpression expr)
+        public override bool IsValid(LambdaExpression expr)
         {
             var body = expr.Body as NewArrayExpression;
             if (body == null) return false;
@@ -38,14 +40,14 @@ namespace Camlex.NET.Impl.Operations.Array
             return (body.Expressions.Count == counter);
         }
 
-        public IOperation GetOperation(LambdaExpression expr)
+        public override IOperation GetOperation(LambdaExpression expr)
         {
             if (!IsValid(expr))
             {
                 throw new NonSupportedExpressionException(expr);
             }
             var operands = getFieldRefOperandsWithOrdering(expr);
-            return new ArrayOperation(operands);
+            return new ArrayOperation(this.operationResultBuilder, operands);
         }
 
         private IOperand[] getFieldRefOperandsWithOrdering(LambdaExpression expr)

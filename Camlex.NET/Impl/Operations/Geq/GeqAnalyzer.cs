@@ -5,8 +5,8 @@ namespace Camlex.NET.Impl.Operations.Geq
 {
     public class GeqAnalyzer : BinaryExpressionBaseAnalyzer
     {
-        public GeqAnalyzer(IOperandBuilder operandBuilder)
-            : base(operandBuilder)
+        public GeqAnalyzer(IOperationResultBuilder operationResultBuilder, IOperandBuilder operandBuilder)
+            : base(operationResultBuilder, operandBuilder)
         {
         }
 
@@ -27,7 +27,7 @@ namespace Camlex.NET.Impl.Operations.Geq
             }
             var fieldRefOperand = this.getFieldRefOperand(expr);
             var valueOperand = this.getValueOperand(expr);
-            return new GeqOperation(fieldRefOperand, valueOperand);
+            return new GeqOperation(this.operationResultBuilder, fieldRefOperand, valueOperand);
         }
     }
 }

@@ -5,8 +5,8 @@ namespace Camlex.NET.Impl.Operations.Neq
 {
     public class NeqAnalyzer : BinaryExpressionBaseAnalyzer
     {
-        public NeqAnalyzer(IOperandBuilder operandBuilder)
-            : base(operandBuilder)
+        public NeqAnalyzer(IOperationResultBuilder operationResultBuilder, IOperandBuilder operandBuilder)
+            : base(operationResultBuilder, operandBuilder)
         {
         }
 
@@ -27,7 +27,7 @@ namespace Camlex.NET.Impl.Operations.Neq
             }
             var fieldRefOperand = this.getFieldRefOperand(expr);
             var valueOperand = this.getValueOperand(expr);
-            return new NeqOperation(fieldRefOperand, valueOperand);
+            return new NeqOperation(this.operationResultBuilder, fieldRefOperand, valueOperand);
         }
     }
 }

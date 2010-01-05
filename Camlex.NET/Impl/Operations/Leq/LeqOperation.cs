@@ -4,10 +4,11 @@ using Camlex.NET.Interfaces;
 
 namespace Camlex.NET.Impl.Operations.Leq
 {
-    public class LeqOperation : OperationBase
+    public class LeqOperation : BinaryOperationBase
     {
-        public LeqOperation(IOperand fieldRefOperand, IOperand valueOperand)
-            : base(fieldRefOperand, valueOperand)
+        public LeqOperation(IOperationResultBuilder operationResultBuilder,
+            IOperand fieldRefOperand, IOperand valueOperand)
+            : base(operationResultBuilder, fieldRefOperand, valueOperand)
         {
         }
 
@@ -16,7 +17,7 @@ namespace Camlex.NET.Impl.Operations.Leq
             var result = new XElement(Tags.Leq,
                              this.fieldRefOperand.ToCaml(),
                              this.valueOperand.ToCaml());
-            return new OperationResultBuilder().Add(result).ToResult();
+            return this.operationResultBuilder.Add(result).ToResult();
         }
     }
 }

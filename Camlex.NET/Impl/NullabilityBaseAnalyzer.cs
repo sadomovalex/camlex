@@ -7,8 +7,8 @@ namespace Camlex.NET.Impl
 {
     public abstract class NullabilityBaseAnalyzer : BinaryExpressionBaseAnalyzer
     {
-        protected NullabilityBaseAnalyzer(IOperandBuilder operandBuilder)
-            : base(operandBuilder)
+        protected NullabilityBaseAnalyzer(IOperationResultBuilder operationResultBuilder, IOperandBuilder operandBuilder)
+            : base(operationResultBuilder, operandBuilder)
         {
         }
 

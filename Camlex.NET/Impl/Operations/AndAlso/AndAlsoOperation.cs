@@ -6,8 +6,9 @@ namespace Camlex.NET.Impl.Operations.AndAlso
 {
     public class AndAlsoOperation : CompositeOperationBase
     {
-        public AndAlsoOperation(IOperation leftOperation, IOperation rightOperation)
-            : base(leftOperation, rightOperation)
+        public AndAlsoOperation(IOperationResultBuilder operationResultBuilder,
+            IOperation leftOperation, IOperation rightOperation)
+            : base(operationResultBuilder, leftOperation, rightOperation)
         {
         }
 
@@ -16,7 +17,7 @@ namespace Camlex.NET.Impl.Operations.AndAlso
             var result = new XElement(Tags.And,
                              this.leftOperation.ToResult().Value,
                              this.rightOperation.ToResult().Value);
-            return new OperationResultBuilder().Add(result).ToResult();
+            return this.operationResultBuilder.Add(result).ToResult();
         }
     }
 }

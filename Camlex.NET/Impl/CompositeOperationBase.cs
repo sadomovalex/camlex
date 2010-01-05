@@ -7,17 +7,17 @@ using Camlex.NET.Interfaces;
 
 namespace Camlex.NET.Impl
 {
-    public abstract class CompositeOperationBase : IOperation
+    public abstract class CompositeOperationBase : OperationBase
     {
         protected IOperation leftOperation;
         protected IOperation rightOperation;
 
-        protected CompositeOperationBase(IOperation leftOperation, IOperation rightOperation)
+        protected CompositeOperationBase(IOperationResultBuilder operationResultBuilder,
+            IOperation leftOperation, IOperation rightOperation) :
+            base(operationResultBuilder)
         {
             this.leftOperation = leftOperation;
             this.rightOperation = rightOperation;
         }
-
-        public abstract IOperationResult ToResult();
     }
 }

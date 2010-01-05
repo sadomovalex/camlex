@@ -5,8 +5,8 @@ namespace Camlex.NET.Impl.Operations.IsNull
 {
     public class IsNullAnalyzer : NullabilityBaseAnalyzer
     {
-        public IsNullAnalyzer(IOperandBuilder operandBuilder)
-            : base(operandBuilder)
+        public IsNullAnalyzer(IOperationResultBuilder operationResultBuilder, IOperandBuilder operandBuilder)
+            : base(operationResultBuilder, operandBuilder)
         {
         }
 
@@ -27,8 +27,7 @@ namespace Camlex.NET.Impl.Operations.IsNull
                 throw new NonSupportedExpressionException(expr);
             }
             var fieldRefOperand = this.getFieldRefOperand(expr);
-            // var valueOperand = this.getValueOperand(expr);
-            return new IsNullOperation(fieldRefOperand/*, valueOperand*/);
+            return new IsNullOperation(this.operationResultBuilder, fieldRefOperand);
         }
     }
 }

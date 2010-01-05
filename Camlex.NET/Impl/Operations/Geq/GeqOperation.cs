@@ -4,10 +4,11 @@ using Camlex.NET.Interfaces;
 
 namespace Camlex.NET.Impl.Operations.Geq
 {
-    public class GeqOperation : OperationBase
+    public class GeqOperation : BinaryOperationBase
     {
-        public GeqOperation(IOperand fieldRefOperand, IOperand valueOperand)
-            : base(fieldRefOperand, valueOperand)
+        public GeqOperation(IOperationResultBuilder operationResultBuilder,
+            IOperand fieldRefOperand, IOperand valueOperand)
+            : base(operationResultBuilder, fieldRefOperand, valueOperand)
         {
         }
 
@@ -16,7 +17,7 @@ namespace Camlex.NET.Impl.Operations.Geq
             var result = new XElement(Tags.Geq,
                              this.fieldRefOperand.ToCaml(),
                              this.valueOperand.ToCaml());
-            return new OperationResultBuilder().Add(result).ToResult();
+            return this.operationResultBuilder.Add(result).ToResult();
         }
     }
 }
