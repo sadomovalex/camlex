@@ -16,7 +16,7 @@ namespace Camlex.NET.Impl.Operations.IsNull
         {
             var result = new XElement(Tags.IsNull,
                              this.fieldRefOperand.ToCaml());
-            return this.operationResultBuilder.Add(result).ToResult();
+            return this.operationResultBuilder.CreateResult(result);
         }
     }
 }

@@ -18,8 +18,9 @@ namespace Camlex.NET.Impl.Operations.Array
 
         public override IOperationResult ToResult()
         {
-            System.Array.ForEach(this.fieldRefOperands, x => this.operationResultBuilder.Add(x.ToCaml()));
-            return this.operationResultBuilder.ToResult();
+            var results = new List<XElement>();
+            System.Array.ForEach(this.fieldRefOperands, x => results.Add(x.ToCaml()));
+            return this.operationResultBuilder.CreateResult(results.ToArray());
         }
     }
 }
