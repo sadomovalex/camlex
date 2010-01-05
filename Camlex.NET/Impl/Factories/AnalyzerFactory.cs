@@ -9,6 +9,7 @@ using Camlex.NET.Impl.Operations.Eq;
 using Camlex.NET.Impl.Operations.Geq;
 using Camlex.NET.Impl.Operations.Gt;
 using Camlex.NET.Impl.Operations.IsNotNull;
+using Camlex.NET.Impl.Operations.IsNull;
 using Camlex.NET.Impl.Operations.Leq;
 using Camlex.NET.Impl.Operations.Lt;
 using Camlex.NET.Impl.Operations.OrElse;
@@ -29,10 +30,21 @@ namespace Camlex.NET.Impl.Factories
         {
             ExpressionType exprType = expr.Body.NodeType;
 
+            // it is not enough to check ExpressionType for IsNull operation.
+            // We need also to check that right operand is null
+            IsNullAnalyzer isNullAnalyzer;
+            if (this.isNullExpression(expr, out isNullAnalyzer))
+            {
+                return isNullAnalyzer;
+            }
+            // note that it is important to have check on IsNull before check on ExpressionType.Equal.
+            // Because x["foo"] == null is also ExpressionType.Equal, but it should be translated
+            // into <IsNull> instead of <Eq>
             if (exprType == ExpressionType.Equal)
             {
                 return new EqAnalyzer(this.operandBuilder);
             }
+
             if (exprType == ExpressionType.AndAlso)
             {
                 return new AndAlsoAnalyzer(this);
@@ -69,7 +81,16 @@ namespace Camlex.NET.Impl.Factories
             {
                 return isNotNullAnalyzer;
             }
+
+
             throw new NonSupportedExpressionTypeException(exprType);
+        }
+
+        private bool isNullExpression(LambdaExpression expr, out IsNullAnalyzer analyzer)
+        {
+            // the simplest way to check if this IsNotNull expression - is to reuse IsNotNullAnalyzer
+            analyzer = new IsNullAnalyzer(this.operandBuilder);
+            return analyzer.IsValid(expr);
         }
 
         private bool isNotNullExpression(LambdaExpression expr, out IsNotNullAnalyzer analyzer)
