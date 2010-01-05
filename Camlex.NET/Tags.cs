@@ -16,5 +16,6 @@ namespace Camlex.NET
         public const string Eq = "Eq";
         public const string Geq = "Geq";
         public const string Gt = "Gt";
+        public const string Leq = "Leq";
     }
 }
