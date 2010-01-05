@@ -68,6 +68,8 @@
     <Compile Include="Operands\ValueOperandTests.cs" />
     <Compile Include="Operations\AndAlso\AndAlsoAnalyzerTests.cs" />
     <Compile Include="Operations\AndAlso\AndAlsoOperationTests.cs" />
+    <Compile Include="Operations\Array\ArrayAnalyzerTest.cs" />
+    <Compile Include="Operations\Array\ArrayOperationTest.cs" />
     <Compile Include="Operations\Neq\NeqAnalyzerTests.cs" />
     <Compile Include="Operations\Neq\NeqOperationTests.cs" />
     <Compile Include="Operations\IsNull\IsNullAnalyzerTests.cs" />
