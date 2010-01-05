@@ -22,11 +22,11 @@ namespace Camlex.NET.Impl.Factories
         {
             if (values.Count == 1)
             {
-                return new OperationResult(values[0]);
+                return new XElementOperationResult(values[0]);
             }
             else
             {
-                return new OperationResult(values.ToArray());
+                return new XElementArrayOperationResult(values.ToArray());
             }
         }
     }

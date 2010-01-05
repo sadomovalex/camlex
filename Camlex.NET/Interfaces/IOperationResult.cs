@@ -8,11 +8,11 @@ namespace Camlex.NET.Interfaces
 {
     public interface IOperationResult
     {
-        XElement Value { get; }
+        object Value { get; }
     }
 
-    public interface IOperationMultipleResult : IOperationResult
-    {
-        XElement[] Values { get; }
-    }
+//    public interface IOperationMultipleResult : IOperationResult
+//    {
+//        XElement[] Values { get; }
+//    }
 }
