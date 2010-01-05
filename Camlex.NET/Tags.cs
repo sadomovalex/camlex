@@ -14,6 +14,7 @@ namespace Camlex.NET
         public const string And = "And";
         public const string Or = "Or";
         public const string Eq = "Eq";
+        public const string Neq = "Neq";
         public const string Geq = "Geq";
         public const string Gt = "Gt";
         public const string Leq = "Leq";
