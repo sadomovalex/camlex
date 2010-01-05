@@ -1,10 +1,7 @@
-﻿using System;
-using System.Linq.Expressions;
-using Camlex.NET.Impl.AndAlso;
+﻿using System.Linq.Expressions;
 using Camlex.NET.Interfaces;
-using Microsoft.SharePoint;
 
-namespace Camlex.NET.Impl.OrElse
+namespace Camlex.NET.Impl.Operations.OrElse
 {
     public class OrElseAnalyzer : CompositeExpressionBaseAnalyzer
     {

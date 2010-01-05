@@ -1,8 +1,7 @@
-﻿using System;
-using System.Xml.Linq;
+﻿using System.Xml.Linq;
 using Camlex.NET.Interfaces;
 
-namespace Camlex.NET.Impl.AndAlso
+namespace Camlex.NET.Impl.Operations.AndAlso
 {
     public class AndAlsoOperation : CompositeOperationBase
     {
@@ -15,8 +14,8 @@ namespace Camlex.NET.Impl.AndAlso
         {
             return
                 new XElement(Tags.And,
-                    this.leftOperation.ToCaml(),
-                    this.rightOperation.ToCaml());
+                             this.leftOperation.ToCaml(),
+                             this.rightOperation.ToCaml());
         }
     }
 }

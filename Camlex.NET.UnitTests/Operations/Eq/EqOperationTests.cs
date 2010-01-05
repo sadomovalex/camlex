@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml.Linq;
-using Camlex.NET.Impl.Eq;
+﻿using System.Xml.Linq;
 using Camlex.NET.Impl.Operands;
+using Camlex.NET.Impl.Operations.Eq;
 using Camlex.NET.UnitTests.Helpers;
 using NUnit.Framework;
 using Rhino.Mocks;
 
-namespace Camlex.NET.UnitTests.Eq
+namespace Camlex.NET.UnitTests.Operations.Eq
 {
     [TestFixture]
     public class EqOperationTests
@@ -39,3 +35,5 @@ namespace Camlex.NET.UnitTests.Eq
         }
     }
 }
+
+
