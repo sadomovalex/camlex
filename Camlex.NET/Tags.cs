@@ -19,5 +19,6 @@ namespace Camlex.NET
         public const string Leq = "Leq";
         public const string Lt = "Lt";
         public const string IsNotNull = "IsNotNull";
+        public const string IsNull = "IsNull";
     }
 }

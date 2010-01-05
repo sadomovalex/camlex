@@ -11,6 +11,7 @@ using Camlex.NET.Impl.Operations.Eq;
 using Camlex.NET.Impl.Operations.Geq;
 using Camlex.NET.Impl.Operations.Gt;
 using Camlex.NET.Impl.Operations.IsNotNull;
+using Camlex.NET.Impl.Operations.IsNull;
 using Camlex.NET.Impl.Operations.Leq;
 using Camlex.NET.Impl.Operations.Lt;
 using Camlex.NET.Impl.Operations.OrElse;
@@ -108,16 +109,18 @@ namespace Camlex.NET.UnitTests.Factories
             var analyzer = analyzerFactory.Create(expr);
             Assert.That(analyzer, Is.InstanceOf<IsNotNullAnalyzer>());
         }
-//
-//        [Test]
-//        public void test_WHEN_expression_is_isnotnull_with_variable_THEN_isnotnull_analyzer_is_created()
-//        {
-//            object o = null;
-//            Expression<Func<SPItem, bool>> expr = x => x["Count"] != o;
-//            var operandBuilder = new OperandBuilder();
-//            var analyzerFactory = new AnalyzerFactory(operandBuilder);
-//            var analyzer = analyzerFactory.Create(expr);
-//            Assert.That(analyzer, Is.InstanceOf<IsNotNullAnalyzer>());
-//        }
+
+        [Test]
+        public void test_WHEN_expression_is_isnull_THEN_isnull_analyzer_is_created()
+        {
+            var operandBuilder = MockRepository.GenerateStub<IOperandBuilder>();
+            operandBuilder.Stub(b => b.CreateValueOperand(null)).Return(new NullValueOperand()).IgnoreArguments();
+
+            Expression<Func<SPItem, bool>> expr = x => x["Count"] == null;
+
+            var analyzerFactory = new AnalyzerFactory(operandBuilder);
+            var analyzer = analyzerFactory.Create(expr);
+            Assert.That(analyzer, Is.InstanceOf<IsNullAnalyzer>());
+        }
     }
 }
