@@ -222,7 +222,7 @@ namespace Camlex.NET.UnitTests
         }
 
         [Test]
-        public void test_THAT_neq_or_isnull_with_orederby_expression_IS_translated_sucessfully()
+        public void test_THAT_neq_or_isnull_with_orderby_expression_IS_translated_sucessfully()
         {
             string caml =
                 Camlex.Where(x => (string)x["Status"] != "Completed" || x["Status"] == null).
