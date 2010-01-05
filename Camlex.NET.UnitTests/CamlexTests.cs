@@ -198,5 +198,53 @@ namespace Camlex.NET.UnitTests
 
             Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
         }
+
+        [Test]
+        public void test_THAT_neq_or_isnull_expression_IS_translated_sucessfully()
+        {
+            string caml =
+                Camlex.Where(x => (string)x["Status"] != "Completed" || x["Status"] == null);
+
+            string expected =
+                "  <Where>" +
+                "    <Or>" +
+                "      <Neq>" +
+                "        <FieldRef Name=\"Status\" />" +
+                "        <Value Type=\"Text\">Completed</Value>" +
+                "      </Neq>" +
+                "      <IsNull>" +
+                "        <FieldRef Name=\"Status\" />" +
+                "      </IsNull>" +
+                "     </Or>" +
+                "   </Where>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        [Test]
+        public void test_THAT_neq_or_isnull_with_orederby_expression_IS_translated_sucessfully()
+        {
+            string caml =
+                Camlex.Where(x => (string)x["Status"] != "Completed" || x["Status"] == null).
+                    OrderBy(x => new[] { x["Modified"] as Camlex.Desc });
+
+            string expected =
+                "  <Where>" +
+                "    <Or>" +
+                "      <Neq>" +
+                "        <FieldRef Name=\"Status\" />" +
+                "        <Value Type=\"Text\">Completed</Value>" +
+                "      </Neq>" +
+                "      <IsNull>" +
+                "        <FieldRef Name=\"Status\" />" +
+                "      </IsNull>" +
+                "     </Or>" +
+                "   </Where>" +
+                "  <OrderBy>" +
+                "    <FieldRef Name=\"Modified\" Ascending=\"False\" />" +
+                "  </OrderBy>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
     }
 }

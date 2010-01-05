@@ -62,7 +62,17 @@ namespace Camlex.NET
             return this;
         }
 
+        public Camlex OrderBy(Expression<Func<SPItem, object>> expr)
+        {
+            throw new NotImplementedException();
+        }
+
         public Camlex GroupBy(Expression<Func<SPItem, object[]>> expr)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Camlex GroupBy(Expression<Func<SPItem, object>> expr)
         {
             throw new NotImplementedException();
         }

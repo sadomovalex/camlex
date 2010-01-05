@@ -11,8 +11,8 @@ namespace Camlex.NET.UnitTests.Helpers
     {
         public int Compare(string x, string y)
         {
-            x = this.removeSpacesBetweenTags(x);
-            y = this.removeSpacesBetweenTags(y);
+            x = this.removeSpacesBetweenTags(x.Trim());
+            y = this.removeSpacesBetweenTags(y.Trim());
             return string.Compare(x, y);
         }
 
@@ -28,13 +28,24 @@ namespace Camlex.NET.UnitTests.Helpers
     public class CamlComparerTests
     {
         [Test]
-        public void test_THAT_strings_ARE_equal()
+        public void test_THAT_strings_ARE_equal1()
         {
             string s1 = "<eq>1</eq>";
             string s2 =
                 @"<eq>
                     1
                 </eq>";
+            Assert.That(new CamlComparer().Compare(s1, s2), Is.EqualTo(0));
+        }
+
+        [Test]
+        public void test_THAT_strings_ARE_equal2()
+        {
+            string s1 = " <eq>1</eq>";
+            string s2 =
+                @"<eq>
+                    1
+                </eq> ";
             Assert.That(new CamlComparer().Compare(s1, s2), Is.EqualTo(0));
         }
     }
