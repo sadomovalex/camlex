@@ -40,7 +40,8 @@ namespace Camlex.NET.Interfaces
             // need to add Expression.Convert(..) in order to define Func<object>
             var lambda = Expression.Lambda<Func<object>>(Expression.Convert(expr, typeof(object)));
             object value = lambda.Compile().Invoke();
-            return this.createValueOperand(value.GetType(), value);
+            // value can be null
+            return this.createValueOperand(value != null ? value.GetType() : null, value);
         }
 
         private IOperand createValueOperandFromConstantExpression(ConstantExpression expr)
@@ -50,6 +51,11 @@ namespace Camlex.NET.Interfaces
 
         private IOperand createValueOperand(Type type, object value)
         {
+            // it is important to have check on NullValueOperand on 1st place
+            if (value == null)
+            {
+                return new NullValueOperand();
+            }
             if (type == typeof(string))
             {
                 return new TextValueOperand((string)value);

@@ -38,7 +38,7 @@ namespace Camlex.NET.UnitTests.Operations.OrElse
             // arrange
             var analyzerFactoryStub = MockRepository.GenerateStub<IAnalyzerFactory>();
             var analyzerStub = MockRepository.GenerateStub<IAnalyzer>();
-            analyzerFactoryStub.Stub(f => f.Create(ExpressionType.Equal)).Return(analyzerStub);
+            analyzerFactoryStub.Stub(f => f.Create(null)).Return(analyzerStub).IgnoreArguments();
             analyzerStub.Stub(a => a.IsValid(null)).Return(true).IgnoreArguments();
             var analyzer = new OrElseAnalyzer(analyzerFactoryStub);
 

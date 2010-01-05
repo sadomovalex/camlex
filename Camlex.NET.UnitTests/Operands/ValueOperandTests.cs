@@ -21,6 +21,14 @@ namespace Camlex.NET.UnitTests.Operands
             string caml = operand.ToCaml().ToString();
             Assert.That(caml, Is.EqualTo("<Value Type=\"Text\">foo</Value>"));
         }
+
+        [Test]
+        [ExpectedException(typeof(NullValueOperandCannotBeTranslatedToCamlException))]
+        public void test_WHEN_nullvalue_operand_is_rendered_to_caml_THEN_exception_is_thrown()
+        {
+            var operand = new NullValueOperand();
+            operand.ToCaml();
+        }
     }
 }
 

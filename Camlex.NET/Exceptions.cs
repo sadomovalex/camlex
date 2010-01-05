@@ -37,4 +37,12 @@ namespace Camlex.NET
         {
         }
     }
+
+    public class NullValueOperandCannotBeTranslatedToCamlException : GenericException
+    {
+        public NullValueOperandCannotBeTranslatedToCamlException() :
+            base(ErrorMessages.NULL_VALUE_OPERAND_CAN_NOT_BE_TRANSLATED_TO_CAML)
+        {
+        }
+    }
 }

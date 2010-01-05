@@ -64,6 +64,7 @@
     <Compile Include="Impl\Factories\OperandBuilder.cs" />
     <Compile Include="Impl\Factories\TranslatorFactory.cs" />
     <Compile Include="Impl\Operands\FieldRefOperandWithOrdering.cs" />
+    <Compile Include="Impl\Operands\NullValueOperand.cs" />
     <Compile Include="Impl\Operands\TextValueOperand.cs" />
     <Compile Include="Impl\Operands\IntegerValueOperand.cs" />
     <Compile Include="Impl\Operands\FieldRefOperand.cs" />
@@ -74,6 +75,8 @@
     <Compile Include="Impl\Operations\AndAlso\AndAlsoOperation.cs" />
     <Compile Include="Impl\Operations\Array\ArrayAnalyzer.cs" />
     <Compile Include="Impl\Operations\Array\ArrayOperation.cs" />
+    <Compile Include="Impl\Operations\IsNotNull\IsNotNullAnalyzer.cs" />
+    <Compile Include="Impl\Operations\IsNotNull\IsNotNullOperation.cs" />
     <Compile Include="Impl\Operations\Lt\LtAnalyzer.cs" />
     <Compile Include="Impl\Operations\Lt\LtOperation.cs" />
     <Compile Include="Impl\Operations\Leq\LeqAnalyzer.cs" />
