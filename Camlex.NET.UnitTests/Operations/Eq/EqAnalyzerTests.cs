@@ -14,7 +14,7 @@ namespace Camlex.NET.UnitTests.Operations.Eq
         [Test]
         public void test_THAT_eq_expression_IS_valid()
         {
-            var analyzer = new EqAnalyzer(null);
+            var analyzer = new EqAnalyzer(null, null);
             Expression<Func<SPItem, bool>> expr = x => (string) x["Title"] == "testValue";
             Assert.That(analyzer.IsValid(expr), Is.True);
         }
@@ -29,7 +29,7 @@ namespace Camlex.NET.UnitTests.Operations.Eq
             operandBuilder.Stub(b => b.CreateFieldRefOperand(expr.Body)).Return(null);
             operandBuilder.Stub(b => b.CreateValueOperand(expr.Body)).Return(null);
 
-            var analyzer = new EqAnalyzer(operandBuilder);
+            var analyzer = new EqAnalyzer(null, operandBuilder);
 
             // act
             var operation = analyzer.GetOperation(expr);

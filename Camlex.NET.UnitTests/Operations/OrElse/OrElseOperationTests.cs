@@ -1,6 +1,7 @@
 ﻿using System.Xml.Linq;
 using Camlex.NET.Impl.Operations.Eq;
 using Camlex.NET.Impl.Operations.OrElse;
+using Camlex.NET.Impl.Operations.Results;
 using Camlex.NET.UnitTests.Helpers;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -10,6 +11,11 @@ namespace Camlex.NET.UnitTests.Operations.OrElse
     [TestFixture]
     public class OrElseOperationTests
     {
+        XElementOperationResult xelementResult(string name)
+        {
+            return new XElementOperationResult(new XElement(name));
+        }
+
         [Test]
         public void test_THAT_orelse_with_2_eq_IS_translated_to_caml_properly()
         {
@@ -17,13 +23,13 @@ namespace Camlex.NET.UnitTests.Operations.OrElse
             var leftOperation = MockRepository.GenerateStub<EqOperation>(null, null);
             var rightOperation = MockRepository.GenerateStub<EqOperation>(null, null);
 
-            leftOperation.Stub(o => o.ToCaml()).Return(new XElement("Eq1"));
-            rightOperation.Stub(o => o.ToCaml()).Return(new XElement("Eq2"));
+            leftOperation.Stub(o => o.ToResult()).Return(xelementResult("Eq1"));
+            rightOperation.Stub(o => o.ToResult()).Return(xelementResult("Eq2"));
 
-            var operation = new OrElseOperation(leftOperation, rightOperation);
+            var operation = new OrElseOperation(null, leftOperation, rightOperation);
 
             // act
-            string caml = operation.ToCaml().ToString();
+            string caml = operation.ToResult().ToString();
 
             // assert
             string expected =
@@ -40,15 +46,15 @@ namespace Camlex.NET.UnitTests.Operations.OrElse
             // arrange
             var leftEqOperation = MockRepository.GenerateStub<EqOperation>(null, null);
             var rightEqOperation = MockRepository.GenerateStub<EqOperation>(null, null);
-            var leftOperation = new OrElseOperation(leftEqOperation, rightEqOperation);
+            var leftOperation = new OrElseOperation(null, leftEqOperation, rightEqOperation);
 
-            leftEqOperation.Stub(o => o.ToCaml()).Return(new XElement("Eq1"));
-            rightEqOperation.Stub(o => o.ToCaml()).Return(new XElement("Eq2"));
+            leftEqOperation.Stub(o => o.ToResult()).Return(xelementResult("Eq1"));
+            rightEqOperation.Stub(o => o.ToResult()).Return(xelementResult("Eq2"));
 
-            var operation = new OrElseOperation(leftOperation, rightEqOperation);
+            var operation = new OrElseOperation(null, leftOperation, rightEqOperation);
 
             // act
-            string caml = operation.ToCaml().ToString();
+            string caml = operation.ToResult().ToString();
 
             // assert
             string expected =
@@ -68,16 +74,16 @@ namespace Camlex.NET.UnitTests.Operations.OrElse
             // arrange
             var leftEqOperation = MockRepository.GenerateStub<EqOperation>(null, null);
             var rightEqOperation = MockRepository.GenerateStub<EqOperation>(null, null);
-            var leftOperation = new OrElseOperation(leftEqOperation, rightEqOperation);
-            var rightOperation = new OrElseOperation(leftEqOperation, rightEqOperation);
+            var leftOperation = new OrElseOperation(null, leftEqOperation, rightEqOperation);
+            var rightOperation = new OrElseOperation(null, leftEqOperation, rightEqOperation);
 
-            leftEqOperation.Stub(o => o.ToCaml()).Return(new XElement("Eq1"));
-            rightEqOperation.Stub(o => o.ToCaml()).Return(new XElement("Eq2"));
+            leftEqOperation.Stub(o => o.ToResult()).Return(xelementResult("Eq1"));
+            rightEqOperation.Stub(o => o.ToResult()).Return(xelementResult("Eq2"));
 
-            var operation = new OrElseOperation(leftOperation, rightOperation);
+            var operation = new OrElseOperation(null, leftOperation, rightOperation);
 
             // act
-            string caml = operation.ToCaml().ToString();
+            string caml = operation.ToResult().ToString();
 
             // assert
             string expected =
@@ -100,16 +106,16 @@ namespace Camlex.NET.UnitTests.Operations.OrElse
             // arrange
             var leftEqOperation = MockRepository.GenerateStub<EqOperation>(null, null);
             var rightEqOperation = MockRepository.GenerateStub<EqOperation>(null, null);
-            var leftOperation1 = new OrElseOperation(leftEqOperation, rightEqOperation);
-            var leftOperation2 = new OrElseOperation(leftOperation1, rightEqOperation);
+            var leftOperation1 = new OrElseOperation(null, leftEqOperation, rightEqOperation);
+            var leftOperation2 = new OrElseOperation(null, leftOperation1, rightEqOperation);
 
-            leftEqOperation.Stub(o => o.ToCaml()).Return(new XElement("Eq1"));
-            rightEqOperation.Stub(o => o.ToCaml()).Return(new XElement("Eq2"));
+            leftEqOperation.Stub(o => o.ToResult()).Return(xelementResult("Eq1"));
+            rightEqOperation.Stub(o => o.ToResult()).Return(xelementResult("Eq2"));
 
-            var operation = new OrElseOperation(leftOperation2, rightEqOperation);
+            var operation = new OrElseOperation(null, leftOperation2, rightEqOperation);
 
             // act
-            string caml = operation.ToCaml().ToString();
+            string caml = operation.ToResult().ToString();
 
             // assert
             string expected =

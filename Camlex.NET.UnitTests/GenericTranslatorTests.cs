@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Xml.Linq;
 using Camlex.NET.Impl;
+using Camlex.NET.Impl.Operations.Results;
 using Camlex.NET.Interfaces;
 using Camlex.NET.UnitTests.Helpers;
 using Microsoft.SharePoint;
@@ -16,6 +17,10 @@ namespace Camlex.NET.UnitTests
     [TestFixture]
     public class GenericTranslatorTests
     {
+        XElementOperationResult xelementResult(string name)
+        {
+            return new XElementOperationResult(new XElement(name));
+        }
         [Test]
         public void test_THAT_where_clause_IS_rendered_to_caml_properly()
         {
@@ -26,7 +31,7 @@ namespace Camlex.NET.UnitTests
             Expression<Func<SPItem, bool>> expr = x => true;
             analyzer.Stub(a => a.IsValid(expr)).Return(true);
             analyzer.Stub(a => a.GetOperation(expr)).Return(operation);
-            operation.Stub(o => o.ToCaml()).Return(new XElement("foo"));
+            operation.Stub(o => o.ToResult()).Return(xelementResult("foo"));
 
             string caml = translator.TranslateWhere(expr).ToString();
             string expected = "<Where><foo /></Where>";

@@ -17,7 +17,7 @@ namespace Camlex.NET.UnitTests.Array
         [Test]
         public void test_THAT_array_expression_IS_valid()
         {
-            var analyzer = new ArrayAnalyzer(null);
+            var analyzer = new ArrayAnalyzer(null, null);
             Expression<Func<SPItem, object[]>> expr = (x => new [] { x["field1"], x["field2"] as Camlex.Asc, x["field3"] as Camlex.Desc });
             Assert.That(analyzer.IsValid(expr), Is.True);
         }
@@ -30,7 +30,7 @@ namespace Camlex.NET.UnitTests.Array
 
             var operandBuilder = MockRepository.GenerateStub<IOperandBuilder>();
             operandBuilder.Stub(b => b.CreateFieldRefOperandWithOrdering(null, null)).Return(null).IgnoreArguments();
-            var analyzer = new ArrayAnalyzer(operandBuilder);
+            var analyzer = new ArrayAnalyzer(null, operandBuilder);
 
             // act
             var operation = analyzer.GetOperation(expr);

@@ -15,7 +15,7 @@ namespace Camlex.NET.UnitTests.Operations.Leq
         [Test]
         public void test_THAT_leq_expression_IS_valid()
         {
-            var analyzer = new LeqAnalyzer(null);
+            var analyzer = new LeqAnalyzer(null, null);
             Expression<Func<SPItem, bool>> expr = x => (int) x["Count"] <= 1;
             Assert.That(analyzer.IsValid(expr), Is.True);
         }
@@ -30,7 +30,7 @@ namespace Camlex.NET.UnitTests.Operations.Leq
             operandBuilder.Stub(b => b.CreateFieldRefOperand(expr.Body)).Return(null);
             operandBuilder.Stub(b => b.CreateValueOperand(expr.Body)).Return(null);
 
-            var analyzer = new LeqAnalyzer(operandBuilder);
+            var analyzer = new LeqAnalyzer(null, operandBuilder);
 
             // act
             var operation = analyzer.GetOperation(expr);

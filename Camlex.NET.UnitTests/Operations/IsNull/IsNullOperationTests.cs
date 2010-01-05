@@ -21,10 +21,10 @@ namespace Camlex.NET.UnitTests.Operations.IsNull
             fieldRefOperandStub.Stub(o => o.ToCaml()).Return(new XElement("fieldRefOperandStub"));
             valueOperandStub.Stub(o => o.ToCaml()).Return(new XElement("valueOperandStub"));
 
-            var operation = new IsNullOperation(fieldRefOperandStub);
+            var operation = new IsNullOperation(null, fieldRefOperandStub);
 
             // act
-            string caml = operation.ToCaml().ToString();
+            string caml = operation.ToResult().ToString();
 
             // assert
             string expected =
