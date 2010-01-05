@@ -1,4 +1,5 @@
 ﻿using System.Xml.Linq;
+using Camlex.NET.Impl.Factories;
 using Camlex.NET.Impl.Operands;
 using Camlex.NET.Impl.Operations.Geq;
 using Camlex.NET.Impl.Operations.Gt;
@@ -21,7 +22,8 @@ namespace Camlex.NET.UnitTests.Operations.Gt
             fieldRefOperandStub.Stub(o => o.ToCaml()).Return(new XElement("fieldRefOperandStub"));
             valueOperandStub.Stub(o => o.ToCaml()).Return(new XElement("valueOperandStub"));
 
-            var operation = new GtOperation(null, fieldRefOperandStub, valueOperandStub);
+            var resultBuilder = new OperationResultBuilder();
+            var operation = new GtOperation(resultBuilder, fieldRefOperandStub, valueOperandStub);
 
             // act
             string caml = operation.ToResult().ToString();

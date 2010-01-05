@@ -1,4 +1,5 @@
 ﻿using System.Xml.Linq;
+using Camlex.NET.Impl.Factories;
 using Camlex.NET.Impl.Operations.Eq;
 using Camlex.NET.Impl.Operations.OrElse;
 using Camlex.NET.Impl.Operations.Results;
@@ -20,13 +21,14 @@ namespace Camlex.NET.UnitTests.Operations.OrElse
         public void test_THAT_orelse_with_2_eq_IS_translated_to_caml_properly()
         {
             // arrange
-            var leftOperation = MockRepository.GenerateStub<EqOperation>(null, null);
-            var rightOperation = MockRepository.GenerateStub<EqOperation>(null, null);
+            var leftOperation = MockRepository.GenerateStub<EqOperation>(null, null, null);
+            var rightOperation = MockRepository.GenerateStub<EqOperation>(null, null, null);
 
             leftOperation.Stub(o => o.ToResult()).Return(xelementResult("Eq1"));
             rightOperation.Stub(o => o.ToResult()).Return(xelementResult("Eq2"));
 
-            var operation = new OrElseOperation(null, leftOperation, rightOperation);
+            var resultBuilder = new OperationResultBuilder();
+            var operation = new OrElseOperation(resultBuilder, leftOperation, rightOperation);
 
             // act
             string caml = operation.ToResult().ToString();
@@ -44,14 +46,16 @@ namespace Camlex.NET.UnitTests.Operations.OrElse
         public void test_THAT_orelse_with_nested_orelse_IS_translated_to_caml_properly()
         {
             // arrange
-            var leftEqOperation = MockRepository.GenerateStub<EqOperation>(null, null);
-            var rightEqOperation = MockRepository.GenerateStub<EqOperation>(null, null);
-            var leftOperation = new OrElseOperation(null, leftEqOperation, rightEqOperation);
+            var leftEqOperation = MockRepository.GenerateStub<EqOperation>(null, null, null);
+            var rightEqOperation = MockRepository.GenerateStub<EqOperation>(null, null, null);
+
+            var resultBuilder = new OperationResultBuilder();
+            var leftOperation = new OrElseOperation(resultBuilder, leftEqOperation, rightEqOperation);
 
             leftEqOperation.Stub(o => o.ToResult()).Return(xelementResult("Eq1"));
             rightEqOperation.Stub(o => o.ToResult()).Return(xelementResult("Eq2"));
 
-            var operation = new OrElseOperation(null, leftOperation, rightEqOperation);
+            var operation = new OrElseOperation(resultBuilder, leftOperation, rightEqOperation);
 
             // act
             string caml = operation.ToResult().ToString();
@@ -72,15 +76,17 @@ namespace Camlex.NET.UnitTests.Operations.OrElse
         public void test_THAT_orelse_with_2_nested_orelse_IS_translated_to_caml_properly()
         {
             // arrange
-            var leftEqOperation = MockRepository.GenerateStub<EqOperation>(null, null);
-            var rightEqOperation = MockRepository.GenerateStub<EqOperation>(null, null);
-            var leftOperation = new OrElseOperation(null, leftEqOperation, rightEqOperation);
-            var rightOperation = new OrElseOperation(null, leftEqOperation, rightEqOperation);
+            var leftEqOperation = MockRepository.GenerateStub<EqOperation>(null, null, null);
+            var rightEqOperation = MockRepository.GenerateStub<EqOperation>(null, null, null);
+
+            var resultBuilder = new OperationResultBuilder();
+            var leftOperation = new OrElseOperation(resultBuilder, leftEqOperation, rightEqOperation);
+            var rightOperation = new OrElseOperation(resultBuilder, leftEqOperation, rightEqOperation);
 
             leftEqOperation.Stub(o => o.ToResult()).Return(xelementResult("Eq1"));
             rightEqOperation.Stub(o => o.ToResult()).Return(xelementResult("Eq2"));
 
-            var operation = new OrElseOperation(null, leftOperation, rightOperation);
+            var operation = new OrElseOperation(resultBuilder, leftOperation, rightOperation);
 
             // act
             string caml = operation.ToResult().ToString();
@@ -104,15 +110,17 @@ namespace Camlex.NET.UnitTests.Operations.OrElse
         public void test_THAT_orelse_with_3_nested_orelse_IS_translated_to_caml_properly()
         {
             // arrange
-            var leftEqOperation = MockRepository.GenerateStub<EqOperation>(null, null);
-            var rightEqOperation = MockRepository.GenerateStub<EqOperation>(null, null);
-            var leftOperation1 = new OrElseOperation(null, leftEqOperation, rightEqOperation);
-            var leftOperation2 = new OrElseOperation(null, leftOperation1, rightEqOperation);
+            var leftEqOperation = MockRepository.GenerateStub<EqOperation>(null, null, null);
+            var rightEqOperation = MockRepository.GenerateStub<EqOperation>(null, null, null);
+
+            var resultBuilder = new OperationResultBuilder();
+            var leftOperation1 = new OrElseOperation(resultBuilder, leftEqOperation, rightEqOperation);
+            var leftOperation2 = new OrElseOperation(resultBuilder, leftOperation1, rightEqOperation);
 
             leftEqOperation.Stub(o => o.ToResult()).Return(xelementResult("Eq1"));
             rightEqOperation.Stub(o => o.ToResult()).Return(xelementResult("Eq2"));
 
-            var operation = new OrElseOperation(null, leftOperation2, rightEqOperation);
+            var operation = new OrElseOperation(resultBuilder, leftOperation2, rightEqOperation);
 
             // act
             string caml = operation.ToResult().ToString();

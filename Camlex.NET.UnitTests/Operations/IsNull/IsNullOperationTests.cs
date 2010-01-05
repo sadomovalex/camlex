@@ -1,4 +1,5 @@
 ﻿using System.Xml.Linq;
+using Camlex.NET.Impl.Factories;
 using Camlex.NET.Impl.Operands;
 using Camlex.NET.Impl.Operations.IsNotNull;
 using Camlex.NET.Impl.Operations.IsNull;
@@ -21,7 +22,8 @@ namespace Camlex.NET.UnitTests.Operations.IsNull
             fieldRefOperandStub.Stub(o => o.ToCaml()).Return(new XElement("fieldRefOperandStub"));
             valueOperandStub.Stub(o => o.ToCaml()).Return(new XElement("valueOperandStub"));
 
-            var operation = new IsNullOperation(null, fieldRefOperandStub);
+            var resultBuilder = new OperationResultBuilder();
+            var operation = new IsNullOperation(resultBuilder, fieldRefOperandStub);
 
             // act
             string caml = operation.ToResult().ToString();
