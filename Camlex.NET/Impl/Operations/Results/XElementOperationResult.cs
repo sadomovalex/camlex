@@ -20,5 +20,10 @@ namespace Camlex.NET.Impl.Operations.Results
         {
             get { return this.element; }
         }
+
+        public override string ToString()
+        {
+            return this.element.ToString();
+        }
     }
 }

@@ -20,5 +20,12 @@ namespace Camlex.NET.Impl.Operations.Results
         {
             get { return this.elements; }
         }
+
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            System.Array.ForEach(this.elements, e => sb.Append(e.ToString()));
+            return sb.ToString();
+        }
     }
 }

@@ -1,7 +1,9 @@
 ﻿using System.Xml.Linq;
+using Camlex.NET.Impl.Factories;
 using Camlex.NET.Impl.Operations.AndAlso;
 using Camlex.NET.Impl.Operations.Eq;
 using Camlex.NET.Impl.Operations.Results;
+using Camlex.NET.Interfaces;
 using Camlex.NET.UnitTests.Helpers;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -19,13 +21,14 @@ namespace Camlex.NET.UnitTests.Operations.AndAlso
         public void test_THAT_andalso_with_2_eq_IS_translated_to_caml_properly()
         {
             // arrange
-            var leftOperation = MockRepository.GenerateStub<EqOperation>(null, null);
-            var rightOperation = MockRepository.GenerateStub<EqOperation>(null, null);
+            var leftOperation = MockRepository.GenerateStub<EqOperation>(null, null, null);
+            var rightOperation = MockRepository.GenerateStub<EqOperation>(null, null, null);
 
             leftOperation.Stub(o => o.ToResult()).Return(xelementResult("Eq1"));
             rightOperation.Stub(o => o.ToResult()).Return(xelementResult("Eq2"));
 
-            var operation = new AndAlsoOperation(null, leftOperation, rightOperation);
+            var resultBuilder = new OperationResultBuilder();
+            var operation = new AndAlsoOperation(resultBuilder, leftOperation, rightOperation);
 
             // act
             string caml = operation.ToResult().ToString();
@@ -43,14 +46,16 @@ namespace Camlex.NET.UnitTests.Operations.AndAlso
         public void test_THAT_andalso_with_nested_andalso_IS_translated_to_caml_properly()
         {
             // arrange
-            var leftEqOperation = MockRepository.GenerateStub<EqOperation>(null, null);
-            var rightEqOperation = MockRepository.GenerateStub<EqOperation>(null, null);
-            var leftOperation = new AndAlsoOperation(null, leftEqOperation, rightEqOperation);
+            var leftEqOperation = MockRepository.GenerateStub<EqOperation>(null, null, null);
+            var rightEqOperation = MockRepository.GenerateStub<EqOperation>(null, null, null);
+            
+            var resultBuilder = new OperationResultBuilder();
+            var leftOperation = new AndAlsoOperation(resultBuilder, leftEqOperation, rightEqOperation);
 
             leftEqOperation.Stub(o => o.ToResult()).Return(xelementResult("Eq1"));
             rightEqOperation.Stub(o => o.ToResult()).Return(xelementResult("Eq2"));
 
-            var operation = new AndAlsoOperation(null, leftOperation, rightEqOperation);
+            var operation = new AndAlsoOperation(resultBuilder, leftOperation, rightEqOperation);
 
             // act
             string caml = operation.ToResult().ToString();
@@ -71,15 +76,17 @@ namespace Camlex.NET.UnitTests.Operations.AndAlso
         public void test_THAT_andalso_with_2_nested_andalso_IS_translated_to_caml_properly()
         {
             // arrange
-            var leftEqOperation = MockRepository.GenerateStub<EqOperation>(null, null);
-            var rightEqOperation = MockRepository.GenerateStub<EqOperation>(null, null);
-            var leftOperation = new AndAlsoOperation(null, leftEqOperation, rightEqOperation);
-            var rightOperation = new AndAlsoOperation(null, leftEqOperation, rightEqOperation);
+            var leftEqOperation = MockRepository.GenerateStub<EqOperation>(null, null, null);
+            var rightEqOperation = MockRepository.GenerateStub<EqOperation>(null, null, null);
+
+            var resultBuilder = new OperationResultBuilder();
+            var leftOperation = new AndAlsoOperation(resultBuilder, leftEqOperation, rightEqOperation);
+            var rightOperation = new AndAlsoOperation(resultBuilder, leftEqOperation, rightEqOperation);
 
             leftEqOperation.Stub(o => o.ToResult()).Return(xelementResult("Eq1"));
             rightEqOperation.Stub(o => o.ToResult()).Return(xelementResult("Eq2"));
 
-            var operation = new AndAlsoOperation(null, leftOperation, rightOperation);
+            var operation = new AndAlsoOperation(resultBuilder, leftOperation, rightOperation);
 
             // act
             string caml = operation.ToResult().ToString();
@@ -103,15 +110,17 @@ namespace Camlex.NET.UnitTests.Operations.AndAlso
         public void test_THAT_andalso_with_3_nested_andalso_IS_translated_to_caml_properly()
         {
             // arrange
-            var leftEqOperation = MockRepository.GenerateStub<EqOperation>(null, null);
-            var rightEqOperation = MockRepository.GenerateStub<EqOperation>(null, null);
-            var leftOperation1 = new AndAlsoOperation(null, leftEqOperation, rightEqOperation);
-            var leftOperation2 = new AndAlsoOperation(null, leftOperation1, rightEqOperation);
+            var leftEqOperation = MockRepository.GenerateStub<EqOperation>(null, null, null);
+            var rightEqOperation = MockRepository.GenerateStub<EqOperation>(null, null, null);
+
+            var resultBuilder = new OperationResultBuilder();
+            var leftOperation1 = new AndAlsoOperation(resultBuilder, leftEqOperation, rightEqOperation);
+            var leftOperation2 = new AndAlsoOperation(resultBuilder, leftOperation1, rightEqOperation);
 
             leftEqOperation.Stub(o => o.ToResult()).Return(xelementResult("Eq1"));
             rightEqOperation.Stub(o => o.ToResult()).Return(xelementResult("Eq2"));
 
-            var operation = new AndAlsoOperation(null, leftOperation2, rightEqOperation);
+            var operation = new AndAlsoOperation(resultBuilder, leftOperation2, rightEqOperation);
 
             // act
             string caml = operation.ToResult().ToString();
