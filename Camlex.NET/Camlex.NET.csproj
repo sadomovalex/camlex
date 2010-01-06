@@ -62,6 +62,7 @@
     <Compile Include="Impl\BinaryOperationBase.cs" />
     <Compile Include="Impl\CompositeExpressionBaseAnalyzer.cs" />
     <Compile Include="Impl\CompositeOperationBase.cs" />
+    <Compile Include="Impl\Query.cs" />
     <Compile Include="Impl\UnaryOperationBase.cs" />
     <Compile Include="Impl\Factories\AnalyzerFactory.cs" />
     <Compile Include="Impl\Factories\OperandBuilder.cs" />
@@ -107,6 +108,7 @@
     <Compile Include="Interfaces\IOperation.cs" />
     <Compile Include="Interfaces\IOperationResult.cs" />
     <Compile Include="Interfaces\IOperationResultBuilder.cs" />
+    <Compile Include="Interfaces\IQuery.cs" />
     <Compile Include="Interfaces\ITranslator.cs" />
     <Compile Include="Interfaces\ITranslatorFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

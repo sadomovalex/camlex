@@ -14,15 +14,17 @@ namespace Camlex.NET.UnitTests
         [Test]
         public void test_THAT_single_eq_expression_IS_translated_sucessfully()
         {
-            string caml = Camlex.Where(x => (string)x["Title"] == "testValue");
+            string caml = Camlex.Query().Where(x => (string)x["Title"] == "testValue").ToString();
 
             string expected =
-               "<Where>" +
-               "   <Eq>" +
-               "      <FieldRef Name=\"Title\" />" +
-               "      <Value Type=\"Text\">testValue</Value>" +
-               "   </Eq>" +
-               "</Where>";
+                "<Query>" +
+                "   <Where>" +
+                "       <Eq>" +
+                "           <FieldRef Name=\"Title\" />" +
+                "           <Value Type=\"Text\">testValue</Value>" +
+                "       </Eq>" +
+                "   </Where>" +
+                "</Query>";
 
             Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
         }
@@ -30,22 +32,24 @@ namespace Camlex.NET.UnitTests
         [Test]
         public void test_THAT_2_eq_expression_with_andalso_ARE_translated_sucessfully()
         {
-            string caml = Camlex.Where(x => (string) x["Title"] == "testValue" &&
-                                            (int) x["Count"] == 1);
+            string caml = Camlex.Query().Where(x => (string) x["Title"] == "testValue" &&
+                                            (int) x["Count"] == 1).ToString();
 
             string expected =
-               "<Where>" +
-               "    <And>" +
-               "        <Eq>" +
-               "            <FieldRef Name=\"Title\" />" +
-               "            <Value Type=\"Text\">testValue</Value>" +
-               "        </Eq>" +
-               "        <Eq>" +
-               "            <FieldRef Name=\"Count\" />" +
-               "            <Value Type=\"Integer\">1</Value>" +
-               "        </Eq>" +
-               "   </And>" +
-               "</Where>";
+               "<Query>" +
+               "    <Where>" +
+               "        <And>" +
+               "            <Eq>" +
+               "                <FieldRef Name=\"Title\" />" +
+               "                <Value Type=\"Text\">testValue</Value>" +
+               "            </Eq>" +
+               "            <Eq>" +
+               "                <FieldRef Name=\"Count\" />" +
+               "                <Value Type=\"Integer\">1</Value>" +
+               "            </Eq>" +
+               "        </And>" +
+               "    </Where>"+
+               "</Query>";
 
             Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
         }
@@ -53,28 +57,30 @@ namespace Camlex.NET.UnitTests
         [Test]
         public void test_THAT_expression_with_2_andalso_and_1_orelse_ARE_translated_sucessfully()
         {
-            string caml = Camlex.Where(x => ((string)x["Title"] == "testValue" &&
-                                            (int)x["Count1"] == 1) || (int)x["Count2"] == 2);
+            string caml = Camlex.Query().Where(x => ((string)x["Title"] == "testValue" &&
+                                            (int)x["Count1"] == 1) || (int)x["Count2"] == 2).ToString();
 
             string expected =
-               "<Where>" +
-               "    <Or>" +
-               "        <And>" +
-               "            <Eq>" +
-               "                <FieldRef Name=\"Title\" />" +
-               "                <Value Type=\"Text\">testValue</Value>" +
-               "            </Eq>" +
-               "            <Eq>" +
-               "                <FieldRef Name=\"Count1\" />" +
-               "                <Value Type=\"Integer\">1</Value>" +
-               "            </Eq>" +
-               "        </And>" +
-               "        <Eq>" +
-               "            <FieldRef Name=\"Count2\" />" +
-               "            <Value Type=\"Integer\">2</Value>" +
-               "        </Eq>" +
-               "   </Or>" +
-               "</Where>";
+                "<Query>" +
+                "   <Where>" +
+                "       <Or>" +
+                "           <And>" +
+                "               <Eq>" +
+                "                   <FieldRef Name=\"Title\" />" +
+                "                   <Value Type=\"Text\">testValue</Value>" +
+                "               </Eq>" +
+                "               <Eq>" +
+                "                   <FieldRef Name=\"Count1\" />" +
+                "                   <Value Type=\"Integer\">1</Value>" +
+                "               </Eq>" +
+                "           </And>" +
+                "           <Eq>" +
+                "               <FieldRef Name=\"Count2\" />" +
+                "               <Value Type=\"Integer\">2</Value>" +
+                "           </Eq>" +
+                "       </Or>" +
+                "   </Where>"+
+                "</Query>";
 
             Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
         }
@@ -83,15 +89,17 @@ namespace Camlex.NET.UnitTests
         public void test_THAT_single_eq_expression_with_variable_IS_translated_sucessfully()
         {
             string val = "testValue";
-            string caml = Camlex.Where(x => (string)x["Title"] == val);
+            string caml = Camlex.Query().Where(x => (string)x["Title"] == val).ToString();
 
             string expected =
-               "<Where>" +
-               "   <Eq>" +
-               "      <FieldRef Name=\"Title\" />" +
-               "      <Value Type=\"Text\">testValue</Value>" +
-               "   </Eq>" +
-               "</Where>";
+                "<Query>" +
+                "   <Where>" +
+                "       <Eq>" +
+                "           <FieldRef Name=\"Title\" />" +
+                "           <Value Type=\"Text\">testValue</Value>" +
+                "       </Eq>" +
+                "   </Where>" +
+                "</Query>";
 
             Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
         }
@@ -99,15 +107,17 @@ namespace Camlex.NET.UnitTests
         [Test]
         public void test_THAT_single_eq_expression_with_parameterless_method_call_IS_translated_sucessfully()
         {
-            string caml = Camlex.Where(x => (int)x["Count"] == val1());
+            string caml = Camlex.Query().Where(x => (int)x["Count"] == val1()).ToString();
 
             string expected =
-               "<Where>" +
-               "   <Eq>" +
-               "      <FieldRef Name=\"Count\" />" +
-               "      <Value Type=\"Integer\">123</Value>" +
-               "   </Eq>" +
-               "</Where>";
+                "<Query>" +
+                "   <Where>" +
+                "       <Eq>" +
+                "           <FieldRef Name=\"Count\" />" +
+                "           <Value Type=\"Integer\">123</Value>" +
+                "       </Eq>" +
+                "   </Where>" +
+                "</Query>";
 
             Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
         }
@@ -120,15 +130,17 @@ namespace Camlex.NET.UnitTests
         [Test]
         public void test_THAT_single_eq_expression_with_1_parameter_method_call_IS_translated_sucessfully()
         {
-            string caml = Camlex.Where(x => (int)x["Count"] == val2(456));
+            string caml = Camlex.Query().Where(x => (int)x["Count"] == val2(456)).ToString();
 
             string expected =
-               "<Where>" +
-               "   <Eq>" +
-               "      <FieldRef Name=\"Count\" />" +
-               "      <Value Type=\"Integer\">456</Value>" +
-               "   </Eq>" +
-               "</Where>";
+                "<Query>" +
+                "   <Where>" +
+                "       <Eq>" +
+                "           <FieldRef Name=\"Count\" />" +
+                "           <Value Type=\"Integer\">456</Value>" +
+                "       </Eq>" +
+                "   </Where>" +
+                "</Query>";
 
             Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
         }
@@ -142,15 +154,17 @@ namespace Camlex.NET.UnitTests
         public void test_THAT_single_eq_expression_with_2_parameters_internal_method_call_IS_translated_sucessfully()
         {
             Func<int, int, int> val3 = (i, j) => i + j;
-            string caml = Camlex.Where(x => (int) x["Count"] == val3(2, 3));
+            string caml = Camlex.Query().Where(x => (int)x["Count"] == val3(2, 3)).ToString();
 
             string expected =
-               "<Where>" +
-               "   <Eq>" +
-               "      <FieldRef Name=\"Count\" />" +
-               "      <Value Type=\"Integer\">5</Value>" +
-               "   </Eq>" +
-               "</Where>";
+                "<Query>" +
+                "   <Where>" +
+                "       <Eq>" +
+                "           <FieldRef Name=\"Count\" />" +
+                "           <Value Type=\"Integer\">5</Value>" +
+                "       </Eq>" +
+                "   </Where>" +
+                "</Query>";
 
             Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
         }
@@ -167,17 +181,19 @@ namespace Camlex.NET.UnitTests
         [Test]
         public void test_THAT_single_eq_expression_with_class_property_call_IS_translated_sucessfully()
         {
-            Foo f = new Foo();
+            var f = new Foo();
             f.Prop = 1;
-            string caml = Camlex.Where(x => (int)x["Count"] == f.Prop);
+            string caml = Camlex.Query().Where(x => (int)x["Count"] == f.Prop).ToString();
 
             string expected =
-               "<Where>" +
-               "   <Eq>" +
-               "      <FieldRef Name=\"Count\" />" +
-               "      <Value Type=\"Integer\">1</Value>" +
-               "   </Eq>" +
-               "</Where>";
+                "<Query>" +
+                "   <Where>" +
+                "       <Eq>" +
+                "           <FieldRef Name=\"Count\" />" +
+                "           <Value Type=\"Integer\">1</Value>" +
+                "       </Eq>" +
+                "   </Where>" +
+                "</Query>";
 
             Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
         }
@@ -186,15 +202,17 @@ namespace Camlex.NET.UnitTests
         public void test_THAT_single_eq_expression_with_class_method_call_IS_translated_sucessfully()
         {
             Foo f = new Foo();
-            string caml = Camlex.Where(x => (string)x["Title"] == f.Func());
+            string caml = Camlex.Query().Where(x => (string)x["Title"] == f.Func()).ToString();
 
             string expected =
-               "<Where>" +
-               "   <Eq>" +
-               "      <FieldRef Name=\"Title\" />" +
-               "      <Value Type=\"Text\">Camlex.NET.UnitTests.CamlexTests+Foo</Value>" +
-               "   </Eq>" +
-               "</Where>";
+                "<Query>" +
+                "   <Where>" +
+                "       <Eq>" +
+                "           <FieldRef Name=\"Title\" />" +
+                "           <Value Type=\"Text\">Camlex.NET.UnitTests.CamlexTests+Foo</Value>" +
+                "       </Eq>" +
+                "   </Where>" +
+                "</Query>";
 
             Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
         }
@@ -203,9 +221,10 @@ namespace Camlex.NET.UnitTests
         public void test_THAT_neq_or_isnull_expression_IS_translated_sucessfully()
         {
             string caml =
-                Camlex.Where(x => (string)x["Status"] != "Completed" || x["Status"] == null);
+                Camlex.Query().Where(x => (string)x["Status"] != "Completed" || x["Status"] == null).ToString();
 
             string expected =
+                "<Query>" +
                 "  <Where>" +
                 "    <Or>" +
                 "      <Neq>" +
@@ -216,7 +235,8 @@ namespace Camlex.NET.UnitTests
                 "        <FieldRef Name=\"Status\" />" +
                 "      </IsNull>" +
                 "     </Or>" +
-                "   </Where>";
+                "   </Where>" +
+                "</Query>";
 
             Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
         }
@@ -225,10 +245,11 @@ namespace Camlex.NET.UnitTests
         public void test_THAT_neq_or_isnull_with_orderby_expression_IS_translated_sucessfully()
         {
             string caml =
-                Camlex.Where(x => (string)x["Status"] != "Completed" || x["Status"] == null).
-                    OrderBy(x => new[] { x["Modified"] as Camlex.Desc });
+                Camlex.Query().Where(x => (string)x["Status"] != "Completed" || x["Status"] == null).
+                    OrderBy(x => new[] { x["Modified"] as Camlex.Desc }).ToString();
 
             string expected =
+                "<Query>" +
                 "  <Where>" +
                 "    <Or>" +
                 "      <Neq>" +
@@ -242,7 +263,8 @@ namespace Camlex.NET.UnitTests
                 "   </Where>" +
                 "  <OrderBy>" +
                 "    <FieldRef Name=\"Modified\" Ascending=\"False\" />" +
-                "  </OrderBy>";
+                "  </OrderBy>" +
+                "</Query>";
 
             Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
         }

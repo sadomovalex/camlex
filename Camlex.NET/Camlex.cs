@@ -30,9 +30,6 @@ namespace Camlex.NET
         #endregion
 
         private static ITranslatorFactory translatorFactory;
-        private XElement where;
-        private XElement orderBy;
-        private XElement groupBy;
 
         static Camlex()
         {
@@ -43,49 +40,9 @@ namespace Camlex.NET
             translatorFactory = new TranslatorFactory(analyzerFactory);
         }
 
-        private Camlex(XElement where)
+        public static IQuery Query()
         {
-            this.where = where;
-        }
-
-        public static Camlex Where(Expression<Func<SPItem, bool>> expr)
-        {
-            var translator = translatorFactory.Create(expr);
-            var where = translator.TranslateWhere(expr);
-            return new Camlex(where);
-        }
-
-        public Camlex OrderBy(Expression<Func<SPItem, object[]>> expr)
-        {
-            var translator = translatorFactory.Create(expr);
-            var orderBy = translator.TranslateOrderBy(expr);
-            this.orderBy = orderBy;
-            return this;
-        }
-
-        public Camlex OrderBy(Expression<Func<SPItem, object>> expr)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Camlex GroupBy(Expression<Func<SPItem, object[]>> expr)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Camlex GroupBy(Expression<Func<SPItem, object>> expr)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override string ToString()
-        {
-            return string.Format("{0}{1}{2}", this.where, this.orderBy, this.groupBy);
-        }
-
-        public static implicit operator string(Camlex camlex)
-        {
-            return camlex.ToString();
+            return new Query(translatorFactory);
         }
     }
 }
