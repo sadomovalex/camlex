@@ -7,6 +7,7 @@ namespace Camlex.NET
 {
     public static class Tags
     {
+        public const string Query = "Query";
         public const string Where = "Where";
         public const string OrderBy = "OrderBy";
         public const string FieldRef = "FieldRef";
