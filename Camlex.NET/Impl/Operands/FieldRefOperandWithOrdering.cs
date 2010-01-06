@@ -8,23 +8,21 @@ namespace Camlex.NET.Impl.Operands
 {
     public class FieldRefOperandWithOrdering : FieldRefOperand
     {
-        private readonly bool ascending;
-
-        public bool Ascending
-        {
-            get { return ascending; }
-        }
+        private readonly Camlex.OrderDirection orderDirection;
 
         public FieldRefOperandWithOrdering(FieldRefOperand fieldRefOperand, Camlex.OrderDirection orderDirection)
             : base(fieldRefOperand.FieldName)
         {
-            ascending = orderDirection is Camlex.Asc;
+            this.orderDirection = orderDirection;
         }
 
         public override XElement ToCaml()
         {
             var xmlElement = base.ToCaml();
-            xmlElement.SetAttributeValue(Attributes.Ascending, Ascending.ToString());
+            if (!orderDirection.IsDefault())
+            {
+                xmlElement.SetAttributeValue(Attributes.Ascending, orderDirection.ToString());
+            }
             return xmlElement;
         }
     }

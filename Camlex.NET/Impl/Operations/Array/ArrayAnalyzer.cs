@@ -58,8 +58,8 @@ namespace Camlex.NET.Impl.Operations.Array
                 var orderDirection = Camlex.OrderDirection.Default;
                 if (ex.NodeType == ExpressionType.TypeAs)
                 {
-                orderDirection = Camlex.OrderDirection.Convert(ex.Type);
-                ex = ((UnaryExpression)ex).Operand;
+                    orderDirection = Camlex.OrderDirection.Convert(ex.Type);
+                    ex = ((UnaryExpression)ex).Operand;
                 }
                 operands.Add(this.operandBuilder.CreateFieldRefOperandWithOrdering(ex, orderDirection));
             });

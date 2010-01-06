@@ -47,5 +47,27 @@ namespace Camlex.NET.Impl
             return caml;
         }
 
+        public XElement TranslateGroupBy(LambdaExpression expr, bool? collapse, int? groupLimit)
+        {
+            if (!this.analyzer.IsValid(expr))
+            {
+                throw new NonSupportedExpressionException(expr);
+            }
+
+            var operation = this.analyzer.GetOperation(expr);
+            var result = (XElementArrayOperationResult)operation.ToResult();
+
+            var caml = new XElement(Tags.GroupBy, result.Value);
+            if (collapse != null)
+            {
+                caml.SetAttributeValue(Attributes.Collapse, collapse.Value.ToString());
+            }
+            if (groupLimit != null)
+            {
+                caml.SetAttributeValue(Attributes.GroupLimit, groupLimit.Value);
+            }
+
+            return caml;
+        }
     }
 }

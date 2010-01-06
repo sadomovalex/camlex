@@ -10,6 +10,7 @@ namespace Camlex.NET
         public const string Query = "Query";
         public const string Where = "Where";
         public const string OrderBy = "OrderBy";
+        public const string GroupBy = "GroupBy";
         public const string FieldRef = "FieldRef";
         public const string Value = "Value";
         public const string And = "And";

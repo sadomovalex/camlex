@@ -28,13 +28,6 @@ namespace Camlex.NET.Impl
             return this;
         }
 
-        public IQuery OrderBy(Expression<Func<SPItem, object[]>> expr)
-        {
-            var translator = translatorFactory.Create(expr);
-            this.orderBy = translator.TranslateOrderBy(expr);
-            return this;
-        }
-
         public IQuery OrderBy(Expression<Func<SPItem, object>> expr)
         {
             var lambda = Expression.Lambda<Func<SPItem, object[]>>(
@@ -42,14 +35,25 @@ namespace Camlex.NET.Impl
             return OrderBy(lambda);
         }
 
-        public IQuery GroupBy(Expression<Func<SPItem, object[]>> expr)
+        public IQuery OrderBy(Expression<Func<SPItem, object[]>> expr)
         {
-            throw new NotImplementedException();
+            var translator = translatorFactory.Create(expr);
+            this.orderBy = translator.TranslateOrderBy(expr);
+            return this;
         }
 
         public IQuery GroupBy(Expression<Func<SPItem, object>> expr)
         {
-            throw new NotImplementedException();
+            var lambda = Expression.Lambda<Func<SPItem, object[]>>(
+                Expression.NewArrayInit(typeof(object), expr.Body), expr.Parameters);
+            return GroupBy(lambda, null, null);
+        }
+
+        public IQuery GroupBy(Expression<Func<SPItem, object[]>> expr, bool? collapse, int? groupLimit)
+        {
+            var translator = translatorFactory.Create(expr);
+            this.groupBy = translator.TranslateGroupBy(expr, collapse, groupLimit);
+            return this;
         }
 
         public XElement ToCaml()

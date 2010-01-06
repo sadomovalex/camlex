@@ -293,7 +293,7 @@ namespace Camlex.NET.UnitTests
             var expected =
                 "<Query>" +
                 "  <OrderBy>" +
-                "    <FieldRef Name=\"field1\" Ascending=\"True\" />" +
+                "    <FieldRef Name=\"field1\" />" +
                 "    <FieldRef Name=\"field2\" Ascending=\"False\" />" +
                 "    <FieldRef Name=\"field3\" Ascending=\"True\" />" +
                 "  </OrderBy>" +
@@ -302,5 +302,35 @@ namespace Camlex.NET.UnitTests
             Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
         }
 
+        [Test]
+        public void test_THAT_single_groupby_expression_IS_translated_sucessfully()
+        {
+            var caml = Camlex.Query().GroupBy(x => x["field1"]).ToString();
+
+            var expected =
+                "<Query>" +
+                "  <GroupBy>" +
+                "    <FieldRef Name=\"field1\" />" +
+                "  </GroupBy>" +
+                "</Query>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        [Test]
+        public void test_THAT_multiple_groupby_expression_IS_translated_sucessfully()
+        {
+            var caml = Camlex.Query().GroupBy(x => new[] { x["field1"], x["field2"] }, true, 10).ToString();
+
+            var expected =
+                "<Query>" +
+                "  <GroupBy Collapse=\"True\" GroupLimit=\"10\">" +
+                "    <FieldRef Name=\"field1\" />" +
+                "    <FieldRef Name=\"field2\" />" +
+                "  </GroupBy>" +
+                "</Query>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
     }
 }
