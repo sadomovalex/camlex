@@ -12,5 +12,6 @@ namespace Camlex.NET.Interfaces
     {
         XElement TranslateWhere(LambdaExpression expr);
         XElement TranslateOrderBy(LambdaExpression expr);
+        XElement TranslateGroupBy(LambdaExpression expr, bool? collapse, int? groupLimit);
     }
 }

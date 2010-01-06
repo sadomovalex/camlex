@@ -17,16 +17,24 @@ namespace Camlex.NET
         /// <summary>Marker class representing ASC order direction for "OrderBy" functionality</summary>
         public class OrderDirection
         {
-            public static OrderDirection Default { get { return new Asc(); } }
+            public static OrderDirection Default { get { return new None(); } }
             public static OrderDirection Convert(Type type)
             {
-                return type == typeof (Asc) ? (OrderDirection) new Asc() : new Desc();
+                if (type == typeof(Asc)) return new Asc();
+                if (type == typeof(Desc)) return new Desc();
+                return Default;
+            }
+            public bool IsDefault()
+            {
+                return this.GetType() == Default.GetType();
             }
         }
+        /// <summary>Marker class representing absence of order direction for "OrderBy" functionality</summary>
+        public class None : OrderDirection { public override string ToString() { return string.Empty; } }
         /// <summary>Marker class representing ASC order direction for "OrderBy" functionality</summary>
-        public class Asc : OrderDirection { }
+        public class Asc : OrderDirection { public override string ToString() { return true.ToString(); } }
         /// <summary>Marker class representing DESC order direction for "OrderBy" functionality</summary>
-        public class Desc : OrderDirection { }
+        public class Desc : OrderDirection { public override string ToString() { return false.ToString(); } }
         #endregion
 
         private static ITranslatorFactory translatorFactory;
