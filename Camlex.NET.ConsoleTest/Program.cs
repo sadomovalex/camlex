@@ -17,7 +17,7 @@ namespace Camlex.NET
             Camlex
                 .Query()
                     .Where(x => x["Count"] != null)
-                        .OrderBy(x => new [] { x["field1"], x["field2"] as Camlex.Asc, x["field3"] as Camlex.Desc });
+                    .OrderBy(x => x["field5"] as Camlex.Asc);
         }
     }
 }
