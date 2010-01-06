@@ -60,6 +60,7 @@
   <ItemGroup>
     <Compile Include="CamlexTests.cs" />
     <Compile Include="Factories\AnalyzerFactoryTests.cs" />
+    <Compile Include="Factories\OperationResultBuilderTests.cs" />
     <Compile Include="Factories\TranslatorFactoryTests.cs" />
     <Compile Include="GenericTranslatorTests.cs" />
     <Compile Include="Helpers\CamlComparer.cs" />
