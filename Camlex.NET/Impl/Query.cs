@@ -37,7 +37,9 @@ namespace Camlex.NET.Impl
 
         public IQuery OrderBy(Expression<Func<SPItem, object>> expr)
         {
-            throw new NotImplementedException();
+            var lambda = Expression.Lambda<Func<SPItem, object[]>>(
+                Expression.NewArrayInit(typeof(object), expr.Body), expr.Parameters);
+            return OrderBy(lambda);
         }
 
         public IQuery GroupBy(Expression<Func<SPItem, object[]>> expr)

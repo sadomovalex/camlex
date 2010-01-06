@@ -268,5 +268,39 @@ namespace Camlex.NET.UnitTests
 
             Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
         }
+
+        [Test]
+        public void test_THAT_single_orderby_expression_IS_translated_sucessfully()
+        {
+            var caml = Camlex.Query().OrderBy(x => x["field1"] as Camlex.Desc).ToString();
+
+            var expected =
+                "<Query>" +
+                "  <OrderBy>" +
+                "    <FieldRef Name=\"field1\" Ascending=\"False\" />" +
+                "  </OrderBy>" +
+                "</Query>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        [Test]
+        public void test_THAT_multiple_orderby_expression_IS_translated_sucessfully()
+        {
+            var caml = Camlex.Query().OrderBy(
+                x => new[] { x["field1"], x["field2"] as Camlex.Desc, x["field3"] as Camlex.Asc }).ToString();
+
+            var expected =
+                "<Query>" +
+                "  <OrderBy>" +
+                "    <FieldRef Name=\"field1\" Ascending=\"True\" />" +
+                "    <FieldRef Name=\"field2\" Ascending=\"False\" />" +
+                "    <FieldRef Name=\"field3\" Ascending=\"True\" />" +
+                "  </OrderBy>" +
+                "</Query>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
     }
 }
