@@ -29,7 +29,67 @@ namespace Camlex.NET.Impl
                 return false;
             }
             var body = expr.Body as BinaryExpression;
-            
+
+            if (this.isExpressionWithStringBasedSyntax(body.Right))
+            {
+                // operands are of types - subclasses of BaseFieldType
+                if (!this.isValidExpressionWithStringBasedSyntax(body))
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                // operands are of native types like int, bool, DateTime
+                if (!this.isValidExpressionWithNativeSyntax(body))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private bool isValidExpressionWithStringBasedSyntax(BinaryExpression body)
+        {
+            // left operand for string based syntax should be indexer call
+            if (!(body.Left is MethodCallExpression))
+            {
+                return false;
+            }
+            var leftOperand = body.Left as MethodCallExpression;
+            if (leftOperand.Method.Name != ReflectionHelper.IndexerMethodName)
+            {
+                return false;
+            }
+
+            if (leftOperand.Arguments.Count != 1)
+            {
+                return false;
+            }
+            // currently only constants are supported as indexer's argument
+            if (!(leftOperand.Arguments[0] is ConstantExpression))
+            {
+                return false;
+            }
+
+            // right expression should be constant, variable or method call
+            var rightExpression = body.Right;
+            if (!this.isValidRightExpressionWithStringBasedSyntax(rightExpression))
+            {
+                return false;
+            }
+            return true;
+        }
+
+        private bool isExpressionWithStringBasedSyntax(Expression rightExpression)
+        {
+            return (rightExpression.NodeType == ExpressionType.Convert &&
+                rightExpression.Type.IsSubclassOf(typeof(BaseFieldType)));
+        }
+
+        private bool isValidExpressionWithNativeSyntax(BinaryExpression body)
+        {
             // left operand should be unary expression (Convert of indexer - like (string)x["foo"])
             if (!(body.Left is UnaryExpression))
             {
@@ -64,16 +124,15 @@ namespace Camlex.NET.Impl
 
             // right expression should be constant, variable or method call
             var rightExpression = body.Right;
-            if (!this.isValidRightExpression(rightExpression))
+            if (!this.isValidRightExpressionWithNativeSyntax(rightExpression))
             {
                 return false;
             }
-
             return true;
         }
 
-        // Right expression should be constant, variable or method call
-        protected bool isValidRightExpression(Expression rightExpression)
+        // Right expression for native syntax should be constant, variable or method call
+        protected bool isValidRightExpressionWithNativeSyntax(Expression rightExpression)
         {
             if (rightExpression is ConstantExpression)
             {
@@ -92,6 +151,53 @@ namespace Camlex.NET.Impl
                 return true;
             }
             return false;
+        }
+
+        // Right expression for string based syntax should be constant, variable or method call
+        protected bool isValidRightExpressionWithStringBasedSyntax(Expression rightExpression)
+        {
+            // 1st convertion is conversion to specific subclass of BaseFieldType
+            if (!(rightExpression is UnaryExpression))
+            {
+                return false;
+            }
+            if (rightExpression.NodeType != ExpressionType.Convert)
+            {
+                return false;
+            }
+            if (!rightExpression.Type.IsSubclassOf(typeof(BaseFieldType)))
+            {
+                return false;
+            }
+
+            // 2nd convertion is conversion to BaseFieldType
+            var operandExpression = ((UnaryExpression)rightExpression).Operand;
+            if (!(operandExpression is UnaryExpression))
+            {
+                return false;
+            }
+            if (operandExpression.NodeType != ExpressionType.Convert)
+            {
+                return false;
+            }
+            if (operandExpression.Type != typeof(BaseFieldType))
+            {
+                return false;
+            }
+
+            var expr = ((UnaryExpression)operandExpression).Operand;
+
+            // operand should be valid native expression
+            if (!this.isValidRightExpressionWithNativeSyntax(expr))
+            {
+                return false;
+            }
+
+            // type of casted expression should be string (althoug compiler will not
+            // allow to cast to subclass of BaseFieldType from anything except string - because
+            // BaseFieldType has explicit conversion operator only for string, we need to do this
+            // because there is possibility to cast from BaseFieldType to any subclass)
+            return (expr.Type == typeof (string));
         }
 
         protected IOperand getFieldRefOperand(LambdaExpression expr)
