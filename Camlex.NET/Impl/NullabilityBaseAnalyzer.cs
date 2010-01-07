@@ -46,7 +46,7 @@ namespace Camlex.NET.Impl
 
             // right expression should be constant, variable or method call
             var rightExpression = body.Right;
-            if (!this.isValidRightExpression(rightExpression))
+            if (!this.isValidRightExpressionWithNativeSyntax(rightExpression))
             {
                 return false;
             }

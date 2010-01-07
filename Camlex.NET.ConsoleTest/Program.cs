@@ -14,9 +14,14 @@ namespace Camlex.NET
     {
         static void Main(string[] args)
         {
-            Camlex.Query().Where(x => x["Count"] == (DataTypes.Text)"1")
+            Camlex.Query().Where(x => x["Count"] == (DataTypes.Text)foo())
                     .OrderBy(x => x["field1"] as Camlex.Asc)
                     .GroupBy(x => new[] { x["field1"], x["field2"] }, true, 10);
+        }
+
+        static string foo()
+        {
+            return "";
         }
     }
 }
