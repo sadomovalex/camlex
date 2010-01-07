@@ -33,7 +33,7 @@ namespace Camlex.NET.UnitTests.Operands
             Assert.That(operand, Is.InstanceOf<TextValueOperand>());
 
             var valueOperand = operand as TextValueOperand;
-            Assert.That(valueOperand.Type, Is.EqualTo(DataType.Text));
+            Assert.That(valueOperand.Type, Is.EqualTo(typeof(DataTypes.Text)));
             Assert.That(valueOperand.Value, Is.EqualTo("test@example.com"));
         }
 
@@ -47,7 +47,7 @@ namespace Camlex.NET.UnitTests.Operands
             Assert.That(operand, Is.InstanceOf<IntegerValueOperand>());
 
             var valueOperand = operand as IntegerValueOperand;
-            Assert.That(valueOperand.Type, Is.EqualTo(DataType.Integer));
+            Assert.That(valueOperand.Type, Is.EqualTo(typeof(DataTypes.Integer)));
             Assert.That(valueOperand.Value, Is.EqualTo(1));
         }
 

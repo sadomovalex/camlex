@@ -7,14 +7,14 @@ namespace Camlex.NET.Impl.Operands
     public class TextValueOperand : ValueOperand<string>
     {
         public TextValueOperand(string value) :
-            base(DataType.Text, value)
+            base(typeof(DataTypes.Text), value)
         {
         }
 
         public override XElement ToCaml()
         {
             return
-                new XElement(Tags.Value, new XAttribute(Attributes.Type, this.type),
+                new XElement(Tags.Value, new XAttribute(Attributes.Type, this.TypeName),
                     new XText(this.value));
         }
     }
