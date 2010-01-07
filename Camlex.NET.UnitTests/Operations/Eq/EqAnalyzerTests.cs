@@ -35,7 +35,7 @@ namespace Camlex.NET.UnitTests.Operations.Eq
 
             var operandBuilder = MockRepository.GenerateStub<IOperandBuilder>();
             operandBuilder.Stub(b => b.CreateFieldRefOperand(expr.Body)).Return(null);
-            operandBuilder.Stub(b => b.CreateValueOperand(expr.Body)).Return(null);
+            operandBuilder.Stub(b => b.CreateValueOperandForNativeSyntax(expr.Body)).Return(null);
 
             var analyzer = new EqAnalyzer(null, operandBuilder);
 
@@ -54,7 +54,7 @@ namespace Camlex.NET.UnitTests.Operations.Eq
 
             var operandBuilder = MockRepository.GenerateStub<IOperandBuilder>();
             operandBuilder.Stub(b => b.CreateFieldRefOperand(expr.Body)).Return(null);
-            operandBuilder.Stub(b => b.CreateValueOperand(expr.Body)).Return(null);
+            operandBuilder.Stub(b => b.CreateValueOperandForNativeSyntax(expr.Body)).Return(null);
 
             var analyzer = new EqAnalyzer(null, operandBuilder);
 

@@ -105,6 +105,25 @@ namespace Camlex.NET.UnitTests
         }
 
         [Test]
+        public void test_THAT_string_based_single_eq_expression_with_variable_IS_translated_sucessfully()
+        {
+            string val = "123";
+            string caml = Camlex.Query().Where(x => x["Count"] == (DataTypes.Integer)val).ToString();
+
+            string expected =
+                "<Query>" +
+                "   <Where>" +
+                "       <Eq>" +
+                "           <FieldRef Name=\"Count\" />" +
+                "           <Value Type=\"Integer\">123</Value>" +
+                "       </Eq>" +
+                "   </Where>" +
+                "</Query>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        [Test]
         public void test_THAT_single_eq_expression_with_parameterless_method_call_IS_translated_sucessfully()
         {
             string caml = Camlex.Query().Where(x => (int)x["Count"] == val1()).ToString();

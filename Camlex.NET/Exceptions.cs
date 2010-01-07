@@ -16,7 +16,7 @@ namespace Camlex.NET
 
     public class NonSupportedExpressionException : GenericException
     {
-        public NonSupportedExpressionException(LambdaExpression expr) :
+        public NonSupportedExpressionException(Expression expr) :
             base(ErrorMessages.NON_SUPPORTED_EXPRESSION, expr)
         {
         }

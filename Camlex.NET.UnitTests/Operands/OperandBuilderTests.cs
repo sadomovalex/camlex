@@ -28,7 +28,7 @@ namespace Camlex.NET.UnitTests.Operands
         {
             var operandBuilder = new OperandBuilder();
             Expression<Func<SPItem, bool>> expr = x => (string)x["Email"] == "test@example.com";
-            var operand = operandBuilder.CreateValueOperand(((BinaryExpression)expr.Body).Right);
+            var operand = operandBuilder.CreateValueOperandForNativeSyntax(((BinaryExpression)expr.Body).Right);
             
             Assert.That(operand, Is.InstanceOf<TextValueOperand>());
 
@@ -42,7 +42,7 @@ namespace Camlex.NET.UnitTests.Operands
         {
             var operandBuilder = new OperandBuilder();
             Expression<Func<SPItem, bool>> expr = x => (int)x["Foo"] == 1;
-            var operand = operandBuilder.CreateValueOperand(((BinaryExpression)expr.Body).Right);
+            var operand = operandBuilder.CreateValueOperandForNativeSyntax(((BinaryExpression)expr.Body).Right);
 
             Assert.That(operand, Is.InstanceOf<IntegerValueOperand>());
 
@@ -56,7 +56,7 @@ namespace Camlex.NET.UnitTests.Operands
         {
             var operandBuilder = new OperandBuilder();
             Expression<Func<SPItem, bool>> expr = x => x["Foo"] == null;
-            var operand = operandBuilder.CreateValueOperand(((BinaryExpression)expr.Body).Right);
+            var operand = operandBuilder.CreateValueOperandForNativeSyntax(((BinaryExpression)expr.Body).Right);
 
             Assert.That(operand, Is.InstanceOf<NullValueOperand>());
         }
@@ -68,7 +68,7 @@ namespace Camlex.NET.UnitTests.Operands
             Expression<Func<SPItem, bool>> expr = x => x["Foo"] == o;
 
             var operandBuilder = new OperandBuilder();
-            var operand = operandBuilder.CreateValueOperand(((BinaryExpression)expr.Body).Right);
+            var operand = operandBuilder.CreateValueOperandForNativeSyntax(((BinaryExpression)expr.Body).Right);
 
             Assert.That(operand, Is.InstanceOf<NullValueOperand>());
         }
@@ -79,7 +79,7 @@ namespace Camlex.NET.UnitTests.Operands
             Expression<Func<SPItem, bool>> expr = x => x["Foo"] == val1();
 
             var operandBuilder = new OperandBuilder();
-            var operand = operandBuilder.CreateValueOperand(((BinaryExpression)expr.Body).Right);
+            var operand = operandBuilder.CreateValueOperandForNativeSyntax(((BinaryExpression)expr.Body).Right);
 
             Assert.That(operand, Is.InstanceOf<NullValueOperand>());
         }
@@ -96,7 +96,7 @@ namespace Camlex.NET.UnitTests.Operands
             Expression<Func<SPItem, bool>> expr = x => x["Foo"] == f();
 
             var operandBuilder = new OperandBuilder();
-            var operand = operandBuilder.CreateValueOperand(((BinaryExpression)expr.Body).Right);
+            var operand = operandBuilder.CreateValueOperandForNativeSyntax(((BinaryExpression)expr.Body).Right);
 
             Assert.That(operand, Is.InstanceOf<NullValueOperand>());
         }

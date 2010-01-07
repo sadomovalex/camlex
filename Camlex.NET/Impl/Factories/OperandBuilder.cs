@@ -26,25 +26,47 @@ namespace Camlex.NET.Interfaces
             return new FieldRefOperandWithOrdering(fieldRefOperand, orderDirection);
         }
 
-        public IOperand CreateValueOperand(Expression expr)
+        public IOperand CreateValueOperandForNativeSyntax(Expression expr)
+        {
+            // determine operand type from expression result (specify null as explicitOperandType)
+            return createValueOperandForNativeSyntax(expr, null);
+        }
+
+        private IOperand createValueOperandForNativeSyntax(Expression expr, Type explicitOperandType)
         {
             if (expr is ConstantExpression)
             {
-                return this.createValueOperandFromConstantExpression(expr as ConstantExpression);
+                return this.createValueOperandFromConstantExpression(expr as ConstantExpression, explicitOperandType);
             }
-            return this.createValueOperandFromNonConstantExpression(expr);
+            return this.createValueOperandFromNonConstantExpression(expr, explicitOperandType);
         }
 
-        private IOperand createValueOperandFromNonConstantExpression(Expression expr)
+        public IOperand CreateValueOperandForStringBasedSyntax(Expression expr)
+        {
+            // retrieve internal native expression from string based syntax
+            var internalExpression = ((UnaryExpression)((UnaryExpression)expr).Operand).Operand;
+            // use conversion type as operand type (subclass of BaseFieldType should be used here)
+            // because conversion operand has always string type for string based syntax
+            return this.createValueOperandForNativeSyntax(internalExpression, expr.Type);
+        }
+
+        private IOperand createValueOperandFromNonConstantExpression(Expression expr, Type explicitOperandType)
         {
             // need to add Expression.Convert(..) in order to define Func<object>
             var lambda = Expression.Lambda<Func<object>>(Expression.Convert(expr, typeof(object)));
             object value = lambda.Compile().Invoke();
-            // value can be null
-            return this.createValueOperand(value != null ? value.GetType() : null, value);
+            
+            // if operand type is not specified explivitly try to determine operand type from expression result
+            var operandType = explicitOperandType;
+            if (operandType == null)
+            {
+                // value can be null
+                operandType = value != null ? value.GetType() : null;
+            }
+            return this.createValueOperand(operandType, value);
         }
 
-        private IOperand createValueOperandFromConstantExpression(ConstantExpression expr)
+        private IOperand createValueOperandFromConstantExpression(ConstantExpression expr, Type explicitOperandType)
         {
             return this.createValueOperand(expr.Type, expr.Value);
         }
@@ -62,7 +84,14 @@ namespace Camlex.NET.Interfaces
             }
             if (type == typeof(int) || type == typeof(DataTypes.Integer))
             {
-                return new IntegerValueOperand((int)value);
+                if (value.GetType() == typeof(int))
+                {
+                    return new IntegerValueOperand((int) value);
+                }
+                if (value.GetType() == typeof(string))
+                {
+                    return new IntegerValueOperand((string)value);
+                }
             }
             throw new NonSupportedOperandTypeException(type);
         }
