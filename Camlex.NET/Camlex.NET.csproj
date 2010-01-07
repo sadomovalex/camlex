@@ -52,9 +52,7 @@
   <ItemGroup>
     <Compile Include="Attributes.cs" />
     <Compile Include="Camlex.cs" />
-    <Compile Include="DataType.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="DataTypes.cs" />
     <Compile Include="ErrorMessages.cs" />
     <Compile Include="Exceptions.cs" />
     <Compile Include="Impl\BaseAnalyzer.cs" />
