@@ -15,7 +15,7 @@ namespace Camlex.NET.Impl.Operands
         {
             return
                 new XElement(Tags.Value, new XAttribute(Attributes.Type, this.TypeName),
-                    new XText(this.value));
+                    new XText(this.Value));
         }
     }
 }

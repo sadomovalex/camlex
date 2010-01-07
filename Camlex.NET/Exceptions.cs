@@ -45,4 +45,12 @@ namespace Camlex.NET
         {
         }
     }
+
+    public class InvalidValueForOperandTypeException : GenericException
+    {
+        public InvalidValueForOperandTypeException(object value, Type operandType) :
+            base(ErrorMessages.INVALID_VALUE_FOR_OPERAND_TYPE, value, operandType)
+        {
+        }
+    }
 }
