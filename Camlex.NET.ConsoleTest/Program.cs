@@ -16,7 +16,7 @@ namespace Camlex.NET
         {
             Camlex
                 .Query()
-                    .Where(x => x["Count"] != null)
+                    .Where(x => x["User"] == (DataTypes.User)"John Smith" && (int)x["foo"] >= 1)
                     .OrderBy(x => x["field1"] as Camlex.Asc)
                     .GroupBy(x => new[] { x["field1"], x["field2"] }, true, 10);
         }

@@ -56,11 +56,11 @@ namespace Camlex.NET.Interfaces
             {
                 return new NullValueOperand();
             }
-            if (type == typeof(string))
+            if (type == typeof(string) || type == typeof(DataTypes.Text))
             {
                 return new TextValueOperand((string)value);
             }
-            if (type == typeof(int))
+            if (type == typeof(int) || type == typeof(DataTypes.Integer))
             {
                 return new IntegerValueOperand((int)value);
             }

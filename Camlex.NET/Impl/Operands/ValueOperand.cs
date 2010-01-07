@@ -6,14 +6,22 @@ namespace Camlex.NET.Impl.Operands
 {
     public abstract class ValueOperand<T> : IOperand
     {
-        protected DataType type;
+        protected Type type;
         protected T value;
 
-        public DataType Type
+        public Type Type
         {
             get
             {
                 return this.type;
+            }
+        }
+
+        public string TypeName
+        {
+            get
+            {
+                return this.type.Name;
             }
         }
 
@@ -25,7 +33,7 @@ namespace Camlex.NET.Impl.Operands
             }
         }
 
-        protected ValueOperand(DataType type, T value)
+        protected ValueOperand(Type type, T value)
         {
             this.type = type;
             this.value = value;
