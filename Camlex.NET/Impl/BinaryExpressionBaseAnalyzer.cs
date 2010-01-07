@@ -217,7 +217,15 @@ namespace Camlex.NET.Impl
                 throw new NonSupportedExpressionException(expr);
             }
             var body = expr.Body as BinaryExpression;
-            return this.operandBuilder.CreateValueOperand(body.Right);
+            if (this.isValidRightExpressionWithNativeSyntax(body.Right))
+            {
+                return this.operandBuilder.CreateValueOperandForNativeSyntax(body.Right);
+            }
+            if (this.isValidRightExpressionWithStringBasedSyntax(body.Right))
+            {
+                return this.operandBuilder.CreateValueOperandForStringBasedSyntax(body.Right);
+            }
+            throw new NonSupportedExpressionException(body.Right);
         }
     }
 }

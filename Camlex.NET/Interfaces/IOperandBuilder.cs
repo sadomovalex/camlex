@@ -10,6 +10,7 @@ namespace Camlex.NET.Interfaces
     {
         IOperand CreateFieldRefOperand(Expression expr);
         IOperand CreateFieldRefOperandWithOrdering(Expression expr, Camlex.OrderDirection orderDirection);
-        IOperand CreateValueOperand(Expression expr);
+        IOperand CreateValueOperandForNativeSyntax(Expression expr);
+        IOperand CreateValueOperandForStringBasedSyntax(Expression expr);
     }
 }

@@ -111,7 +111,7 @@ namespace Camlex.NET.UnitTests.Factories
         public void test_WHEN_expression_is_isnotnull_THEN_isnotnull_analyzer_is_created()
         {
             var operandBuilder = MockRepository.GenerateStub<IOperandBuilder>();
-            operandBuilder.Stub(b => b.CreateValueOperand(null)).Return(new NullValueOperand()).IgnoreArguments();
+            operandBuilder.Stub(b => b.CreateValueOperandForNativeSyntax(null)).Return(new NullValueOperand()).IgnoreArguments();
 
             Expression<Func<SPItem, bool>> expr = x => x["Count"] != null;
             
@@ -124,7 +124,7 @@ namespace Camlex.NET.UnitTests.Factories
         public void test_WHEN_expression_is_isnull_THEN_isnull_analyzer_is_created()
         {
             var operandBuilder = MockRepository.GenerateStub<IOperandBuilder>();
-            operandBuilder.Stub(b => b.CreateValueOperand(null)).Return(new NullValueOperand()).IgnoreArguments();
+            operandBuilder.Stub(b => b.CreateValueOperandForNativeSyntax(null)).Return(new NullValueOperand()).IgnoreArguments();
 
             Expression<Func<SPItem, bool>> expr = x => x["Count"] == null;
 

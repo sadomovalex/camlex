@@ -46,13 +46,21 @@ namespace Camlex.NET.Impl
 
             // right expression should be constant, variable or method call
             var rightExpression = body.Right;
+
+            // if right expression has string based syntax we should not evaluate
+            // it for IsNull or IsNotNull
+            if (this.isValidRightExpressionWithStringBasedSyntax(rightExpression))
+            {
+                return false;
+            }
+
             if (!this.isValidRightExpressionWithNativeSyntax(rightExpression))
             {
                 return false;
             }
 
             // check that right operand is null
-            var valueOperand = this.operandBuilder.CreateValueOperand(rightExpression);
+            var valueOperand = this.operandBuilder.CreateValueOperandForNativeSyntax(rightExpression);
             return (valueOperand is NullValueOperand);
         }
     }
