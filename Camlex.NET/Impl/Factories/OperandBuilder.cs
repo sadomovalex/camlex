@@ -56,7 +56,7 @@ namespace Camlex.NET.Interfaces
             var lambda = Expression.Lambda<Func<object>>(Expression.Convert(expr, typeof(object)));
             object value = lambda.Compile().Invoke();
             
-            // if operand type is not specified explivitly try to determine operand type from expression result
+            // if operand type is not specified explicitly try to determine operand type from expression result
             var operandType = explicitOperandType;
             if (operandType == null)
             {
@@ -68,7 +68,13 @@ namespace Camlex.NET.Interfaces
 
         private IOperand createValueOperandFromConstantExpression(ConstantExpression expr, Type explicitOperandType)
         {
-            return this.createValueOperand(expr.Type, expr.Value);
+            // if operand type is not specified explicitly try to determine operand type from expression type
+            var operandType = explicitOperandType;
+            if (operandType == null)
+            {
+                operandType = expr.Type;
+            }
+            return this.createValueOperand(operandType, expr.Value);
         }
 
         private IOperand createValueOperand(Type type, object value)
@@ -78,10 +84,12 @@ namespace Camlex.NET.Interfaces
             {
                 return new NullValueOperand();
             }
+            // string operand can be native or string based
             if (type == typeof(string) || type == typeof(DataTypes.Text))
             {
                 return new TextValueOperand((string)value);
             }
+            // integer operand can be native or string based
             if (type == typeof(int) || type == typeof(DataTypes.Integer))
             {
                 if (value.GetType() == typeof(int))
