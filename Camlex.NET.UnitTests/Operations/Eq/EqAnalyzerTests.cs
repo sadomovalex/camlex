@@ -28,6 +28,23 @@ namespace Camlex.NET.UnitTests.Operations.Eq
         }
 
         [Test]
+        public void test_THAT_string_based_eq_expression_IS_not_valid()
+        {
+            var analyzer = new EqAnalyzer(null, null);
+            Expression<Func<SPItem, bool>> expr = x => x["Title"] == (DataTypes.Text)new BaseFieldType();
+            Assert.That(analyzer.IsValid(expr), Is.False);
+        }
+
+        [Test]
+        public void test_THAT_string_based_eq_expression_with_variable_IS_not_valid()
+        {
+            var analyzer = new EqAnalyzer(null, null);
+            var foo = new DataTypes.Text();
+            Expression<Func<SPItem, bool>> expr = x => x["Title"] == foo;
+            Assert.That(analyzer.IsValid(expr), Is.False);
+        }
+
+        [Test]
         public void test_THAT_eq_expression_IS_determined_properly()
         {
             // arrange

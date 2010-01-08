@@ -24,7 +24,7 @@ namespace Camlex.NET.UnitTests.Operands
         }
 
         [Test]
-        public void test_WHEN_value_is_text_THEN_text_operand_is_created()
+        public void test_WHEN_native_value_is_text_THEN_text_operand_is_created()
         {
             var operandBuilder = new OperandBuilder();
             Expression<Func<SPItem, bool>> expr = x => (string)x["Email"] == "test@example.com";
@@ -38,11 +38,39 @@ namespace Camlex.NET.UnitTests.Operands
         }
 
         [Test]
-        public void test_WHEN_value_is_integer_THEN_integer_operand_is_created()
+        public void test_WHEN_string_based_value_is_text_THEN_text_operand_is_created()
+        {
+            var operandBuilder = new OperandBuilder();
+            Expression<Func<SPItem, bool>> expr = x => x["Email"] == (DataTypes.Text)"test@example.com";
+            var operand = operandBuilder.CreateValueOperandForStringBasedSyntax(((BinaryExpression)expr.Body).Right);
+
+            Assert.That(operand, Is.InstanceOf<TextValueOperand>());
+
+            var valueOperand = operand as TextValueOperand;
+            Assert.That(valueOperand.Type, Is.EqualTo(typeof(DataTypes.Text)));
+            Assert.That(valueOperand.Value, Is.EqualTo("test@example.com"));
+        }
+
+        [Test]
+        public void test_WHEN_native_value_is_integer_THEN_integer_operand_is_created()
         {
             var operandBuilder = new OperandBuilder();
             Expression<Func<SPItem, bool>> expr = x => (int)x["Foo"] == 1;
             var operand = operandBuilder.CreateValueOperandForNativeSyntax(((BinaryExpression)expr.Body).Right);
+
+            Assert.That(operand, Is.InstanceOf<IntegerValueOperand>());
+
+            var valueOperand = operand as IntegerValueOperand;
+            Assert.That(valueOperand.Type, Is.EqualTo(typeof(DataTypes.Integer)));
+            Assert.That(valueOperand.Value, Is.EqualTo(1));
+        }
+
+        [Test]
+        public void test_WHEN_string_based_value_is_integer_THEN_integer_operand_is_created()
+        {
+            var operandBuilder = new OperandBuilder();
+            Expression<Func<SPItem, bool>> expr = x => x["Foo"] == (DataTypes.Integer)"1";
+            var operand = operandBuilder.CreateValueOperandForStringBasedSyntax(((BinaryExpression)expr.Body).Right);
 
             Assert.That(operand, Is.InstanceOf<IntegerValueOperand>());
 
@@ -62,10 +90,32 @@ namespace Camlex.NET.UnitTests.Operands
         }
 
         [Test]
+        public void test_WHEN_value_is_null_casted_to_string_based_THEN_nullvalue_operand_is_created()
+        {
+            var operandBuilder = new OperandBuilder();
+            Expression<Func<SPItem, bool>> expr = x => x["Foo"] == (DataTypes.Text)null;
+            var operand = operandBuilder.CreateValueOperandForNativeSyntax(((BinaryExpression)expr.Body).Right);
+
+            Assert.That(operand, Is.InstanceOf<NullValueOperand>());
+        }
+
+        [Test]
         public void test_WHEN_variable_is_null_THEN_nullvalue_operand_is_created()
         {
             object o = null;
             Expression<Func<SPItem, bool>> expr = x => x["Foo"] == o;
+
+            var operandBuilder = new OperandBuilder();
+            var operand = operandBuilder.CreateValueOperandForNativeSyntax(((BinaryExpression)expr.Body).Right);
+
+            Assert.That(operand, Is.InstanceOf<NullValueOperand>());
+        }
+
+        [Test]
+        public void test_WHEN_variable_is_null_casted_to_string_based_THEN_nullvalue_operand_is_created()
+        {
+            object o = null;
+            Expression<Func<SPItem, bool>> expr = x => x["Foo"] == (DataTypes.Integer)o;
 
             var operandBuilder = new OperandBuilder();
             var operand = operandBuilder.CreateValueOperandForNativeSyntax(((BinaryExpression)expr.Body).Right);
@@ -84,6 +134,17 @@ namespace Camlex.NET.UnitTests.Operands
             Assert.That(operand, Is.InstanceOf<NullValueOperand>());
         }
 
+        [Test]
+        public void test_WHEN_method_call_result_is_null_and_casted_to_string_based_THEN_nullvalue_operand_is_created()
+        {
+            Expression<Func<SPItem, bool>> expr = x => x["Foo"] == (DataTypes.Integer)val1();
+
+            var operandBuilder = new OperandBuilder();
+            var operand = operandBuilder.CreateValueOperandForNativeSyntax(((BinaryExpression)expr.Body).Right);
+
+            Assert.That(operand, Is.InstanceOf<NullValueOperand>());
+        }
+
         object val1()
         {
             return null;
@@ -94,6 +155,18 @@ namespace Camlex.NET.UnitTests.Operands
         {
             Func<object> f = () => null;
             Expression<Func<SPItem, bool>> expr = x => x["Foo"] == f();
+
+            var operandBuilder = new OperandBuilder();
+            var operand = operandBuilder.CreateValueOperandForNativeSyntax(((BinaryExpression)expr.Body).Right);
+
+            Assert.That(operand, Is.InstanceOf<NullValueOperand>());
+        }
+
+        [Test]
+        public void test_WHEN_nested_method_call_result_is_null_and_casted_to_string_based_THEN_nullvalue_operand_is_created()
+        {
+            Func<object> f = () => null;
+            Expression<Func<SPItem, bool>> expr = x => x["Foo"] == (DataTypes.Text)f();
 
             var operandBuilder = new OperandBuilder();
             var operand = operandBuilder.CreateValueOperandForNativeSyntax(((BinaryExpression)expr.Body).Right);
