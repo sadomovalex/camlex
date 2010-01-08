@@ -15,6 +15,9 @@ namespace Camlex.NET.Interfaces
         IQuery OrderBy(Expression<Func<SPItem, object[]>> expr);
         IQuery GroupBy(Expression<Func<SPItem, object>> expr);
         IQuery GroupBy(Expression<Func<SPItem, object[]>> expr, bool? collapse, int? groupLimit);
+        IQuery GroupBy(Expression<Func<SPItem, object>> expr, bool? collapse, int? groupLimit);
+        IQuery GroupBy(Expression<Func<SPItem, object>> expr, int? groupLimit);
+        IQuery GroupBy(Expression<Func<SPItem, object>> expr, bool? collapse);
         XElement ToCaml();
         string ToString();
     }

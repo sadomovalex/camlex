@@ -101,6 +101,11 @@ namespace Camlex.NET.Interfaces
                     return new IntegerValueOperand((string)value);
                 }
             }
+            // for rest of generic types create generic string based operand
+            if (type.IsSubclassOf(typeof(BaseFieldType)))
+            {
+                return new GenericStringBasedValueOperand(type, (string) value);
+            }
             throw new NonSupportedOperandTypeException(type);
         }
     }
