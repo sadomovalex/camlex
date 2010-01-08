@@ -173,5 +173,19 @@ namespace Camlex.NET.UnitTests.Operands
 
             Assert.That(operand, Is.InstanceOf<NullValueOperand>());
         }
+
+        [Test]
+        public void test_WHEN_value_is_string_based_and_has_no_native_representation_THEN_generic_string_based_operand_is_created()
+        {
+            var operandBuilder = new OperandBuilder();
+            Expression<Func<SPItem, bool>> expr = x => x["User"] == (DataTypes.User)"John Smith";
+            var operand = operandBuilder.CreateValueOperandForStringBasedSyntax(((BinaryExpression)expr.Body).Right);
+
+            Assert.That(operand, Is.InstanceOf<GenericStringBasedValueOperand>());
+
+            var valueOperand = operand as GenericStringBasedValueOperand;
+            Assert.That(valueOperand.Type, Is.EqualTo(typeof(DataTypes.User)));
+            Assert.That(valueOperand.Value, Is.EqualTo("John Smith"));
+        }
     }
 }
