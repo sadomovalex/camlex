@@ -351,5 +351,43 @@ namespace Camlex.NET.UnitTests
 
             Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
         }
+
+        [Test]
+        public void test_THAT_expression_with_native_and_string_based_syntax_IS_translated_sucessfully()
+        {
+            var caml =
+                Camlex
+                    .Query()
+                        .Where(x => x["Id"] == (DataTypes.ContentTypeId)"0x05BB17ED9FB8406DA160511C12A3E0C2" ||
+                                    x["Description"] != null)
+                        .GroupBy(x => x["Title"], true)
+                        .OrderBy(x => new[] { x["_Author"], x["AuthoringDate"], x["AssignedTo"] as Camlex.Asc })
+                            .ToString();
+
+            var expected =
+                "<Query>" +
+                "   <Where>" +
+                "      <Or>" +
+                "         <Eq>" +
+                "            <FieldRef Name=\"Id\" />" +
+                "            <Value Type=\"ContentTypeId\">0x05BB17ED9FB8406DA160511C12A3E0C2</Value>" +
+                "         </Eq>" +
+                "         <IsNotNull>" +
+                "            <FieldRef Name=\"Description\" />" +
+                "         </IsNotNull>" +
+                "      </Or>" +
+                "   </Where>" +
+                "   <OrderBy>" +
+                "      <FieldRef Name=\"_Author\" />" +
+                "      <FieldRef Name=\"AuthoringDate\" />" +
+                "      <FieldRef Name=\"AssignedTo\" Ascending=\"True\" />" +
+                "   </OrderBy>" +
+                "   <GroupBy Collapse=\"True\">" +
+                "      <FieldRef Name=\"Title\" />" +
+                "   </GroupBy>" +
+                "</Query>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
     }
 }

@@ -56,6 +56,27 @@ namespace Camlex.NET.Impl
             return this;
         }
 
+        public IQuery GroupBy(Expression<Func<SPItem, object>> expr, bool? collapse, int? groupLimit)
+        {
+            var lambda = Expression.Lambda<Func<SPItem, object[]>>(
+                Expression.NewArrayInit(typeof(object), expr.Body), expr.Parameters);
+            return GroupBy(lambda, collapse, groupLimit);
+        }
+
+        public IQuery GroupBy(Expression<Func<SPItem, object>> expr, bool? collapse)
+        {
+            var lambda = Expression.Lambda<Func<SPItem, object[]>>(
+                Expression.NewArrayInit(typeof(object), expr.Body), expr.Parameters);
+            return GroupBy(lambda, collapse, null);
+        }
+
+        public IQuery GroupBy(Expression<Func<SPItem, object>> expr, int? groupLimit)
+        {
+            var lambda = Expression.Lambda<Func<SPItem, object[]>>(
+                Expression.NewArrayInit(typeof(object), expr.Body), expr.Parameters);
+            return GroupBy(lambda, null, groupLimit);
+        }
+
         public XElement ToCaml()
         {
             return new XElement(Tags.Query,
