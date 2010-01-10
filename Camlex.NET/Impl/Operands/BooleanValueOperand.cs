@@ -16,6 +16,7 @@ namespace Camlex.NET.Impl.Operands
         {
             if (!bool.TryParse(value, out this.value))
             {
+                // boolean operand can have 1 and 0 as parameter
                 if (!this.tryConvertViaInteger(value, out this.value))
                 {
                     throw new InvalidValueForOperandTypeException(value, this.Type);
