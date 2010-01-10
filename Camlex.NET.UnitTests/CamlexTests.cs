@@ -147,6 +147,29 @@ namespace Camlex.NET.UnitTests
         }
 
         [Test]
+        public void test_THAT_single_eq_expression_with_parameterless_method_call_which_returns_boolean_IS_translated_sucessfully()
+        {
+            string caml = Camlex.Query().Where(x => (bool)x["Foo"] == val2()).ToString();
+
+            string expected =
+                "<Query>" +
+                "   <Where>" +
+                "       <Eq>" +
+                "           <FieldRef Name=\"Foo\" />" +
+                "           <Value Type=\"Boolean\">False</Value>" +
+                "       </Eq>" +
+                "   </Where>" +
+                "</Query>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        private bool val2()
+        {
+            return false;
+        }
+
+        [Test]
         public void test_THAT_single_eq_expression_with_1_parameter_method_call_IS_translated_sucessfully()
         {
             string caml = Camlex.Query().Where(x => (int)x["Count"] == val2(456)).ToString();
