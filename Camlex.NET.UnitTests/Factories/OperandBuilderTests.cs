@@ -59,20 +59,6 @@ namespace Camlex.NET.UnitTests.Factories
         }
 
         [Test]
-        public void test_WHEN_value_is_note_THEN_note_operand_is_created()
-        {
-            var operandBuilder = new OperandBuilder();
-            Expression<Func<SPItem, bool>> expr = x => ((DataTypes.Note)x["Count"]).StartsWith("foo");
-            var operand = operandBuilder.CreateValueOperandForNativeSyntax(((MethodCallExpression)expr.Body).Arguments[0], typeof(DataTypes.Note));
-
-            Assert.That(operand, Is.InstanceOf<NoteValueOperand>());
-
-            var valueOperand = operand as NoteValueOperand;
-            Assert.That(valueOperand.Type, Is.EqualTo(typeof(DataTypes.Note)));
-            Assert.That(valueOperand.Value, Is.EqualTo("foo"));
-        }
-
-        [Test]
         public void test_WHEN_native_value_is_integer_THEN_integer_operand_is_created()
         {
             var operandBuilder = new OperandBuilder();
