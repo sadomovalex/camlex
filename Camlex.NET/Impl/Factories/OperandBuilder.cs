@@ -93,10 +93,6 @@ namespace Camlex.NET.Interfaces
             {
                 return new TextValueOperand((string)value);
             }
-            if (type == typeof(DataTypes.Note))
-            {
-                return new NoteValueOperand((string)value);
-            }
             // integer operand can be native or string based
             if (type == typeof(int) || type == typeof(DataTypes.Integer))
             {

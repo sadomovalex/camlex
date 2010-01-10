@@ -12,7 +12,7 @@ namespace Camlex.NET.UnitTests.Operations.BeginsWith
     class BeginsWithAnalyzerTests
     {
         [Test]
-        public void TestThatBeginsWithExpressionWithStringTypeIsValid()
+        public void test_THAT_beginswith_expression_with_string_type_IS_valid()
         {
             var analyzer = new BeginsWithAnalyzer(null, null);
             Expression<Func<SPItem, bool>> expr = x => ((string)x["Count"]).StartsWith("foo");
