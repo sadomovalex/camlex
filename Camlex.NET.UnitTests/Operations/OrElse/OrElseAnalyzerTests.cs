@@ -17,7 +17,8 @@ namespace Camlex.NET.UnitTests.Operations.OrElse
         {
             Expression<Func<SPItem, bool>> expr = x => (string) x["Email"] == "test@example.com" ||
                                                        (int) x["Count1"] == 1;
-            var analyzerFactory = new AnalyzerFactory(null, null);
+            var operandBuilder = new OperandBuilder();
+            var analyzerFactory = new AnalyzerFactory(operandBuilder, null);
             var analyzer = new OrElseAnalyzer(null, analyzerFactory);
             Assert.That(analyzer.IsValid(expr), Is.True);
         }
@@ -27,7 +28,8 @@ namespace Camlex.NET.UnitTests.Operations.OrElse
         {
             Expression<Func<SPItem, bool>> expr = x => (string)x["Email"] == "test@example.com" |
                                                        (int)x["Count1"] == 1;
-            var analyzerFactory = new AnalyzerFactory(null, null);
+            var operandBuilder = new OperandBuilder();
+            var analyzerFactory = new AnalyzerFactory(operandBuilder, null);
             var analyzer = new OrElseAnalyzer(null, analyzerFactory);
             Assert.That(analyzer.IsValid(expr), Is.False);
         }

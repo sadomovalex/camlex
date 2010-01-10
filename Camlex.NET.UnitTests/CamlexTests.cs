@@ -86,7 +86,7 @@ namespace Camlex.NET.UnitTests
         }
 
         [Test]
-        public void test_THAT_single_eq_expression_with_variable_IS_translated_sucessfully()
+        public void test_THAT_single_eq_expression_with_string_variable_IS_translated_sucessfully()
         {
             string val = "testValue";
             string caml = Camlex.Query().Where(x => (string)x["Title"] == val).ToString();
@@ -98,6 +98,24 @@ namespace Camlex.NET.UnitTests
                 "           <FieldRef Name=\"Title\" />" +
                 "           <Value Type=\"Text\">testValue</Value>" +
                 "       </Eq>" +
+                "   </Where>" +
+                "</Query>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        [Test]
+        public void test_THAT_single_eq_expression_with_string_variable_which_is_null_IS_translated_sucessfully()
+        {
+            string val = null;
+            string caml = Camlex.Query().Where(x => (string)x["Title"] == val).ToString();
+
+            string expected =
+                "<Query>" +
+                "   <Where>" +
+                "       <IsNull>" +
+                "           <FieldRef Name=\"Title\" />" +
+                "       </IsNull>" +
                 "   </Where>" +
                 "</Query>";
 
