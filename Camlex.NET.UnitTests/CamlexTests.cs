@@ -286,6 +286,30 @@ namespace Camlex.NET.UnitTests
         }
 
         [Test]
+        public void test_THAT_single_eq_expression_with_ternary_operator_IS_translated_sucessfully()
+        {
+            bool b = true;
+            string caml = Camlex.Query().Where(x => (string)x["Title"] == (b ? val3() : "foo")).ToString();
+
+            string expected =
+                "<Query>" +
+                "   <Where>" +
+                "       <Eq>" +
+                "           <FieldRef Name=\"Title\" />" +
+                "           <Value Type=\"Text\">val3</Value>" +
+                "       </Eq>" +
+                "   </Where>" +
+                "</Query>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        private string val3()
+        {
+            return "val3";
+        }
+
+        [Test]
         public void test_THAT_neq_or_isnull_expression_IS_translated_sucessfully()
         {
             string caml =

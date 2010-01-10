@@ -11,7 +11,7 @@ namespace Camlex.NET.UnitTests.Factories
     public class OperandBuilderTests
     {
         [Test]
-        public void test_THAT_field_ref_operand_IS_created_successfully()
+        public void test_THAT_field_ref_operand_from_indexer_with_constant_param_IS_created_successfully()
         {
             var operandBuilder = new OperandBuilder();
             Expression<Func<SPItem, bool>> expr = x => (string) x["Email"] == "test@example.com";
@@ -19,6 +19,16 @@ namespace Camlex.NET.UnitTests.Factories
             Assert.That(operand, Is.InstanceOf<FieldRefOperand>());
             Assert.That(((FieldRefOperand)operand).FieldName, Is.EqualTo("Email"));
         }
+
+//        [Test]
+//        public void test_THAT_field_ref_operand_from_indexer_with_variable_param_IS_created_successfully()
+//        {
+//            var operandBuilder = new OperandBuilder();
+//            Expression<Func<SPItem, bool>> expr = x => (string)x["Email"] == "test@example.com";
+//            var operand = operandBuilder.CreateFieldRefOperand(((BinaryExpression)expr.Body).Left);
+//            Assert.That(operand, Is.InstanceOf<FieldRefOperand>());
+//            Assert.That(((FieldRefOperand)operand).FieldName, Is.EqualTo("Email"));
+//        }
 
         [Test]
         public void test_WHEN_native_value_is_text_THEN_text_operand_is_created()
