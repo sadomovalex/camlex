@@ -123,6 +123,14 @@ namespace Camlex.NET.UnitTests
         }
 
         [Test]
+        [ExpectedException(typeof(NullValueOperandCannotBeTranslatedToCamlException))]
+        public void test_WHEN_eq_expression_with_null_variable_casted_to_string_based_syntax_THEN_exception_is_thrown()
+        {
+            string val = null;
+            Camlex.Query().Where(x => x["Title"] == (DataTypes.Text)val).ToString();
+        }
+
+        [Test]
         public void test_THAT_string_based_single_eq_expression_with_variable_IS_translated_sucessfully()
         {
             string val = "123";
