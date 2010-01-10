@@ -84,8 +84,10 @@ namespace Camlex.NET.Impl
             {
                 return false;
             }
-            // currently only constants are supported as indexer's argument
-            if (!(leftOperand.Arguments[0] is ConstantExpression))
+
+            // parameter of indexer can be constant, variable or method call
+            var argumentExpression = leftOperand.Arguments[0];
+            if (!this.isValidEvaluableExpression(argumentExpression))
             {
                 return false;
             }
@@ -107,7 +109,7 @@ namespace Camlex.NET.Impl
                 return false;
             }
 
-            // right expression should be constant, variable or method call
+            // right expression can be constant, variable or method call
             var rightExpression = body.Right;
             if (!this.isValidRightExpressionWithNativeSyntax(rightExpression))
             {
@@ -129,52 +131,58 @@ namespace Camlex.NET.Impl
                 return false;
             }
 
-            if (!(left.Operand is MethodCallExpression))
-            {
-                return false;
-            }
-            var leftOperand = left.Operand as MethodCallExpression;
-            if (leftOperand.Method.Name != ReflectionHelper.IndexerMethodName)
-            {
-                return false;
-            }
-
-            if (leftOperand.Arguments.Count != 1)
-            {
-                return false;
-            }
+//            if (!(left.Operand is MethodCallExpression))
+//            {
+//                return false;
+//            }
+//            var leftOperand = left.Operand as MethodCallExpression;
+//            if (leftOperand.Method.Name != ReflectionHelper.IndexerMethodName)
+//            {
+//                return false;
+//            }
+//
+//            if (leftOperand.Arguments.Count != 1)
+//            {
+//                return false;
+//            }
             // currently only constants are supported as indexer's argument
-            if (!(leftOperand.Arguments[0] is ConstantExpression))
-            {
-                return false;
-            }
-            return true;
+//            if (!(leftOperand.Arguments[0] is ConstantExpression))
+//            {
+//                return false;
+//            }
+//            return true;
+            return this.isValidLeftExpressionWithStringBasedSyntax(left.Operand);
         }
 
         // Right expression for native syntax should be constant, variable or method call
         protected bool isValidRightExpressionWithNativeSyntax(Expression rightExpression)
         {
-            if (rightExpression is ConstantExpression)
+            return this.isValidEvaluableExpression(rightExpression);
+        }
+
+        private bool isValidEvaluableExpression(Expression expr)
+        {
+            if (expr is ConstantExpression)
             {
                 return true;
             }
-            if (rightExpression is MemberExpression/* && ((MemberExpression)rightExpression).Expression is ConstantExpression*/)
+            if (expr is MemberExpression/* && ((MemberExpression)rightExpression).Expression is ConstantExpression*/)
             {
                 return true;
             }
-            if (rightExpression is MethodCallExpression/* && ((MethodCallExpression)rightExpression).Object is ConstantExpression*/)
+            if (expr is MethodCallExpression/* && ((MethodCallExpression)rightExpression).Object is ConstantExpression*/)
             {
                 return true;
             }
-            if (rightExpression is InvocationExpression)
+            if (expr is InvocationExpression)
             {
                 return true;
             }
-            if (rightExpression is NewExpression)
+            if (expr is NewExpression)
             {
                 return true;
             }
-            if (rightExpression is ConditionalExpression)
+            if (expr is ConditionalExpression)
             {
                 return true;
             }
