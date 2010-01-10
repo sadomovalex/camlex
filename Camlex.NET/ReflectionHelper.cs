@@ -10,6 +10,8 @@ namespace Camlex.NET
     public static class ReflectionHelper
     {
         public const string IndexerMethodName = "get_Item";
+        public const string StartsWithMethodName = "StartsWith";
+        public const string ContainsMethodName = "Contains";
 
 //        public static IEnumerable<ParameterExpression> GetExpressionParameters(ParameterInfo[] parameterInfos)
 //        {

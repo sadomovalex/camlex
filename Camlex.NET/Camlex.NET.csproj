@@ -63,6 +63,10 @@
     <Compile Include="Impl\Operands\BooleanValueOperand.cs" />
     <Compile Include="Impl\Operands\GenericStringBasedValueOperand.cs" />
     <Compile Include="Impl\Operands\NoteValueOperand.cs" />
+    <Compile Include="Impl\Operations\BeginsWith\BeginsWithAnalyzer.cs" />
+    <Compile Include="Impl\Operations\BeginsWith\BeginsWithOperation.cs" />
+    <Compile Include="Impl\Operations\Contains\ContainsAnalyzer.cs" />
+    <Compile Include="Impl\Operations\Contains\ContainsOperation.cs" />
     <Compile Include="Impl\Query.cs" />
     <Compile Include="Impl\UnaryExpressionBaseAnalyzer.cs" />
     <Compile Include="Impl\UnaryOperationBase.cs" />
