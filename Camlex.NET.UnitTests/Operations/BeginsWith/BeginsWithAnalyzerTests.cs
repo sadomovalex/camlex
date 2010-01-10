@@ -20,6 +20,16 @@ namespace Camlex.NET.UnitTests.Operations.BeginsWith
         }
 
         [Test]
+        public void test_THAT_beginswith_expression_with_string_variable_as_indexer_param_IS_valid()
+        {
+            var analyzer = new BeginsWithAnalyzer(null, null);
+
+            string val = "Count";
+            Expression<Func<SPItem, bool>> expr = x => ((string)x[val]).StartsWith("foo");
+            Assert.That(analyzer.IsValid(expr), Is.True);
+        }
+
+        [Test]
         public void TestThatBeginsWithExpressionWithCustomTextTypeIsValid()
         {
             var analyzer = new BeginsWithAnalyzer(null, null);
