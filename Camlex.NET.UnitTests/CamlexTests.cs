@@ -131,6 +131,25 @@ namespace Camlex.NET.UnitTests
         }
 
         [Test]
+        public void test_THAT_single_eq_expression_with_indexer_with_string_variable_IS_translated_sucessfully()
+        {
+            string val = "Title";
+            string caml = Camlex.Query().Where(x => (string)x[val] == val).ToString();
+
+            string expected =
+                "<Query>" +
+                "   <Where>" +
+                "       <Eq>" +
+                "           <FieldRef Name=\"Title\" />" +
+                "           <Value Type=\"Text\">Title</Value>" +
+                "       </Eq>" +
+                "   </Where>" +
+                "</Query>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        [Test]
         public void test_THAT_string_based_single_eq_expression_with_variable_IS_translated_sucessfully()
         {
             string val = "123";
