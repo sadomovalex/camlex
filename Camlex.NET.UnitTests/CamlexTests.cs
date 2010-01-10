@@ -169,6 +169,25 @@ namespace Camlex.NET.UnitTests
         }
 
         [Test]
+        public void test_THAT_string_based_single_eq_expression_with_variable_both_for_lvalue_and_rvalue_IS_translated_sucessfully()
+        {
+            string val = "Title";
+            string caml = Camlex.Query().Where(x => x[val] == (DataTypes.Note)val).ToString();
+
+            string expected =
+                "<Query>" +
+                "   <Where>" +
+                "       <Eq>" +
+                "           <FieldRef Name=\"Title\" />" +
+                "           <Value Type=\"Note\">Title</Value>" +
+                "       </Eq>" +
+                "   </Where>" +
+                "</Query>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        [Test]
         public void test_THAT_single_eq_expression_with_parameterless_method_call_IS_translated_sucessfully()
         {
             string caml = Camlex.Query().Where(x => (int)x["Count"] == val1()).ToString();
@@ -189,6 +208,29 @@ namespace Camlex.NET.UnitTests
         private int val1()
         {
             return 123;
+        }
+
+        [Test]
+        public void test_THAT_single_eq_expression_with_parameterless_method_call_both_for_lvalue_and_rvalue_IS_translated_sucessfully()
+        {
+            string caml = Camlex.Query().Where(x => (string)x[val4()] == val4()).ToString();
+
+            string expected =
+                "<Query>" +
+                "   <Where>" +
+                "       <Eq>" +
+                "           <FieldRef Name=\"Foo\" />" +
+                "           <Value Type=\"Text\">Foo</Value>" +
+                "       </Eq>" +
+                "   </Where>" +
+                "</Query>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        private string val4()
+        {
+            return "Foo";
         }
 
         [Test]
