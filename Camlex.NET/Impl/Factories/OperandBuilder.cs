@@ -18,7 +18,33 @@ namespace Camlex.NET.Interfaces
             {
                 expr = ((UnaryExpression)expr).Operand;
             }
-            var fieldName = ((ConstantExpression)((MethodCallExpression)expr).Arguments[0]).Value as string;
+            var methodCallExpression = expr as MethodCallExpression;
+            var argumentExpression = methodCallExpression.Arguments[0];
+            if (argumentExpression is ConstantExpression)
+            {
+                return this.createFieldRefOperandFromConstantExpression(argumentExpression as ConstantExpression);
+            }
+            return this.createFieldRefOperandFromNonConstantExpression(argumentExpression);
+        }
+
+        private IOperand createFieldRefOperandFromNonConstantExpression(Expression expr)
+        {
+            object value = this.evaluateExpression(expr);
+            if (value == null || value.GetType() != typeof(string))
+            {
+                throw new InvalidFieldNameForFieldRefException(value);
+            }
+            return this.createFieldRefOperand((string)value);
+        }
+
+        private IOperand createFieldRefOperandFromConstantExpression(ConstantExpression expr)
+        {
+            var fieldName = expr.Value as string;
+            return this.createFieldRefOperand(fieldName);
+        }
+
+        private IOperand createFieldRefOperand(string fieldName)
+        {
             return new FieldRefOperand(fieldName);
         }
 
@@ -56,10 +82,8 @@ namespace Camlex.NET.Interfaces
 
         private IOperand createValueOperandFromNonConstantExpression(Expression expr, Type explicitOperandType)
         {
-            // need to add Expression.Convert(..) in order to define Func<object>
-            var lambda = Expression.Lambda<Func<object>>(Expression.Convert(expr, typeof(object)));
-            object value = lambda.Compile().Invoke();
-            
+            object value = this.evaluateExpression(expr);
+
             // if operand type is not specified explicitly try to determine operand type from expression result
             var operandType = explicitOperandType;
             if (operandType == null)
@@ -68,6 +92,13 @@ namespace Camlex.NET.Interfaces
                 operandType = value != null ? value.GetType() : null;
             }
             return this.createValueOperand(operandType, value);
+        }
+
+        private object evaluateExpression(Expression expr)
+        {
+            // need to add Expression.Convert(..) in order to define Func<object>
+            var lambda = Expression.Lambda<Func<object>>(Expression.Convert(expr, typeof(object)));
+            return lambda.Compile().Invoke();
         }
 
         private IOperand createValueOperandFromConstantExpression(ConstantExpression expr, Type explicitOperandType)
