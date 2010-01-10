@@ -14,14 +14,10 @@ namespace Camlex.NET
     {
         static void Main(string[] args)
         {
-            Camlex.Query().Where(x => x["Count"] == (DataTypes.Text)foo())
-                    .OrderBy(x => x["field1"] as Camlex.Asc)
-                    .GroupBy(x => new[] { x["field1"], x["field2"] }, true, 10);
-        }
-
-        static string foo()
-        {
-            return "";
+            Camlex.Query().Where(x => x["Modified"] == (DataTypes.DateTime)"01.01.2010");
+            Camlex.Query().Where(x => (DateTime)x["Modified"] == new DateTime(2010, 01, 01));
+//                    .OrderBy(x => x["field1"] as Camlex.Asc)
+//                    .GroupBy(x => new[] { x["field1"], x["field2"] }, true, 10);
         }
     }
 }

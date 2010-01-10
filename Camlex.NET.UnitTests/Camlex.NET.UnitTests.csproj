@@ -65,8 +65,11 @@
     <Compile Include="GenericTranslatorTests.cs" />
     <Compile Include="Helpers\CamlComparer.cs" />
     <Compile Include="Operands\FieldRefOperandTests.cs" />
+    <Compile Include="Operands\GenericStringBasedValueOperandTests.cs" />
+    <Compile Include="Operands\IntegerValueOperandTests.cs" />
+    <Compile Include="Operands\NullValueOperandTests.cs" />
     <Compile Include="Operands\OperandBuilderTests.cs" />
-    <Compile Include="Operands\ValueOperandTests.cs" />
+    <Compile Include="Operands\TextValueOperandTests.cs" />
     <Compile Include="Operations\AndAlso\AndAlsoAnalyzerTests.cs" />
     <Compile Include="Operations\AndAlso\AndAlsoOperationTests.cs" />
     <Compile Include="Operations\Array\ArrayAnalyzerTest.cs" />
