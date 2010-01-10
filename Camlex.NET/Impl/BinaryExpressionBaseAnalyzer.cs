@@ -174,6 +174,10 @@ namespace Camlex.NET.Impl
             {
                 return true;
             }
+            if (rightExpression is ConditionalExpression)
+            {
+                return true;
+            }
             return false;
         }
 
