@@ -170,6 +170,10 @@ namespace Camlex.NET.Impl
             {
                 return true;
             }
+            if (rightExpression is NewExpression)
+            {
+                return true;
+            }
             return false;
         }
 
