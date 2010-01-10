@@ -77,7 +77,7 @@ namespace Camlex.NET.UnitTests.Factories
         }
 
         [Test]
-        public void test_WHEN_native_value_is_boolean_THEN_integer_operand_is_created()
+        public void test_WHEN_native_value_is_boolean_THEN_boolean_operand_is_created()
         {
             var operandBuilder = new OperandBuilder();
             Expression<Func<SPItem, bool>> expr = x => (bool)x["Foo"] == true;
@@ -91,7 +91,7 @@ namespace Camlex.NET.UnitTests.Factories
         }
 
         [Test]
-        public void test_WHEN_string_based_value_is_boolean_THEN_integer_operand_is_created()
+        public void test_WHEN_string_based_value_is_boolean_THEN_boolean_operand_is_created()
         {
             var operandBuilder = new OperandBuilder();
             Expression<Func<SPItem, bool>> expr = x => x["Foo"] == (DataTypes.Boolean)"false";
