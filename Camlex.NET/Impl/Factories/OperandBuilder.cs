@@ -101,6 +101,18 @@ namespace Camlex.NET.Interfaces
                     return new IntegerValueOperand((string)value);
                 }
             }
+            // boolean operand can be native or string based
+            if (type == typeof(bool) || type == typeof(DataTypes.Boolean))
+            {
+                if (value.GetType() == typeof(bool))
+                {
+                    return new BooleanValueOperand((bool)value);
+                }
+                if (value.GetType() == typeof(string))
+                {
+                    return new BooleanValueOperand((string)value);
+                }
+            }
             // for rest of generic types create generic string based operand
             if (type.IsSubclassOf(typeof(BaseFieldType)))
             {

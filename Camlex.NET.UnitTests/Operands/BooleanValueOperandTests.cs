@@ -37,7 +37,7 @@ namespace Camlex.NET.UnitTests.Operands
         public void test_WHEN_string_is_not_valid_boolean_THEN_exception_is_thrown()
         {
             var operand = new IntegerValueOperand("asd");
-            Assert.That(operand.Value, Is.EqualTo(false));
+            Assert.That(operand.Value, Is.False);
         }
     }
 }
