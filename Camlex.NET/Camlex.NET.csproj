@@ -61,6 +61,7 @@
     <Compile Include="Impl\CompositeExpressionBaseAnalyzer.cs" />
     <Compile Include="Impl\CompositeOperationBase.cs" />
     <Compile Include="Impl\Operands\BooleanValueOperand.cs" />
+    <Compile Include="Impl\Operands\DateTimeValueOperand.cs" />
     <Compile Include="Impl\Operands\GenericStringBasedValueOperand.cs" />
     <Compile Include="Impl\Operands\NoteValueOperand.cs" />
     <Compile Include="Impl\Operations\BeginsWith\BeginsWithAnalyzer.cs" />

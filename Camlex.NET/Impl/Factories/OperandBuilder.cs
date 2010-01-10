@@ -121,6 +121,18 @@ namespace Camlex.NET.Interfaces
                     return new BooleanValueOperand((string)value);
                 }
             }
+            // DateTime operand can be native or string based
+            if (type == typeof(DateTime) || type == typeof(DataTypes.DateTime))
+            {
+                if (value.GetType() == typeof(DateTime))
+                {
+                    return new DateTimeValueOperand((DateTime)value);
+                }
+                if (value.GetType() == typeof(string))
+                {
+                    return new DateTimeValueOperand((DateTime)value);
+                }
+            }
             // for rest of generic types create generic string based operand
             if (type.IsSubclassOf(typeof(BaseFieldType)))
             {
