@@ -338,6 +338,42 @@ namespace Camlex.NET.UnitTests
         }
 
         [Test]
+        public void TestThatBeginsWithExpressionIsTranslatedSucessfully()
+        {
+            var caml = Camlex.Query().Where(x => ((string)x["Count"]).StartsWith("foo")).ToString();
+
+            const string expected =
+                "<Query>" +
+                "   <Where>" +
+                "       <BeginsWith>" +
+                "           <FieldRef Name=\"Count\" />" +
+                "           <Value Type=\"Text\">foo</Value>" +
+                "       </BeginsWith>" +
+                "   </Where>" +
+                "</Query>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        [Test]
+        public void TestThatContainsExpressionIsTranslatedSucessfully()
+        {
+            var caml = Camlex.Query().Where(x => ((string)x["Count"]).Contains("foo")).ToString();
+
+            const string expected =
+                "<Query>" +
+                "   <Where>" +
+                "       <Contains>" +
+                "           <FieldRef Name=\"Count\" />" +
+                "           <Value Type=\"Text\">foo</Value>" +
+                "       </Contains>" +
+                "   </Where>" +
+                "</Query>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        [Test]
         public void test_THAT_single_orderby_expression_IS_translated_sucessfully()
         {
             var caml = Camlex.Query().OrderBy(x => x["field1"] as Camlex.Desc).ToString();

@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using Camlex.NET.Impl.Factories;
 using Camlex.NET.Impl.Operands;
 using Camlex.NET.Impl.Operations.AndAlso;
 using Camlex.NET.Impl.Operations.Array;
+using Camlex.NET.Impl.Operations.BeginsWith;
+using Camlex.NET.Impl.Operations.Contains;
 using Camlex.NET.Impl.Operations.Eq;
 using Camlex.NET.Impl.Operations.Geq;
 using Camlex.NET.Impl.Operations.Gt;
@@ -133,6 +132,24 @@ namespace Camlex.NET.UnitTests.Factories
             var analyzerFactory = new AnalyzerFactory(operandBuilder, null);
             var analyzer = analyzerFactory.Create(expr);
             Assert.That(analyzer, Is.InstanceOf<IsNullAnalyzer>());
+        }
+
+        [Test]
+        public void TestWhenExpressionIsBeginsWithThenBeginsWithAnalyzerIsCreated()
+        {
+            Expression<Func<SPItem, bool>> expr = x => ((string)x["Count"]).StartsWith("foo");
+            var analyzerFactory = new AnalyzerFactory(null, null);
+            var analyzer = analyzerFactory.Create(expr);
+            Assert.That(analyzer, Is.InstanceOf<BeginsWithAnalyzer>());
+        }
+
+        [Test]
+        public void TestWhenExpressionIsContainsThenContainsAnalyzerIsCreated()
+        {
+            Expression<Func<SPItem, bool>> expr = x => ((string)x["Count"]).Contains("foo");
+            var analyzerFactory = new AnalyzerFactory(null, null);
+            var analyzer = analyzerFactory.Create(expr);
+            Assert.That(analyzer, Is.InstanceOf<ContainsAnalyzer>());
         }
     }
 }
