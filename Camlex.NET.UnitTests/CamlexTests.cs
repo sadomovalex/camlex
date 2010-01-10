@@ -182,7 +182,7 @@ namespace Camlex.NET.UnitTests
                 "   <Where>" +
                 "       <Eq>" +
                 "           <FieldRef Name=\"Foo\" />" +
-                "           <Value Type=\"Boolean\">False</Value>" +
+                "           <Value Type=\"Boolean\">0</Value>" +
                 "       </Eq>" +
                 "   </Where>" +
                 "</Query>";
