@@ -5,6 +5,8 @@ using System.Linq.Expressions;
 using System.Text;
 using Camlex.NET.Impl.Operations.AndAlso;
 using Camlex.NET.Impl.Operations.Array;
+using Camlex.NET.Impl.Operations.BeginsWith;
+using Camlex.NET.Impl.Operations.Contains;
 using Camlex.NET.Impl.Operations.Eq;
 using Camlex.NET.Impl.Operations.Geq;
 using Camlex.NET.Impl.Operations.Gt;
@@ -91,6 +93,12 @@ namespace Camlex.NET.Impl.Factories
             {
                 return new NeqAnalyzer(this.operationResultBuilder, this.operandBuilder);
             }
+
+            var beginsWithAnalyzer = new BeginsWithAnalyzer(operationResultBuilder, operandBuilder);
+            if (beginsWithAnalyzer.IsValid(expr)) return beginsWithAnalyzer;
+
+            var containsAnalyzer = new ContainsAnalyzer(operationResultBuilder, operandBuilder);
+            if (containsAnalyzer.IsValid(expr)) return containsAnalyzer;
 
             throw new NonSupportedExpressionTypeException(exprType);
         }
