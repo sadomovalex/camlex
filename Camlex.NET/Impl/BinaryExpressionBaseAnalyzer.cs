@@ -91,7 +91,9 @@ namespace Camlex.NET.Impl
             {
                 return false;
             }
-            return true;
+
+            // type of argument expression should be string
+            return (argumentExpression.Type == typeof(string));
         }
 
         private bool isExpressionWithStringBasedSyntax(Expression rightExpression)

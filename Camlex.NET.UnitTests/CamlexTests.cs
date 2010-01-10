@@ -517,5 +517,12 @@ namespace Camlex.NET.UnitTests
 
             Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
         }
+
+        [Test]
+        [ExpectedException(typeof(NonSupportedExpressionException))]
+        public void test_WHEN_integer_indexer_param_is_used_THEN_exception_is_thrown()
+        {
+            string caml = Camlex.Query().Where(x => (string)x[1] == "testValue").ToString();
+        }
     }
 }
