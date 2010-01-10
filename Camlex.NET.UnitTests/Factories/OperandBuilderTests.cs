@@ -105,7 +105,7 @@ namespace Camlex.NET.UnitTests.Factories
         }
 
         [Test]
-        public void test_WHEN_value_is_null_THEN_nullvalue_operand_is_created()
+        public void test_WHEN_rvalue_is_null_THEN_nullvalue_operand_is_created()
         {
             var operandBuilder = new OperandBuilder();
             Expression<Func<SPItem, bool>> expr = x => x["Foo"] == null;
@@ -115,7 +115,17 @@ namespace Camlex.NET.UnitTests.Factories
         }
 
         [Test]
-        public void test_WHEN_value_is_null_casted_to_string_based_THEN_nullvalue_operand_is_created()
+        public void test_WHEN_rvalue_is_null_and_lvalue_is_casted_to_string_THEN_nullvalue_operand_is_created()
+        {
+            var operandBuilder = new OperandBuilder();
+            Expression<Func<SPItem, bool>> expr = x => (string)x["Foo"] == null;
+            var operand = operandBuilder.CreateValueOperandForNativeSyntax(((BinaryExpression)expr.Body).Right);
+
+            Assert.That(operand, Is.InstanceOf<NullValueOperand>());
+        }
+
+        [Test]
+        public void test_WHEN_rvalue_is_null_casted_to_string_based_THEN_nullvalue_operand_is_created()
         {
             var operandBuilder = new OperandBuilder();
             Expression<Func<SPItem, bool>> expr = x => x["Foo"] == (DataTypes.Text)null;
@@ -123,6 +133,16 @@ namespace Camlex.NET.UnitTests.Factories
 
             Assert.That(operand, Is.InstanceOf<NullValueOperand>());
         }
+
+//        [Test]
+//        public void test_WHEN_rvalue_is_null_casted_to_string_based_and_lvalue_is_casted_to_string_based_THEN_nullvalue_operand_is_created()
+//        {
+//            var operandBuilder = new OperandBuilder();
+//            Expression<Func<SPItem, bool>> expr = x => (DataTypes.Text)x["Foo"] == (DataTypes.Text)null;
+//            var operand = operandBuilder.CreateValueOperandForNativeSyntax(((BinaryExpression)expr.Body).Right);
+//
+//            Assert.That(operand, Is.InstanceOf<NullValueOperand>());
+//        }
 
         [Test]
         public void test_WHEN_variable_is_null_THEN_nullvalue_operand_is_created()

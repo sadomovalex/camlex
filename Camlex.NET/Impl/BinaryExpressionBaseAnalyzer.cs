@@ -53,11 +53,28 @@ namespace Camlex.NET.Impl
         private bool isValidExpressionWithStringBasedSyntax(BinaryExpression body)
         {
             // left operand for string based syntax should be indexer call
-            if (!(body.Left is MethodCallExpression))
+            var leftExpression = body.Left;
+            if (!this.isValidLeftExpressionWithStringBasedSyntax(leftExpression))
             {
                 return false;
             }
-            var leftOperand = body.Left as MethodCallExpression;
+
+            // right expression should be constant, variable or method call
+            var rightExpression = body.Right;
+            if (!this.isValidRightExpressionWithStringBasedSyntax(rightExpression))
+            {
+                return false;
+            }
+            return true;
+        }
+
+        protected bool isValidLeftExpressionWithStringBasedSyntax(Expression leftExpression)
+        {
+            if (!(leftExpression is MethodCallExpression))
+            {
+                return false;
+            }
+            var leftOperand = leftExpression as MethodCallExpression;
             if (leftOperand.Method.Name != ReflectionHelper.IndexerMethodName)
             {
                 return false;
@@ -69,13 +86,6 @@ namespace Camlex.NET.Impl
             }
             // currently only constants are supported as indexer's argument
             if (!(leftOperand.Arguments[0] is ConstantExpression))
-            {
-                return false;
-            }
-
-            // right expression should be constant, variable or method call
-            var rightExpression = body.Right;
-            if (!this.isValidRightExpressionWithStringBasedSyntax(rightExpression))
             {
                 return false;
             }
@@ -91,11 +101,28 @@ namespace Camlex.NET.Impl
         private bool isValidExpressionWithNativeSyntax(BinaryExpression body)
         {
             // left operand should be unary expression (Convert of indexer - like (string)x["foo"])
-            if (!(body.Left is UnaryExpression))
+            var leftExpression = body.Left;
+            if (!this.isValidLeftExpressionWithNativeSyntax(leftExpression))
             {
                 return false;
             }
-            var left = body.Left as UnaryExpression;
+
+            // right expression should be constant, variable or method call
+            var rightExpression = body.Right;
+            if (!this.isValidRightExpressionWithNativeSyntax(rightExpression))
+            {
+                return false;
+            }
+            return true;
+        }
+
+        protected bool isValidLeftExpressionWithNativeSyntax(Expression leftExpression)
+        {
+            if (!(leftExpression is UnaryExpression))
+            {
+                return false;
+            }
+            var left = leftExpression as UnaryExpression;
             
             if (left.NodeType != ExpressionType.Convert)
             {
@@ -118,13 +145,6 @@ namespace Camlex.NET.Impl
             }
             // currently only constants are supported as indexer's argument
             if (!(leftOperand.Arguments[0] is ConstantExpression))
-            {
-                return false;
-            }
-
-            // right expression should be constant, variable or method call
-            var rightExpression = body.Right;
-            if (!this.isValidRightExpressionWithNativeSyntax(rightExpression))
             {
                 return false;
             }

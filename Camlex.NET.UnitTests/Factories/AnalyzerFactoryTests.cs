@@ -30,7 +30,8 @@ namespace Camlex.NET.UnitTests.Factories
         public void test_WHEN_expression_is_eq_THEN_eq_analyzer_is_created()
         {
             Expression<Func<SPItem, bool>> expr = x => (int)x["Count"] == 1;
-            var analyzerFactory = new AnalyzerFactory(null, null);
+            var operandBuilder = new OperandBuilder();
+            var analyzerFactory = new AnalyzerFactory(operandBuilder, null);
             var analyzer = analyzerFactory.Create(expr);
             Assert.That(analyzer, Is.InstanceOf<EqAnalyzer>());
         }
@@ -39,7 +40,8 @@ namespace Camlex.NET.UnitTests.Factories
         public void test_WHEN_expression_is_neq_THEN_neq_analyzer_is_created()
         {
             Expression<Func<SPItem, bool>> expr = x => (int)x["Count"] != 1;
-            var analyzerFactory = new AnalyzerFactory(null, null);
+            var operandBuilder = new OperandBuilder();
+            var analyzerFactory = new AnalyzerFactory(operandBuilder, null);
             var analyzer = analyzerFactory.Create(expr);
             Assert.That(analyzer, Is.InstanceOf<NeqAnalyzer>());
         }
