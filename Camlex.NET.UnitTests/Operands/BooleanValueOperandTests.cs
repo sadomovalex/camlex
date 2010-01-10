@@ -33,10 +33,32 @@ namespace Camlex.NET.UnitTests.Operands
         }
 
         [Test]
-        [ExpectedException(typeof(InvalidValueForOperandTypeException))]
-        public void test_WHEN_string_is_not_valid_boolean_THEN_exception_is_thrown()
+        public void test_THAT_boolean_value_IS_successfully_created_from_valid_string3()
         {
-            var operand = new IntegerValueOperand("asd");
+            var operand = new BooleanValueOperand("1");
+            Assert.That(operand.Value, Is.True);
+        }
+
+        [Test]
+        public void test_THAT_boolean_value_IS_successfully_created_from_valid_string4()
+        {
+            var operand = new BooleanValueOperand("0");
+            Assert.That(operand.Value, Is.False);
+        }
+
+        [Test]
+        [ExpectedException(typeof(InvalidValueForOperandTypeException))]
+        public void test_WHEN_string_is_not_valid_boolean_THEN_exception_is_thrown1()
+        {
+            var operand = new BooleanValueOperand("asd");
+            Assert.That(operand.Value, Is.False);
+        }
+
+        [Test]
+        [ExpectedException(typeof(InvalidValueForOperandTypeException))]
+        public void test_WHEN_string_is_not_valid_boolean_THEN_exception_is_thrown2()
+        {
+            var operand = new BooleanValueOperand("2");
             Assert.That(operand.Value, Is.False);
         }
     }

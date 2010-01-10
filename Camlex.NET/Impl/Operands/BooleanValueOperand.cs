@@ -16,8 +16,30 @@ namespace Camlex.NET.Impl.Operands
         {
             if (!bool.TryParse(value, out this.value))
             {
-                throw new InvalidValueForOperandTypeException(value, this.Type);
+                if (!this.tryConvertViaInteger(value, out this.value))
+                {
+                    throw new InvalidValueForOperandTypeException(value, this.Type);
+                }
             }
+        }
+
+        private bool tryConvertViaInteger(string value, out bool result)
+        {
+            result = false;
+            try
+            {
+                int val = Convert.ToInt32(value);
+                if (val != 0 && val != 1)
+                {
+                    return false;
+                }
+                result = Convert.ToBoolean(val);
+            }
+            catch
+            {
+                return false;
+            }
+            return true;
         }
 
         public override XElement ToCaml()
