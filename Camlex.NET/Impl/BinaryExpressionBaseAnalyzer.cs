@@ -162,35 +162,6 @@ namespace Camlex.NET.Impl
             return this.isValidEvaluableExpression(rightExpression);
         }
 
-        private bool isValidEvaluableExpression(Expression expr)
-        {
-            if (expr is ConstantExpression)
-            {
-                return true;
-            }
-            if (expr is MemberExpression/* && ((MemberExpression)rightExpression).Expression is ConstantExpression*/)
-            {
-                return true;
-            }
-            if (expr is MethodCallExpression/* && ((MethodCallExpression)rightExpression).Object is ConstantExpression*/)
-            {
-                return true;
-            }
-            if (expr is InvocationExpression)
-            {
-                return true;
-            }
-            if (expr is NewExpression)
-            {
-                return true;
-            }
-            if (expr is ConditionalExpression)
-            {
-                return true;
-            }
-            return false;
-        }
-
         // Right expression for string based syntax should be constant, variable or method call
         protected bool isValidRightExpressionWithStringBasedSyntax(Expression rightExpression)
         {

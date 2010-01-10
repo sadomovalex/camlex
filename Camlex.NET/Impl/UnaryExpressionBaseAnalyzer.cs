@@ -48,7 +48,11 @@ namespace Camlex.NET.Impl
                 return false;
             }
             // currently only constants are supported as indexer's argument
-            if (!(objectExpression.Arguments[0] is ConstantExpression))
+//            if (!(objectExpression.Arguments[0] is ConstantExpression))
+//            {
+//                return false;
+//            }
+            if (!this.isValidEvaluableExpression(objectExpression.Arguments[0]))
             {
                 return false;
             }
@@ -61,23 +65,28 @@ namespace Camlex.NET.Impl
                 return false;
             }
             var parameterExpression = body.Arguments[0];
-            if (parameterExpression is ConstantExpression)
+//            if (parameterExpression is ConstantExpression)
+//            {
+//                return true;
+//            }
+//            if (parameterExpression is MemberExpression/* && ((MemberExpression)rightExpression).Expression is ConstantExpression*/)
+//            {
+//                return true;
+//            }
+//            if (parameterExpression is MethodCallExpression/* && ((MethodCallExpression)rightExpression).Object is ConstantExpression*/)
+//            {
+//                return true;
+//            }
+//            if (parameterExpression is InvocationExpression)
+//            {
+//                return true;
+//            }
+//            return false;
+            if (!this.isValidEvaluableExpression(parameterExpression))
             {
-                return true;
+                return false;
             }
-            if (parameterExpression is MemberExpression/* && ((MemberExpression)rightExpression).Expression is ConstantExpression*/)
-            {
-                return true;
-            }
-            if (parameterExpression is MethodCallExpression/* && ((MethodCallExpression)rightExpression).Object is ConstantExpression*/)
-            {
-                return true;
-            }
-            if (parameterExpression is InvocationExpression)
-            {
-                return true;
-            }
-            return false;
+            return true;
         }
 
         //private bool isExpressionBasedOnCustomTypes(Expression objectExpression)

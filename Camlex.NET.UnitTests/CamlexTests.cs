@@ -459,6 +459,63 @@ namespace Camlex.NET.UnitTests
         }
 
         [Test]
+        public void test_THAT_contains_expression_with_variable_as_indexer_param_IS_translated_sucessfully()
+        {
+            string val = "Count";
+            var caml = Camlex.Query().Where(x => ((string)x[val]).Contains("foo")).ToString();
+
+            const string expected =
+                "<Query>" +
+                "   <Where>" +
+                "       <Contains>" +
+                "           <FieldRef Name=\"Count\" />" +
+                "           <Value Type=\"Text\">foo</Value>" +
+                "       </Contains>" +
+                "   </Where>" +
+                "</Query>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        [Test]
+        public void test_THAT_contains_expression_with_variable_as_method_param_IS_translated_sucessfully()
+        {
+            string val = "foo";
+            var caml = Camlex.Query().Where(x => ((string)x["Count"]).Contains(val)).ToString();
+
+            const string expected =
+                "<Query>" +
+                "   <Where>" +
+                "       <Contains>" +
+                "           <FieldRef Name=\"Count\" />" +
+                "           <Value Type=\"Text\">foo</Value>" +
+                "       </Contains>" +
+                "   </Where>" +
+                "</Query>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        [Test]
+        public void test_THAT_contains_expression_with_ternary_operator_as_method_param_IS_translated_sucessfully()
+        {
+            bool b = true;
+            var caml = Camlex.Query().Where(x => ((string)x["Count"]).Contains(b ? "foo" : "bar")).ToString();
+
+            const string expected =
+                "<Query>" +
+                "   <Where>" +
+                "       <Contains>" +
+                "           <FieldRef Name=\"Count\" />" +
+                "           <Value Type=\"Text\">foo</Value>" +
+                "       </Contains>" +
+                "   </Where>" +
+                "</Query>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        [Test]
         public void test_THAT_single_orderby_expression_IS_translated_sucessfully()
         {
             var caml = Camlex.Query().OrderBy(x => x["field1"] as Camlex.Desc).ToString();
