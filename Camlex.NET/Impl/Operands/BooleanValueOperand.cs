@@ -22,9 +22,10 @@ namespace Camlex.NET.Impl.Operands
 
         public override XElement ToCaml()
         {
+            // 0 and 1 should be used instead True and False
             return
                 new XElement(Tags.Value, new XAttribute(Attributes.Type, this.TypeName),
-                    new XText(this.Value.ToString()));
+                    new XText((Convert.ToInt32(this.Value)).ToString()));
         }
     }
 }

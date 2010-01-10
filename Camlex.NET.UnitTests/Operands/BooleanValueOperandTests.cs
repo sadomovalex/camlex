@@ -15,7 +15,7 @@ namespace Camlex.NET.UnitTests.Operands
         {
             var operand = new BooleanValueOperand(true);
             string caml = operand.ToCaml().ToString();
-            Assert.That(caml, Is.EqualTo("<Value Type=\"Boolean\">True</Value>"));
+            Assert.That(caml, Is.EqualTo("<Value Type=\"Boolean\">1</Value>"));
         }
 
         [Test]
