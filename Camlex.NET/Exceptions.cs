@@ -53,4 +53,12 @@ namespace Camlex.NET
         {
         }
     }
+
+    public class InvalidFieldNameForFieldRefException : GenericException
+    {
+        public InvalidFieldNameForFieldRefException(object value) :
+            base(ErrorMessages.INVALID_FIELD_NAME_FOR_FIELD_REF_OPERAND, value)
+        {
+        }
+    }
 }
