@@ -13,6 +13,12 @@ namespace Camlex.NET
         }
     }
 
+    public class StringBasedFieldType : BaseFieldType
+    {
+        public bool Contains(string text) { return true; }
+        public bool StartsWith(string text) { return true; }
+    }
+
     // See http://msdn.microsoft.com/en-us/library/microsoft.sharepoint.spfieldtype.aspx
     public static class DataTypes
     {
@@ -37,11 +43,11 @@ namespace Camlex.NET
         public class MaxItems : BaseFieldType { }
         public class ModStat : BaseFieldType { }
         public class MultiChoice : BaseFieldType { }
-        public class Note : BaseFieldType { }
+        public class Note : StringBasedFieldType { }
         public class Number : BaseFieldType { }
         public class PageSeparator : BaseFieldType { }
         public class Recurrence : BaseFieldType { }
-        public class Text : BaseFieldType { }
+        public class Text : StringBasedFieldType { }
         public class ThreadIndex : BaseFieldType { }
         public class Threading : BaseFieldType { }
         public class URL : BaseFieldType { }
