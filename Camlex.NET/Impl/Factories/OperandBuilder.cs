@@ -10,6 +10,8 @@ namespace Camlex.NET.Interfaces
 {
     public class OperandBuilder : IOperandBuilder
     {
+        // ----- Field Ref Operand -----
+
         public IOperand CreateFieldRefOperand(Expression expr)
         {
             if (expr is UnaryExpression)
@@ -26,13 +28,15 @@ namespace Camlex.NET.Interfaces
             return new FieldRefOperandWithOrdering(fieldRefOperand, orderDirection);
         }
 
+        // ----- Value Operand -----
+
         public IOperand CreateValueOperandForNativeSyntax(Expression expr)
         {
             // determine operand type from expression result (specify null as explicitOperandType)
-            return createValueOperandForNativeSyntax(expr, null);
+            return CreateValueOperandForNativeSyntax(expr, null);
         }
 
-        private IOperand createValueOperandForNativeSyntax(Expression expr, Type explicitOperandType)
+        public IOperand CreateValueOperandForNativeSyntax(Expression expr, Type explicitOperandType)
         {
             if (expr is ConstantExpression)
             {
@@ -47,7 +51,7 @@ namespace Camlex.NET.Interfaces
             var internalExpression = ((UnaryExpression)((UnaryExpression)expr).Operand).Operand;
             // use conversion type as operand type (subclass of BaseFieldType should be used here)
             // because conversion operand has always string type for string based syntax
-            return this.createValueOperandForNativeSyntax(internalExpression, expr.Type);
+            return this.CreateValueOperandForNativeSyntax(internalExpression, expr.Type);
         }
 
         private IOperand createValueOperandFromNonConstantExpression(Expression expr, Type explicitOperandType)
@@ -88,6 +92,10 @@ namespace Camlex.NET.Interfaces
             if (type == typeof(string) || type == typeof(DataTypes.Text))
             {
                 return new TextValueOperand((string)value);
+            }
+            if (type == typeof(DataTypes.Note))
+            {
+                return new NoteValueOperand((string)value);
             }
             // integer operand can be native or string based
             if (type == typeof(int) || type == typeof(DataTypes.Integer))
