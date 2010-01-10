@@ -13,7 +13,7 @@ namespace Camlex.NET.Impl.Operations.Contains
 
         public override IOperationResult ToResult()
         {
-            var result = new XElement(Tags.Eq,
+            var result = new XElement(Tags.Contains,
                              fieldRefOperand.ToCaml(),
                              valueOperand.ToCaml());
             return operationResultBuilder.CreateResult(result);
