@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using Camlex.NET.Impl.Operands;
 using Camlex.NET.Interfaces;
 using Microsoft.SharePoint;
 using NUnit.Framework;
 
-namespace Camlex.NET.UnitTests.Operands
+namespace Camlex.NET.UnitTests.Factories
 {
     [TestFixture]
     public class OperandBuilderTests
@@ -189,3 +186,5 @@ namespace Camlex.NET.UnitTests.Operands
         }
     }
 }
+
+

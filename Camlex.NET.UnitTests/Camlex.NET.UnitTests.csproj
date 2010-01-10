@@ -60,15 +60,16 @@
   <ItemGroup>
     <Compile Include="CamlexTests.cs" />
     <Compile Include="Factories\AnalyzerFactoryTests.cs" />
+    <Compile Include="Factories\OperandBuilderTests.cs" />
     <Compile Include="Factories\OperationResultBuilderTests.cs" />
     <Compile Include="Factories\TranslatorFactoryTests.cs" />
     <Compile Include="GenericTranslatorTests.cs" />
     <Compile Include="Helpers\CamlComparer.cs" />
+    <Compile Include="Operands\BooleanValueOperandTests.cs" />
     <Compile Include="Operands\FieldRefOperandTests.cs" />
     <Compile Include="Operands\GenericStringBasedValueOperandTests.cs" />
     <Compile Include="Operands\IntegerValueOperandTests.cs" />
     <Compile Include="Operands\NullValueOperandTests.cs" />
-    <Compile Include="Operands\OperandBuilderTests.cs" />
     <Compile Include="Operands\TextValueOperandTests.cs" />
     <Compile Include="Operations\AndAlso\AndAlsoAnalyzerTests.cs" />
     <Compile Include="Operations\AndAlso\AndAlsoOperationTests.cs" />
