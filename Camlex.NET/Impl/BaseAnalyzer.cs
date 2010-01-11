@@ -22,31 +22,32 @@ namespace Camlex.NET.Impl
 
         protected bool isValidEvaluableExpression(Expression expr)
         {
-            if (expr is ConstantExpression)
-            {
-                return true;
-            }
-            if (expr is MemberExpression/* && ((MemberExpression)rightExpression).Expression is ConstantExpression*/)
-            {
-                return true;
-            }
-            if (expr is MethodCallExpression/* && ((MethodCallExpression)rightExpression).Object is ConstantExpression*/)
-            {
-                return true;
-            }
-            if (expr is InvocationExpression)
-            {
-                return true;
-            }
-            if (expr is NewExpression)
-            {
-                return true;
-            }
-            if (expr is ConditionalExpression)
-            {
-                return true;
-            }
-            return false;
+//            if (expr is ConstantExpression)
+//            {
+//                return true;
+//            }
+//            if (expr is MemberExpression/* && ((MemberExpression)rightExpression).Expression is ConstantExpression*/)
+//            {
+//                return true;
+//            }
+//            if (expr is MethodCallExpression/* && ((MethodCallExpression)rightExpression).Object is ConstantExpression*/)
+//            {
+//                return true;
+//            }
+//            if (expr is InvocationExpression)
+//            {
+//                return true;
+//            }
+//            if (expr is NewExpression)
+//            {
+//                return true;
+//            }
+//            if (expr is ConditionalExpression)
+//            {
+//                return true;
+//            }
+//            return false;
+            return (!expr.Type.IsSubclassOf(typeof(BaseFieldType)));
         }
     }
 }
