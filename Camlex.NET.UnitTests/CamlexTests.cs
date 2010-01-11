@@ -543,6 +543,32 @@ namespace Camlex.NET.UnitTests
         }
 
         [Test]
+        public void test_THAT_contains_and_isnotnull_expression_IS_translated_sucessfully()
+        {
+            var caml =
+                Camlex.Query()
+                    .Where(x => ((string)x["Title"]).StartsWith("Task") && x["Status"] != null)
+                            .ToString();
+
+            const string expected =
+                "<Query>" +
+                "   <Where>" +
+                "       <And>" +
+                "           <BeginsWith>" +
+                "               <FieldRef Name=\"Title\" />" +
+                "               <Value Type=\"Text\">Task</Value>" +
+                "           </BeginsWith>" +
+                "           <IsNotNull>" +
+                "               <FieldRef Name=\"Status\" />" +
+                "           </IsNotNull>" +
+                "       </And>" +
+                "   </Where>" +
+                "</Query>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        [Test]
         public void test_THAT_single_orderby_expression_IS_translated_sucessfully()
         {
             var caml = Camlex.Query().OrderBy(x => x["field1"] as Camlex.Desc).ToString();
