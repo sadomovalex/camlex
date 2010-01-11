@@ -234,29 +234,6 @@ namespace Camlex.NET.UnitTests
         }
 
         [Test]
-        public void test_THAT_single_eq_expression_with_parameterless_method_call_which_returns_object_IS_translated_sucessfully()
-        {
-            string caml = Camlex.Query().Where(x => (string)x[(string)val5()] == (string)val5()).ToString();
-
-            string expected =
-                "<Query>" +
-                "   <Where>" +
-                "       <Eq>" +
-                "           <FieldRef Name=\"Foo\" />" +
-                "           <Value Type=\"Text\">Foo</Value>" +
-                "       </Eq>" +
-                "   </Where>" +
-                "</Query>";
-
-            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
-        }
-
-        private object val5()
-        {
-            return "Foo";
-        }
-
-        [Test]
         public void test_THAT_single_eq_expression_with_parameterless_method_call_which_returns_boolean_IS_translated_sucessfully()
         {
             string caml = Camlex.Query().Where(x => (bool)x["Foo"] == val2()).ToString();
@@ -698,6 +675,29 @@ namespace Camlex.NET.UnitTests
         public void test_WHEN_integer_indexer_param_is_used_THEN_exception_is_thrown()
         {
             string caml = Camlex.Query().Where(x => (string)x[1] == "testValue").ToString();
+        }
+
+        [Test]
+        public void test_THAT_single_eq_expression_with_arbitrary_expressions_IS_translated_sucessfully()
+        {
+            string caml = Camlex.Query().Where(x => (string)x[(string)val5()] == "1" + 2.ToString()).ToString();
+
+            string expected =
+                "<Query>" +
+                "   <Where>" +
+                "       <Eq>" +
+                "           <FieldRef Name=\"Foo\" />" +
+                "           <Value Type=\"Text\">Foo</Value>" +
+                "       </Eq>" +
+                "   </Where>" +
+                "</Query>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        private object val5()
+        {
+            return "Foo";
         }
     }
 }
