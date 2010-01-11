@@ -28,7 +28,7 @@ namespace Camlex.NET.Impl.Operands
                 new XElement(Tags.Value,
                     new XAttribute(Attributes.Type, TypeName),
                     new XAttribute(Attributes.IncludeTimeValue, true.ToString()),
-                    new XText(Value.ToString()));
+                    new XText(Value.ToString("s")));
         }
     }
 }

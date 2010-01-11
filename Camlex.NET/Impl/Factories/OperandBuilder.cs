@@ -157,7 +157,7 @@ namespace Camlex.NET.Interfaces
                 }
                 if (value.GetType() == typeof(string))
                 {
-                    return new DateTimeValueOperand((DateTime)value);
+                    return new DateTimeValueOperand((string)value);
                 }
             }
             // for rest of generic types create generic string based operand

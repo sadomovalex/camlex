@@ -8,14 +8,14 @@ using System.Xml.Linq;
 using Microsoft.SharePoint;
 
 
-namespace Camlex.NET
+namespace Camlex.NET.ConsoleTest
 {
     class Program
     {
         static void Main(string[] args)
         {
-            Camlex.Query().Where(x => (DateTime)x["Modified"] == new DateTime(2010, 01, 01));
-            //Camlex.Query().Where(x => x["Modified"] == (DataTypes.DateTime)"01.01.2010");
+            Camlex.Query().Where(x => (DateTime)x["Modified"] == new DateTime(2010, 1, 2, 3, 4, 5).IncludeTimeValue());
+            Camlex.Query().Where(x => x["Modified"] == ((DataTypes.DateTime)"02.01.2010 03:04:05").IncludeTimeValue());
 
             //var param = "foo";
             //Camlex.Query().Where(x => ((string)x["Count"]).Contains(param));
