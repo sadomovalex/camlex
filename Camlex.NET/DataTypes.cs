@@ -32,7 +32,7 @@ namespace Camlex.NET
         public class Counter : BaseFieldType { }
         public class CrossProjectLink : BaseFieldType { }
         public class Currency : BaseFieldType { }
-        public class DateTime : BaseFieldType { }
+        public class DateTime : BaseFieldType { public DateTime IncludeTimeValue() { return this; } }
         public class Error : BaseFieldType { }
         public class File : BaseFieldType { }
         public class GridChoice : BaseFieldType { }
