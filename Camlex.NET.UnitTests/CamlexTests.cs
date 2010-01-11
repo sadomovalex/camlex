@@ -687,7 +687,7 @@ namespace Camlex.NET.UnitTests
                 "   <Where>" +
                 "       <Eq>" +
                 "           <FieldRef Name=\"Foo\" />" +
-                "           <Value Type=\"Text\">Foo</Value>" +
+                "           <Value Type=\"Text\">12</Value>" +
                 "       </Eq>" +
                 "   </Where>" +
                 "</Query>";
