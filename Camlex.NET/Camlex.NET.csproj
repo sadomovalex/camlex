@@ -55,6 +55,7 @@
     <Compile Include="DataTypes.cs" />
     <Compile Include="ErrorMessages.cs" />
     <Compile Include="Exceptions.cs" />
+    <Compile Include="ExpressionHelper.cs" />
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="Impl\BaseAnalyzer.cs" />
     <Compile Include="Impl\BinaryExpressionBaseAnalyzer.cs" />

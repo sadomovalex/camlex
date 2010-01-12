@@ -73,8 +73,17 @@ namespace Camlex.NET.Interfaces
 
         public IOperand CreateValueOperandForStringBasedSyntax(Expression expr)
         {
+            var newExpr = ExpressionHelper.RemoveIncludeTimeValueMethodCallIfAny(expr);
+
             // retrieve internal native expression from string based syntax
-            var internalExpression = ((UnaryExpression)((UnaryExpression)expr).Operand).Operand;
+            var internalExpression = ((UnaryExpression)((UnaryExpression)newExpr).Operand).Operand;
+
+            if (internalExpression is ConstantExpression)
+            {
+                // use conversion type as operand type (subclass of BaseFieldType should be used here)
+                // because conversion operand has always string type for string based syntax
+                return this.createValueOperand(newExpr.Type, ((ConstantExpression)internalExpression).Value, expr);
+            }
             // use conversion type as operand type (subclass of BaseFieldType should be used here)
             // because conversion operand has always string type for string based syntax
             return this.CreateValueOperandForNativeSyntax(internalExpression, expr.Type);
@@ -91,7 +100,7 @@ namespace Camlex.NET.Interfaces
                 // value can be null
                 operandType = value != null ? value.GetType() : null;
             }
-            return this.createValueOperand(operandType, value);
+            return this.createValueOperand(operandType, value, expr);
         }
 
         private object evaluateExpression(Expression expr)
@@ -109,10 +118,10 @@ namespace Camlex.NET.Interfaces
             {
                 operandType = expr.Type;
             }
-            return this.createValueOperand(operandType, expr.Value);
+            return this.createValueOperand(operandType, expr.Value, expr);
         }
 
-        private IOperand createValueOperand(Type type, object value)
+        private IOperand createValueOperand(Type type, object value, Expression expr)
         {
             // it is important to have check on NullValueOperand on 1st place
             if (value == null)
@@ -151,13 +160,15 @@ namespace Camlex.NET.Interfaces
             // DateTime operand can be native or string based
             if (type == typeof(DateTime) || type == typeof(DataTypes.DateTime))
             {
+                var includeTimeValue = ExpressionHelper.IncludeTimeValue(expr);
+
                 if (value.GetType() == typeof(DateTime))
                 {
-                    return new DateTimeValueOperand((DateTime)value);
+                    return new DateTimeValueOperand((DateTime)value, includeTimeValue);
                 }
                 if (value.GetType() == typeof(string))
                 {
-                    return new DateTimeValueOperand((string)value);
+                    return new DateTimeValueOperand((string)value, includeTimeValue);
                 }
             }
             // for rest of generic types create generic string based operand

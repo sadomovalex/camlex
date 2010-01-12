@@ -98,6 +98,9 @@ namespace Camlex.NET.Impl
 
         private bool isExpressionWithStringBasedSyntax(Expression rightExpression)
         {
+            // it is for case when right expression is a method call to IncludeTimeValue method
+            rightExpression = ExpressionHelper.RemoveIncludeTimeValueMethodCallIfAny(rightExpression);
+
             return (rightExpression.NodeType == ExpressionType.Convert &&
                 rightExpression.Type.IsSubclassOf(typeof(BaseFieldType)));
         }
@@ -165,6 +168,9 @@ namespace Camlex.NET.Impl
         // Right expression for string based syntax should be constant, variable or method call
         protected bool isValidRightExpressionWithStringBasedSyntax(Expression rightExpression)
         {
+            // it is for case when right expression is a method call to IncludeTimeValue method
+            rightExpression = ExpressionHelper.RemoveIncludeTimeValueMethodCallIfAny(rightExpression);
+
             // 1st convertion is conversion to specific subclass of BaseFieldType
             if (!(rightExpression is UnaryExpression))
             {

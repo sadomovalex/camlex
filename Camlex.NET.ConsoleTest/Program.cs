@@ -14,7 +14,9 @@ namespace Camlex.NET.ConsoleTest
     {
         static void Main(string[] args)
         {
-            Camlex.Query().Where(x => (DateTime)x["Modified"] == new DateTime(2010, 1, 2, 3, 4, 5).IncludeTimeValue());
+            //Camlex.Query().Where(x => (DateTime)x["Modified"] == new DateTime(2010, 1, 2, 3, 4, 5));
+            //Camlex.Query().Where(x => (DateTime)x["Modified"] == new DateTime(2010, 1, 2, 3, 4, 5).IncludeTimeValue());
+            //Camlex.Query().Where(x => x["Modified"] == ((DataTypes.DateTime)"02.01.2010 03:04:05"));
             Camlex.Query().Where(x => x["Modified"] == ((DataTypes.DateTime)"02.01.2010 03:04:05").IncludeTimeValue());
 
             //var param = "foo";
