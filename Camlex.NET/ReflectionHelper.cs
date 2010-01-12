@@ -12,6 +12,7 @@ namespace Camlex.NET
         public const string IndexerMethodName = "get_Item";
         public const string StartsWithMethodName = "StartsWith";
         public const string ContainsMethodName = "Contains";
+        public const string IncludeTimeValue = "IncludeTimeValue";
 
 //        public static IEnumerable<ParameterExpression> GetExpressionParameters(ParameterInfo[] parameterInfos)
 //        {
