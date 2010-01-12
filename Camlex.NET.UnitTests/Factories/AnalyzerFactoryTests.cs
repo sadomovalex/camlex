@@ -135,7 +135,7 @@ namespace CamlexNET.UnitTests.Factories
         }
 
         [Test]
-        public void TestWhenExpressionIsBeginsWithThenBeginsWithAnalyzerIsCreated()
+        public void test_WHEN_expression_IS_beginswith_THEN_beginswith_analyzer_IS_created()
         {
             Expression<Func<SPItem, bool>> expr = x => ((string)x["Count"]).StartsWith("foo");
             var analyzerFactory = new AnalyzerFactory(null, null);
@@ -144,7 +144,7 @@ namespace CamlexNET.UnitTests.Factories
         }
 
         [Test]
-        public void TestWhenExpressionIsContainsThenContainsAnalyzerIsCreated()
+        public void test_WHEN_expression_IS_contains_THEN_contains_analyzer_IS_created()
         {
             Expression<Func<SPItem, bool>> expr = x => ((string)x["Count"]).Contains("foo");
             var analyzerFactory = new AnalyzerFactory(null, null);

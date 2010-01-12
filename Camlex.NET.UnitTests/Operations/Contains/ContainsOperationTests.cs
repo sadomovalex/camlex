@@ -12,7 +12,7 @@ namespace CamlexNET.UnitTests.Operations.Contains
     public class ContainsOperationTests
     {
         [Test]
-        public void TestThatContainsOperationIsRenderedToCamlProperly()
+        public void test_THAT_contains_operation_IS_rendered_to_caml_properly()
         {
             // arrange
             var fieldRefOperandStub = MockRepository.GenerateStub<FieldRefOperand>("");

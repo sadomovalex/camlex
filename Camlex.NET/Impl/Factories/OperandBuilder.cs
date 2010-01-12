@@ -65,11 +65,16 @@ namespace CamlexNET.Impl.Factories
 
         public IOperand CreateValueOperandForNativeSyntax(Expression expr, Type explicitOperandType)
         {
+            return CreateValueOperandForNativeSyntax(expr, explicitOperandType, expr);
+        }
+
+        private IOperand CreateValueOperandForNativeSyntax(Expression expr, Type explicitOperandType, Expression sourceExpr)
+        {
             if (expr is ConstantExpression)
             {
-                return this.createValueOperandFromConstantExpression(expr as ConstantExpression, explicitOperandType);
+                return this.createValueOperandFromConstantExpression(expr as ConstantExpression, explicitOperandType, sourceExpr);
             }
-            return this.createValueOperandFromNonConstantExpression(expr, explicitOperandType);
+            return this.createValueOperandFromNonConstantExpression(expr, explicitOperandType, sourceExpr);
         }
 
         public IOperand CreateValueOperandForStringBasedSyntax(Expression expr)
@@ -78,19 +83,12 @@ namespace CamlexNET.Impl.Factories
 
             // retrieve internal native expression from string based syntax
             var internalExpression = ((UnaryExpression)((UnaryExpression)newExpr).Operand).Operand;
-
-            if (internalExpression is ConstantExpression)
-            {
-                // use conversion type as operand type (subclass of BaseFieldType should be used here)
-                // because conversion operand has always string type for string based syntax
-                return this.createValueOperand(newExpr.Type, ((ConstantExpression)internalExpression).Value, expr);
-            }
             // use conversion type as operand type (subclass of BaseFieldType should be used here)
             // because conversion operand has always string type for string based syntax
-            return this.CreateValueOperandForNativeSyntax(internalExpression, expr.Type);
+            return this.CreateValueOperandForNativeSyntax(internalExpression, newExpr.Type, expr);
         }
 
-        private IOperand createValueOperandFromNonConstantExpression(Expression expr, Type explicitOperandType)
+        private IOperand createValueOperandFromNonConstantExpression(Expression expr, Type explicitOperandType, Expression sourceExpr)
         {
             object value = this.evaluateExpression(expr);
 
@@ -101,7 +99,7 @@ namespace CamlexNET.Impl.Factories
                 // value can be null
                 operandType = value != null ? value.GetType() : null;
             }
-            return this.createValueOperand(operandType, value, expr);
+            return this.createValueOperand(operandType, value, sourceExpr);
         }
 
         private object evaluateExpression(Expression expr)
@@ -111,7 +109,7 @@ namespace CamlexNET.Impl.Factories
             return lambda.Compile().Invoke();
         }
 
-        private IOperand createValueOperandFromConstantExpression(ConstantExpression expr, Type explicitOperandType)
+        private IOperand createValueOperandFromConstantExpression(ConstantExpression expr, Type explicitOperandType, Expression sourceExpr)
         {
             // if operand type is not specified explicitly try to determine operand type from expression type
             var operandType = explicitOperandType;
@@ -119,7 +117,7 @@ namespace CamlexNET.Impl.Factories
             {
                 operandType = expr.Type;
             }
-            return this.createValueOperand(operandType, expr.Value, expr);
+            return this.createValueOperand(operandType, expr.Value, sourceExpr);
         }
 
         private IOperand createValueOperand(Type type, object value, Expression expr)

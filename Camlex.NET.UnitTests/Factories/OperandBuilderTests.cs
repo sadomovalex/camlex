@@ -106,6 +106,66 @@ namespace CamlexNET.UnitTests.Factories
         }
 
         [Test]
+        public void test_WHEN_native_value_is_datetime_THEN_datetime_operand_is_created()
+        {
+            var operandBuilder = new OperandBuilder();
+            Expression<Func<SPItem, bool>> expr = x => (DateTime)x["Foo"] == new DateTime(2010, 1, 2, 3, 4, 5);
+            var operand = operandBuilder.CreateValueOperandForNativeSyntax(((BinaryExpression)expr.Body).Right);
+
+            Assert.That(operand, Is.InstanceOf<DateTimeValueOperand>());
+
+            var valueOperand = operand as DateTimeValueOperand;
+            Assert.That(valueOperand.Type, Is.EqualTo(typeof(DataTypes.DateTime)));
+            Assert.That(valueOperand.Value, Is.EqualTo(new DateTime(2010, 1, 2, 3, 4, 5)));
+            Assert.That(valueOperand.IncludeTimeValue, Is.False);
+        }
+
+        [Test]
+        public void test_WHEN_native_value_is_datetime_with_includetimevalue_THEN_datetime_operand_is_created()
+        {
+            var operandBuilder = new OperandBuilder();
+            Expression<Func<SPItem, bool>> expr = x => (DateTime)x["Foo"] == new DateTime(2010, 1, 2, 3, 4, 5).IncludeTimeValue();
+            var operand = operandBuilder.CreateValueOperandForNativeSyntax(((BinaryExpression)expr.Body).Right);
+
+            Assert.That(operand, Is.InstanceOf<DateTimeValueOperand>());
+
+            var valueOperand = operand as DateTimeValueOperand;
+            Assert.That(valueOperand.Type, Is.EqualTo(typeof(DataTypes.DateTime)));
+            Assert.That(valueOperand.Value, Is.EqualTo(new DateTime(2010, 1, 2, 3, 4, 5)));
+            Assert.That(valueOperand.IncludeTimeValue, Is.True);
+        }
+
+        [Test]
+        public void test_WHEN_string_based_value_is_datetime_THEN_datetime_operand_is_created()
+        {
+            var operandBuilder = new OperandBuilder();
+            Expression<Func<SPItem, bool>> expr = x => x["Modified"] == ((DataTypes.DateTime)"02.01.2010 03:04:05");
+            var operand = operandBuilder.CreateValueOperandForStringBasedSyntax(((BinaryExpression)expr.Body).Right);
+
+            Assert.That(operand, Is.InstanceOf<DateTimeValueOperand>());
+
+            var valueOperand = operand as DateTimeValueOperand;
+            Assert.That(valueOperand.Type, Is.EqualTo(typeof(DataTypes.DateTime)));
+            Assert.That(valueOperand.Value, Is.EqualTo(new DateTime(2010, 1, 2, 3, 4, 5)));
+            Assert.That(valueOperand.IncludeTimeValue, Is.False);
+        }
+
+        [Test]
+        public void test_WHEN_string_based_value_is_datetime_with_includedatetime_THEN_datetime_operand_is_created()
+        {
+            var operandBuilder = new OperandBuilder();
+            Expression<Func<SPItem, bool>> expr = x => x["Modified"] == ((DataTypes.DateTime)"02.01.2010 03:04:05").IncludeTimeValue();
+            var operand = operandBuilder.CreateValueOperandForStringBasedSyntax(((BinaryExpression)expr.Body).Right);
+
+            Assert.That(operand, Is.InstanceOf<DateTimeValueOperand>());
+
+            var valueOperand = operand as DateTimeValueOperand;
+            Assert.That(valueOperand.Type, Is.EqualTo(typeof(DataTypes.DateTime)));
+            Assert.That(valueOperand.Value, Is.EqualTo(new DateTime(2010, 1, 2, 3, 4, 5)));
+            Assert.That(valueOperand.IncludeTimeValue, Is.True);
+        }
+
+        [Test]
         public void test_WHEN_native_value_is_boolean_THEN_boolean_operand_is_created()
         {
             var operandBuilder = new OperandBuilder();

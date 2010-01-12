@@ -66,6 +66,7 @@
     <Compile Include="GenericTranslatorTests.cs" />
     <Compile Include="Helpers\CamlComparer.cs" />
     <Compile Include="Operands\BooleanValueOperandTests.cs" />
+    <Compile Include="Operands\DateTimeValueOperandTests.cs" />
     <Compile Include="Operands\FieldRefOperandTests.cs" />
     <Compile Include="Operands\GenericStringBasedValueOperandTests.cs" />
     <Compile Include="Operands\IntegerValueOperandTests.cs" />

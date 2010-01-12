@@ -12,7 +12,7 @@ namespace CamlexNET.UnitTests.Operations.Contains
     public class ContainsAnalyzerTests
     {
         [Test]
-        public void TestThatContainsExpressionWithStringTypeIsValid()
+        public void test_THAT_contains_expression_with_string_type_IS_valid()
         {
             var analyzer = new ContainsAnalyzer(null, null);
             Expression<Func<SPItem, bool>> expr = x => ((string)x["Count"]).Contains("foo");
@@ -20,7 +20,7 @@ namespace CamlexNET.UnitTests.Operations.Contains
         }
 
         [Test]
-        public void TestThatContainsExpressionWithCustomTextTypeIsValid()
+        public void test_THAT_contains_expression_with_custom_text_type_IS_valid()
         {
             var analyzer = new ContainsAnalyzer(null, null);
             Expression<Func<SPItem, bool>> expr = x => ((DataTypes.Text)x["Count"]).Contains("foo");
@@ -28,7 +28,7 @@ namespace CamlexNET.UnitTests.Operations.Contains
         }
 
         [Test]
-        public void TestThatContainsExpressionWithCustomNoteTypeIsValid()
+        public void test_THAT_contains_expression_with_custom_note_type_IS_valid()
         {
             var analyzer = new ContainsAnalyzer(null, null);
             Expression<Func<SPItem, bool>> expr = x => ((DataTypes.Note)x["Count"]).Contains("foo");
@@ -36,7 +36,7 @@ namespace CamlexNET.UnitTests.Operations.Contains
         }
 
         [Test]
-        public void TestThatContainsExpressionWithStringTypeAndVariableIsValid()
+        public void test_THAT_contains_expression_with_string_type_and_variable_IS_valid()
         {
             var analyzer = new ContainsAnalyzer(null, null);
             var stringVar = "Blah-blah-blah";
@@ -45,7 +45,7 @@ namespace CamlexNET.UnitTests.Operations.Contains
         }
 
         [Test]
-        public void TestThatContainsExpressionWithCustomTextTypeAndVariableIsValid()
+        public void test_THAT_contains_expression_with_custom_text_type_and_variable_IS_valid()
         {
             var analyzer = new ContainsAnalyzer(null, null);
             var stringVar = "Blah-blah-blah";
@@ -54,7 +54,7 @@ namespace CamlexNET.UnitTests.Operations.Contains
         }
 
         [Test]
-        public void TestThatContainsExpressionWithCustomNoteTypeAndVariableIsValid()
+        public void test_THAT_contains_expression_with_custom_note_type_and_variable_IS_valid()
         {
             var analyzer = new ContainsAnalyzer(null, null);
             var stringVar = "Blah-blah-blah";
@@ -63,7 +63,7 @@ namespace CamlexNET.UnitTests.Operations.Contains
         }
 
         [Test]
-        public void TestThatContainsExpressionIsDeterminedProperly()
+        public void test_THAT_contains_expression_IS_determined_properly()
         {
             // arrange
             Expression<Func<SPItem, bool>> expr = x => ((string)x["Count"]).Contains("foo");
@@ -80,7 +80,7 @@ namespace CamlexNET.UnitTests.Operations.Contains
         }
 
         [Test]
-        public void TestThatContainsExpressionWithStringTypeIsDeterminedProperly()
+        public void test_THAT_contains_expression_with_string_type_IS_determined_Properly()
         {
             // arrange
             Expression<Func<SPItem, bool>> expr = x => ((string)x["Count"]).Contains("foo");
@@ -97,7 +97,7 @@ namespace CamlexNET.UnitTests.Operations.Contains
         }
 
         [Test]
-        public void TestThatContainsExpressionWithCustomNoteTypeIsDeterminedProperly()
+        public void test_THAT_contains_expression_with_custom_note_type_IS_determined_properly()
         {
             // arrange
             Expression<Func<SPItem, bool>> expr = x => ((DataTypes.Note)x["Count"]).Contains("foo");
