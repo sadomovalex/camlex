@@ -55,23 +55,4 @@ namespace CamlexNET
         public class WorkflowEventType : BaseFieldType { }
         public class WorkflowStatus : BaseFieldType { }
     }
-
-//    public enum DataType
-//    {
-//        Integer = 0,
-//        Text = 1
-//        Attachments,
-//        Boolean,
-//        Choice,
-//        Computed,
-//        Counter,
-//        DateTime,
-//        Lookup,
-//        ModStat,
-//        MultiChoice,
-//        Number,
-//        Text,
-//        User,
-//        Note
-//    }
 }
