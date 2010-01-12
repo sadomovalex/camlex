@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
-using Camlex.NET.Interfaces;
+using CamlexNET.Interfaces;
 
-namespace Camlex.NET.Impl.Operations.AndAlso
+namespace CamlexNET.Impl.Operations.AndAlso
 {
     public class AndAlsoAnalyzer : CompositeExpressionBaseAnalyzer
     {

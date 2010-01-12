@@ -4,15 +4,15 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Xml.Linq;
-using Camlex.NET.Impl;
-using Camlex.NET.Impl.Operations.Results;
-using Camlex.NET.Interfaces;
-using Camlex.NET.UnitTests.Helpers;
+using CamlexNET.Impl;
+using CamlexNET.Impl.Operations.Results;
+using CamlexNET.Interfaces;
+using CamlexNET.UnitTests.Helpers;
 using Microsoft.SharePoint;
 using NUnit.Framework;
 using Rhino.Mocks;
 
-namespace Camlex.NET.UnitTests
+namespace CamlexNET.UnitTests
 {
     [TestFixture]
     public class GenericTranslatorTests

@@ -1,6 +1,6 @@
-﻿using Camlex.NET.Interfaces;
+﻿using CamlexNET.Interfaces;
 
-namespace Camlex.NET.Impl
+namespace CamlexNET.Impl
 {
     public abstract class OperationBase : IOperation
     {

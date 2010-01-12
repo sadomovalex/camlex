@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
-using Camlex.NET.Interfaces;
+using CamlexNET.Interfaces;
 
-namespace Camlex.NET.Impl
+namespace CamlexNET.Impl
 {
     public abstract class UnaryExpressionBaseAnalyzer : BaseAnalyzer
     {

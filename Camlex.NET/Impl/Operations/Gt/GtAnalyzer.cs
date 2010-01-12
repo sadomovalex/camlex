@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
-using Camlex.NET.Interfaces;
+using CamlexNET.Interfaces;
 
-namespace Camlex.NET.Impl.Operations.Gt
+namespace CamlexNET.Impl.Operations.Gt
 {
     public class GtAnalyzer : BinaryExpressionBaseAnalyzer
     {

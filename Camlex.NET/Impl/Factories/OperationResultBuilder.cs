@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
-using Camlex.NET.Impl.Operations.Results;
-using Camlex.NET.Interfaces;
+using CamlexNET.Impl.Operations.Results;
+using CamlexNET.Interfaces;
 
-namespace Camlex.NET.Impl.Factories
+namespace CamlexNET.Impl.Factories
 {
     public class OperationResultBuilder : IOperationResultBuilder
     {

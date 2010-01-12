@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Camlex.NET.UnitTests.Helpers;
+using CamlexNET.UnitTests.Helpers;
 using NUnit.Framework;
-using Camlex.NET;
+using CamlexNET;
 
-namespace Camlex.NET.UnitTests
+namespace CamlexNET.UnitTests
 {
     [TestFixture]
     public class CamlexTests
@@ -338,7 +338,7 @@ namespace Camlex.NET.UnitTests
                 "   <Where>" +
                 "       <Eq>" +
                 "           <FieldRef Name=\"Title\" />" +
-                "           <Value Type=\"Text\">Camlex.NET.UnitTests.CamlexTests+Foo</Value>" +
+                "           <Value Type=\"Text\">CamlexNET.UnitTests.CamlexTests+Foo</Value>" +
                 "       </Eq>" +
                 "   </Where>" +
                 "</Query>";

@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Linq.Expressions;
-using Camlex.NET.Impl.Factories;
-using Camlex.NET.Impl.Operations.OrElse;
-using Camlex.NET.Interfaces;
+using CamlexNET.Impl.Factories;
+using CamlexNET.Impl.Operations.OrElse;
+using CamlexNET.Interfaces;
 using Microsoft.SharePoint;
 using NUnit.Framework;
 using Rhino.Mocks;
 
-namespace Camlex.NET.UnitTests.Operations.OrElse
+namespace CamlexNET.UnitTests.Operations.OrElse
 {
     [TestFixture]
     public class OrElseAnalyzerTests

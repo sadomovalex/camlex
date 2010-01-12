@@ -8,7 +8,7 @@
     <ProjectGuid>{298ACD3C-082D-406B-B4BB-8B8CAD5B18A6}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Camlex.NET.UnitTests</RootNamespace>
+    <RootNamespace>CamlexNET.UnitTests</RootNamespace>
     <AssemblyName>Camlex.NET.UnitTests</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

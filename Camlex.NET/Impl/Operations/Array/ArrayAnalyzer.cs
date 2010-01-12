@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using Camlex.NET.Interfaces;
+using CamlexNET.Interfaces;
 
-namespace Camlex.NET.Impl.Operations.Array
+namespace CamlexNET.Impl.Operations.Array
 {
     public class ArrayAnalyzer : BaseAnalyzer
     {

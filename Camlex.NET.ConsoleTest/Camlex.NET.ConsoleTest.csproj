@@ -8,7 +8,7 @@
     <ProjectGuid>{C1B2AC84-A5C7-4F5B-819D-DDABF223B45E}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Camlex.NET.ConsoleTest</RootNamespace>
+    <RootNamespace>CamlexNET.ConsoleTest</RootNamespace>
     <AssemblyName>Camlex.NET.ConsoleTest</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

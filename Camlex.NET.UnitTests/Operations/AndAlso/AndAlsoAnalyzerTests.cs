@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Linq.Expressions;
-using Camlex.NET.Impl.Factories;
-using Camlex.NET.Impl.Operations.AndAlso;
-using Camlex.NET.Interfaces;
+using CamlexNET.Impl.Factories;
+using CamlexNET.Impl.Operations.AndAlso;
+using CamlexNET.Interfaces;
 using Microsoft.SharePoint;
 using NUnit.Framework;
 using Rhino.Mocks;
 
-namespace Camlex.NET.UnitTests.Operations.AndAlso
+namespace CamlexNET.UnitTests.Operations.AndAlso
 {
     [TestFixture]
     public class AndAlsoAnalyzerTests

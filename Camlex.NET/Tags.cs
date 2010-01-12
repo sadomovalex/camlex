@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Camlex.NET
+namespace CamlexNET
 {
     public static class Tags
     {

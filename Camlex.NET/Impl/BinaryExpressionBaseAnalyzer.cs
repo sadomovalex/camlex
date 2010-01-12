@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
-using Camlex.NET.Impl.Operands;
-using Camlex.NET.Interfaces;
+using CamlexNET.Impl.Operands;
+using CamlexNET.Interfaces;
 using Microsoft.SharePoint;
 
-namespace Camlex.NET.Impl
+namespace CamlexNET.Impl
 {
     // Base class for all binary analyzers
     public abstract class BinaryExpressionBaseAnalyzer : BaseAnalyzer

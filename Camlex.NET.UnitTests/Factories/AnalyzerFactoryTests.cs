@@ -1,26 +1,26 @@
 ﻿using System;
 using System.Linq.Expressions;
-using Camlex.NET.Impl.Factories;
-using Camlex.NET.Impl.Operands;
-using Camlex.NET.Impl.Operations.AndAlso;
-using Camlex.NET.Impl.Operations.Array;
-using Camlex.NET.Impl.Operations.BeginsWith;
-using Camlex.NET.Impl.Operations.Contains;
-using Camlex.NET.Impl.Operations.Eq;
-using Camlex.NET.Impl.Operations.Geq;
-using Camlex.NET.Impl.Operations.Gt;
-using Camlex.NET.Impl.Operations.IsNotNull;
-using Camlex.NET.Impl.Operations.IsNull;
-using Camlex.NET.Impl.Operations.Leq;
-using Camlex.NET.Impl.Operations.Lt;
-using Camlex.NET.Impl.Operations.Neq;
-using Camlex.NET.Impl.Operations.OrElse;
-using Camlex.NET.Interfaces;
+using CamlexNET.Impl.Factories;
+using CamlexNET.Impl.Operands;
+using CamlexNET.Impl.Operations.AndAlso;
+using CamlexNET.Impl.Operations.Array;
+using CamlexNET.Impl.Operations.BeginsWith;
+using CamlexNET.Impl.Operations.Contains;
+using CamlexNET.Impl.Operations.Eq;
+using CamlexNET.Impl.Operations.Geq;
+using CamlexNET.Impl.Operations.Gt;
+using CamlexNET.Impl.Operations.IsNotNull;
+using CamlexNET.Impl.Operations.IsNull;
+using CamlexNET.Impl.Operations.Leq;
+using CamlexNET.Impl.Operations.Lt;
+using CamlexNET.Impl.Operations.Neq;
+using CamlexNET.Impl.Operations.OrElse;
+using CamlexNET.Interfaces;
 using Microsoft.SharePoint;
 using NUnit.Framework;
 using Rhino.Mocks;
 
-namespace Camlex.NET.UnitTests.Factories
+namespace CamlexNET.UnitTests.Factories
 {
     [TestFixture]
     public class AnalyzerFactoryTests

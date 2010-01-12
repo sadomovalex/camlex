@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Linq.Expressions;
-using Camlex.NET.Impl.Operations.Gt;
-using Camlex.NET.Impl.Operations.Leq;
-using Camlex.NET.Interfaces;
+using CamlexNET.Impl.Operations.Gt;
+using CamlexNET.Impl.Operations.Leq;
+using CamlexNET.Interfaces;
 using Microsoft.SharePoint;
 using NUnit.Framework;
 using Rhino.Mocks;
 
-namespace Camlex.NET.UnitTests.Operations.Leq
+namespace CamlexNET.UnitTests.Operations.Leq
 {
     [TestFixture]
     public class LeqAnalyzerTests

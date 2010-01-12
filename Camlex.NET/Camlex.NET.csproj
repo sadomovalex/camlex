@@ -8,7 +8,7 @@
     <ProjectGuid>{99FC65CD-823C-47AA-9D68-0BB9F31CDC72}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Camlex.NET</RootNamespace>
+    <RootNamespace>CamlexNET</RootNamespace>
     <AssemblyName>Camlex.NET</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

@@ -1,9 +1,9 @@
 ﻿using System.Linq.Expressions;
-using Camlex.NET.Impl.Operands;
-using Camlex.NET.Impl.Operations.IsNotNull;
-using Camlex.NET.Interfaces;
+using CamlexNET.Impl.Operands;
+using CamlexNET.Impl.Operations.IsNotNull;
+using CamlexNET.Interfaces;
 
-namespace Camlex.NET.Impl
+namespace CamlexNET.Impl
 {
     public abstract class NullabilityBaseAnalyzer : BinaryExpressionBaseAnalyzer
     {

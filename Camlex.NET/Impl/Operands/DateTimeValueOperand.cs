@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 
-namespace Camlex.NET.Impl.Operands
+namespace CamlexNET.Impl.Operands
 {
     public class DateTimeValueOperand : ValueOperand<DateTime>
     {

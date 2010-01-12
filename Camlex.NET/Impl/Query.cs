@@ -4,10 +4,10 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Xml.Linq;
-using Camlex.NET.Interfaces;
+using CamlexNET.Interfaces;
 using Microsoft.SharePoint;
 
-namespace Camlex.NET.Impl
+namespace CamlexNET.Impl
 {
     public class Query : IQuery
     {

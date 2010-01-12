@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Linq.Expressions;
-using Camlex.NET.Impl.Operations.Geq;
-using Camlex.NET.Interfaces;
+using CamlexNET.Impl.Operations.Geq;
+using CamlexNET.Interfaces;
 using Microsoft.SharePoint;
 using NUnit.Framework;
 using Rhino.Mocks;
 
-namespace Camlex.NET.UnitTests.Operations.Geq
+namespace CamlexNET.UnitTests.Operations.Geq
 {
     [TestFixture]
     public class GeqAnalyzerTests

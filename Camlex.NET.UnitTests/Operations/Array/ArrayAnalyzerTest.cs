@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
-using Camlex.NET.Impl.Operations.Array;
-using Camlex.NET.Interfaces;
+using CamlexNET.Impl.Operations.Array;
+using CamlexNET.Interfaces;
 using Microsoft.SharePoint;
 using NUnit.Framework;
 using Rhino.Mocks;
 
-namespace Camlex.NET.UnitTests.Array
+namespace CamlexNET.UnitTests.Array
 {
     [TestFixture]
     public class ArrayAnalyzerTest
