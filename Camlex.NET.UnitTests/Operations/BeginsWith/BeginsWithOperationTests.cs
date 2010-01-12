@@ -12,7 +12,7 @@ namespace CamlexNET.UnitTests.Operations.BeginsWith
     public class BeginsWithOperationTests
     {
         [Test]
-        public void TestThatBeginsWithOperationIsRenderedToCamlProperly()
+        public void test_THAT_beginswith_operation_IS_renderedtocaml_properly()
         {
             // arrange
             var fieldRefOperandStub = MockRepository.GenerateStub<FieldRefOperand>("");

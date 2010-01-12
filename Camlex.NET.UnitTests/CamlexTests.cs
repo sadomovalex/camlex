@@ -423,7 +423,7 @@ namespace CamlexNET.UnitTests
         }
 
         [Test]
-        public void TestThatBeginsWithExpressionIsTranslatedSucessfully()
+        public void test_THAT_beginswith_expression_IS_translated_sucessfully()
         {
             var caml = Camlex.Query().Where(x => ((string)x["Count"]).StartsWith("foo")).ToString();
 
@@ -441,7 +441,7 @@ namespace CamlexNET.UnitTests
         }
 
         [Test]
-        public void TestThatContainsExpressionIsTranslatedSucessfully()
+        public void test_THAT_contains_expression_IS_translated_sucessfully()
         {
             var caml = Camlex.Query().Where(x => ((string)x["Count"]).Contains("foo")).ToString();
 

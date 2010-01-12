@@ -8,18 +8,18 @@ namespace CamlexNET.Impl.Operands
 {
     public class DateTimeValueOperand : ValueOperand<DateTime>
     {
-        private bool includeTimeValue;
+        public bool IncludeTimeValue { get; set; }
 
         public DateTimeValueOperand(DateTime value, bool includeTimeValue) :
             base(typeof(DataTypes.DateTime), value)
         {
-            this.includeTimeValue = includeTimeValue;
+            IncludeTimeValue = includeTimeValue;
         }
 
         public DateTimeValueOperand(string value, bool includeTimeValue) :
             base(typeof(DataTypes.DateTime), DateTime.MinValue)
         {
-            this.includeTimeValue = includeTimeValue;
+            IncludeTimeValue = includeTimeValue;
             if (!DateTime.TryParse(value, out this.value))
             {
                 throw new InvalidValueForOperandTypeException(value, Type);
@@ -28,7 +28,7 @@ namespace CamlexNET.Impl.Operands
 
         public override XElement ToCaml()
         {
-            if (includeTimeValue)
+            if (IncludeTimeValue)
             {
                 return new XElement(Tags.Value,
                                     new XAttribute(Attributes.Type, TypeName),
