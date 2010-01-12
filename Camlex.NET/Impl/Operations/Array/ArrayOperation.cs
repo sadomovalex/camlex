@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Xml.Linq;
-using Camlex.NET.Impl.Factories;
-using Camlex.NET.Interfaces;
+using CamlexNET.Impl.Factories;
+using CamlexNET.Interfaces;
 
-namespace Camlex.NET.Impl.Operations.Array
+namespace CamlexNET.Impl.Operations.Array
 {
     public class ArrayOperation : OperationBase
     {

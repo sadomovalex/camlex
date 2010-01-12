@@ -1,12 +1,12 @@
 ﻿using System.Xml.Linq;
-using Camlex.NET.Impl.Factories;
-using Camlex.NET.Impl.Operands;
-using Camlex.NET.Impl.Operations.Leq;
-using Camlex.NET.UnitTests.Helpers;
+using CamlexNET.Impl.Factories;
+using CamlexNET.Impl.Operands;
+using CamlexNET.Impl.Operations.Leq;
+using CamlexNET.UnitTests.Helpers;
 using NUnit.Framework;
 using Rhino.Mocks;
 
-namespace Camlex.NET.UnitTests.Operations.Leq
+namespace CamlexNET.UnitTests.Operations.Leq
 {
     [TestFixture]
     public class LeqOperationTests

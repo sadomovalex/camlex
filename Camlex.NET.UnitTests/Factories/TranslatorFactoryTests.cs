@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Linq.Expressions;
-using Camlex.NET.Impl;
-using Camlex.NET.Impl.Factories;
-using Camlex.NET.Interfaces;
+using CamlexNET.Impl;
+using CamlexNET.Impl.Factories;
+using CamlexNET.Interfaces;
 using Microsoft.SharePoint;
 using NUnit.Framework;
 using Rhino.Mocks;
 
-namespace Camlex.NET.UnitTests.Factories
+namespace CamlexNET.UnitTests.Factories
 {
     [TestFixture]
     public class TranslatorFactoryTests

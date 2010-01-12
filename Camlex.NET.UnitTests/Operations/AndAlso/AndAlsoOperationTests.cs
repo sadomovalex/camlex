@@ -1,14 +1,14 @@
 ﻿using System.Xml.Linq;
-using Camlex.NET.Impl.Factories;
-using Camlex.NET.Impl.Operations.AndAlso;
-using Camlex.NET.Impl.Operations.Eq;
-using Camlex.NET.Impl.Operations.Results;
-using Camlex.NET.Interfaces;
-using Camlex.NET.UnitTests.Helpers;
+using CamlexNET.Impl.Factories;
+using CamlexNET.Impl.Operations.AndAlso;
+using CamlexNET.Impl.Operations.Eq;
+using CamlexNET.Impl.Operations.Results;
+using CamlexNET.Interfaces;
+using CamlexNET.UnitTests.Helpers;
 using NUnit.Framework;
 using Rhino.Mocks;
 
-namespace Camlex.NET.UnitTests.Operations.AndAlso
+namespace CamlexNET.UnitTests.Operations.AndAlso
 {
     [TestFixture]
     public class AndAlsoOperationTests

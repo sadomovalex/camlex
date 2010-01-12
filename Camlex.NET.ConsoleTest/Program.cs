@@ -8,7 +8,7 @@ using System.Xml.Linq;
 using Microsoft.SharePoint;
 
 
-namespace Camlex.NET.ConsoleTest
+namespace CamlexNET.ConsoleTest
 {
     class Program
     {

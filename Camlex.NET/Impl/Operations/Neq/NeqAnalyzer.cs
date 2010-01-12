@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
-using Camlex.NET.Interfaces;
+using CamlexNET.Interfaces;
 
-namespace Camlex.NET.Impl.Operations.Neq
+namespace CamlexNET.Impl.Operations.Neq
 {
     public class NeqAnalyzer : BinaryExpressionBaseAnalyzer
     {

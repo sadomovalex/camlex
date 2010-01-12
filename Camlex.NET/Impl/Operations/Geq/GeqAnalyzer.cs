@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
-using Camlex.NET.Interfaces;
+using CamlexNET.Interfaces;
 
-namespace Camlex.NET.Impl.Operations.Geq
+namespace CamlexNET.Impl.Operations.Geq
 {
     public class GeqAnalyzer : BinaryExpressionBaseAnalyzer
     {

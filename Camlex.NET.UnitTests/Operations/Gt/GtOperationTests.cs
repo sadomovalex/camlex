@@ -1,13 +1,13 @@
 ﻿using System.Xml.Linq;
-using Camlex.NET.Impl.Factories;
-using Camlex.NET.Impl.Operands;
-using Camlex.NET.Impl.Operations.Geq;
-using Camlex.NET.Impl.Operations.Gt;
-using Camlex.NET.UnitTests.Helpers;
+using CamlexNET.Impl.Factories;
+using CamlexNET.Impl.Operands;
+using CamlexNET.Impl.Operations.Geq;
+using CamlexNET.Impl.Operations.Gt;
+using CamlexNET.UnitTests.Helpers;
 using NUnit.Framework;
 using Rhino.Mocks;
 
-namespace Camlex.NET.UnitTests.Operations.Gt
+namespace CamlexNET.UnitTests.Operations.Gt
 {
     [TestFixture]
     public class GtOperationTests

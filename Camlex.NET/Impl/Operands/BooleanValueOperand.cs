@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Xml.Linq;
-using Camlex.NET.Interfaces;
+using CamlexNET.Interfaces;
 
-namespace Camlex.NET.Impl.Operands
+namespace CamlexNET.Impl.Operands
 {
     public class BooleanValueOperand : ValueOperand<bool>
     {

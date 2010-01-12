@@ -4,7 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 
-namespace Camlex.NET.Interfaces
+namespace CamlexNET.Interfaces
 {
     public interface ITranslatorFactory
     {

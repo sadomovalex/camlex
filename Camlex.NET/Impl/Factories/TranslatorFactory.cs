@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
-using Camlex.NET.Interfaces;
+using CamlexNET.Interfaces;
 
-namespace Camlex.NET.Impl.Factories
+namespace CamlexNET.Impl.Factories
 {
     public class TranslatorFactory : ITranslatorFactory
     {

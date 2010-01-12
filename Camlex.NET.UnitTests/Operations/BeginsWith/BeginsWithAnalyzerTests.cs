@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Linq.Expressions;
-using Camlex.NET.Impl.Operations.BeginsWith;
-using Camlex.NET.Interfaces;
+using CamlexNET.Impl.Operations.BeginsWith;
+using CamlexNET.Interfaces;
 using Microsoft.SharePoint;
 using NUnit.Framework;
 using Rhino.Mocks;
 
-namespace Camlex.NET.UnitTests.Operations.BeginsWith
+namespace CamlexNET.UnitTests.Operations.BeginsWith
 {
     [TestFixture]
     class BeginsWithAnalyzerTests

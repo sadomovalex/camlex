@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
-using Camlex.NET.Interfaces;
+using CamlexNET.Interfaces;
 
-namespace Camlex.NET.Impl.Operations.OrElse
+namespace CamlexNET.Impl.Operations.OrElse
 {
     public class OrElseAnalyzer : CompositeExpressionBaseAnalyzer
     {

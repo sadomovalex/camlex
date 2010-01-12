@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Linq.Expressions;
-using Camlex.NET.Impl.Operations.Geq;
-using Camlex.NET.Impl.Operations.Gt;
-using Camlex.NET.Interfaces;
+using CamlexNET.Impl.Operations.Geq;
+using CamlexNET.Impl.Operations.Gt;
+using CamlexNET.Interfaces;
 using Microsoft.SharePoint;
 using NUnit.Framework;
 using Rhino.Mocks;
 
-namespace Camlex.NET.UnitTests.Operations.Gt
+namespace CamlexNET.UnitTests.Operations.Gt
 {
     [TestFixture]
     public class GtAnalyzerTests

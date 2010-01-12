@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
-using Camlex.NET.Impl.Operands;
-using Camlex.NET.Interfaces;
+using CamlexNET.Impl.Operands;
+using CamlexNET.Interfaces;
 
-namespace Camlex.NET.Impl
+namespace CamlexNET.Impl
 {
     public abstract class BinaryOperationBase : OperationBase
     {

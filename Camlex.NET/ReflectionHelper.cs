@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 
-namespace Camlex.NET
+namespace CamlexNET
 {
     public static class ReflectionHelper
     {

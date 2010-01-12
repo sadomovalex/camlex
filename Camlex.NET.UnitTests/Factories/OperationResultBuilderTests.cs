@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
-using Camlex.NET.Impl.Factories;
-using Camlex.NET.Impl.Operations.Results;
+using CamlexNET.Impl.Factories;
+using CamlexNET.Impl.Operations.Results;
 using NUnit.Framework;
 
-namespace Camlex.NET.UnitTests.Factories
+namespace CamlexNET.UnitTests.Factories
 {
     [TestFixture]
     public class OperationResultBuilderTests

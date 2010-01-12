@@ -6,7 +6,7 @@ using System.Text;
 using System.Xml.Linq;
 using Microsoft.SharePoint;
 
-namespace Camlex.NET.Interfaces
+namespace CamlexNET.Interfaces
 {
     public interface IQuery
     {

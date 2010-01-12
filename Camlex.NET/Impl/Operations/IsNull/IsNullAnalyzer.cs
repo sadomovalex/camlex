@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
-using Camlex.NET.Interfaces;
+using CamlexNET.Interfaces;
 
-namespace Camlex.NET.Impl.Operations.IsNull
+namespace CamlexNET.Impl.Operations.IsNull
 {
     public class IsNullAnalyzer : NullabilityBaseAnalyzer
     {

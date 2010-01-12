@@ -1,7 +1,7 @@
 ﻿using System.Xml.Linq;
-using Camlex.NET.Interfaces;
+using CamlexNET.Interfaces;
 
-namespace Camlex.NET.Impl.Operations.Contains
+namespace CamlexNET.Impl.Operations.Contains
 {
     public class ContainsOperation : BinaryOperationBase
     {

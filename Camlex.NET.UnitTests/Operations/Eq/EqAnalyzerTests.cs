@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Linq.Expressions;
-using Camlex.NET.Impl.Operations.Eq;
-using Camlex.NET.Interfaces;
+using CamlexNET.Impl.Operations.Eq;
+using CamlexNET.Interfaces;
 using Microsoft.SharePoint;
 using NUnit.Framework;
 using Rhino.Mocks;
 
-namespace Camlex.NET.UnitTests.Operations.Eq
+namespace CamlexNET.UnitTests.Operations.Eq
 {
     [TestFixture]
     public class EqAnalyzerTests

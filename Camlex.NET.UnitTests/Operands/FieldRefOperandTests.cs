@@ -1,7 +1,7 @@
-﻿using Camlex.NET.Impl.Operands;
+﻿using CamlexNET.Impl.Operands;
 using NUnit.Framework;
 
-namespace Camlex.NET.UnitTests.Operands
+namespace CamlexNET.UnitTests.Operands
 {
     [TestFixture]
     public class FieldRefOperandTests

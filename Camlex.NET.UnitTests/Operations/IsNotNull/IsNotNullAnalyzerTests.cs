@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Linq.Expressions;
-using Camlex.NET.Impl.Operands;
-using Camlex.NET.Impl.Operations.IsNotNull;
-using Camlex.NET.Impl.Operations.Lt;
-using Camlex.NET.Interfaces;
+using CamlexNET.Impl.Operands;
+using CamlexNET.Impl.Operations.IsNotNull;
+using CamlexNET.Impl.Operations.Lt;
+using CamlexNET.Interfaces;
 using Microsoft.SharePoint;
 using NUnit.Framework;
 using Rhino.Mocks;
 
-namespace Camlex.NET.UnitTests.Operations.IsNotNull
+namespace CamlexNET.UnitTests.Operations.IsNotNull
 {
     [TestFixture]
     public class IsNotNullAnalyzerTests

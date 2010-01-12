@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using NUnit.Framework;
 
-namespace Camlex.NET.UnitTests.Helpers
+namespace CamlexNET.UnitTests.Helpers
 {
     public class CamlComparer : IComparer<string>
     {

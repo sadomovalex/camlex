@@ -1,7 +1,7 @@
 ﻿using System.Xml.Linq;
-using Camlex.NET.Interfaces;
+using CamlexNET.Interfaces;
 
-namespace Camlex.NET.Impl.Operations.BeginsWith
+namespace CamlexNET.Impl.Operations.BeginsWith
 {
     public class BeginsWithOperation : BinaryOperationBase
     {

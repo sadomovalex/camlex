@@ -4,12 +4,12 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Xml.Linq;
-using Camlex.NET.Impl;
-using Camlex.NET.Impl.Factories;
-using Camlex.NET.Interfaces;
+using CamlexNET.Impl;
+using CamlexNET.Impl.Factories;
+using CamlexNET.Interfaces;
 using Microsoft.SharePoint;
 
-namespace Camlex.NET
+namespace CamlexNET
 {
     public class Camlex
     {

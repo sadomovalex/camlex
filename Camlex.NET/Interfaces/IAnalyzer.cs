@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Text;
 using Microsoft.SharePoint;
 
-namespace Camlex.NET.Interfaces
+namespace CamlexNET.Interfaces
 {
     public interface IAnalyzer
     {

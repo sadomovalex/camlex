@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 
-namespace Camlex.NET.Interfaces
+namespace CamlexNET.Interfaces
 {
     public interface IOperationResultBuilder
     {

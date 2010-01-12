@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
-using Camlex.NET.Interfaces;
+using CamlexNET.Interfaces;
 
-namespace Camlex.NET.Impl
+namespace CamlexNET.Impl
 {
     // Base class for all analyzers
     public abstract class BaseAnalyzer : IAnalyzer

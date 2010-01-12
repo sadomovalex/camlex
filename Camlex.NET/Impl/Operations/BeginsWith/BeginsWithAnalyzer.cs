@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
-using Camlex.NET.Interfaces;
+using CamlexNET.Interfaces;
 
-namespace Camlex.NET.Impl.Operations.BeginsWith
+namespace CamlexNET.Impl.Operations.BeginsWith
 {
     public class BeginsWithAnalyzer : UnaryExpressionBaseAnalyzer
     {

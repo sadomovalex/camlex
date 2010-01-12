@@ -4,9 +4,10 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
-using Camlex.NET.Impl.Operands;
+using CamlexNET.Impl.Operands;
+using CamlexNET.Interfaces;
 
-namespace Camlex.NET.Interfaces
+namespace CamlexNET.Impl.Factories
 {
     public class OperandBuilder : IOperandBuilder
     {
