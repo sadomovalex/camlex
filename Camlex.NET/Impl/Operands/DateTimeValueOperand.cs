@@ -20,7 +20,16 @@ namespace CamlexNET.Impl.Operands
             base(typeof(DataTypes.DateTime), DateTime.MinValue)
         {
             IncludeTimeValue = includeTimeValue;
-            if (!DateTime.TryParse(value, out this.value))
+
+            if (value == Camlex.Now)
+            {
+                this.value = DateTime.Now;
+            }
+            else if (value == Camlex.Today)
+            {
+                this.value = DateTime.Today;
+            }
+            else if (!DateTime.TryParse(value, out this.value))
             {
                 throw new InvalidValueForOperandTypeException(value, Type);
             }
@@ -33,11 +42,11 @@ namespace CamlexNET.Impl.Operands
                 return new XElement(Tags.Value,
                                     new XAttribute(Attributes.Type, TypeName),
                                     new XAttribute(Attributes.IncludeTimeValue, true.ToString()),
-                                    new XText(Value.ToString("s")));
+                                    new XText(Value.ToString("s") + "Z"));
             }
             return new XElement(Tags.Value,
                                 new XAttribute(Attributes.Type, TypeName),
-                                new XText(Value.ToString("s")));
+                                new XText(Value.ToString("s") + "Z"));
         }
     }
 }

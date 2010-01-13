@@ -13,7 +13,17 @@ namespace CamlexNET
 {
     public class Camlex
     {
+        #region DatetTime
+
+        /// <summary>Equivalent of DateTime.Now for string-based syntax</summary>
+        public const string Now = "Now";
+        /// <summary>Equivalent of DateTime.Today for string-based syntax</summary>
+        public const string Today = "Today";
+
+        #endregion
+
         #region OrderBy functionality
+
         /// <summary>Marker class representing ASC order direction for "OrderBy" functionality</summary>
         public class OrderDirection
         {
@@ -35,6 +45,7 @@ namespace CamlexNET
         public class Asc : OrderDirection { public override string ToString() { return true.ToString(); } }
         /// <summary>Marker class representing DESC order direction for "OrderBy" functionality</summary>
         public class Desc : OrderDirection { public override string ToString() { return false.ToString(); } }
+
         #endregion
 
         private static ITranslatorFactory translatorFactory;
