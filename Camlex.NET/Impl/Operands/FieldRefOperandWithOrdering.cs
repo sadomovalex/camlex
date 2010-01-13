@@ -6,7 +6,7 @@ using System.Xml.Linq;
 
 namespace CamlexNET.Impl.Operands
 {
-    public class FieldRefOperandWithOrdering : FieldRefOperand
+    internal class FieldRefOperandWithOrdering : FieldRefOperand
     {
         private readonly Camlex.OrderDirection orderDirection;
 

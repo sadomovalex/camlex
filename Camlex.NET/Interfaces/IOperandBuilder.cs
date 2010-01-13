@@ -6,7 +6,7 @@ using System.Text;
 
 namespace CamlexNET.Interfaces
 {
-    public interface IOperandBuilder
+    internal interface IOperandBuilder
     {
         IOperand CreateFieldRefOperand(Expression expr);
         IOperand CreateFieldRefOperandWithOrdering(Expression expr, Camlex.OrderDirection orderDirection);

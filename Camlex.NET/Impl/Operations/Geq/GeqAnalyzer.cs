@@ -3,7 +3,7 @@ using CamlexNET.Interfaces;
 
 namespace CamlexNET.Impl.Operations.Geq
 {
-    public class GeqAnalyzer : BinaryExpressionBaseAnalyzer
+    internal class GeqAnalyzer : BinaryExpressionBaseAnalyzer
     {
         public GeqAnalyzer(IOperationResultBuilder operationResultBuilder, IOperandBuilder operandBuilder)
             : base(operationResultBuilder, operandBuilder)

@@ -4,7 +4,7 @@ using CamlexNET.Interfaces;
 
 namespace CamlexNET.Impl.Operands
 {
-    public abstract class ValueOperand<T> : IOperand
+    internal abstract class ValueOperand<T> : IOperand
     {
         protected Type type;
         protected T value;

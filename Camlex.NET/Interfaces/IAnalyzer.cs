@@ -7,7 +7,7 @@ using Microsoft.SharePoint;
 
 namespace CamlexNET.Interfaces
 {
-    public interface IAnalyzer
+    internal interface IAnalyzer
     {
         bool IsValid(LambdaExpression expr);
         IOperation GetOperation(LambdaExpression expr);

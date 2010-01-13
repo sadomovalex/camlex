@@ -4,7 +4,7 @@ using CamlexNET.Interfaces;
 
 namespace CamlexNET.Impl.Operations.IsNull
 {
-    public class IsNullOperation : UnaryOperationBase
+    internal class IsNullOperation : UnaryOperationBase
     {
         public IsNullOperation(IOperationResultBuilder operationResultBuilder,
             IOperand fieldRefOperand)

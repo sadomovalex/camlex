@@ -6,12 +6,12 @@ using System.Xml.Linq;
 
 namespace CamlexNET.Interfaces
 {
-    public interface IOperationResult
+    internal interface IOperationResult
     {
         object Value { get; }
     }
 
-//    public interface IOperationMultipleResult : IOperationResult
+//    internal interface IOperationMultipleResult : IOperationResult
 //    {
 //        XElement[] Values { get; }
 //    }

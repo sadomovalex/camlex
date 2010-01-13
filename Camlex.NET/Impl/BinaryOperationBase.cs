@@ -8,7 +8,7 @@ using CamlexNET.Interfaces;
 
 namespace CamlexNET.Impl
 {
-    public abstract class BinaryOperationBase : OperationBase
+    internal abstract class BinaryOperationBase : OperationBase
     {
         protected IOperand fieldRefOperand;
         protected IOperand valueOperand;

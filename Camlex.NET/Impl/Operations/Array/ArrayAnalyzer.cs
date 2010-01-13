@@ -5,7 +5,7 @@ using CamlexNET.Interfaces;
 
 namespace CamlexNET.Impl.Operations.Array
 {
-    public class ArrayAnalyzer : BaseAnalyzer
+    internal class ArrayAnalyzer : BaseAnalyzer
     {
         private IOperandBuilder operandBuilder;
 

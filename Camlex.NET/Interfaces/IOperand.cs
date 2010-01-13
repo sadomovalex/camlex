@@ -6,7 +6,7 @@ using System.Xml.Linq;
 
 namespace CamlexNET.Interfaces
 {
-    public interface IOperand
+    internal interface IOperand
     {
         XElement ToCaml();
     }

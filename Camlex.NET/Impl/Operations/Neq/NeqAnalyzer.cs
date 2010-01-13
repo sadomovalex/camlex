@@ -3,7 +3,7 @@ using CamlexNET.Interfaces;
 
 namespace CamlexNET.Impl.Operations.Neq
 {
-    public class NeqAnalyzer : BinaryExpressionBaseAnalyzer
+    internal class NeqAnalyzer : BinaryExpressionBaseAnalyzer
     {
         public NeqAnalyzer(IOperationResultBuilder operationResultBuilder, IOperandBuilder operandBuilder)
             : base(operationResultBuilder, operandBuilder)

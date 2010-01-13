@@ -4,7 +4,7 @@ using CamlexNET.Interfaces;
 
 namespace CamlexNET.Impl.Operations.Gt
 {
-    public class GtOperation : BinaryOperationBase
+    internal class GtOperation : BinaryOperationBase
     {
         public GtOperation(IOperationResultBuilder operationResultBuilder,
             IOperand fieldRefOperand, IOperand valueOperand)

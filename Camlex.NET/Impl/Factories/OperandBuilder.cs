@@ -9,7 +9,7 @@ using CamlexNET.Interfaces;
 
 namespace CamlexNET.Impl.Factories
 {
-    public class OperandBuilder : IOperandBuilder
+    internal class OperandBuilder : IOperandBuilder
     {
         // ----- Field Ref Operand -----
 

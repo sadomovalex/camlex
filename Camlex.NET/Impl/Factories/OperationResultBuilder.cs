@@ -8,7 +8,7 @@ using CamlexNET.Interfaces;
 
 namespace CamlexNET.Impl.Factories
 {
-    public class OperationResultBuilder : IOperationResultBuilder
+    internal class OperationResultBuilder : IOperationResultBuilder
     {
         public IOperationResult CreateResult(XElement value)
         {

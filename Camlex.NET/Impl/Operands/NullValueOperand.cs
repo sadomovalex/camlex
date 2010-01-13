@@ -8,7 +8,7 @@ using CamlexNET.Interfaces;
 namespace CamlexNET.Impl.Operands
 {
     // This is marker class which is used when passed value is null
-    public class NullValueOperand : IOperand
+    internal class NullValueOperand : IOperand
     {
         public XElement ToCaml()
         {

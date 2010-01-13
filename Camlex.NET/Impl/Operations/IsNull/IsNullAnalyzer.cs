@@ -3,7 +3,7 @@ using CamlexNET.Interfaces;
 
 namespace CamlexNET.Impl.Operations.IsNull
 {
-    public class IsNullAnalyzer : NullabilityBaseAnalyzer
+    internal class IsNullAnalyzer : NullabilityBaseAnalyzer
     {
         public IsNullAnalyzer(IOperationResultBuilder operationResultBuilder, IOperandBuilder operandBuilder)
             : base(operationResultBuilder, operandBuilder)

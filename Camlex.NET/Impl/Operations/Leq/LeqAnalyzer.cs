@@ -3,7 +3,7 @@ using CamlexNET.Interfaces;
 
 namespace CamlexNET.Impl.Operations.Leq
 {
-    public class LeqAnalyzer : BinaryExpressionBaseAnalyzer
+    internal class LeqAnalyzer : BinaryExpressionBaseAnalyzer
     {
         public LeqAnalyzer(IOperationResultBuilder operationResultBuilder, IOperandBuilder operandBuilder)
             : base(operationResultBuilder, operandBuilder)

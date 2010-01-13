@@ -3,7 +3,7 @@ using CamlexNET.Interfaces;
 
 namespace CamlexNET.Impl.Operations.Gt
 {
-    public class GtAnalyzer : BinaryExpressionBaseAnalyzer
+    internal class GtAnalyzer : BinaryExpressionBaseAnalyzer
     {
         public GtAnalyzer(IOperationResultBuilder operationResultBuilder, IOperandBuilder operandBuilder)
             : base(operationResultBuilder, operandBuilder)

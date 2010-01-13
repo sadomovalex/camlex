@@ -20,7 +20,7 @@ using CamlexNET.Interfaces;
 
 namespace CamlexNET.Impl.Factories
 {
-    public class AnalyzerFactory : IAnalyzerFactory
+    internal class AnalyzerFactory : IAnalyzerFactory
     {
         private readonly IOperandBuilder operandBuilder;
         private readonly IOperationResultBuilder operationResultBuilder;

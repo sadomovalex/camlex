@@ -6,7 +6,7 @@ using System.Xml.Linq;
 
 namespace CamlexNET.Impl.Operands
 {
-    public class DateTimeValueOperand : ValueOperand<DateTime>
+    internal class DateTimeValueOperand : ValueOperand<DateTime>
     {
         public bool IncludeTimeValue { get; set; }
 

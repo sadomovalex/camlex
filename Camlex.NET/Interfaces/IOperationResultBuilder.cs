@@ -6,7 +6,7 @@ using System.Xml.Linq;
 
 namespace CamlexNET.Interfaces
 {
-    public interface IOperationResultBuilder
+    internal interface IOperationResultBuilder
     {
         IOperationResult CreateResult(XElement value);
         IOperationResult CreateResult(XElement[] values);

@@ -4,7 +4,7 @@ using CamlexNET.Interfaces;
 
 namespace CamlexNET.Impl.Operands
 {
-    public class BooleanValueOperand : ValueOperand<bool>
+    internal class BooleanValueOperand : ValueOperand<bool>
     {
         public BooleanValueOperand(bool value) :
             base(typeof(DataTypes.Boolean), value)

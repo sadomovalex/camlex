@@ -5,7 +5,7 @@ using CamlexNET.Interfaces;
 
 namespace CamlexNET.Impl
 {
-    public abstract class NullabilityBaseAnalyzer : BinaryExpressionBaseAnalyzer
+    internal abstract class NullabilityBaseAnalyzer : BinaryExpressionBaseAnalyzer
     {
         protected NullabilityBaseAnalyzer(IOperationResultBuilder operationResultBuilder, IOperandBuilder operandBuilder)
             : base(operationResultBuilder, operandBuilder)

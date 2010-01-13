@@ -4,7 +4,7 @@ using CamlexNET.Interfaces;
 
 namespace CamlexNET.Impl.Operations.Neq
 {
-    public class NeqOperation : BinaryOperationBase
+    internal class NeqOperation : BinaryOperationBase
     {
         public NeqOperation(IOperationResultBuilder operationResultBuilder,
             IOperand fieldRefOperand, IOperand valueOperand)

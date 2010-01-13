@@ -6,7 +6,7 @@ using System.Text;
 
 namespace CamlexNET
 {
-    public static class ExpressionHelper
+    internal static class ExpressionHelper
     {
         public static bool IncludeTimeValue(Expression expression)
         {

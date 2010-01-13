@@ -7,7 +7,7 @@ using System.Text;
 
 namespace CamlexNET
 {
-    public static class ReflectionHelper
+    internal static class ReflectionHelper
     {
         public const string IndexerMethodName = "get_Item";
         public const string StartsWithMethodName = "StartsWith";

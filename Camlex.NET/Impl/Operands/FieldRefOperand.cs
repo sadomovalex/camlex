@@ -3,7 +3,7 @@ using CamlexNET.Interfaces;
 
 namespace CamlexNET.Impl.Operands
 {
-    public class FieldRefOperand : IOperand
+    internal class FieldRefOperand : IOperand
     {
         protected readonly string fieldName;
 

@@ -3,7 +3,7 @@ using CamlexNET.Interfaces;
 
 namespace CamlexNET.Impl.Operations.Lt
 {
-    public class LtAnalyzer : BinaryExpressionBaseAnalyzer
+    internal class LtAnalyzer : BinaryExpressionBaseAnalyzer
     {
         public LtAnalyzer(IOperationResultBuilder operationResultBuilder, IOperandBuilder operandBuilder)
             : base(operationResultBuilder, operandBuilder)

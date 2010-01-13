@@ -12,6 +12,8 @@
     <AssemblyName>Camlex.NET.UnitTests</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>Camlex.NET.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -58,47 +60,127 @@
     <Reference Include="TypeMock.ArrangeActAssert, Version=5.4.4.0, Culture=neutral, PublicKeyToken=3dae460033b8d8e2, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CamlexTests.cs" />
-    <Compile Include="Factories\AnalyzerFactoryTests.cs" />
-    <Compile Include="Factories\OperandBuilderTests.cs" />
-    <Compile Include="Factories\OperationResultBuilderTests.cs" />
-    <Compile Include="Factories\TranslatorFactoryTests.cs" />
-    <Compile Include="GenericTranslatorTests.cs" />
-    <Compile Include="Helpers\CamlComparer.cs" />
-    <Compile Include="Operands\BooleanValueOperandTests.cs" />
-    <Compile Include="Operands\DateTimeValueOperandTests.cs" />
-    <Compile Include="Operands\FieldRefOperandTests.cs" />
-    <Compile Include="Operands\GenericStringBasedValueOperandTests.cs" />
-    <Compile Include="Operands\IntegerValueOperandTests.cs" />
-    <Compile Include="Operands\NullValueOperandTests.cs" />
-    <Compile Include="Operands\TextValueOperandTests.cs" />
-    <Compile Include="Operations\AndAlso\AndAlsoAnalyzerTests.cs" />
-    <Compile Include="Operations\AndAlso\AndAlsoOperationTests.cs" />
-    <Compile Include="Operations\Array\ArrayAnalyzerTest.cs" />
-    <Compile Include="Operations\Array\ArrayOperationTest.cs" />
-    <Compile Include="Operations\BeginsWith\BeginsWithAnalyzerTests.cs" />
-    <Compile Include="Operations\BeginsWith\BeginsWithOperationTests.cs" />
-    <Compile Include="Operations\Contains\ContainsAnalyzerTests.cs" />
-    <Compile Include="Operations\Contains\ContainsOperationTests.cs" />
-    <Compile Include="Operations\Neq\NeqAnalyzerTests.cs" />
-    <Compile Include="Operations\Neq\NeqOperationTests.cs" />
-    <Compile Include="Operations\IsNull\IsNullAnalyzerTests.cs" />
-    <Compile Include="Operations\IsNull\IsNullOperationTests.cs" />
-    <Compile Include="Operations\IsNotNull\IsNotNullAnalyzerTests.cs" />
-    <Compile Include="Operations\IsNotNull\IsNotNullOperationTests.cs" />
-    <Compile Include="Operations\Lt\LtAnalyzerTests.cs" />
-    <Compile Include="Operations\Lt\LtOperationTests.cs" />
-    <Compile Include="Operations\Leq\LeqAnalyzerTests.cs" />
-    <Compile Include="Operations\Leq\LeqOperationTests.cs" />
-    <Compile Include="Operations\Gt\GtAnalyzerTests.cs" />
-    <Compile Include="Operations\Gt\GtOperationTests.cs" />
-    <Compile Include="Operations\Eq\EqAnalyzerTests.cs" />
-    <Compile Include="Operations\Eq\EqOperationTests.cs" />
-    <Compile Include="Operations\Geq\GeqAnalyzerTests.cs" />
-    <Compile Include="Operations\Geq\GeqOperationTests.cs" />
-    <Compile Include="Operations\OrElse\OrElseAnalyzerTests.cs" />
-    <Compile Include="Operations\OrElse\OrElseOperationTests.cs" />
+    <Compile Include="CamlexTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Factories\AnalyzerFactoryTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Factories\OperandBuilderTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Factories\OperationResultBuilderTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Factories\TranslatorFactoryTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="GenericTranslatorTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Helpers\CamlComparer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operands\BooleanValueOperandTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operands\FieldRefOperandTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operands\GenericStringBasedValueOperandTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operands\IntegerValueOperandTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operands\NullValueOperandTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operands\TextValueOperandTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operations\AndAlso\AndAlsoAnalyzerTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operations\AndAlso\AndAlsoOperationTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operations\Array\ArrayAnalyzerTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operations\Array\ArrayOperationTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operations\BeginsWith\BeginsWithAnalyzerTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operations\BeginsWith\BeginsWithOperationTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operations\Contains\ContainsAnalyzerTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operations\Contains\ContainsOperationTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operations\Eq\EqAnalyzerTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operations\Eq\EqOperationTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operations\Geq\GeqAnalyzerTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operations\Geq\GeqOperationTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operations\Gt\GtAnalyzerTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operations\Gt\GtOperationTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operations\IsNotNull\IsNotNullAnalyzerTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operations\IsNotNull\IsNotNullOperationTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operations\IsNull\IsNullAnalyzerTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operations\IsNull\IsNullOperationTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operations\Leq\LeqAnalyzerTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operations\Leq\LeqOperationTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operations\Lt\LtAnalyzerTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operations\Lt\LtOperationTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operations\Neq\NeqAnalyzerTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operations\Neq\NeqOperationTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operations\OrElse\OrElseAnalyzerTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operations\OrElse\OrElseOperationTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Camlex.NET.snk" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Camlex.NET\Camlex.NET.csproj">
