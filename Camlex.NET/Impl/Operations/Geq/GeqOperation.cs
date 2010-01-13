@@ -4,7 +4,7 @@ using CamlexNET.Interfaces;
 
 namespace CamlexNET.Impl.Operations.Geq
 {
-    public class GeqOperation : BinaryOperationBase
+    internal class GeqOperation : BinaryOperationBase
     {
         public GeqOperation(IOperationResultBuilder operationResultBuilder,
             IOperand fieldRefOperand, IOperand valueOperand)

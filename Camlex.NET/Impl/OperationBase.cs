@@ -2,7 +2,7 @@
 
 namespace CamlexNET.Impl
 {
-    public abstract class OperationBase : IOperation
+    internal abstract class OperationBase : IOperation
     {
         protected IOperationResultBuilder operationResultBuilder;
 

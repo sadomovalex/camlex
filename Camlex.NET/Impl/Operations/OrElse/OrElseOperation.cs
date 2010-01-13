@@ -4,7 +4,7 @@ using CamlexNET.Interfaces;
 
 namespace CamlexNET.Impl.Operations.OrElse
 {
-    public class OrElseOperation : CompositeOperationBase
+    internal class OrElseOperation : CompositeOperationBase
     {
         public OrElseOperation(IOperationResultBuilder operationResultBuilder,
             IOperation leftOperation, IOperation rightOperation)

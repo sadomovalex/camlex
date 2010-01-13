@@ -3,7 +3,7 @@ using CamlexNET.Interfaces;
 
 namespace CamlexNET.Impl.Operations.OrElse
 {
-    public class OrElseAnalyzer : CompositeExpressionBaseAnalyzer
+    internal class OrElseAnalyzer : CompositeExpressionBaseAnalyzer
     {
         public OrElseAnalyzer(IOperationResultBuilder operationResultBuilder, IAnalyzerFactory analyzerFactory) :
             base(operationResultBuilder, analyzerFactory)

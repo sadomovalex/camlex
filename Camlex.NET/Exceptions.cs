@@ -7,14 +7,14 @@ using Microsoft.SharePoint;
 
 namespace CamlexNET
 {
-    public class GenericException : Exception
+    internal class GenericException : Exception
     {
         public GenericException(string message, params object[] args) :
             base(string.Format(message, args))
         {}        
     }
 
-    public class NonSupportedExpressionException : GenericException
+    internal class NonSupportedExpressionException : GenericException
     {
         public NonSupportedExpressionException(Expression expr) :
             base(ErrorMessages.NON_SUPPORTED_EXPRESSION, expr)
@@ -22,7 +22,7 @@ namespace CamlexNET
         }
     }
 
-    public class NonSupportedExpressionTypeException : GenericException
+    internal class NonSupportedExpressionTypeException : GenericException
     {
         public NonSupportedExpressionTypeException(ExpressionType exprType) :
             base(ErrorMessages.NON_SUPPORTED_EXPRESSION_TYPE, exprType)
@@ -30,7 +30,7 @@ namespace CamlexNET
         }
     }
 
-    public class NonSupportedOperandTypeException : GenericException
+    internal class NonSupportedOperandTypeException : GenericException
     {
         public NonSupportedOperandTypeException(Type type) :
             base(ErrorMessages.NON_SUPPORTED_OPERAND_TYPE, type)
@@ -38,7 +38,7 @@ namespace CamlexNET
         }
     }
 
-    public class NullValueOperandCannotBeTranslatedToCamlException : GenericException
+    internal class NullValueOperandCannotBeTranslatedToCamlException : GenericException
     {
         public NullValueOperandCannotBeTranslatedToCamlException() :
             base(ErrorMessages.NULL_VALUE_OPERAND_CAN_NOT_BE_TRANSLATED_TO_CAML)
@@ -46,7 +46,7 @@ namespace CamlexNET
         }
     }
 
-    public class InvalidValueForOperandTypeException : GenericException
+    internal class InvalidValueForOperandTypeException : GenericException
     {
         public InvalidValueForOperandTypeException(object value, Type operandType) :
             base(ErrorMessages.INVALID_VALUE_FOR_OPERAND_TYPE, value, operandType)
@@ -54,7 +54,7 @@ namespace CamlexNET
         }
     }
 
-    public class InvalidFieldNameForFieldRefException : GenericException
+    internal class InvalidFieldNameForFieldRefException : GenericException
     {
         public InvalidFieldNameForFieldRefException(object value) :
             base(ErrorMessages.INVALID_FIELD_NAME_FOR_FIELD_REF_OPERAND, value)

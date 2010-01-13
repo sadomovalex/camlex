@@ -7,7 +7,7 @@ using CamlexNET.Interfaces;
 
 namespace CamlexNET.Impl
 {
-    public abstract class CompositeOperationBase : OperationBase
+    internal abstract class CompositeOperationBase : OperationBase
     {
         protected IOperation leftOperation;
         protected IOperation rightOperation;

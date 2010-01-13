@@ -5,7 +5,7 @@ using System.Text;
 
 namespace CamlexNET
 {
-    public static class Tags
+    internal static class Tags
     {
         public const string Query = "Query";
         public const string Where = "Where";

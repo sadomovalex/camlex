@@ -3,7 +3,7 @@ using CamlexNET.Interfaces;
 
 namespace CamlexNET.Impl.Operations.Contains
 {
-    public class ContainsOperation : BinaryOperationBase
+    internal class ContainsOperation : BinaryOperationBase
     {
         public ContainsOperation(IOperationResultBuilder operationResultBuilder,
             IOperand fieldRefOperand, IOperand valueOperand)

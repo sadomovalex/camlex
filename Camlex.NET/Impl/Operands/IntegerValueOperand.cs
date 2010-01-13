@@ -4,7 +4,7 @@ using CamlexNET.Interfaces;
 
 namespace CamlexNET.Impl.Operands
 {
-    public class IntegerValueOperand : ValueOperand<int>
+    internal class IntegerValueOperand : ValueOperand<int>
     {
         public IntegerValueOperand(int value) :
             base(typeof(DataTypes.Integer), value)

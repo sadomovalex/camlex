@@ -5,7 +5,7 @@ using System.Text;
 
 namespace CamlexNET
 {
-    public static class ErrorMessages
+    internal static class ErrorMessages
     {
         public const string NON_SUPPORTED_EXPRESSION =  "Expression '{0}' can not be translated into CAML";
         public const string NON_SUPPORTED_EXPRESSION_TYPE = "Expression type '{0}' is not supported";

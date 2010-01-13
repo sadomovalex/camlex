@@ -4,7 +4,7 @@ using CamlexNET.Interfaces;
 
 namespace CamlexNET.Impl.Operations.Eq
 {
-    public class EqOperation : BinaryOperationBase
+    internal class EqOperation : BinaryOperationBase
     {
         public EqOperation(IOperationResultBuilder operationResultBuilder,
             IOperand fieldRefOperand, IOperand valueOperand)

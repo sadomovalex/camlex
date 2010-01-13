@@ -5,7 +5,7 @@ using CamlexNET.Interfaces;
 
 namespace CamlexNET.Impl.Operations.Array
 {
-    public class ArrayOperation : OperationBase
+    internal class ArrayOperation : OperationBase
     {
         private readonly IOperand[] fieldRefOperands;
 

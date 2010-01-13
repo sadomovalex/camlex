@@ -4,7 +4,7 @@ using CamlexNET.Interfaces;
 
 namespace CamlexNET.Impl.Operations.Leq
 {
-    public class LeqOperation : BinaryOperationBase
+    internal class LeqOperation : BinaryOperationBase
     {
         public LeqOperation(IOperationResultBuilder operationResultBuilder,
             IOperand fieldRefOperand, IOperand valueOperand)

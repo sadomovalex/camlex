@@ -9,7 +9,7 @@ using Microsoft.SharePoint;
 namespace CamlexNET.Impl
 {
     // Base class for AndAlso and OrElse analyzers
-    public abstract class CompositeExpressionBaseAnalyzer : BaseAnalyzer
+    internal abstract class CompositeExpressionBaseAnalyzer : BaseAnalyzer
     {
         protected IAnalyzerFactory analyzerFactory;
 

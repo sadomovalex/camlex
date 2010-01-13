@@ -3,7 +3,7 @@ using CamlexNET.Interfaces;
 
 namespace CamlexNET.Impl.Factories
 {
-    public class TranslatorFactory : ITranslatorFactory
+    internal class TranslatorFactory : ITranslatorFactory
     {
         private readonly IAnalyzerFactory analyzerFactory;
 

@@ -3,7 +3,7 @@ using CamlexNET.Interfaces;
 
 namespace CamlexNET.Impl.Operations.AndAlso
 {
-    public class AndAlsoAnalyzer : CompositeExpressionBaseAnalyzer
+    internal class AndAlsoAnalyzer : CompositeExpressionBaseAnalyzer
     {
         public AndAlsoAnalyzer(IOperationResultBuilder operationResultBuilder,
             IAnalyzerFactory analyzerFactory) :

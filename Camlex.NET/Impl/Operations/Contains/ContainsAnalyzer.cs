@@ -3,7 +3,7 @@ using CamlexNET.Interfaces;
 
 namespace CamlexNET.Impl.Operations.Contains
 {
-    public class ContainsAnalyzer : UnaryExpressionBaseAnalyzer
+    internal class ContainsAnalyzer : UnaryExpressionBaseAnalyzer
     {
         public ContainsAnalyzer(IOperationResultBuilder operationResultBuilder, IOperandBuilder operandBuilder)
             : base(operationResultBuilder, operandBuilder)

@@ -8,7 +8,7 @@ using CamlexNET.Interfaces;
 namespace CamlexNET.Impl
 {
     // Base class for all analyzers
-    public abstract class BaseAnalyzer : IAnalyzer
+    internal abstract class BaseAnalyzer : IAnalyzer
     {
         protected IOperationResultBuilder operationResultBuilder;
 

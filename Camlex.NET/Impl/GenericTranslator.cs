@@ -10,7 +10,7 @@ using Microsoft.SharePoint;
 
 namespace CamlexNET.Impl
 {
-    public class GenericTranslator : ITranslator
+    internal class GenericTranslator : ITranslator
     {
         private readonly IAnalyzer analyzer;
 

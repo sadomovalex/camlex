@@ -5,7 +5,7 @@ using System.Text;
 
 namespace CamlexNET
 {
-    public static class Attributes
+    internal static class Attributes
     {
         public const string Name = "Name";
         public const string Type = "Type";

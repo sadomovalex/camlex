@@ -3,7 +3,7 @@ using CamlexNET.Interfaces;
 
 namespace CamlexNET.Impl.Operations.BeginsWith
 {
-    public class BeginsWithOperation : BinaryOperationBase
+    internal class BeginsWithOperation : BinaryOperationBase
     {
         public BeginsWithOperation(IOperationResultBuilder operationResultBuilder,
             IOperand fieldRefOperand, IOperand valueOperand)

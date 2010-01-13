@@ -4,7 +4,7 @@ using CamlexNET.Interfaces;
 
 namespace CamlexNET.Impl.Operations.Lt
 {
-    public class LtOperation : BinaryOperationBase
+    internal class LtOperation : BinaryOperationBase
     {
         public LtOperation(IOperationResultBuilder operationResultBuilder,
             IOperand fieldRefOperand, IOperand valueOperand)

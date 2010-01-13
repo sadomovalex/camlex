@@ -3,7 +3,7 @@ using CamlexNET.Interfaces;
 
 namespace CamlexNET.Impl.Operations.Eq
 {
-    public class EqAnalyzer : BinaryExpressionBaseAnalyzer
+    internal class EqAnalyzer : BinaryExpressionBaseAnalyzer
     {
         public EqAnalyzer(IOperationResultBuilder operationResultBuilder, IOperandBuilder operandBuilder)
             : base(operationResultBuilder, operandBuilder)

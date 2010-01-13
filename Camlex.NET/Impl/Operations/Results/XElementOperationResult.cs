@@ -7,7 +7,7 @@ using CamlexNET.Interfaces;
 
 namespace CamlexNET.Impl.Operations.Results
 {
-    public class XElementOperationResult : IOperationResult
+    internal class XElementOperationResult : IOperationResult
     {
         private XElement element;
 

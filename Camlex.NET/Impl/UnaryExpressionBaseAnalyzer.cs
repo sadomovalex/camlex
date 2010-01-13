@@ -7,7 +7,7 @@ using CamlexNET.Interfaces;
 
 namespace CamlexNET.Impl
 {
-    public abstract class UnaryExpressionBaseAnalyzer : BaseAnalyzer
+    internal abstract class UnaryExpressionBaseAnalyzer : BaseAnalyzer
     {
         protected IOperandBuilder operandBuilder;
 

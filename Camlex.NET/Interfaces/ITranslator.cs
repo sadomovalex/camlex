@@ -8,7 +8,7 @@ using Microsoft.SharePoint;
 
 namespace CamlexNET.Interfaces
 {
-    public interface ITranslator
+    internal interface ITranslator
     {
         XElement TranslateWhere(LambdaExpression expr);
         XElement TranslateOrderBy(LambdaExpression expr);

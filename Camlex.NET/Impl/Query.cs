@@ -9,7 +9,7 @@ using Microsoft.SharePoint;
 
 namespace CamlexNET.Impl
 {
-    public class Query : IQuery
+    internal class Query : IQuery
     {
         private readonly ITranslatorFactory translatorFactory;
         private XElement where;

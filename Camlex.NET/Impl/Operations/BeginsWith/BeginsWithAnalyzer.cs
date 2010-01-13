@@ -3,7 +3,7 @@ using CamlexNET.Interfaces;
 
 namespace CamlexNET.Impl.Operations.BeginsWith
 {
-    public class BeginsWithAnalyzer : UnaryExpressionBaseAnalyzer
+    internal class BeginsWithAnalyzer : UnaryExpressionBaseAnalyzer
     {
         public BeginsWithAnalyzer(IOperationResultBuilder operationResultBuilder, IOperandBuilder operandBuilder)
             : base(operationResultBuilder, operandBuilder)

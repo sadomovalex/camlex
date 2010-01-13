@@ -4,7 +4,7 @@ using CamlexNET.Interfaces;
 
 namespace CamlexNET.Impl.Operations.AndAlso
 {
-    public class AndAlsoOperation : CompositeOperationBase
+    internal class AndAlsoOperation : CompositeOperationBase
     {
         public AndAlsoOperation(IOperationResultBuilder operationResultBuilder,
             IOperation leftOperation, IOperation rightOperation)

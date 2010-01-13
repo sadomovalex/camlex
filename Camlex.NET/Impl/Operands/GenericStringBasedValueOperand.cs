@@ -6,7 +6,7 @@ using System.Xml.Linq;
 
 namespace CamlexNET.Impl.Operands
 {
-    public class GenericStringBasedValueOperand : ValueOperand<string>
+    internal class GenericStringBasedValueOperand : ValueOperand<string>
     {
         public GenericStringBasedValueOperand(Type type, string value) : base(type, value)
         {

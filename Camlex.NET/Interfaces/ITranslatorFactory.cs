@@ -6,7 +6,7 @@ using System.Text;
 
 namespace CamlexNET.Interfaces
 {
-    public interface ITranslatorFactory
+    internal interface ITranslatorFactory
     {
         ITranslator Create(LambdaExpression expr);
     }

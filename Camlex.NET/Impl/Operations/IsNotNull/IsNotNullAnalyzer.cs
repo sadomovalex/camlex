@@ -4,7 +4,7 @@ using CamlexNET.Interfaces;
 
 namespace CamlexNET.Impl.Operations.IsNotNull
 {
-    public class IsNotNullAnalyzer : NullabilityBaseAnalyzer
+    internal class IsNotNullAnalyzer : NullabilityBaseAnalyzer
     {
         public IsNotNullAnalyzer(IOperationResultBuilder operationResultBuilder, IOperandBuilder operandBuilder)
             : base(operationResultBuilder, operandBuilder)
