@@ -1,4 +1,28 @@
-﻿using System;
+﻿#region Copyright(c) Alexey Sadomov, Vladimir Timashkov. All Rights Reserved.
+// -----------------------------------------------------------------------------
+// Copyright(c) 2007 Alexey Sadomov, Vladimir Timashkov. All Rights Reserved.
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are met:
+//
+//   1.  No Trademark License - Microsoft Public License (Ms-PL) does not grant you rights to use
+//       authors names, logos, or trademarks.
+//   2.  If you distribute any portion of the software, you must retain all copyright,
+//       patent, trademark, and attribution notices that are present in the software.
+//   3.  If you distribute any portion of the software in source code form, you may do
+//       so only under this license by including a complete copy of Microsoft Public License (Ms-PL)
+//       with your distribution. If you distribute any portion of the software in compiled
+//       or object code form, you may only do so under a license that complies with
+//       Microsoft Public License (Ms-PL).
+//
+// The software is licensed "as-is." You bear the risk of using it. The authors
+// give no express warranties, guarantees or conditions. You may have additional consumer
+// rights under your local laws which this license cannot change. To the extent permitted
+// under your local laws, the authors exclude the implied warranties of merchantability,
+// fitness for a particular purpose and non-infringement.
+// -----------------------------------------------------------------------------
+#endregion
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -24,23 +48,6 @@ namespace CamlexNET.ConsoleTest
             Scenario6();
             Scenario7();
             Scenario8();
-            //Camlex.Query().Where(x => (DateTime)x["Modified"] == new DateTime(2010, 1, 2, 3, 4, 5));
-            //Camlex.Query().Where(x => (DateTime)x["Modified"] == new DateTime(2010, 1, 2, 3, 4, 5).IncludeTimeValue());
-            //Camlex.Query().Where(x => x["Modified"] == ((DataTypes.DateTime)"02.01.2010 03:04:05"));
-            //Camlex.Query().Where(x => x["Modified"] == ((DataTypes.DateTime)"02.01.2010 03:04:05").IncludeTimeValue());
-            //Camlex.Query().Where(x => x["Modified"] == ((DataTypes.DateTime)Camlex.Now));
-            //Camlex.Query().Where(x => x["Modified"] == ((DataTypes.DateTime)Camlex.Today));
-
-            //var param = "foo";
-            //Camlex.Query().Where(x => ((string)x["Count"]).Contains(param));
-            //Camlex.Query().Where(x => ((DataTypes.Text)x["Count"]).Contains("foo"));
-            //Camlex.Query().Where(x => ((DataTypes.Note)x["Count"]).Contains(param));
-            //Camlex.Query().Where(x => ((string)x["Count"]).StartsWith("foo"));
-            //Camlex.Query().Where(x => ((DataTypes.Text)x["Count"]).StartsWith(param));
-            //Camlex.Query().Where(x => ((DataTypes.Note)x["Count"]).StartsWith("foo"));
-
-            //Camlex.Query().OrderBy(x => x["field1"] as Camlex.Asc);
-            //Camlex.Query().GroupBy(x => new[] { x["field1"], x["field2"] as Camlex.Asc, x["field3"] as Camlex.Desc }, true, 10);
         }
 
         // Scenario 1. Simple query.
