@@ -24,28 +24,37 @@
 // fitness for a particular purpose and non-infringement.
 // -----------------------------------------------------------------------------
 #endregion
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
-using System.Text;
+using System.Xml.Linq;
+using CamlexNET.Interfaces;
 
-namespace CamlexNET
+namespace CamlexNET.Impl.Operations.DataRangesOverlap
 {
-    internal static class ReflectionHelper
+    internal class DataRangesOverlapOperation : OperationBase
     {
-        public const string IndexerMethodName = "get_Item";
-        public const string StartsWithMethodName = "StartsWith";
-        public const string ContainsMethodName = "Contains";
-        public const string IncludeTimeValue = "IncludeTimeValue";
-        public const string DateRangesOverlap = "DateRangesOverlap";
+        protected IOperand startFieldRefOperand;
+        protected IOperand stopFieldRefOperand;
+        protected IOperand recurrenceFieldRefOperand;
+        protected IOperand dateTimeOperand;
 
-//        public static IEnumerable<ParameterExpression> GetExpressionParameters(ParameterInfo[] parameterInfos)
-//        {
-//            var result = new List<ParameterExpression>();
-//            Array.ForEach(parameterInfos, pi => result.Add(Expression.Parameter(pi.ParameterType, pi.Name)));
-//            return result;
-//        }
+        public DataRangesOverlapOperation(IOperationResultBuilder operationResultBuilder,
+            IOperand startFieldRefOperand, IOperand stopFieldRefOperand, IOperand recurrenceFieldRefOperand, IOperand dateTimeOperand) :
+            base(operationResultBuilder)
+        {
+            this.startFieldRefOperand = startFieldRefOperand;
+            this.stopFieldRefOperand = stopFieldRefOperand;
+            this.recurrenceFieldRefOperand = recurrenceFieldRefOperand;
+            this.dateTimeOperand = dateTimeOperand;
+        }
+
+        public override IOperationResult ToResult()
+        {
+            var result = new XElement(Tags.DataRangesOverlap,
+                             startFieldRefOperand.ToCaml(),
+                             stopFieldRefOperand.ToCaml(),
+                             recurrenceFieldRefOperand.ToCaml(),
+                             dateTimeOperand.ToCaml());
+            return operationResultBuilder.CreateResult(result);
+        }
     }
 }
+

@@ -42,14 +42,15 @@ namespace CamlexNET.ConsoleTest
     {
         static void Main(string[] args)
         {
-            Scenario1();
-            Scenario2();
-            Scenario3();
-            Scenario4();
-            Scenario5();
-            Scenario6();
-            Scenario7();
-            Scenario8();
+            //Scenario1();
+            //Scenario2();
+            //Scenario3();
+            //Scenario4();
+            //Scenario5();
+            //Scenario6();
+            //Scenario7();
+            //Scenario8();
+            Scenario9();
         }
 
         // Scenario 1. Simple query.
@@ -239,6 +240,14 @@ namespace CamlexNET.ConsoleTest
                 Camlex.Query()
                     .Where(x => (string)x[isEng ? "TitleEng" : "Title"] == (isEng ? "eng" : "non-eng")).ToString();
 
+            Console.WriteLine(caml);
+        }
+
+        public static void Scenario9()
+        {
+            var caml =
+                Camlex.Query()
+                    .Where(x => Camlex.DateRangesOverlap(x["start"], x["stop"], x["recurrence"], DateTime.Now)).ToString();
             Console.WriteLine(caml);
         }
     }
