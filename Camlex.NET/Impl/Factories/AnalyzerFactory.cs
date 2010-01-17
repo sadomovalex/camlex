@@ -33,6 +33,7 @@ using CamlexNET.Impl.Operations.AndAlso;
 using CamlexNET.Impl.Operations.Array;
 using CamlexNET.Impl.Operations.BeginsWith;
 using CamlexNET.Impl.Operations.Contains;
+using CamlexNET.Impl.Operations.DataRangesOverlap;
 using CamlexNET.Impl.Operations.Eq;
 using CamlexNET.Impl.Operations.Geq;
 using CamlexNET.Impl.Operations.Gt;
@@ -125,6 +126,9 @@ namespace CamlexNET.Impl.Factories
 
             var containsAnalyzer = new ContainsAnalyzer(operationResultBuilder, operandBuilder);
             if (containsAnalyzer.IsValid(expr)) return containsAnalyzer;
+
+            var dataRangesOverlapAnalyzer = new DataRangesOverlapAnalyzer(operationResultBuilder, operandBuilder);
+            if (dataRangesOverlapAnalyzer.IsValid(expr)) return dataRangesOverlapAnalyzer;
 
             throw new NonSupportedExpressionTypeException(exprType);
         }
