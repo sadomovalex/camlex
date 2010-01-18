@@ -1,6 +1,6 @@
 ﻿#region Copyright(c) Alexey Sadomov, Vladimir Timashkov. All Rights Reserved.
 // -----------------------------------------------------------------------------
-// Copyright(c) 2007 Alexey Sadomov, Vladimir Timashkov. All Rights Reserved.
+// Copyright(c) 2010 Alexey Sadomov, Vladimir Timashkov. All Rights Reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
