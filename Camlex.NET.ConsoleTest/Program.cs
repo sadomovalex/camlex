@@ -42,14 +42,14 @@ namespace CamlexNET.ConsoleTest
     {
         static void Main(string[] args)
         {
-            //Scenario1();
-            //Scenario2();
-            //Scenario3();
-            //Scenario4();
-            //Scenario5();
-            //Scenario6();
-            //Scenario7();
-            //Scenario8();
+            Scenario1();
+            Scenario2();
+            Scenario3();
+            Scenario4();
+            Scenario5();
+            Scenario6();
+            Scenario7();
+            Scenario8();
             Scenario9();
         }
 
@@ -243,11 +243,24 @@ namespace CamlexNET.ConsoleTest
             Console.WriteLine(caml);
         }
 
+        // Scenario 9. Query with DateRangesOverlap
+        // Lets suppose that you need to retrieve items which are recurrent events and their periods overlap specified one
+        // <Query>
+        //   <Where>
+        //     <DataRangesOverlap>
+        //       <FieldRef Name="StartField" />
+        //       <FieldRef Name="StopField" />
+        //       <FieldRef Name="RecurrenceID" />
+        //       <Value Type="DateTime"><Month /></Value>
+        //     </DataRangesOverlap>
+        //   </Where>
+        // </Query>
         public static void Scenario9()
         {
             var caml =
                 Camlex.Query()
-                    .Where(x => Camlex.DateRangesOverlap(x["start"], x["stop"], x["recurrence"], DateTime.Now)).ToString();
+                    .Where(x => Camlex.DateRangesOverlap(
+                        x["StartField"], x["StopField"], x["RecurrenceID"], (DataTypes.DateTime)Camlex.Month)).ToString();
             Console.WriteLine(caml);
         }
     }

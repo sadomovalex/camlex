@@ -45,6 +45,12 @@ namespace CamlexNET
         public const string Now = "Now";
         /// <summary>Equivalent of DateTime.Today for string-based syntax</summary>
         public const string Today = "Today";
+        /// <summary>Used only in DateRangeOverlar in string-based syntax</summary>
+        public const string Week = "Week";
+        /// <summary>Used only in DateRangeOverlar in string-based syntax</summary>
+        public const string Month = "Month";
+        /// <summary>Used only in DateRangeOverlar in string-based syntax</summary>
+        public const string Year = "Year";
 
         /// <summary>Function taking parameters needed for CAML's DateRangesOverlap function</summary>
         /// <param name="startField">Field containing start value of recurrent event</param>
@@ -53,6 +59,14 @@ namespace CamlexNET
         /// <param name="dateTime">DateTime value which the ranges should contain</param>
         /// <returns>Flag indicating whether date/time is inside ranfe</returns>
         public static bool DateRangesOverlap(object startField, object stopField, object recurrenceField, DateTime dateTime) { return false; }
+
+        /// <summary>Function taking parameters needed for CAML's DateRangesOverlap function</summary>
+        /// <param name="startField">Field containing start value of recurrent event</param>
+        /// <param name="stopField">Field containing stop value of recurrent event</param>
+        /// <param name="recurrenceField">Field containing recurrnec ID of recurrent event</param>
+        /// <param name="dateTime">DateTime value which the ranges should contain</param>
+        /// <returns>Flag indicating whether date/time is inside ranfe</returns>
+        public static bool DateRangesOverlap(object startField, object stopField, object recurrenceField, DataTypes.DateTime dateTime) { return false; }
 
         #endregion
 
