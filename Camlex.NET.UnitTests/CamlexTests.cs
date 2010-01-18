@@ -732,5 +732,77 @@ namespace CamlexNET.UnitTests
         {
             string caml = Camlex.Query().Where(x => (string) x[(string) x["Title"]] == "foo").ToString();
         }
+
+        [Test]
+        public void test_THAT_single_geq_expression_IS_translated_sucessfully()
+        {
+            string caml = Camlex.Query().Where(x => (int)x["ID"] >= 1).ToString();
+
+            string expected =
+                "<Query>" +
+                "   <Where>" +
+                "       <Geq>" +
+                "           <FieldRef Name=\"ID\" />" +
+                "           <Value Type=\"Integer\">1</Value>" +
+                "       </Geq>" +
+                "   </Where>" +
+                "</Query>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        [Test]
+        public void test_THAT_single_gt_expression_IS_translated_sucessfully()
+        {
+            string caml = Camlex.Query().Where(x => (int)x["ID"] > 1).ToString();
+
+            string expected =
+                "<Query>" +
+                "   <Where>" +
+                "       <Gt>" +
+                "           <FieldRef Name=\"ID\" />" +
+                "           <Value Type=\"Integer\">1</Value>" +
+                "       </Gt>" +
+                "   </Where>" +
+                "</Query>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        [Test]
+        public void test_THAT_single_leq_expression_IS_translated_sucessfully()
+        {
+            string caml = Camlex.Query().Where(x => (int)x["ID"] <= 1).ToString();
+
+            string expected =
+                "<Query>" +
+                "   <Where>" +
+                "       <Leq>" +
+                "           <FieldRef Name=\"ID\" />" +
+                "           <Value Type=\"Integer\">1</Value>" +
+                "       </Leq>" +
+                "   </Where>" +
+                "</Query>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        [Test]
+        public void test_THAT_single_lt_expression_IS_translated_sucessfully()
+        {
+            string caml = Camlex.Query().Where(x => (int)x["ID"] < 1).ToString();
+
+            string expected =
+                "<Query>" +
+                "   <Where>" +
+                "       <Lt>" +
+                "           <FieldRef Name=\"ID\" />" +
+                "           <Value Type=\"Integer\">1</Value>" +
+                "       </Lt>" +
+                "   </Where>" +
+                "</Query>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
     }
 }
