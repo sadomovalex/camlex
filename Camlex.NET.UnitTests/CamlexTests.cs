@@ -659,6 +659,71 @@ namespace CamlexNET.UnitTests
         }
 
         [Test]
+        public void test_THAT_data_ranges_overlap_expression_with_native_syntax_IS_translated_sucessfully()
+        {
+            var now = DateTime.Now;
+            var caml = Camlex.Query().Where(x => Camlex.DateRangesOverlap(
+                        x["StartField"], x["StopField"], x["RecurrenceID"], now)).ToString();
+
+            var expected =
+                "<Query>" +
+                "  <Where>" +
+                "    <DataRangesOverlap>" +
+                "      <FieldRef Name=\"StartField\" />" +
+                "      <FieldRef Name=\"StopField\" />" +
+                "      <FieldRef Name=\"RecurrenceID\" />" +
+                "      <Value Type=\"DateTime\">" + now.ToString("s") + "Z</Value>" +
+                "    </DataRangesOverlap>" +
+                "  </Where>" +
+                "</Query>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        [Test]
+        public void test_THAT_data_ranges_overlap_expression_with_string_syntax_IS_translated_sucessfully()
+        {
+            var now = DateTime.Now;
+            var caml = Camlex.Query().Where(x => Camlex.DateRangesOverlap(
+                        x["StartField"], x["StopField"], x["RecurrenceID"], (DataTypes.DateTime)(now.ToString("s") + "Z"))).ToString();
+
+            var expected =
+                "<Query>" +
+                "  <Where>" +
+                "    <DataRangesOverlap>" +
+                "      <FieldRef Name=\"StartField\" />" +
+                "      <FieldRef Name=\"StopField\" />" +
+                "      <FieldRef Name=\"RecurrenceID\" />" +
+                "      <Value Type=\"DateTime\">" + now.ToString("s") + "Z</Value>" +
+                "    </DataRangesOverlap>" +
+                "  </Where>" +
+                "</Query>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        [Test]
+        public void test_THAT_data_ranges_overlap_expression_with_string_contants_IS_translated_sucessfully()
+        {
+            var caml = Camlex.Query().Where(x => Camlex.DateRangesOverlap(
+                        x["StartField"], x["StopField"], x["RecurrenceID"], (DataTypes.DateTime)Camlex.Month)).ToString();
+
+            var expected =
+                "<Query>" +
+                "  <Where>" +
+                "    <DataRangesOverlap>" +
+                "      <FieldRef Name=\"StartField\" />" +
+                "      <FieldRef Name=\"StopField\" />" +
+                "      <FieldRef Name=\"RecurrenceID\" />" +
+                "      <Value Type=\"DateTime\"><Month /></Value>" +
+                "    </DataRangesOverlap>" +
+                "  </Where>" +
+                "</Query>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        [Test]
         public void test_THAT_expression_with_native_and_string_based_syntax_IS_translated_sucessfully()
         {
             var caml =

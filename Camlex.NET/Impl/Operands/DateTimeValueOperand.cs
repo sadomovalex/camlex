@@ -34,6 +34,12 @@ namespace CamlexNET.Impl.Operands
 {
     internal class DateTimeValueOperand : ValueOperand<DateTime>
     {
+        internal enum DateTimeValueMode
+        {
+            Native, Now, Today, Week, Month, Year
+        }
+
+        public DateTimeValueMode Mode { get; set; }
         public bool IncludeTimeValue { get; set; }
 
         public DateTimeValueOperand(DateTime value, bool includeTimeValue) :
@@ -47,32 +53,32 @@ namespace CamlexNET.Impl.Operands
         {
             IncludeTimeValue = includeTimeValue;
 
-            if (value == Camlex.Now)
-            {
-                this.value = DateTime.Now;
-            }
-            else if (value == Camlex.Today)
-            {
-                this.value = DateTime.Today;
-            }
-            else if (!DateTime.TryParse(value, out this.value))
-            {
-                throw new InvalidValueForOperandTypeException(value, Type);
-            }
+            if (value == Camlex.Now) Mode = DateTimeValueMode.Now;
+            else if (value == Camlex.Today) Mode = DateTimeValueMode.Today;
+            else if (value == Camlex.Week) Mode = DateTimeValueMode.Week;
+            else if (value == Camlex.Month) Mode = DateTimeValueMode.Month;
+            else if (value == Camlex.Year) Mode = DateTimeValueMode.Year;
+            else if (DateTime.TryParse(value, out this.value)) Mode = DateTimeValueMode.Native;
+            else throw new InvalidValueForOperandTypeException(value, Type);
         }
 
         public override XElement ToCaml()
         {
+            object dateTime;
+            if (Mode == DateTimeValueMode.Native)
+                dateTime = new XText(Value.ToString("s") + "Z");
+            else dateTime = new XElement(Mode.ToString());
+            
             if (IncludeTimeValue)
             {
                 return new XElement(Tags.Value,
                                     new XAttribute(Attributes.Type, TypeName),
                                     new XAttribute(Attributes.IncludeTimeValue, true.ToString()),
-                                    new XText(Value.ToString("s") + "Z"));
+                                    dateTime);
             }
             return new XElement(Tags.Value,
                                 new XAttribute(Attributes.Type, TypeName),
-                                new XText(Value.ToString("s") + "Z"));
+                                dateTime);
         }
     }
 }

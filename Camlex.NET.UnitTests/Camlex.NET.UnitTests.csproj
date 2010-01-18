@@ -124,6 +124,8 @@
     <Compile Include="Operations\Contains\ContainsOperationTests.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Operations\DateRangesOverlap\DataRangesOverlapAnalyzerTests.cs" />
+    <Compile Include="Operations\DateRangesOverlap\DataRangesOverlapOperationTests.cs" />
     <Compile Include="Operations\Eq\EqAnalyzerTests.cs">
       <SubType>Code</SubType>
     </Compile>
