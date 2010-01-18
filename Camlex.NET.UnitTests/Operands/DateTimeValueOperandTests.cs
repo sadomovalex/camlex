@@ -32,7 +32,7 @@ using CamlexNET;
 using CamlexNET.Impl.Operands;
 using NUnit.Framework;
 
-namespace Camlex.NET.UnitTests.Operands
+namespace CamlexNET.UnitTests.Operands
 {
     [TestFixture]
     public class DateTimeValueOperandTests
