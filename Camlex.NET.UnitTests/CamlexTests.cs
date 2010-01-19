@@ -683,9 +683,9 @@ namespace CamlexNET.UnitTests
         [Test]
         public void test_THAT_data_ranges_overlap_expression_with_string_syntax_IS_translated_sucessfully()
         {
-            var now = DateTime.Now;
+            var now = "2010-01-19 23:44:00";
             var caml = Camlex.Query().Where(x => Camlex.DateRangesOverlap(
-                        x["StartField"], x["StopField"], x["RecurrenceID"], (DataTypes.DateTime)(now.ToString("s") + "Z"))).ToString();
+                        x["StartField"], x["StopField"], x["RecurrenceID"], (DataTypes.DateTime)now)).ToString();
 
             var expected =
 //                "<Query>" +
@@ -694,7 +694,7 @@ namespace CamlexNET.UnitTests
                 "      <FieldRef Name=\"StartField\" />" +
                 "      <FieldRef Name=\"StopField\" />" +
                 "      <FieldRef Name=\"RecurrenceID\" />" +
-                "      <Value Type=\"DateTime\">" + now.ToString("s") + "Z</Value>" +
+                "      <Value Type=\"DateTime\">" + DateTime.Parse(now).ToString("s") + "Z</Value>" +
                 "    </DataRangesOverlap>" +
                 "  </Where>";
 //                "</Query>";
