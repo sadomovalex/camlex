@@ -44,7 +44,8 @@ namespace CamlexNET.Interfaces
         IQuery GroupBy(Expression<Func<SPItem, object>> expr, bool? collapse, int? groupLimit);
         IQuery GroupBy(Expression<Func<SPItem, object>> expr, int? groupLimit);
         IQuery GroupBy(Expression<Func<SPItem, object>> expr, bool? collapse);
-        XElement ToCaml();
+        XElement[] ToCaml(bool includeQueryTag);
         string ToString();
+        string ToString(bool includeQueryTag);
     }
 }

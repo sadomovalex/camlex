@@ -103,15 +103,46 @@ namespace CamlexNET.Impl
             return GroupBy(lambda, null, groupLimit);
         }
 
-        public XElement ToCaml()
+        public XElement[] ToCaml(bool includeQueryTag)
         {
-            return new XElement(Tags.Query,
-                this.where, this.orderBy, this.groupBy);
+            if (includeQueryTag)
+            {
+                return new[]
+                           {
+                               new XElement(Tags.Query,
+                                            this.where, this.orderBy, this.groupBy)
+                           };
+            }
+            else
+            {
+                var elements = new List<XElement>();
+                if (this.where != null)
+                {
+                    elements.Add(this.where);
+                }
+                if (this.orderBy != null)
+                {
+                    elements.Add(this.orderBy);
+                }
+                if (this.groupBy != null)
+                {
+                    elements.Add(this.groupBy);
+                }
+                return elements.ToArray();
+            }
         }
 
         public override string ToString()
         {
-            return this.ToCaml().ToString();
+            return this.ToString(false);
+        }
+
+        public string ToString(bool includeQueryTag)
+        {
+            var sb = new StringBuilder();
+            var elements = this.ToCaml(includeQueryTag);
+            Array.ForEach(elements, e => sb.Append(e.ToString()));
+            return sb.ToString();
         }
 
         public static implicit operator string(Query query)
