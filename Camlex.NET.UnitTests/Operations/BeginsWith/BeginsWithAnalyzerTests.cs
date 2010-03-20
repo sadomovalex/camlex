@@ -41,7 +41,7 @@ namespace CamlexNET.UnitTests.Operations.BeginsWith
         public void test_THAT_beginswith_expression_with_string_type_IS_valid()
         {
             var analyzer = new BeginsWithAnalyzer(null, null);
-            Expression<Func<SPItem, bool>> expr = x => ((string)x["Count"]).StartsWith("foo");
+            Expression<Func<SPListItem, bool>> expr = x => ((string)x["Count"]).StartsWith("foo");
             Assert.That(analyzer.IsValid(expr), Is.True);
         }
 
@@ -51,7 +51,7 @@ namespace CamlexNET.UnitTests.Operations.BeginsWith
             var analyzer = new BeginsWithAnalyzer(null, null);
 
             string val = "Count";
-            Expression<Func<SPItem, bool>> expr = x => ((string)x[val]).StartsWith("foo");
+            Expression<Func<SPListItem, bool>> expr = x => ((string)x[val]).StartsWith("foo");
             Assert.That(analyzer.IsValid(expr), Is.True);
         }
 
@@ -59,7 +59,7 @@ namespace CamlexNET.UnitTests.Operations.BeginsWith
         public void TestThatBeginsWithExpressionWithCustomTextTypeIsValid()
         {
             var analyzer = new BeginsWithAnalyzer(null, null);
-            Expression<Func<SPItem, bool>> expr = x => ((DataTypes.Text)x["Count"]).StartsWith("foo");
+            Expression<Func<SPListItem, bool>> expr = x => ((DataTypes.Text)x["Count"]).StartsWith("foo");
             Assert.That(analyzer.IsValid(expr), Is.True);
         }
 
@@ -67,7 +67,7 @@ namespace CamlexNET.UnitTests.Operations.BeginsWith
         public void TestThatBeginsWithExpressionWithCustomNoteTypeIsValid()
         {
             var analyzer = new BeginsWithAnalyzer(null, null);
-            Expression<Func<SPItem, bool>> expr = x => ((DataTypes.Note)x["Count"]).StartsWith("foo");
+            Expression<Func<SPListItem, bool>> expr = x => ((DataTypes.Note)x["Count"]).StartsWith("foo");
             Assert.That(analyzer.IsValid(expr), Is.True);
         }
 
@@ -76,7 +76,7 @@ namespace CamlexNET.UnitTests.Operations.BeginsWith
         {
             var analyzer = new BeginsWithAnalyzer(null, null);
             var stringVar = "Blah-blah-blah";
-            Expression<Func<SPItem, bool>> expr = x => ((string)x["Count"]).StartsWith(stringVar);
+            Expression<Func<SPListItem, bool>> expr = x => ((string)x["Count"]).StartsWith(stringVar);
             Assert.That(analyzer.IsValid(expr), Is.True);
         }
 
@@ -85,7 +85,7 @@ namespace CamlexNET.UnitTests.Operations.BeginsWith
         {
             var analyzer = new BeginsWithAnalyzer(null, null);
             var stringVar = "Blah-blah-blah";
-            Expression<Func<SPItem, bool>> expr = x => ((DataTypes.Text)x["Count"]).StartsWith(stringVar);
+            Expression<Func<SPListItem, bool>> expr = x => ((DataTypes.Text)x["Count"]).StartsWith(stringVar);
             Assert.That(analyzer.IsValid(expr), Is.True);
         }
 
@@ -94,7 +94,7 @@ namespace CamlexNET.UnitTests.Operations.BeginsWith
         {
             var analyzer = new BeginsWithAnalyzer(null, null);
             var stringVar = "Blah-blah-blah";
-            Expression<Func<SPItem, bool>> expr = x => ((DataTypes.Note)x["Count"]).StartsWith(stringVar);
+            Expression<Func<SPListItem, bool>> expr = x => ((DataTypes.Note)x["Count"]).StartsWith(stringVar);
             Assert.That(analyzer.IsValid(expr), Is.True);
         }
 
@@ -102,7 +102,7 @@ namespace CamlexNET.UnitTests.Operations.BeginsWith
         public void TestThatBeginsWithExpressionIsDeterminedProperly()
         {
             // arrange
-            Expression<Func<SPItem, bool>> expr = x => ((string)x["Count"]).StartsWith("foo");
+            Expression<Func<SPListItem, bool>> expr = x => ((string)x["Count"]).StartsWith("foo");
             var operandBuilder = MockRepository.GenerateStub<IOperandBuilder>();
             operandBuilder.Stub(b => b.CreateFieldRefOperand(((MethodCallExpression)expr.Body).Object)).Return(null);
             operandBuilder.Stub(b => b.CreateValueOperandForNativeSyntax(((MethodCallExpression)expr.Body).Arguments[0])).Return(null);
@@ -119,7 +119,7 @@ namespace CamlexNET.UnitTests.Operations.BeginsWith
         public void TestThatBeginsWithExpressionWithStringTypeIsDeterminedProperly()
         {
             // arrange
-            Expression<Func<SPItem, bool>> expr = x => ((string)x["Count"]).StartsWith("foo");
+            Expression<Func<SPListItem, bool>> expr = x => ((string)x["Count"]).StartsWith("foo");
             var operandBuilder = MockRepository.GenerateStub<IOperandBuilder>();
             operandBuilder.Stub(b => b.CreateFieldRefOperand(((MethodCallExpression)expr.Body).Object)).Return(null);
             operandBuilder.Stub(b => b.CreateValueOperandForNativeSyntax(((MethodCallExpression)expr.Body).Arguments[0])).Return(null);
@@ -136,7 +136,7 @@ namespace CamlexNET.UnitTests.Operations.BeginsWith
         public void TestThatBeginsWithExpressionWithCustomNoteTypeIsDeterminedProperly()
         {
             // arrange
-            Expression<Func<SPItem, bool>> expr = x => ((DataTypes.Note)x["Count"]).StartsWith("foo");
+            Expression<Func<SPListItem, bool>> expr = x => ((DataTypes.Note)x["Count"]).StartsWith("foo");
             var operandBuilder = MockRepository.GenerateStub<IOperandBuilder>();
             operandBuilder.Stub(b => b.CreateFieldRefOperand(((MethodCallExpression)expr.Body).Object)).Return(null);
             operandBuilder.Stub(b => b.CreateValueOperandForNativeSyntax(((MethodCallExpression)expr.Body).Arguments[0])).Return(null);

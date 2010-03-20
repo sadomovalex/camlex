@@ -40,7 +40,7 @@ namespace CamlexNET.UnitTests.Factories
         [Test]
         public void test_THAT_field_ref_operand_from_indexer_with_constant_param_IS_created_successfully()
         {
-            Expression<Func<SPItem, bool>> expr = x => (string) x["Email"] == "test@example.com";
+            Expression<Func<SPListItem, bool>> expr = x => (string) x["Email"] == "test@example.com";
 
             var operandBuilder = new OperandBuilder();
             var operand = operandBuilder.CreateFieldRefOperand(((BinaryExpression)expr.Body).Left);
@@ -53,7 +53,7 @@ namespace CamlexNET.UnitTests.Factories
         public void test_THAT_field_ref_operand_from_indexer_with_variable_param_IS_created_successfully()
         {
             string val = "Email";
-            Expression<Func<SPItem, bool>> expr = x => (string)x[val] == "test@example.com";
+            Expression<Func<SPListItem, bool>> expr = x => (string)x[val] == "test@example.com";
 
             var operandBuilder = new OperandBuilder();
             var operand = operandBuilder.CreateFieldRefOperand(((BinaryExpression)expr.Body).Left);
@@ -66,7 +66,7 @@ namespace CamlexNET.UnitTests.Factories
         public void test_THAT_field_ref_operand_from_indexer_with_ternary_operator_IS_created_successfully()
         {
             bool b = true;
-            Expression<Func<SPItem, bool>> expr = x => (string)x[b ? "val1" : "val2"] == "test@example.com";
+            Expression<Func<SPListItem, bool>> expr = x => (string)x[b ? "val1" : "val2"] == "test@example.com";
 
             var operandBuilder = new OperandBuilder();
             var operand = operandBuilder.CreateFieldRefOperand(((BinaryExpression)expr.Body).Left);
@@ -79,7 +79,7 @@ namespace CamlexNET.UnitTests.Factories
         public void test_WHEN_native_value_is_text_THEN_text_operand_is_created()
         {
             var operandBuilder = new OperandBuilder();
-            Expression<Func<SPItem, bool>> expr = x => (string)x["Email"] == "test@example.com";
+            Expression<Func<SPListItem, bool>> expr = x => (string)x["Email"] == "test@example.com";
             var operand = operandBuilder.CreateValueOperandForNativeSyntax(((BinaryExpression)expr.Body).Right);
             
             Assert.That(operand, Is.InstanceOf<TextValueOperand>());
@@ -93,7 +93,7 @@ namespace CamlexNET.UnitTests.Factories
         public void test_WHEN_string_based_value_is_text_THEN_text_operand_is_created()
         {
             var operandBuilder = new OperandBuilder();
-            Expression<Func<SPItem, bool>> expr = x => x["Email"] == (DataTypes.Text)"test@example.com";
+            Expression<Func<SPListItem, bool>> expr = x => x["Email"] == (DataTypes.Text)"test@example.com";
             var operand = operandBuilder.CreateValueOperandForStringBasedSyntax(((BinaryExpression)expr.Body).Right);
 
             Assert.That(operand, Is.InstanceOf<TextValueOperand>());
@@ -107,7 +107,7 @@ namespace CamlexNET.UnitTests.Factories
         public void test_WHEN_native_value_is_integer_THEN_integer_operand_is_created()
         {
             var operandBuilder = new OperandBuilder();
-            Expression<Func<SPItem, bool>> expr = x => (int)x["Foo"] == 1;
+            Expression<Func<SPListItem, bool>> expr = x => (int)x["Foo"] == 1;
             var operand = operandBuilder.CreateValueOperandForNativeSyntax(((BinaryExpression)expr.Body).Right);
 
             Assert.That(operand, Is.InstanceOf<IntegerValueOperand>());
@@ -121,7 +121,7 @@ namespace CamlexNET.UnitTests.Factories
         public void test_WHEN_string_based_value_is_integer_THEN_integer_operand_is_created()
         {
             var operandBuilder = new OperandBuilder();
-            Expression<Func<SPItem, bool>> expr = x => x["Foo"] == (DataTypes.Integer)"1";
+            Expression<Func<SPListItem, bool>> expr = x => x["Foo"] == (DataTypes.Integer)"1";
             var operand = operandBuilder.CreateValueOperandForStringBasedSyntax(((BinaryExpression)expr.Body).Right);
 
             Assert.That(operand, Is.InstanceOf<IntegerValueOperand>());
@@ -135,7 +135,7 @@ namespace CamlexNET.UnitTests.Factories
         public void test_WHEN_native_value_is_datetime_THEN_datetime_operand_is_created()
         {
             var operandBuilder = new OperandBuilder();
-            Expression<Func<SPItem, bool>> expr = x => (DateTime)x["Foo"] == new DateTime(2010, 1, 2, 3, 4, 5);
+            Expression<Func<SPListItem, bool>> expr = x => (DateTime)x["Foo"] == new DateTime(2010, 1, 2, 3, 4, 5);
             var operand = operandBuilder.CreateValueOperandForNativeSyntax(((BinaryExpression)expr.Body).Right);
 
             Assert.That(operand, Is.InstanceOf<DateTimeValueOperand>());
@@ -150,7 +150,7 @@ namespace CamlexNET.UnitTests.Factories
         public void test_WHEN_native_value_is_datetime_with_includetimevalue_THEN_datetime_operand_is_created()
         {
             var operandBuilder = new OperandBuilder();
-            Expression<Func<SPItem, bool>> expr = x => (DateTime)x["Foo"] == new DateTime(2010, 1, 2, 3, 4, 5).IncludeTimeValue();
+            Expression<Func<SPListItem, bool>> expr = x => (DateTime)x["Foo"] == new DateTime(2010, 1, 2, 3, 4, 5).IncludeTimeValue();
             var operand = operandBuilder.CreateValueOperandForNativeSyntax(((BinaryExpression)expr.Body).Right);
 
             Assert.That(operand, Is.InstanceOf<DateTimeValueOperand>());
@@ -165,7 +165,7 @@ namespace CamlexNET.UnitTests.Factories
         public void test_WHEN_string_based_value_is_datetime_THEN_datetime_operand_is_created()
         {
             var operandBuilder = new OperandBuilder();
-            Expression<Func<SPItem, bool>> expr = x => x["Modified"] == ((DataTypes.DateTime)"02.01.2010 03:04:05");
+            Expression<Func<SPListItem, bool>> expr = x => x["Modified"] == ((DataTypes.DateTime)"02.01.2010 03:04:05");
             var operand = operandBuilder.CreateValueOperandForStringBasedSyntax(((BinaryExpression)expr.Body).Right);
 
             Assert.That(operand, Is.InstanceOf<DateTimeValueOperand>());
@@ -180,7 +180,7 @@ namespace CamlexNET.UnitTests.Factories
         public void test_WHEN_string_based_value_is_datetime_with_includedatetime_THEN_datetime_operand_is_created()
         {
             var operandBuilder = new OperandBuilder();
-            Expression<Func<SPItem, bool>> expr = x => x["Modified"] == ((DataTypes.DateTime)"02.01.2010 03:04:05").IncludeTimeValue();
+            Expression<Func<SPListItem, bool>> expr = x => x["Modified"] == ((DataTypes.DateTime)"02.01.2010 03:04:05").IncludeTimeValue();
             var operand = operandBuilder.CreateValueOperandForStringBasedSyntax(((BinaryExpression)expr.Body).Right);
 
             Assert.That(operand, Is.InstanceOf<DateTimeValueOperand>());
@@ -195,7 +195,7 @@ namespace CamlexNET.UnitTests.Factories
         public void test_WHEN_native_value_is_boolean_THEN_boolean_operand_is_created()
         {
             var operandBuilder = new OperandBuilder();
-            Expression<Func<SPItem, bool>> expr = x => (bool)x["Foo"] == true;
+            Expression<Func<SPListItem, bool>> expr = x => (bool)x["Foo"] == true;
             var operand = operandBuilder.CreateValueOperandForNativeSyntax(((BinaryExpression)expr.Body).Right);
 
             Assert.That(operand, Is.InstanceOf<BooleanValueOperand>());
@@ -209,7 +209,7 @@ namespace CamlexNET.UnitTests.Factories
         public void test_WHEN_string_based_value_is_boolean_THEN_boolean_operand_is_created()
         {
             var operandBuilder = new OperandBuilder();
-            Expression<Func<SPItem, bool>> expr = x => x["Foo"] == (DataTypes.Boolean)"false";
+            Expression<Func<SPListItem, bool>> expr = x => x["Foo"] == (DataTypes.Boolean)"false";
             var operand = operandBuilder.CreateValueOperandForStringBasedSyntax(((BinaryExpression)expr.Body).Right);
 
             Assert.That(operand, Is.InstanceOf<BooleanValueOperand>());
@@ -223,7 +223,7 @@ namespace CamlexNET.UnitTests.Factories
         public void test_WHEN_rvalue_is_null_THEN_nullvalue_operand_is_created()
         {
             var operandBuilder = new OperandBuilder();
-            Expression<Func<SPItem, bool>> expr = x => x["Foo"] == null;
+            Expression<Func<SPListItem, bool>> expr = x => x["Foo"] == null;
             var operand = operandBuilder.CreateValueOperandForNativeSyntax(((BinaryExpression)expr.Body).Right);
 
             Assert.That(operand, Is.InstanceOf<NullValueOperand>());
@@ -233,7 +233,7 @@ namespace CamlexNET.UnitTests.Factories
         public void test_WHEN_rvalue_is_null_and_lvalue_is_casted_to_string_THEN_nullvalue_operand_is_created()
         {
             var operandBuilder = new OperandBuilder();
-            Expression<Func<SPItem, bool>> expr = x => (string)x["Foo"] == null;
+            Expression<Func<SPListItem, bool>> expr = x => (string)x["Foo"] == null;
             var operand = operandBuilder.CreateValueOperandForNativeSyntax(((BinaryExpression)expr.Body).Right);
 
             Assert.That(operand, Is.InstanceOf<NullValueOperand>());
@@ -243,7 +243,7 @@ namespace CamlexNET.UnitTests.Factories
         public void test_WHEN_rvalue_is_null_casted_to_string_based_THEN_nullvalue_operand_is_created()
         {
             var operandBuilder = new OperandBuilder();
-            Expression<Func<SPItem, bool>> expr = x => x["Foo"] == (DataTypes.Text)null;
+            Expression<Func<SPListItem, bool>> expr = x => x["Foo"] == (DataTypes.Text)null;
             var operand = operandBuilder.CreateValueOperandForNativeSyntax(((BinaryExpression)expr.Body).Right);
 
             Assert.That(operand, Is.InstanceOf<NullValueOperand>());
@@ -253,7 +253,7 @@ namespace CamlexNET.UnitTests.Factories
 //        public void test_WHEN_rvalue_is_null_casted_to_string_based_and_lvalue_is_casted_to_string_based_THEN_nullvalue_operand_is_created()
 //        {
 //            var operandBuilder = new OperandBuilder();
-//            Expression<Func<SPItem, bool>> expr = x => (DataTypes.Text)x["Foo"] == (DataTypes.Text)null;
+//            Expression<Func<SPListItem, bool>> expr = x => (DataTypes.Text)x["Foo"] == (DataTypes.Text)null;
 //            var operand = operandBuilder.CreateValueOperandForNativeSyntax(((BinaryExpression)expr.Body).Right);
 //
 //            Assert.That(operand, Is.InstanceOf<NullValueOperand>());
@@ -263,7 +263,7 @@ namespace CamlexNET.UnitTests.Factories
         public void test_WHEN_variable_is_null_THEN_nullvalue_operand_is_created()
         {
             object o = null;
-            Expression<Func<SPItem, bool>> expr = x => x["Foo"] == o;
+            Expression<Func<SPListItem, bool>> expr = x => x["Foo"] == o;
 
             var operandBuilder = new OperandBuilder();
             var operand = operandBuilder.CreateValueOperandForNativeSyntax(((BinaryExpression)expr.Body).Right);
@@ -275,7 +275,7 @@ namespace CamlexNET.UnitTests.Factories
         public void test_WHEN_variable_is_null_casted_to_string_based_THEN_nullvalue_operand_is_created()
         {
             object o = null;
-            Expression<Func<SPItem, bool>> expr = x => x["Foo"] == (DataTypes.Integer)o;
+            Expression<Func<SPListItem, bool>> expr = x => x["Foo"] == (DataTypes.Integer)o;
 
             var operandBuilder = new OperandBuilder();
             var operand = operandBuilder.CreateValueOperandForNativeSyntax(((BinaryExpression)expr.Body).Right);
@@ -286,7 +286,7 @@ namespace CamlexNET.UnitTests.Factories
         [Test]
         public void test_WHEN_method_call_result_is_null_THEN_nullvalue_operand_is_created()
         {
-            Expression<Func<SPItem, bool>> expr = x => x["Foo"] == val1();
+            Expression<Func<SPListItem, bool>> expr = x => x["Foo"] == val1();
 
             var operandBuilder = new OperandBuilder();
             var operand = operandBuilder.CreateValueOperandForNativeSyntax(((BinaryExpression)expr.Body).Right);
@@ -297,7 +297,7 @@ namespace CamlexNET.UnitTests.Factories
         [Test]
         public void test_WHEN_method_call_result_is_null_and_casted_to_string_based_THEN_nullvalue_operand_is_created()
         {
-            Expression<Func<SPItem, bool>> expr = x => x["Foo"] == (DataTypes.Integer)val1();
+            Expression<Func<SPListItem, bool>> expr = x => x["Foo"] == (DataTypes.Integer)val1();
 
             var operandBuilder = new OperandBuilder();
             var operand = operandBuilder.CreateValueOperandForNativeSyntax(((BinaryExpression)expr.Body).Right);
@@ -314,7 +314,7 @@ namespace CamlexNET.UnitTests.Factories
         public void test_WHEN_nested_method_call_result_is_null_THEN_nullvalue_operand_is_created()
         {
             Func<object> f = () => null;
-            Expression<Func<SPItem, bool>> expr = x => x["Foo"] == f();
+            Expression<Func<SPListItem, bool>> expr = x => x["Foo"] == f();
 
             var operandBuilder = new OperandBuilder();
             var operand = operandBuilder.CreateValueOperandForNativeSyntax(((BinaryExpression)expr.Body).Right);
@@ -326,7 +326,7 @@ namespace CamlexNET.UnitTests.Factories
         public void test_WHEN_nested_method_call_result_is_null_and_casted_to_string_based_THEN_nullvalue_operand_is_created()
         {
             Func<object> f = () => null;
-            Expression<Func<SPItem, bool>> expr = x => x["Foo"] == (DataTypes.Text)f();
+            Expression<Func<SPListItem, bool>> expr = x => x["Foo"] == (DataTypes.Text)f();
 
             var operandBuilder = new OperandBuilder();
             var operand = operandBuilder.CreateValueOperandForNativeSyntax(((BinaryExpression)expr.Body).Right);
@@ -338,7 +338,7 @@ namespace CamlexNET.UnitTests.Factories
         public void test_WHEN_value_is_string_based_and_has_no_native_representation_THEN_generic_string_based_operand_is_created()
         {
             var operandBuilder = new OperandBuilder();
-            Expression<Func<SPItem, bool>> expr = x => x["User"] == (DataTypes.User)"John Smith";
+            Expression<Func<SPListItem, bool>> expr = x => x["User"] == (DataTypes.User)"John Smith";
             var operand = operandBuilder.CreateValueOperandForStringBasedSyntax(((BinaryExpression)expr.Body).Right);
 
             Assert.That(operand, Is.InstanceOf<GenericStringBasedValueOperand>());

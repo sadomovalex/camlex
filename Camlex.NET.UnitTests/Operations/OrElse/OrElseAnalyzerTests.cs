@@ -41,7 +41,7 @@ namespace CamlexNET.UnitTests.Operations.OrElse
         [Test]
         public void test_THAT_logical_or_expression_IS_valid_expression()
         {
-            Expression<Func<SPItem, bool>> expr = x => (string) x["Email"] == "test@example.com" ||
+            Expression<Func<SPListItem, bool>> expr = x => (string) x["Email"] == "test@example.com" ||
                                                        (int) x["Count1"] == 1;
             var operandBuilder = new OperandBuilder();
             var analyzerFactory = new AnalyzerFactory(operandBuilder, null);
@@ -52,7 +52,7 @@ namespace CamlexNET.UnitTests.Operations.OrElse
         [Test]
         public void test_THAT_binary_or_expression_IS_not_valid_expression()
         {
-            Expression<Func<SPItem, bool>> expr = x => (string)x["Email"] == "test@example.com" |
+            Expression<Func<SPListItem, bool>> expr = x => (string)x["Email"] == "test@example.com" |
                                                        (int)x["Count1"] == 1;
             var operandBuilder = new OperandBuilder();
             var analyzerFactory = new AnalyzerFactory(operandBuilder, null);
@@ -71,7 +71,7 @@ namespace CamlexNET.UnitTests.Operations.OrElse
             var analyzer = new OrElseAnalyzer(null, analyzerFactoryStub);
 
 
-            Expression<Func<SPItem, bool>> expr = x => (string)x["Email"] == "test@example.com" ||
+            Expression<Func<SPListItem, bool>> expr = x => (string)x["Email"] == "test@example.com" ||
                                                        (int)x["Count1"] == 1;
             // act
             var operation = analyzer.GetOperation(expr);

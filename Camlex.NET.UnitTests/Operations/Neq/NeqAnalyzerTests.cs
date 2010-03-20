@@ -42,7 +42,7 @@ namespace CamlexNET.UnitTests.Operations.Neq
         public void test_THAT_neq_expression_IS_valid()
         {
             var analyzer = new NeqAnalyzer(null, null);
-            Expression<Func<SPItem, bool>> expr = x => (string) x["Title"] != "testValue";
+            Expression<Func<SPListItem, bool>> expr = x => (string) x["Title"] != "testValue";
             Assert.That(analyzer.IsValid(expr), Is.True);
         }
 
@@ -50,7 +50,7 @@ namespace CamlexNET.UnitTests.Operations.Neq
         public void test_THAT_neq_expression_IS_determined_properly()
         {
             // arrange
-            Expression<Func<SPItem, bool>> expr = x => (string)x["Title"] != "testValue";
+            Expression<Func<SPListItem, bool>> expr = x => (string)x["Title"] != "testValue";
 
             var operandBuilder = MockRepository.GenerateStub<IOperandBuilder>();
             operandBuilder.Stub(b => b.CreateFieldRefOperand(expr.Body)).Return(null);

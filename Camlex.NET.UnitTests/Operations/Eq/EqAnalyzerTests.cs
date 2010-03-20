@@ -41,7 +41,7 @@ namespace CamlexNET.UnitTests.Operations.Eq
         public void test_THAT_eq_expression_IS_valid()
         {
             var analyzer = new EqAnalyzer(null, null);
-            Expression<Func<SPItem, bool>> expr = x => (string) x["Title"] == "testValue";
+            Expression<Func<SPListItem, bool>> expr = x => (string) x["Title"] == "testValue";
             Assert.That(analyzer.IsValid(expr), Is.True);
         }
 
@@ -49,7 +49,7 @@ namespace CamlexNET.UnitTests.Operations.Eq
         public void test_THAT_string_based_eq_expression_IS_valid()
         {
             var analyzer = new EqAnalyzer(null, null);
-            Expression<Func<SPItem, bool>> expr = x => x["Title"] == (DataTypes.Text)"testValue";
+            Expression<Func<SPListItem, bool>> expr = x => x["Title"] == (DataTypes.Text)"testValue";
             Assert.That(analyzer.IsValid(expr), Is.True);
         }
 
@@ -57,7 +57,7 @@ namespace CamlexNET.UnitTests.Operations.Eq
         public void test_THAT_string_based_eq_expression_IS_not_valid()
         {
             var analyzer = new EqAnalyzer(null, null);
-            Expression<Func<SPItem, bool>> expr = x => x["Title"] == (DataTypes.Text)new BaseFieldType();
+            Expression<Func<SPListItem, bool>> expr = x => x["Title"] == (DataTypes.Text)new BaseFieldType();
             Assert.That(analyzer.IsValid(expr), Is.False);
         }
 
@@ -66,7 +66,7 @@ namespace CamlexNET.UnitTests.Operations.Eq
         {
             var analyzer = new EqAnalyzer(null, null);
             var foo = new DataTypes.Text();
-            Expression<Func<SPItem, bool>> expr = x => x["Title"] == foo;
+            Expression<Func<SPListItem, bool>> expr = x => x["Title"] == foo;
             Assert.That(analyzer.IsValid(expr), Is.False);
         }
 
@@ -74,7 +74,7 @@ namespace CamlexNET.UnitTests.Operations.Eq
         public void test_THAT_eq_expression_IS_determined_properly()
         {
             // arrange
-            Expression<Func<SPItem, bool>> expr = x => (string)x["Title"] == "testValue";
+            Expression<Func<SPListItem, bool>> expr = x => (string)x["Title"] == "testValue";
 
             var operandBuilder = MockRepository.GenerateStub<IOperandBuilder>();
             operandBuilder.Stub(b => b.CreateFieldRefOperand(expr.Body)).Return(null);
@@ -93,7 +93,7 @@ namespace CamlexNET.UnitTests.Operations.Eq
         public void test_THAT_string_based_eq_expression_IS_determined_properly()
         {
             // arrange
-            Expression<Func<SPItem, bool>> expr = x => x["Title"] == (DataTypes.Text)"testValue";
+            Expression<Func<SPListItem, bool>> expr = x => x["Title"] == (DataTypes.Text)"testValue";
 
             var operandBuilder = MockRepository.GenerateStub<IOperandBuilder>();
             operandBuilder.Stub(b => b.CreateFieldRefOperand(expr.Body)).Return(null);

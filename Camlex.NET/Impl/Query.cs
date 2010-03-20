@@ -47,58 +47,58 @@ namespace CamlexNET.Impl
             this.translatorFactory = translatorFactory;
         }
 
-        public IQuery Where(Expression<Func<SPItem, bool>> expr)
+        public IQuery Where(Expression<Func<SPListItem, bool>> expr)
         {
             var translator = translatorFactory.Create(expr);
             this.where = translator.TranslateWhere(expr);
             return this;
         }
 
-        public IQuery OrderBy(Expression<Func<SPItem, object>> expr)
+        public IQuery OrderBy(Expression<Func<SPListItem, object>> expr)
         {
-            var lambda = Expression.Lambda<Func<SPItem, object[]>>(
+            var lambda = Expression.Lambda<Func<SPListItem, object[]>>(
                 Expression.NewArrayInit(typeof(object), expr.Body), expr.Parameters);
             return OrderBy(lambda);
         }
 
-        public IQuery OrderBy(Expression<Func<SPItem, object[]>> expr)
+        public IQuery OrderBy(Expression<Func<SPListItem, object[]>> expr)
         {
             var translator = translatorFactory.Create(expr);
             this.orderBy = translator.TranslateOrderBy(expr);
             return this;
         }
 
-        public IQuery GroupBy(Expression<Func<SPItem, object>> expr)
+        public IQuery GroupBy(Expression<Func<SPListItem, object>> expr)
         {
-            var lambda = Expression.Lambda<Func<SPItem, object[]>>(
+            var lambda = Expression.Lambda<Func<SPListItem, object[]>>(
                 Expression.NewArrayInit(typeof(object), expr.Body), expr.Parameters);
             return GroupBy(lambda, null, null);
         }
 
-        public IQuery GroupBy(Expression<Func<SPItem, object[]>> expr, bool? collapse, int? groupLimit)
+        public IQuery GroupBy(Expression<Func<SPListItem, object[]>> expr, bool? collapse, int? groupLimit)
         {
             var translator = translatorFactory.Create(expr);
             this.groupBy = translator.TranslateGroupBy(expr, collapse, groupLimit);
             return this;
         }
 
-        public IQuery GroupBy(Expression<Func<SPItem, object>> expr, bool? collapse, int? groupLimit)
+        public IQuery GroupBy(Expression<Func<SPListItem, object>> expr, bool? collapse, int? groupLimit)
         {
-            var lambda = Expression.Lambda<Func<SPItem, object[]>>(
+            var lambda = Expression.Lambda<Func<SPListItem, object[]>>(
                 Expression.NewArrayInit(typeof(object), expr.Body), expr.Parameters);
             return GroupBy(lambda, collapse, groupLimit);
         }
 
-        public IQuery GroupBy(Expression<Func<SPItem, object>> expr, bool? collapse)
+        public IQuery GroupBy(Expression<Func<SPListItem, object>> expr, bool? collapse)
         {
-            var lambda = Expression.Lambda<Func<SPItem, object[]>>(
+            var lambda = Expression.Lambda<Func<SPListItem, object[]>>(
                 Expression.NewArrayInit(typeof(object), expr.Body), expr.Parameters);
             return GroupBy(lambda, collapse, null);
         }
 
-        public IQuery GroupBy(Expression<Func<SPItem, object>> expr, int? groupLimit)
+        public IQuery GroupBy(Expression<Func<SPListItem, object>> expr, int? groupLimit)
         {
-            var lambda = Expression.Lambda<Func<SPItem, object[]>>(
+            var lambda = Expression.Lambda<Func<SPListItem, object[]>>(
                 Expression.NewArrayInit(typeof(object), expr.Body), expr.Parameters);
             return GroupBy(lambda, null, groupLimit);
         }

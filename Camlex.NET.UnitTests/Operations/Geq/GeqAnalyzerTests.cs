@@ -41,7 +41,7 @@ namespace CamlexNET.UnitTests.Operations.Geq
         public void test_THAT_geq_expression_IS_valid()
         {
             var analyzer = new GeqAnalyzer(null, null);
-            Expression<Func<SPItem, bool>> expr = x => (int) x["Count"] >= 1;
+            Expression<Func<SPListItem, bool>> expr = x => (int) x["Count"] >= 1;
             Assert.That(analyzer.IsValid(expr), Is.True);
         }
 
@@ -49,7 +49,7 @@ namespace CamlexNET.UnitTests.Operations.Geq
         public void test_THAT_geq_expression_IS_determined_properly()
         {
             // arrange
-            Expression<Func<SPItem, bool>> expr = x => (int)x["Count"] >= 1;
+            Expression<Func<SPListItem, bool>> expr = x => (int)x["Count"] >= 1;
 
             var operandBuilder = MockRepository.GenerateStub<IOperandBuilder>();
             operandBuilder.Stub(b => b.CreateFieldRefOperand(expr.Body)).Return(null);

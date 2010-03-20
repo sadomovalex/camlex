@@ -44,7 +44,7 @@ namespace CamlexNET.UnitTests.Array
         public void test_THAT_array_expression_IS_valid()
         {
             var analyzer = new ArrayAnalyzer(null, null);
-            Expression<Func<SPItem, object[]>> expr = (x => new [] { x["field1"], x["field2"] as Camlex.Asc, x["field3"] as Camlex.Desc });
+            Expression<Func<SPListItem, object[]>> expr = (x => new [] { x["field1"], x["field2"] as Camlex.Asc, x["field3"] as Camlex.Desc });
             Assert.That(analyzer.IsValid(expr), Is.True);
         }
 
@@ -52,7 +52,7 @@ namespace CamlexNET.UnitTests.Array
         public void test_THAT_array_expression_IS_determined_properly()
         {
             // arrange
-            Expression<Func<SPItem, object[]>> expr = (x => new[] { x["field1"], x["field2"] as Camlex.Asc, x["field3"] as Camlex.Desc });
+            Expression<Func<SPListItem, object[]>> expr = (x => new[] { x["field1"], x["field2"] as Camlex.Asc, x["field3"] as Camlex.Desc });
 
             var operandBuilder = MockRepository.GenerateStub<IOperandBuilder>();
             operandBuilder.Stub(b => b.CreateFieldRefOperandWithOrdering(null, null)).Return(null).IgnoreArguments();

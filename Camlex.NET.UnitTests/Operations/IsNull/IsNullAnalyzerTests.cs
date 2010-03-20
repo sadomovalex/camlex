@@ -46,7 +46,7 @@ namespace CamlexNET.UnitTests.Operations.IsNull
             operandBuilder.Stub(b => b.CreateValueOperandForNativeSyntax(null)).Return(new NullValueOperand()).IgnoreArguments();
 
             var analyzer = new IsNullAnalyzer(null, operandBuilder);
-            Expression<Func<SPItem, bool>> expr = x => x["Count"] == null;
+            Expression<Func<SPListItem, bool>> expr = x => x["Count"] == null;
             Assert.That(analyzer.IsValid(expr), Is.True);
         }
 
@@ -57,7 +57,7 @@ namespace CamlexNET.UnitTests.Operations.IsNull
             operandBuilder.Stub(b => b.CreateValueOperandForNativeSyntax(null)).Return(new NullValueOperand()).IgnoreArguments();
 
             var analyzer = new IsNullAnalyzer(null, operandBuilder);
-            Expression<Func<SPItem, bool>> expr = x => x["Count"] == (DataTypes.Integer)"1";
+            Expression<Func<SPListItem, bool>> expr = x => x["Count"] == (DataTypes.Integer)"1";
             Assert.That(analyzer.IsValid(expr), Is.False);
         }
 
@@ -68,7 +68,7 @@ namespace CamlexNET.UnitTests.Operations.IsNull
             operandBuilder.Stub(b => b.CreateValueOperandForNativeSyntax(null)).Return(new NullValueOperand()).IgnoreArguments();
 
             var analyzer = new IsNullAnalyzer(null, operandBuilder);
-            Expression<Func<SPItem, bool>> expr = x => x["Count"] == (DataTypes.Integer)null;
+            Expression<Func<SPListItem, bool>> expr = x => x["Count"] == (DataTypes.Integer)null;
             Assert.That(analyzer.IsValid(expr), Is.True);
         }
 
@@ -76,7 +76,7 @@ namespace CamlexNET.UnitTests.Operations.IsNull
         public void test_THAT_isnull_expression_IS_determined_properly()
         {
             // arrange
-            Expression<Func<SPItem, bool>> expr = x => x["Count"] == null;
+            Expression<Func<SPListItem, bool>> expr = x => x["Count"] == null;
 
             var operandBuilder = MockRepository.GenerateStub<IOperandBuilder>();
             operandBuilder.Stub(b => b.CreateFieldRefOperand(expr.Body)).Return(null);
