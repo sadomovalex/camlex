@@ -80,10 +80,18 @@ namespace CamlexNET
         }
     }
 
-    internal class InvalidFieldNameForFieldRefException : GenericException
+//    internal class InvalidFieldNameForFieldRefException : GenericException
+//    {
+//        public InvalidFieldNameForFieldRefException(object value) :
+//            base(ErrorMessages.INVALID_FIELD_NAME_FOR_FIELD_REF_OPERAND, value)
+//        {
+//        }
+//    }
+
+    internal class InvalidValueForFieldRefException : GenericException
     {
-        public InvalidFieldNameForFieldRefException(object value) :
-            base(ErrorMessages.INVALID_FIELD_NAME_FOR_FIELD_REF_OPERAND, value)
+        public InvalidValueForFieldRefException(object value) :
+            base(ErrorMessages.INVALID_VALUE_FOR_FIELD_REF_OPERAND, value)
         {
         }
     }

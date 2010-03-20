@@ -40,6 +40,7 @@ namespace CamlexNET
             "Value is null. Null rvalue is allowed only with '==' (IsNull) and '!=' (IsNotNull) operations. " +
             "Also null rvalue should not be casted to DataTypes.*";
         public const string INVALID_VALUE_FOR_OPERAND_TYPE = "Value '{0}' is not valid for operand type '{1}'";
-        public const string INVALID_FIELD_NAME_FOR_FIELD_REF_OPERAND = "Value '{0}' is not valid field name for FieldRef operand";
+        //public const string INVALID_FIELD_NAME_FOR_FIELD_REF_OPERAND = "Value '{0}' is not valid field name for FieldRef operand";
+        public const string INVALID_VALUE_FOR_FIELD_REF_OPERAND = "Value '{0}' is not valid field name or field id for FieldRef operand";
     }
 }

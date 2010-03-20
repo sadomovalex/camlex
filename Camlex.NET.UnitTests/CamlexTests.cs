@@ -888,5 +888,26 @@ namespace CamlexNET.UnitTests
 
             Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
         }
+
+        [Test]
+        public void test_THAT_expression_with_constant_guid_IS_translated_sucessfully()
+        {
+            var guid = new Guid("4feaf1f3-5b04-4d93-b0fc-4e48d0c60eed");
+
+            string caml = Camlex.Query()
+                .Where(x => (string)x[guid] == "val").ToString(true);
+
+            string expected =
+                "<Query>" +
+                "   <Where>" +
+                "       <Eq>" +
+                "           <FieldRef ID=\"4feaf1f3-5b04-4d93-b0fc-4e48d0c60eed\" />" +
+                "           <Value Type=\"Text\">val</Value>" +
+                "       </Eq>" +
+                "   </Where>" +
+                "</Query>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
     }
 }

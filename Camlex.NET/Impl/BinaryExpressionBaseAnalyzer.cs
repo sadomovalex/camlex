@@ -118,8 +118,8 @@ namespace CamlexNET.Impl
                 return false;
             }
 
-            // type of argument expression should be string
-            return (argumentExpression.Type == typeof(string));
+            // type of argument expression should be string or guid
+            return (argumentExpression.Type == typeof(string) || argumentExpression.Type == typeof(Guid));
         }
 
         private bool isExpressionWithStringBasedSyntax(Expression rightExpression)
