@@ -24,6 +24,8 @@
 // fitness for a particular purpose and non-infringement.
 // -----------------------------------------------------------------------------
 #endregion
+
+using System;
 using CamlexNET.Impl.Operands;
 using NUnit.Framework;
 
@@ -33,11 +35,20 @@ namespace CamlexNET.UnitTests.Operands
     public class FieldRefOperandTests
     {
         [Test]
-        public void test_THAT_field_ref_IS_rendered_to_caml_properly()
+        public void test_THAT_field_ref_with_name_IS_rendered_to_caml_properly()
         {
             var fr = new FieldRefOperand("Title");
             string caml = fr.ToCaml().ToString();
             Assert.That(caml, Is.EqualTo("<FieldRef Name=\"Title\" />"));
+        }
+
+        [Test]
+        public void test_THAT_field_ref_with_guid_IS_rendered_to_caml_properly()
+        {
+            var guid = new Guid("4feaf1f3-5b04-4d93-b0fc-4e48d0c60eed");
+            var fr = new FieldRefOperand(guid);
+            string caml = fr.ToCaml().ToString();
+            Assert.That(caml, Is.EqualTo("<FieldRef ID=\"4feaf1f3-5b04-4d93-b0fc-4e48d0c60eed\" />"));
         }
     }
 }

@@ -34,6 +34,7 @@ namespace CamlexNET
     internal static class Attributes
     {
         public const string Name = "Name";
+        public const string ID = "ID";
         public const string Type = "Type";
         public const string IncludeTimeValue = "IncludeTimeValue";
         public const string Ascending = "Ascending";

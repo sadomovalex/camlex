@@ -24,6 +24,8 @@
 // fitness for a particular purpose and non-infringement.
 // -----------------------------------------------------------------------------
 #endregion
+
+using System;
 using System.Xml.Linq;
 using CamlexNET.Interfaces;
 
@@ -32,6 +34,7 @@ namespace CamlexNET.Impl.Operands
     internal class FieldRefOperand : IOperand
     {
         protected readonly string fieldName;
+        private readonly Guid? id;
 
         public string FieldName
         {
@@ -41,13 +44,30 @@ namespace CamlexNET.Impl.Operands
             }
         }
 
+//        public Guid? FieldId
+//        {
+//            get
+//            {
+//                return id;
+//            }
+//        }
+
         public FieldRefOperand(string fieldName)
         {
             this.fieldName = fieldName;
         }
 
+        public FieldRefOperand(Guid id)
+        {
+            this.id = id;
+        }
+
         public virtual XElement ToCaml()
         {
+            if (this.id != null)
+            {
+                return new XElement(Tags.FieldRef, new XAttribute(Attributes.ID, this.id.Value));
+            }
             return new XElement(Tags.FieldRef, new XAttribute(Attributes.Name, this.fieldName));
         }
     }
