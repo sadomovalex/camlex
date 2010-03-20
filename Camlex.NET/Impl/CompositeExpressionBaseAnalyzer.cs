@@ -84,7 +84,7 @@ namespace CamlexNET.Impl
 
         private bool isExpressionValid(Expression subExpr, ParameterExpression lambdaParam)
         {
-            // make Expression<Func<SPItem, bool>> lambda expression from BinaryExpression
+            // make Expression<Func<SPListItem, bool>> lambda expression from BinaryExpression
             var lambda = this.createLambdaFromExpression(subExpr, lambdaParam);
             var subExpressionAnalyzer = this.analyzerFactory.Create(lambda);
             return subExpressionAnalyzer.IsValid(lambda);
@@ -92,15 +92,15 @@ namespace CamlexNET.Impl
 
         // For composite expressions like x => (string)x["Email"] == "test@example.com" && (int)x["Count1"] == 1
         // it creates 2 lambdas: x => (string)x["Email"] == "test@example.com" ; x => (int)x["Count1"] == 1
-        private Expression<Func<SPItem, bool>> createLambdaFromExpression(Expression subExpr,
+        private Expression<Func<SPListItem, bool>> createLambdaFromExpression(Expression subExpr,
             ParameterExpression lambdaParam)
         {
-            return Expression.Lambda<Func<SPItem, bool>>(subExpr, lambdaParam);
+            return Expression.Lambda<Func<SPListItem, bool>>(subExpr, lambdaParam);
         }
 
         private IOperation createOperationFromExpression(Expression subExpr, ParameterExpression lambdaParam)
         {
-            // make Expression<Func<SPItem, bool>> lambda expression from BinaryExpression
+            // make Expression<Func<SPListItem, bool>> lambda expression from BinaryExpression
             var lambda = this.createLambdaFromExpression(subExpr, lambdaParam);
             var subExpressionAnalyzer = this.analyzerFactory.Create(lambda);
             return subExpressionAnalyzer.GetOperation(lambda);

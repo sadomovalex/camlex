@@ -54,7 +54,7 @@ namespace CamlexNET.UnitTests
             var operation = MockRepository.GenerateStub<IOperation>();
             var translator = new GenericTranslator(analyzer);
 
-            Expression<Func<SPItem, bool>> expr = x => true;
+            Expression<Func<SPListItem, bool>> expr = x => true;
             analyzer.Stub(a => a.IsValid(expr)).Return(true);
             analyzer.Stub(a => a.GetOperation(expr)).Return(operation);
             operation.Stub(o => o.ToResult()).Return(xelementResult("foo"));

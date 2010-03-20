@@ -41,7 +41,7 @@ namespace CamlexNET.UnitTests.Operations.Contains
         public void test_THAT_contains_expression_with_string_type_IS_valid()
         {
             var analyzer = new ContainsAnalyzer(null, null);
-            Expression<Func<SPItem, bool>> expr = x => ((string)x["Count"]).Contains("foo");
+            Expression<Func<SPListItem, bool>> expr = x => ((string)x["Count"]).Contains("foo");
             Assert.That(analyzer.IsValid(expr), Is.True);
         }
 
@@ -49,7 +49,7 @@ namespace CamlexNET.UnitTests.Operations.Contains
         public void test_THAT_contains_expression_with_custom_text_type_IS_valid()
         {
             var analyzer = new ContainsAnalyzer(null, null);
-            Expression<Func<SPItem, bool>> expr = x => ((DataTypes.Text)x["Count"]).Contains("foo");
+            Expression<Func<SPListItem, bool>> expr = x => ((DataTypes.Text)x["Count"]).Contains("foo");
             Assert.That(analyzer.IsValid(expr), Is.True);
         }
 
@@ -57,7 +57,7 @@ namespace CamlexNET.UnitTests.Operations.Contains
         public void test_THAT_contains_expression_with_custom_note_type_IS_valid()
         {
             var analyzer = new ContainsAnalyzer(null, null);
-            Expression<Func<SPItem, bool>> expr = x => ((DataTypes.Note)x["Count"]).Contains("foo");
+            Expression<Func<SPListItem, bool>> expr = x => ((DataTypes.Note)x["Count"]).Contains("foo");
             Assert.That(analyzer.IsValid(expr), Is.True);
         }
 
@@ -66,7 +66,7 @@ namespace CamlexNET.UnitTests.Operations.Contains
         {
             var analyzer = new ContainsAnalyzer(null, null);
             var stringVar = "Blah-blah-blah";
-            Expression<Func<SPItem, bool>> expr = x => ((string)x["Count"]).Contains(stringVar);
+            Expression<Func<SPListItem, bool>> expr = x => ((string)x["Count"]).Contains(stringVar);
             Assert.That(analyzer.IsValid(expr), Is.True);
         }
 
@@ -75,7 +75,7 @@ namespace CamlexNET.UnitTests.Operations.Contains
         {
             var analyzer = new ContainsAnalyzer(null, null);
             var stringVar = "Blah-blah-blah";
-            Expression<Func<SPItem, bool>> expr = x => ((DataTypes.Text)x["Count"]).Contains(stringVar);
+            Expression<Func<SPListItem, bool>> expr = x => ((DataTypes.Text)x["Count"]).Contains(stringVar);
             Assert.That(analyzer.IsValid(expr), Is.True);
         }
 
@@ -84,7 +84,7 @@ namespace CamlexNET.UnitTests.Operations.Contains
         {
             var analyzer = new ContainsAnalyzer(null, null);
             var stringVar = "Blah-blah-blah";
-            Expression<Func<SPItem, bool>> expr = x => ((DataTypes.Note)x["Count"]).Contains(stringVar);
+            Expression<Func<SPListItem, bool>> expr = x => ((DataTypes.Note)x["Count"]).Contains(stringVar);
             Assert.That(analyzer.IsValid(expr), Is.True);
         }
 
@@ -92,7 +92,7 @@ namespace CamlexNET.UnitTests.Operations.Contains
         public void test_THAT_contains_expression_IS_determined_properly()
         {
             // arrange
-            Expression<Func<SPItem, bool>> expr = x => ((string)x["Count"]).Contains("foo");
+            Expression<Func<SPListItem, bool>> expr = x => ((string)x["Count"]).Contains("foo");
             var operandBuilder = MockRepository.GenerateStub<IOperandBuilder>();
             operandBuilder.Stub(b => b.CreateFieldRefOperand(((MethodCallExpression)expr.Body).Object)).Return(null);
             operandBuilder.Stub(b => b.CreateValueOperandForNativeSyntax(((MethodCallExpression)expr.Body).Arguments[0])).Return(null);
@@ -109,7 +109,7 @@ namespace CamlexNET.UnitTests.Operations.Contains
         public void test_THAT_contains_expression_with_string_type_IS_determined_Properly()
         {
             // arrange
-            Expression<Func<SPItem, bool>> expr = x => ((string)x["Count"]).Contains("foo");
+            Expression<Func<SPListItem, bool>> expr = x => ((string)x["Count"]).Contains("foo");
             var operandBuilder = MockRepository.GenerateStub<IOperandBuilder>();
             operandBuilder.Stub(b => b.CreateFieldRefOperand(((MethodCallExpression)expr.Body).Object)).Return(null);
             operandBuilder.Stub(b => b.CreateValueOperandForNativeSyntax(((MethodCallExpression)expr.Body).Arguments[0])).Return(null);
@@ -126,7 +126,7 @@ namespace CamlexNET.UnitTests.Operations.Contains
         public void test_THAT_contains_expression_with_custom_note_type_IS_determined_properly()
         {
             // arrange
-            Expression<Func<SPItem, bool>> expr = x => ((DataTypes.Note)x["Count"]).Contains("foo");
+            Expression<Func<SPListItem, bool>> expr = x => ((DataTypes.Note)x["Count"]).Contains("foo");
             var operandBuilder = MockRepository.GenerateStub<IOperandBuilder>();
             operandBuilder.Stub(b => b.CreateFieldRefOperand(((MethodCallExpression)expr.Body).Object)).Return(null);
             operandBuilder.Stub(b => b.CreateValueOperandForNativeSyntax(((MethodCallExpression)expr.Body).Arguments[0])).Return(null);

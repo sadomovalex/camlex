@@ -16,7 +16,7 @@ namespace CamlexNET.UnitTests.Operations.DateRangesOverlap
         public void test_THAT_datarangesoverlap_expression_with_native_constant_IS_valid()
         {
             var analyzer = new DataRangesOverlapAnalyzer(null, null);
-            Expression<Func<SPItem, bool>> expr = x => Camlex.DateRangesOverlap(x["start"], x["stop"], x["recurrence"], DateTime.Now);
+            Expression<Func<SPListItem, bool>> expr = x => Camlex.DateRangesOverlap(x["start"], x["stop"], x["recurrence"], DateTime.Now);
             Assert.That(analyzer.IsValid(expr), Is.True);
         }
 
@@ -25,7 +25,7 @@ namespace CamlexNET.UnitTests.Operations.DateRangesOverlap
         {
             var analyzer = new DataRangesOverlapAnalyzer(null, null);
             var now = DateTime.Now;
-            Expression<Func<SPItem, bool>> expr = x => Camlex.DateRangesOverlap(x["start"], x["stop"], x["recurrence"], now);
+            Expression<Func<SPListItem, bool>> expr = x => Camlex.DateRangesOverlap(x["start"], x["stop"], x["recurrence"], now);
             Assert.That(analyzer.IsValid(expr), Is.True);
         }
 
@@ -33,7 +33,7 @@ namespace CamlexNET.UnitTests.Operations.DateRangesOverlap
         public void test_THAT_datarangesoverlap_expression_with_string_constant_IS_valid()
         {
             var analyzer = new DataRangesOverlapAnalyzer(null, null);
-            Expression<Func<SPItem, bool>> expr = x => Camlex.DateRangesOverlap(x["start"], x["stop"], x["recurrence"], ((DataTypes.DateTime)"02.01.2010 03:04:05"));
+            Expression<Func<SPListItem, bool>> expr = x => Camlex.DateRangesOverlap(x["start"], x["stop"], x["recurrence"], ((DataTypes.DateTime)"02.01.2010 03:04:05"));
             Assert.That(analyzer.IsValid(expr), Is.True);
         }
 
@@ -42,7 +42,7 @@ namespace CamlexNET.UnitTests.Operations.DateRangesOverlap
         {
             var analyzer = new DataRangesOverlapAnalyzer(null, null);
             const string now = "02.01.2010 03:04:05";
-            Expression<Func<SPItem, bool>> expr = x => Camlex.DateRangesOverlap(x["start"], x["stop"], x["recurrence"], ((DataTypes.DateTime)now));
+            Expression<Func<SPListItem, bool>> expr = x => Camlex.DateRangesOverlap(x["start"], x["stop"], x["recurrence"], ((DataTypes.DateTime)now));
             Assert.That(analyzer.IsValid(expr), Is.True);
         }
 
@@ -50,7 +50,7 @@ namespace CamlexNET.UnitTests.Operations.DateRangesOverlap
         public void test_THAT_datarangesoverlap_expression_with_special_constant_IS_valid()
         {
             var analyzer = new DataRangesOverlapAnalyzer(null, null);
-            Expression<Func<SPItem, bool>> expr = x => Camlex.DateRangesOverlap(x["start"], x["stop"], x["recurrence"], (DataTypes.DateTime)Camlex.Month);
+            Expression<Func<SPListItem, bool>> expr = x => Camlex.DateRangesOverlap(x["start"], x["stop"], x["recurrence"], (DataTypes.DateTime)Camlex.Month);
             Assert.That(analyzer.IsValid(expr), Is.True);
         }
     }

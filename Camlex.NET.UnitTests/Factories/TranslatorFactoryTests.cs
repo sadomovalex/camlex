@@ -45,7 +45,7 @@ namespace CamlexNET.UnitTests.Factories
             var analyzerFactory = MockRepository.GenerateStub<IAnalyzerFactory>();
             analyzerFactory.Stub(f => f.Create(null)).Return(null).IgnoreArguments();
 
-            Expression<Func<SPItem, bool>> expr = x => (string) x["Foo"] == "foo";
+            Expression<Func<SPListItem, bool>> expr = x => (string) x["Foo"] == "foo";
             // act
             var tr = new TranslatorFactory(analyzerFactory).Create(expr);
 
