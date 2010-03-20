@@ -66,13 +66,27 @@ namespace CamlexNET.Impl.Factories
             {
                 return this.createFieldRefOperand((Guid)value);
             }
-            return this.createFieldRefOperand((string)value);
+            return this.createFieldRefOperandByNameOrId((string)value);
         }
 
         private IOperand createFieldRefOperandFromConstantExpression(ConstantExpression expr)
         {
-            var fieldName = expr.Value as string;
-            return this.createFieldRefOperand(fieldName);
+            var val = expr.Value as string;
+            return this.createFieldRefOperandByNameOrId(val);
+        }
+
+        private IOperand createFieldRefOperandByNameOrId(string val)
+        {
+            // if string represents guid, then FieldRef with ID should be created
+            try
+            {
+                var guid = new Guid(val);
+                return this.createFieldRefOperand(guid);
+            }
+            catch
+            {
+                return this.createFieldRefOperand(val);
+            }
         }
 
         private IOperand createFieldRefOperand(string fieldName)
