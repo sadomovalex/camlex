@@ -57,9 +57,14 @@ namespace CamlexNET.Impl.Factories
         private IOperand createFieldRefOperandFromNonConstantExpression(Expression expr)
         {
             object value = this.evaluateExpression(expr);
-            if (value == null || value.GetType() != typeof(string))
+            if (value == null || (value.GetType() != typeof(string) && value.GetType() != typeof(Guid)))
             {
-                throw new InvalidFieldNameForFieldRefException(value);
+                throw new InvalidValueForFieldRefException(value);
+            }
+
+            if (value.GetType() == typeof(Guid))
+            {
+                return this.createFieldRefOperand((Guid)value);
             }
             return this.createFieldRefOperand((string)value);
         }
@@ -73,6 +78,11 @@ namespace CamlexNET.Impl.Factories
         private IOperand createFieldRefOperand(string fieldName)
         {
             return new FieldRefOperand(fieldName);
+        }
+
+        private IOperand createFieldRefOperand(Guid id)
+        {
+            return new FieldRefOperand(id);
         }
 
         public IOperand CreateFieldRefOperandWithOrdering(Expression expr, Camlex.OrderDirection orderDirection)
