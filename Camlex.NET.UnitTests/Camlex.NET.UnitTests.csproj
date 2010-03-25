@@ -84,6 +84,7 @@
     <Compile Include="Operands\BooleanValueOperandTests.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Operands\GuidValueOperandTests.cs" />
     <Compile Include="Operands\DateTimeValueOperandTests.cs" />
     <Compile Include="Operands\FieldRefOperandTests.cs">
       <SubType>Code</SubType>
