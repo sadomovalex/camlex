@@ -220,6 +220,18 @@ namespace CamlexNET.Impl.Factories
                     return new DateTimeValueOperand((string)value, includeTimeValue);
                 }
             }
+            // guid operand can be native or string based
+            if (type == typeof(Guid) || type == typeof(DataTypes.Guid))
+            {
+                if (value.GetType() == typeof(Guid))
+                {
+                    return new GuidValueOperand((Guid)value);
+                }
+                if (value.GetType() == typeof(string))
+                {
+                    return new GuidValueOperand((string)value);
+                }
+            }
             // for rest of generic types create generic string based operand
             if (type.IsSubclassOf(typeof(BaseFieldType)))
             {
