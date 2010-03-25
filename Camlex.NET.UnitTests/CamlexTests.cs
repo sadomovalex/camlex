@@ -992,5 +992,86 @@ namespace CamlexNET.UnitTests
 
             Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
         }
+
+        [Test]
+        public void test_THAT_single_eq_expression_with_guid_variable_IS_translated_sucessfully()
+        {
+            var val = new Guid("4feaf1f3-5b04-4d93-b0fc-4e48d0c60eed");
+            string caml = Camlex.Query().Where(x => (Guid)x["Foo"] == val).ToString();
+
+            string expected =
+                //                "<Query>" +
+                "   <Where>" +
+                "       <Eq>" +
+                "           <FieldRef Name=\"Foo\" />" +
+                "           <Value Type=\"Guid\">4feaf1f3-5b04-4d93-b0fc-4e48d0c60eed</Value>" +
+                "       </Eq>" +
+                "   </Where>";
+            //                "</Query>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        [Test]
+        public void test_THAT_string_based_single_eq_expression_with_guid_variable_IS_translated_sucessfully()
+        {
+            var val = "4feaf1f3-5b04-4d93-b0fc-4e48d0c60eed";
+            string caml = Camlex.Query().Where(x => x["Count"] == (DataTypes.Guid)val).ToString();
+
+            string expected =
+                //                "<Query>" +
+                "   <Where>" +
+                "       <Eq>" +
+                "           <FieldRef Name=\"Count\" />" +
+                "           <Value Type=\"Guid\">4feaf1f3-5b04-4d93-b0fc-4e48d0c60eed</Value>" +
+                "       </Eq>" +
+                "   </Where>";
+            //                "</Query>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        [Test]
+        public void test_THAT_string_based_single_eq_expression_with_guid_variable_both_for_lvalue_and_rvalue_IS_translated_sucessfully()
+        {
+            string val = "4feaf1f3-5b04-4d93-b0fc-4e48d0c60eed";
+            string caml = Camlex.Query().Where(x => x[val] == (DataTypes.Guid)val).ToString();
+
+            string expected =
+                //                "<Query>" +
+                "   <Where>" +
+                "       <Eq>" +
+                "           <FieldRef ID=\"4feaf1f3-5b04-4d93-b0fc-4e48d0c60eed\" />" +
+                "           <Value Type=\"Guid\">4feaf1f3-5b04-4d93-b0fc-4e48d0c60eed</Value>" +
+                "       </Eq>" +
+                "   </Where>";
+            //                "</Query>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        [Test]
+        public void test_THAT_single_eq_expression_with_parameterless_method_call_which_returns_guid_IS_translated_sucessfully()
+        {
+            string caml = Camlex.Query().Where(x => (Guid)x["Foo"] == val6()).ToString();
+
+            string expected =
+                //                "<Query>" +
+                "   <Where>" +
+                "       <Eq>" +
+                "           <FieldRef Name=\"Foo\" />" +
+                "           <Value Type=\"Guid\">4feaf1f3-5b04-4d93-b0fc-4e48d0c60eed</Value>" +
+                "       </Eq>" +
+                "   </Where>";
+            //                "</Query>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        private Guid val6()
+        {
+            return new Guid("4feaf1f3-5b04-4d93-b0fc-4e48d0c60eed");
+        }
+
     }
 }
