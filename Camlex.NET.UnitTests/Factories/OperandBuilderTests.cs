@@ -347,6 +347,37 @@ namespace CamlexNET.UnitTests.Factories
             Assert.That(valueOperand.Type, Is.EqualTo(typeof(DataTypes.User)));
             Assert.That(valueOperand.Value, Is.EqualTo("John Smith"));
         }
+
+        [Test]
+        public void test_WHEN_native_value_is_guid_THEN_guid_operand_is_created()
+        {
+            var operandBuilder = new OperandBuilder();
+
+            var guid = new Guid("4feaf1f3-5b04-4d93-b0fc-4e48d0c60eed");
+            Expression<Func<SPListItem, bool>> expr = x => (Guid)x["Foo"] == guid;
+            var operand = operandBuilder.CreateValueOperandForNativeSyntax(((BinaryExpression)expr.Body).Right);
+
+            Assert.That(operand, Is.InstanceOf<GuidValueOperand>());
+
+            var valueOperand = operand as GuidValueOperand;
+            Assert.That(valueOperand.Type, Is.EqualTo(typeof(DataTypes.Guid)));
+            Assert.That(valueOperand.Value, Is.EqualTo(new Guid("4feaf1f3-5b04-4d93-b0fc-4e48d0c60eed")));
+        }
+
+        [Test]
+        public void test_WHEN_string_based_value_is_guid_THEN_guid_operand_is_created()
+        {
+            var operandBuilder = new OperandBuilder();
+            Expression<Func<SPListItem, bool>> expr = x => x["Foo"] == (DataTypes.Guid)"4feaf1f3-5b04-4d93-b0fc-4e48d0c60eed";
+            var operand = operandBuilder.CreateValueOperandForStringBasedSyntax(((BinaryExpression)expr.Body).Right);
+
+            Assert.That(operand, Is.InstanceOf<GuidValueOperand>());
+
+            var valueOperand = operand as GuidValueOperand;
+            Assert.That(valueOperand.Type, Is.EqualTo(typeof(DataTypes.Guid)));
+            Assert.That(valueOperand.Value, Is.EqualTo(new Guid("4feaf1f3-5b04-4d93-b0fc-4e48d0c60eed")));
+        }
+
     }
 }
 
