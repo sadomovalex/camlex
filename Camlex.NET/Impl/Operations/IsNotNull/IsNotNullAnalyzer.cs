@@ -53,7 +53,7 @@ namespace CamlexNET.Impl.Operations.IsNotNull
             {
                 throw new NonSupportedExpressionException(expr);
             }
-            var fieldRefOperand = this.getFieldRefOperand(expr);
+            var fieldRefOperand = this.getFieldRefOperand(expr, null);
             return new IsNotNullOperation(this.operationResultBuilder, fieldRefOperand);
         }
     }

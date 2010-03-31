@@ -104,7 +104,7 @@ namespace CamlexNET.UnitTests.Operations.BeginsWith
             // arrange
             Expression<Func<SPListItem, bool>> expr = x => ((string)x["Count"]).StartsWith("foo");
             var operandBuilder = MockRepository.GenerateStub<IOperandBuilder>();
-            operandBuilder.Stub(b => b.CreateFieldRefOperand(((MethodCallExpression)expr.Body).Object)).Return(null);
+            operandBuilder.Stub(b => b.CreateFieldRefOperand(((MethodCallExpression)expr.Body).Object, null)).Return(null);
             operandBuilder.Stub(b => b.CreateValueOperandForNativeSyntax(((MethodCallExpression)expr.Body).Arguments[0])).Return(null);
             var analyzer = new BeginsWithAnalyzer(null, operandBuilder);
 
@@ -121,7 +121,7 @@ namespace CamlexNET.UnitTests.Operations.BeginsWith
             // arrange
             Expression<Func<SPListItem, bool>> expr = x => ((string)x["Count"]).StartsWith("foo");
             var operandBuilder = MockRepository.GenerateStub<IOperandBuilder>();
-            operandBuilder.Stub(b => b.CreateFieldRefOperand(((MethodCallExpression)expr.Body).Object)).Return(null);
+            operandBuilder.Stub(b => b.CreateFieldRefOperand(((MethodCallExpression)expr.Body).Object, null)).Return(null);
             operandBuilder.Stub(b => b.CreateValueOperandForNativeSyntax(((MethodCallExpression)expr.Body).Arguments[0])).Return(null);
             var analyzer = new BeginsWithAnalyzer(null, operandBuilder);
 
@@ -138,7 +138,7 @@ namespace CamlexNET.UnitTests.Operations.BeginsWith
             // arrange
             Expression<Func<SPListItem, bool>> expr = x => ((DataTypes.Note)x["Count"]).StartsWith("foo");
             var operandBuilder = MockRepository.GenerateStub<IOperandBuilder>();
-            operandBuilder.Stub(b => b.CreateFieldRefOperand(((MethodCallExpression)expr.Body).Object)).Return(null);
+            operandBuilder.Stub(b => b.CreateFieldRefOperand(((MethodCallExpression)expr.Body).Object, null)).Return(null);
             operandBuilder.Stub(b => b.CreateValueOperandForNativeSyntax(((MethodCallExpression)expr.Body).Arguments[0])).Return(null);
             var analyzer = new BeginsWithAnalyzer(null, operandBuilder);
 

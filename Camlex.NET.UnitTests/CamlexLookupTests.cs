@@ -25,5 +25,21 @@ namespace CamlexNET.UnitTests
 
             Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
         }
+
+        [Test]
+        public void test_THAT_lookup_value_IS_translated_successfully()
+        {
+            string caml = Camlex.Query().Where(x => x["Ref"] == (DataTypes.LookupValue)"123").ToString();
+
+            string expected =
+                "   <Where>" +
+                "       <Eq>" +
+                "           <FieldRef Name=\"Ref\" />" +
+                "           <Value Type=\"Lookup\">123</Value>" +
+                "       </Eq>" +
+                "   </Where>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
     }
 }

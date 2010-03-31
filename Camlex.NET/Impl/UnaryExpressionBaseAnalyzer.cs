@@ -130,7 +130,7 @@ namespace CamlexNET.Impl
                 throw new NonSupportedExpressionException(expr);
             }
             var body = expr.Body as MethodCallExpression;
-            return operandBuilder.CreateFieldRefOperand(body.Object);
+            return operandBuilder.CreateFieldRefOperand(body.Object, null);
         }
 
         protected IOperand getValueOperand(LambdaExpression expr)

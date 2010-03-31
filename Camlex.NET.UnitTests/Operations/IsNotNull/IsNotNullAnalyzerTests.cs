@@ -79,7 +79,7 @@ namespace CamlexNET.UnitTests.Operations.IsNotNull
             Expression<Func<SPListItem, bool>> expr = x => x["Count"] != null;
 
             var operandBuilder = MockRepository.GenerateStub<IOperandBuilder>();
-            operandBuilder.Stub(b => b.CreateFieldRefOperand(expr.Body)).Return(null);
+            operandBuilder.Stub(b => b.CreateFieldRefOperand(expr.Body, null)).Return(null);
             operandBuilder.Stub(b => b.CreateValueOperandForNativeSyntax(expr.Body)).Return(new NullValueOperand()).IgnoreArguments();
 
             var analyzer = new IsNotNullAnalyzer(null, operandBuilder);

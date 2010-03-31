@@ -53,7 +53,7 @@ namespace CamlexNET.UnitTests.Operations.Lt
             Expression<Func<SPListItem, bool>> expr = x => (int)x["Count"] < 1;
 
             var operandBuilder = MockRepository.GenerateStub<IOperandBuilder>();
-            operandBuilder.Stub(b => b.CreateFieldRefOperand(expr.Body)).Return(null);
+            operandBuilder.Stub(b => b.CreateFieldRefOperand(expr.Body, null)).Return(null);
             operandBuilder.Stub(b => b.CreateValueOperandForNativeSyntax(expr.Body)).Return(null);
 
             var analyzer = new LtAnalyzer(null, operandBuilder);

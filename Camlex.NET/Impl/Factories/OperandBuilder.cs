@@ -39,7 +39,7 @@ namespace CamlexNET.Impl.Factories
     {
         // ----- Field Ref Operand -----
 
-        public IOperand CreateFieldRefOperand(Expression expr)
+        public IOperand CreateFieldRefOperand(Expression expr, IOperand valueOperand)
         {
             if (expr is UnaryExpression)
             {
@@ -49,12 +49,13 @@ namespace CamlexNET.Impl.Factories
             var argumentExpression = methodCallExpression.Arguments[0];
             if (argumentExpression is ConstantExpression)
             {
-                return this.createFieldRefOperandFromConstantExpression(argumentExpression as ConstantExpression);
+                return this.createFieldRefOperandFromConstantExpression(argumentExpression as ConstantExpression,
+                    valueOperand);
             }
-            return this.createFieldRefOperandFromNonConstantExpression(argumentExpression);
+            return this.createFieldRefOperandFromNonConstantExpression(argumentExpression, valueOperand);
         }
 
-        private IOperand createFieldRefOperandFromNonConstantExpression(Expression expr)
+        private IOperand createFieldRefOperandFromNonConstantExpression(Expression expr, IOperand valueOperand)
         {
             object value = this.evaluateExpression(expr);
             if (value == null || (value.GetType() != typeof(string) && value.GetType() != typeof(Guid)))
@@ -64,44 +65,57 @@ namespace CamlexNET.Impl.Factories
 
             if (value.GetType() == typeof(Guid))
             {
-                return this.createFieldRefOperand((Guid)value);
+                return this.createFieldRefOperand((Guid)value, valueOperand);
             }
-            return this.createFieldRefOperandByNameOrId((string)value);
+            return this.createFieldRefOperandByNameOrId((string)value, valueOperand);
         }
 
-        private IOperand createFieldRefOperandFromConstantExpression(ConstantExpression expr)
+        private IOperand createFieldRefOperandFromConstantExpression(ConstantExpression expr, IOperand valueOperand)
         {
             var val = expr.Value as string;
-            return this.createFieldRefOperandByNameOrId(val);
+            return this.createFieldRefOperandByNameOrId(val, valueOperand);
         }
 
-        private IOperand createFieldRefOperandByNameOrId(string val)
+        private IOperand createFieldRefOperandByNameOrId(string val, IOperand valueOperand)
         {
             // if string represents guid, then FieldRef with ID should be created
             try
             {
                 var guid = new Guid(val);
-                return this.createFieldRefOperand(guid);
+                return this.createFieldRefOperand(guid, valueOperand);
             }
             catch
             {
-                return this.createFieldRefOperand(val);
+                return this.createFieldRefOperand(val, valueOperand);
             }
         }
 
-        private IOperand createFieldRefOperand(string fieldName)
+        private IOperand createFieldRefOperand(string fieldName, IOperand valueOperand)
         {
-            return new FieldRefOperand(fieldName);
+            var attrs = this.getAdditionalAttributesForFieldRefOperands(valueOperand);
+            return new FieldRefOperand(fieldName, attrs);
         }
 
-        private IOperand createFieldRefOperand(Guid id)
+        private List<KeyValuePair<string, string>> getAdditionalAttributesForFieldRefOperands(IOperand valueOperand)
         {
-            return new FieldRefOperand(id);
+            if (valueOperand is LookupIdValueOperand)
+            {
+                var attrs = new List<KeyValuePair<string, string>>();
+                attrs.Add(new KeyValuePair<string, string>(Attributes.LookupId, true.ToString()));
+                return attrs;
+            }
+            return new List<KeyValuePair<string, string>>();
+        }
+
+        private IOperand createFieldRefOperand(Guid id, IOperand valueOperand)
+        {
+            var attrs = this.getAdditionalAttributesForFieldRefOperands(valueOperand);
+            return new FieldRefOperand(id, attrs);
         }
 
         public IOperand CreateFieldRefOperandWithOrdering(Expression expr, Camlex.OrderDirection orderDirection)
         {
-            var fieldRefOperand = (FieldRefOperand)CreateFieldRefOperand(expr);
+            var fieldRefOperand = (FieldRefOperand)CreateFieldRefOperand(expr, null);
             return new FieldRefOperandWithOrdering(fieldRefOperand, orderDirection);
         }
 

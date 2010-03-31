@@ -34,7 +34,7 @@ namespace CamlexNET.Interfaces
 {
     internal interface IOperandBuilder
     {
-        IOperand CreateFieldRefOperand(Expression expr);
+        IOperand CreateFieldRefOperand(Expression expr, IOperand valueOperand);
         IOperand CreateFieldRefOperandWithOrdering(Expression expr, Camlex.OrderDirection orderDirection);
         IOperand CreateValueOperandForNativeSyntax(Expression expr);
         IOperand CreateValueOperandForNativeSyntax(Expression expr, Type explicitOperandType);

@@ -40,5 +40,6 @@ namespace CamlexNET
         public const string Ascending = "Ascending";
         public const string Collapse = "Collapse";
         public const string GroupLimit = "GroupLimit";
+        public const string LookupId = "LookupId";
     }
 }
