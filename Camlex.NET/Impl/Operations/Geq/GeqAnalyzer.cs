@@ -47,13 +47,15 @@ namespace CamlexNET.Impl.Operations.Geq
 
         public override IOperation GetOperation(LambdaExpression expr)
         {
-            if (!this.IsValid(expr))
-            {
-                throw new NonSupportedExpressionException(expr);
-            }
-            var fieldRefOperand = this.getFieldRefOperand(expr);
-            var valueOperand = this.getValueOperand(expr);
-            return new GeqOperation(this.operationResultBuilder, fieldRefOperand, valueOperand);
+//            if (!this.IsValid(expr))
+//            {
+//                throw new NonSupportedExpressionException(expr);
+//            }
+//            var fieldRefOperand = this.getFieldRefOperand(expr);
+//            var valueOperand = this.getValueOperand(expr);
+//            return new GeqOperation(this.operationResultBuilder, fieldRefOperand, valueOperand);
+            return this.getOperation(expr,
+                (operationResultBuilder, fieldRefOperand, valueOperand) => new GeqOperation(this.operationResultBuilder, fieldRefOperand, valueOperand));
         }
     }
 }
