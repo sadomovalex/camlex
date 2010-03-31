@@ -11,7 +11,7 @@ namespace CamlexNET.UnitTests
     public class CamlexLookupTests
     {
         [Test]
-        public void test_THAT_lookup_id_IS_translated_successfully()
+        public void test_THAT_lookup_id_field_ref_with_name_IS_translated_successfully()
         {
             string caml = Camlex.Query().Where(x => x["Ref"] == (DataTypes.LookupId)"123").ToString();
 
@@ -19,6 +19,23 @@ namespace CamlexNET.UnitTests
                 "   <Where>" +
                 "       <Eq>" +
                 "           <FieldRef Name=\"Ref\" LookupId=\"True\" />" +
+                "           <Value Type=\"Lookup\">123</Value>" +
+                "       </Eq>" +
+                "   </Where>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        [Test]
+        public void test_THAT_lookup_id_field_ref_with_guid_IS_translated_successfully()
+        {
+            var guid = new Guid("{4feaf1f3-5b04-4d93-b0fc-4e48d0c60eed}");
+            string caml = Camlex.Query().Where(x => x[guid] == (DataTypes.LookupId)"123").ToString();
+
+            string expected =
+                "   <Where>" +
+                "       <Eq>" +
+                "           <FieldRef ID=\"4feaf1f3-5b04-4d93-b0fc-4e48d0c60eed\" LookupId=\"True\" />" +
                 "           <Value Type=\"Lookup\">123</Value>" +
                 "       </Eq>" +
                 "   </Where>";
