@@ -26,6 +26,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using CamlexNET.Impl.Operands;
 using NUnit.Framework;
 
@@ -49,6 +50,48 @@ namespace CamlexNET.UnitTests.Operands
             var fr = new FieldRefOperand(guid);
             string caml = fr.ToCaml().ToString();
             Assert.That(caml, Is.EqualTo("<FieldRef ID=\"4feaf1f3-5b04-4d93-b0fc-4e48d0c60eed\" />"));
+        }
+
+        [Test]
+        public void test_THAT_field_ref_with_guid_and_attributes_IS_rendered_to_caml_properly()
+        {
+            var guid = new Guid("4feaf1f3-5b04-4d93-b0fc-4e48d0c60eed");
+            var attr = new List<KeyValuePair<string, string>>();
+            attr.Add(new KeyValuePair<string, string>("LookupId", "True"));
+            var fr = new FieldRefOperand(guid, attr);
+            string caml = fr.ToCaml().ToString();
+            Assert.That(caml, Is.EqualTo("<FieldRef ID=\"4feaf1f3-5b04-4d93-b0fc-4e48d0c60eed\" LookupId=\"True\" />"));
+        }
+
+        [Test]
+        public void test_WHEN_attribute_contains_id_THEN_it_is_ignored()
+        {
+            var guid = new Guid("4feaf1f3-5b04-4d93-b0fc-4e48d0c60eed");
+            var attr = new List<KeyValuePair<string, string>>();
+            attr.Add(new KeyValuePair<string, string>("id", "foo"));
+            var fr = new FieldRefOperand(guid, attr);
+            string caml = fr.ToCaml().ToString();
+            Assert.That(caml, Is.EqualTo("<FieldRef ID=\"4feaf1f3-5b04-4d93-b0fc-4e48d0c60eed\" />"));
+        }
+
+        [Test]
+        public void test_THAT_field_ref_with_name_and_attributes_IS_rendered_to_caml_properly()
+        {
+            var attr = new List<KeyValuePair<string, string>>();
+            attr.Add(new KeyValuePair<string, string>("LookupId", "True"));
+            var fr = new FieldRefOperand("Title", attr);
+            string caml = fr.ToCaml().ToString();
+            Assert.That(caml, Is.EqualTo("<FieldRef Name=\"Title\" LookupId=\"True\" />"));
+        }
+
+        [Test]
+        public void test_WHEN_attribute_contains_name_THEN_it_is_ignored()
+        {
+            var attr = new List<KeyValuePair<string, string>>();
+            attr.Add(new KeyValuePair<string, string>("nAmE", "foo"));
+            var fr = new FieldRefOperand("Title", attr);
+            string caml = fr.ToCaml().ToString();
+            Assert.That(caml, Is.EqualTo("<FieldRef Name=\"Title\" />"));
         }
     }
 }
