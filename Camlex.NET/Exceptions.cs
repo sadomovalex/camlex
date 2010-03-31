@@ -95,4 +95,20 @@ namespace CamlexNET
         {
         }
     }
+
+    internal class OnlyOrAndBinaryExpressionsAllowedForJoinsExceptions : GenericException
+    {
+        public OnlyOrAndBinaryExpressionsAllowedForJoinsExceptions() :
+            base(ErrorMessages.ONLY_OR_AND_BINARY_EXPRESSIONS_ALLOWED_FOR_JOINS)
+        {
+        }
+    }
+
+    internal class EmptyExpressionsListException : GenericException
+    {
+        public EmptyExpressionsListException() :
+            base(ErrorMessages.EMPTY_EXPRESSIONS_LIST_EXCEPTION)
+        {
+        }
+    }
 }

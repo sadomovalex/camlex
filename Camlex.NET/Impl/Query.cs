@@ -54,6 +54,74 @@ namespace CamlexNET.Impl
             return this;
         }
 
+        public IQuery WhereAll(IEnumerable<Expression<Func<SPListItem, bool>>> expressions)
+        {
+            return this.whereAllOrAny(expressions, ExpressionType.AndAlso);
+        }
+
+        private IQuery whereAllOrAny(IEnumerable<Expression<Func<SPListItem, bool>>> expressions, ExpressionType type)
+        {
+            if (expressions == null || expressions.Count() == 0)
+            {
+                throw new EmptyExpressionsListException();
+            }
+
+            // todo: check that all expressions have the same parameter name
+            // todo: check that all expressions are valid
+
+            Expression result;
+            if (expressions.Count() == 1)
+            {
+                result = expressions.First();
+            }
+            else
+            {
+                result = this.joinExpressions(expressions, type);
+            }
+
+            // todo: determined parameter name
+            var lambda = Expression.Lambda<Func<SPListItem, bool>>(result,
+                Expression.Parameter(typeof(SPListItem), "x"));
+            return this.Where(lambda);
+        }
+
+        private BinaryExpression joinExpressions(IEnumerable<Expression<Func<SPListItem, bool>>> expressions, ExpressionType type)
+        {
+            return this.joinExpressions(1, expressions, expressions.ElementAt(0).Body, type);
+        }
+
+        // See http://sadomovalex.blogspot.com/2010/02/build-dynamic-expressions-for-caml.html
+        private BinaryExpression joinExpressions(int currentIdxToAdd, IEnumerable<Expression<Func<SPListItem, bool>>> expressions,
+            Expression prevExpr, ExpressionType type)
+        {
+            if (currentIdxToAdd >= expressions.Count())
+            {
+                return (BinaryExpression) prevExpr;
+            }
+
+            var currentExpression = expressions.ElementAt(currentIdxToAdd);
+
+            Expression resultExpr;
+            if (type == ExpressionType.OrElse)
+            {
+                resultExpr = Expression.OrElse(prevExpr, currentExpression.Body);
+            }
+            else if (type == ExpressionType.AndAlso)
+            {
+                resultExpr = Expression.AndAlso(prevExpr, currentExpression.Body);
+            }
+            else
+            {
+                throw new OnlyOrAndBinaryExpressionsAllowedForJoinsExceptions();
+            }
+            return joinExpressions(currentIdxToAdd + 1, expressions, resultExpr, type);
+        }
+
+        public IQuery WhereAny(IEnumerable<Expression<Func<SPListItem, bool>>> expressions)
+        {
+            return this.whereAllOrAny(expressions, ExpressionType.OrElse);
+        }
+
         public IQuery OrderBy(Expression<Func<SPListItem, object>> expr)
         {
             var lambda = Expression.Lambda<Func<SPListItem, object[]>>(
