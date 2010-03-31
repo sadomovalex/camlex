@@ -207,5 +207,52 @@ namespace CamlexNET.UnitTests
             Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
         }
 
+//        [Test]
+//        [ExpectedException(typeof(DifferentArgumentsNamesExceptions))]
+//        public void test_WHEN_expressions_contain_different_arguments_THEN_exception_is_thrown()
+//        {
+//            var ids = new List<int> {1, 2, 3};
+//            var expressions = new List<Expression<Func<SPListItem, bool>>>();
+//
+//            expressions.Add(x => (int) x["ID"] == 1);
+//            expressions.Add(x => (int) x["ID"] == 2);
+//            expressions.Add(y => (int) y["ID"] == 3);
+//
+//            Camlex.Query().WhereAny(expressions).ToString();
+//        }
+
+        [Test]
+        public void test_THAT_expressions_with_different_arguments_IS_translated_successfully()
+        {
+            var expressions = new List<Expression<Func<SPListItem, bool>>>();
+
+            expressions.Add(x => (int)x["ID"] == 1);
+            expressions.Add(y => (int)y["ID"] == 2);
+            expressions.Add(z => (int)z["ID"] == 3);
+
+            string caml = Camlex.Query().WhereAny(expressions).ToString();
+
+            string expected =
+                "   <Where>" +
+                "       <Or>" +
+                "           <Or>" +
+                "               <Eq>" +
+                "                   <FieldRef Name=\"ID\" />" +
+                "                   <Value Type=\"Integer\">1</Value>" +
+                "               </Eq>" +
+                "               <Eq>" +
+                "                   <FieldRef Name=\"ID\" />" +
+                "                   <Value Type=\"Integer\">2</Value>" +
+                "               </Eq>" +
+                "           </Or>" +
+                "           <Eq>" +
+                "               <FieldRef Name=\"ID\" />" +
+                "               <Value Type=\"Integer\">3</Value>" +
+                "           </Eq>" +
+                "       </Or>" +
+                "   </Where>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
     }
 }

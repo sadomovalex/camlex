@@ -66,7 +66,10 @@ namespace CamlexNET.Impl
                 throw new EmptyExpressionsListException();
             }
 
-            // todo: check that all expressions have the same parameter name
+//            if (!this.allExpressionsHaveTheSameArgumentName(expressions))
+//            {
+//                throw new DifferentArgumentsNamesExceptions();
+//            }
             // todo: check that all expressions are valid
 
             Expression result;
@@ -84,6 +87,27 @@ namespace CamlexNET.Impl
                 Expression.Parameter(typeof(SPListItem), "x"));
             return this.Where(lambda);
         }
+
+//        private bool allExpressionsHaveTheSameArgumentName(IEnumerable<Expression<Func<SPListItem, bool>>> expressions)
+//        {
+//            if (expressions.Count() == 0)
+//            {
+//                throw new EmptyExpressionsListException();
+//            }
+//
+//            // there is no need to check number of parameters, as compiler checked it when
+//            // we specified Func<SPListItem, bool> func which can't have another number
+//            // of parameters except single param
+//            string argumentName = expressions.First().Parameters[0].Name;
+//            for (int i = 1; i < expressions.Count(); i++)
+//            {
+//                if (expressions.ElementAt(i).Parameters[0].Name != argumentName)
+//                {
+//                    return false;
+//                }
+//            }
+//            return true;
+//        }
 
         private BinaryExpression joinExpressions(IEnumerable<Expression<Func<SPListItem, bool>>> expressions, ExpressionType type)
         {
