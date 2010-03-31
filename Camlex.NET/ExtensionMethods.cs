@@ -25,9 +25,12 @@
 // -----------------------------------------------------------------------------
 #endregion
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
+using Microsoft.SharePoint;
 
 namespace CamlexNET
 {
@@ -37,5 +40,11 @@ namespace CamlexNET
         /// <param name="dateTime">DateTime value</param>
         /// <returns>Not modified DateTime value</returns>
         public static DateTime IncludeTimeValue(this DateTime dateTime) { return dateTime; }
+
+//        public static IEnumerable<Expression<Func<SPListItem, bool>>> ForEach<T>(this IEnumerable<T> values,
+//            Expression<Func<SPListItem, bool>> expr)
+//        {
+//            throw new NotImplementedException();
+//        }
     }
 }

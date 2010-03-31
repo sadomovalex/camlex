@@ -42,5 +42,7 @@ namespace CamlexNET
         public const string INVALID_VALUE_FOR_OPERAND_TYPE = "Value '{0}' is not valid for operand type '{1}'";
         //public const string INVALID_FIELD_NAME_FOR_FIELD_REF_OPERAND = "Value '{0}' is not valid field name for FieldRef operand";
         public const string INVALID_VALUE_FOR_FIELD_REF_OPERAND = "Value '{0}' is not valid field name or field id for FieldRef operand";
+        public const string ONLY_OR_AND_BINARY_EXPRESSIONS_ALLOWED_FOR_JOINS = "Only 'OrElse' and 'AnsAlso' binary expressions are allowed for logical joins";
+        public const string EMPTY_EXPRESSIONS_LIST_EXCEPTION = "Can not join list of expressions because it is empty. You should specify at least one expression in list";
     }
 }
