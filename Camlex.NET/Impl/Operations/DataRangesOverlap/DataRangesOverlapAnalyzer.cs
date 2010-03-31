@@ -58,9 +58,9 @@ namespace CamlexNET.Impl.Operations.DataRangesOverlap
         {
             var methodCall = expr.Body as MethodCallExpression;
 
-            var startFieldRef = operandBuilder.CreateFieldRefOperand(methodCall.Arguments[0]);
-            var stopFieldRef = operandBuilder.CreateFieldRefOperand(methodCall.Arguments[1]);
-            var recurrenceFieldRef = operandBuilder.CreateFieldRefOperand(methodCall.Arguments[2]);
+            var startFieldRef = operandBuilder.CreateFieldRefOperand(methodCall.Arguments[0], null);
+            var stopFieldRef = operandBuilder.CreateFieldRefOperand(methodCall.Arguments[1], null);
+            var recurrenceFieldRef = operandBuilder.CreateFieldRefOperand(methodCall.Arguments[2], null);
 
             IOperand dateTimeValue;
             if (!isValidRightExpressionWithStringBasedSyntax(methodCall.Arguments[3]))

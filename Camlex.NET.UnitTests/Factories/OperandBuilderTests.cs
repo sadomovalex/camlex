@@ -43,7 +43,7 @@ namespace CamlexNET.UnitTests.Factories
             Expression<Func<SPListItem, bool>> expr = x => (string) x["Email"] == "test@example.com";
 
             var operandBuilder = new OperandBuilder();
-            var operand = operandBuilder.CreateFieldRefOperand(((BinaryExpression)expr.Body).Left);
+            var operand = operandBuilder.CreateFieldRefOperand(((BinaryExpression)expr.Body).Left, null);
 
             Assert.That(operand, Is.InstanceOf<FieldRefOperand>());
             Assert.That(((FieldRefOperand)operand).FieldName, Is.EqualTo("Email"));
@@ -56,7 +56,7 @@ namespace CamlexNET.UnitTests.Factories
             Expression<Func<SPListItem, bool>> expr = x => (string)x[val] == "test@example.com";
 
             var operandBuilder = new OperandBuilder();
-            var operand = operandBuilder.CreateFieldRefOperand(((BinaryExpression)expr.Body).Left);
+            var operand = operandBuilder.CreateFieldRefOperand(((BinaryExpression)expr.Body).Left, null);
 
             Assert.That(operand, Is.InstanceOf<FieldRefOperand>());
             Assert.That(((FieldRefOperand)operand).FieldName, Is.EqualTo("Email"));
@@ -69,7 +69,7 @@ namespace CamlexNET.UnitTests.Factories
             Expression<Func<SPListItem, bool>> expr = x => (string)x[b ? "val1" : "val2"] == "test@example.com";
 
             var operandBuilder = new OperandBuilder();
-            var operand = operandBuilder.CreateFieldRefOperand(((BinaryExpression)expr.Body).Left);
+            var operand = operandBuilder.CreateFieldRefOperand(((BinaryExpression)expr.Body).Left, null);
 
             Assert.That(operand, Is.InstanceOf<FieldRefOperand>());
             Assert.That(((FieldRefOperand)operand).FieldName, Is.EqualTo("val1"));

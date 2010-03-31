@@ -77,7 +77,7 @@ namespace CamlexNET.UnitTests.Operations.Eq
             Expression<Func<SPListItem, bool>> expr = x => (string)x["Title"] == "testValue";
 
             var operandBuilder = MockRepository.GenerateStub<IOperandBuilder>();
-            operandBuilder.Stub(b => b.CreateFieldRefOperand(expr.Body)).Return(null);
+            operandBuilder.Stub(b => b.CreateFieldRefOperand(expr.Body, null)).Return(null);
             operandBuilder.Stub(b => b.CreateValueOperandForNativeSyntax(expr.Body)).Return(null);
 
             var analyzer = new EqAnalyzer(null, operandBuilder);
@@ -96,7 +96,7 @@ namespace CamlexNET.UnitTests.Operations.Eq
             Expression<Func<SPListItem, bool>> expr = x => x["Title"] == (DataTypes.Text)"testValue";
 
             var operandBuilder = MockRepository.GenerateStub<IOperandBuilder>();
-            operandBuilder.Stub(b => b.CreateFieldRefOperand(expr.Body)).Return(null);
+            operandBuilder.Stub(b => b.CreateFieldRefOperand(expr.Body, null)).Return(null);
             operandBuilder.Stub(b => b.CreateValueOperandForNativeSyntax(expr.Body)).Return(null);
 
             var analyzer = new EqAnalyzer(null, operandBuilder);

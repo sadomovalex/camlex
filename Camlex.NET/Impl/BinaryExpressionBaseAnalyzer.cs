@@ -241,14 +241,16 @@ namespace CamlexNET.Impl
             return (expr.Type == typeof (string));
         }
 
-        protected IOperand getFieldRefOperand(LambdaExpression expr)
+        // Some info from value operand can be required for properly initialization of field ref operand
+        // (e.g. if value operand is lookup id we need to add LookupId="True" attribute to field ref operand)
+        protected IOperand getFieldRefOperand(LambdaExpression expr, IOperand valueOperand)
         {
             if (!this.IsValid(expr))
             {
                 throw new NonSupportedExpressionException(expr);
             }
             var body = expr.Body as BinaryExpression;
-            return this.operandBuilder.CreateFieldRefOperand(body.Left);
+            return this.operandBuilder.CreateFieldRefOperand(body.Left, valueOperand);
         }
 
         protected IOperand getValueOperand(LambdaExpression expr)
@@ -277,8 +279,8 @@ namespace CamlexNET.Impl
             {
                 throw new NonSupportedExpressionException(expr);
             }
-            var fieldRefOperand = this.getFieldRefOperand(expr);
             var valueOperand = this.getValueOperand(expr);
+            var fieldRefOperand = this.getFieldRefOperand(expr, valueOperand);
             return creator(this.operationResultBuilder, fieldRefOperand, valueOperand);
         }
     }
