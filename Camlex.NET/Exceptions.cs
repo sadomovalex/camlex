@@ -120,11 +120,11 @@ namespace CamlexNET
 //        }
 //    }
 
-    internal class InvalidLookupIdException : GenericException
-    {
-        public InvalidLookupIdException(object value) :
-            base(ErrorMessages.INVALID_LOOKUP_ID, value)
-        {
-        }
-    }
+//    internal class InvalidLookupIdException : GenericException
+//    {
+//        public InvalidLookupIdException(object value) :
+//            base(ErrorMessages.INVALID_LOOKUP_ID, value)
+//        {
+//        }
+//    }
 }
