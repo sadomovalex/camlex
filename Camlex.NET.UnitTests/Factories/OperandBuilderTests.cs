@@ -378,6 +378,42 @@ namespace CamlexNET.UnitTests.Factories
             Assert.That(valueOperand.Value, Is.EqualTo(new Guid("4feaf1f3-5b04-4d93-b0fc-4e48d0c60eed")));
         }
 
+        [Test]
+        public void test_WHEN_string_based_value_is_lookup_id_THEN_lookup_value_operand_is_created()
+        {
+            var operandBuilder = new OperandBuilder();
+            Expression<Func<SPListItem, bool>> expr = x => x["Foo"] == (DataTypes.LookupId)"1";
+            var operand = operandBuilder.CreateValueOperandForStringBasedSyntax(((BinaryExpression)expr.Body).Right);
+
+            Assert.That(operand, Is.InstanceOf<GenericStringBasedValueOperand>());
+
+            var valueOperand = operand as GenericStringBasedValueOperand;
+            Assert.That(valueOperand.Type, Is.EqualTo(typeof(DataTypes.Lookup)));
+            Assert.That(valueOperand.Value, Is.EqualTo("1"));
+        }
+
+        [Test]
+        [ExpectedException(typeof(InvalidLookupIdException))]
+        public void test_WHEN_lookup_id_is_not_valid_integer_THEN_exception_is_thrown()
+        {
+            var operandBuilder = new OperandBuilder();
+            Expression<Func<SPListItem, bool>> expr = x => x["Foo"] == (DataTypes.LookupId) "foo";
+            operandBuilder.CreateValueOperandForStringBasedSyntax(((BinaryExpression) expr.Body).Right);
+        }
+
+        [Test]
+        public void test_WHEN_string_based_value_is_lookup_value_THEN_lookup_value_operand_is_created()
+        {
+            var operandBuilder = new OperandBuilder();
+            Expression<Func<SPListItem, bool>> expr = x => x["Foo"] == (DataTypes.LookupValue)"1";
+            var operand = operandBuilder.CreateValueOperandForStringBasedSyntax(((BinaryExpression)expr.Body).Right);
+
+            Assert.That(operand, Is.InstanceOf<GenericStringBasedValueOperand>());
+
+            var valueOperand = operand as GenericStringBasedValueOperand;
+            Assert.That(valueOperand.Type, Is.EqualTo(typeof(DataTypes.Lookup)));
+            Assert.That(valueOperand.Value, Is.EqualTo("1"));
+        }
     }
 }
 
