@@ -111,4 +111,12 @@ namespace CamlexNET
         {
         }
     }
+
+//    internal class DifferentArgumentsNamesExceptions : GenericException
+//    {
+//        public DifferentArgumentsNamesExceptions() :
+//            base(ErrorMessages.DIFFERENT_ARGUMENTS_NAMES_EXCEPTIONS)
+//        {
+//        }
+//    }
 }
