@@ -385,20 +385,11 @@ namespace CamlexNET.UnitTests.Factories
             Expression<Func<SPListItem, bool>> expr = x => x["Foo"] == (DataTypes.LookupId)"1";
             var operand = operandBuilder.CreateValueOperandForStringBasedSyntax(((BinaryExpression)expr.Body).Right);
 
-            Assert.That(operand, Is.InstanceOf<GenericStringBasedValueOperand>());
+            Assert.That(operand, Is.InstanceOf<LookupIdValueOperand>());
 
-            var valueOperand = operand as GenericStringBasedValueOperand;
-            Assert.That(valueOperand.Type, Is.EqualTo(typeof(DataTypes.Lookup)));
+            var valueOperand = operand as LookupIdValueOperand;
+            Assert.That(valueOperand.Type, Is.EqualTo(typeof(DataTypes.LookupId)));
             Assert.That(valueOperand.Value, Is.EqualTo("1"));
-        }
-
-        [Test]
-        [ExpectedException(typeof(InvalidLookupIdException))]
-        public void test_WHEN_lookup_id_is_not_valid_integer_THEN_exception_is_thrown()
-        {
-            var operandBuilder = new OperandBuilder();
-            Expression<Func<SPListItem, bool>> expr = x => x["Foo"] == (DataTypes.LookupId) "foo";
-            operandBuilder.CreateValueOperandForStringBasedSyntax(((BinaryExpression) expr.Body).Right);
         }
 
         [Test]
@@ -408,10 +399,10 @@ namespace CamlexNET.UnitTests.Factories
             Expression<Func<SPListItem, bool>> expr = x => x["Foo"] == (DataTypes.LookupValue)"1";
             var operand = operandBuilder.CreateValueOperandForStringBasedSyntax(((BinaryExpression)expr.Body).Right);
 
-            Assert.That(operand, Is.InstanceOf<GenericStringBasedValueOperand>());
+            Assert.That(operand, Is.InstanceOf<LookupValueValueOperand>());
 
-            var valueOperand = operand as GenericStringBasedValueOperand;
-            Assert.That(valueOperand.Type, Is.EqualTo(typeof(DataTypes.Lookup)));
+            var valueOperand = operand as LookupValueValueOperand;
+            Assert.That(valueOperand.Type, Is.EqualTo(typeof(DataTypes.LookupValue)));
             Assert.That(valueOperand.Value, Is.EqualTo("1"));
         }
     }

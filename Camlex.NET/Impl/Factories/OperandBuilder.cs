@@ -241,18 +241,11 @@ namespace CamlexNET.Impl.Factories
                 // See http://camlex.codeplex.com/Thread/View.aspx?ThreadId=203560 for details
                 if (type == typeof(DataTypes.LookupId))
                 {
-                    int id;
-                    if (!int.TryParse((string)value, out id))
-                    {
-                        throw new InvalidLookupIdException(value);
-                    }
-                    // lookup id should be rendered as Lookup data type
-                    return new GenericStringBasedValueOperand(typeof(DataTypes.Lookup), (string)value);
+                    return new LookupIdValueOperand((string)value);
                 }
                 else if (type == typeof(DataTypes.LookupValue))
                 {
-                    // lookup value should be rendered as Lookup data type
-                    return new GenericStringBasedValueOperand(typeof(DataTypes.Lookup), (string)value);
+                    return new LookupValueValueOperand((string)value);
                 }
                 return new GenericStringBasedValueOperand(type, (string) value);
             }

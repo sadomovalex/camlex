@@ -63,9 +63,11 @@
     <Compile Include="Impl\CompositeExpressionBaseAnalyzer.cs" />
     <Compile Include="Impl\CompositeOperationBase.cs" />
     <Compile Include="Impl\Operands\BooleanValueOperand.cs" />
+    <Compile Include="Impl\Operands\LookupValueValueOperand.cs" />
     <Compile Include="Impl\Operands\GuidValueOperand.cs" />
     <Compile Include="Impl\Operands\DateTimeValueOperand.cs" />
     <Compile Include="Impl\Operands\GenericStringBasedValueOperand.cs" />
+    <Compile Include="Impl\Operands\LookupIdValueOperand.cs" />
     <Compile Include="Impl\Operations\BeginsWith\BeginsWithAnalyzer.cs" />
     <Compile Include="Impl\Operations\BeginsWith\BeginsWithOperation.cs" />
     <Compile Include="Impl\Operations\Contains\ContainsAnalyzer.cs" />

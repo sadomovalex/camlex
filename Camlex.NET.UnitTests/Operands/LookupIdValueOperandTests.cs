@@ -28,23 +28,28 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using CamlexNET.Impl.Operands;
+using NUnit.Framework;
 
-namespace CamlexNET
+namespace CamlexNET.UnitTests.Operands
 {
-    internal static class ErrorMessages
+    [TestFixture]
+    public class LookupIdValueOperandTests
     {
-        public const string NON_SUPPORTED_EXPRESSION =  "Expression '{0}' can not be translated into CAML";
-        public const string NON_SUPPORTED_EXPRESSION_TYPE = "Expression type '{0}' is not supported";
-        public const string NON_SUPPORTED_OPERAND_TYPE = "Operand type '{0}' is not supported";
-        public const string NULL_VALUE_OPERAND_CAN_NOT_BE_TRANSLATED_TO_CAML =
-            "Value is null. Null rvalue is allowed only with '==' (IsNull) and '!=' (IsNotNull) operations. " +
-            "Also null rvalue should not be casted to DataTypes.*";
-        public const string INVALID_VALUE_FOR_OPERAND_TYPE = "Value '{0}' is not valid for operand type '{1}'";
-        //public const string INVALID_FIELD_NAME_FOR_FIELD_REF_OPERAND = "Value '{0}' is not valid field name for FieldRef operand";
-        public const string INVALID_VALUE_FOR_FIELD_REF_OPERAND = "Value '{0}' is not valid field name or field id for FieldRef operand";
-        public const string ONLY_OR_AND_BINARY_EXPRESSIONS_ALLOWED_FOR_JOINS = "Only 'OrElse' and 'AnsAlso' binary expressions are allowed for logical joins";
-        public const string EMPTY_EXPRESSIONS_LIST = "Can not join list of expressions because it is empty. You should specify at least one expression in list";
-        //public const string DIFFERENT_ARGUMENTS_NAMES = "Expressions have different arguments names. All expressions should have the same argument name";
-        //public const string INVALID_LOOKUP_ID = "Value '{0}' is not valid for lookup id. Lookup id should be integer";
+        [Test]
+        public void test_THAT_lookup_id_IS_rendered_to_caml_properly()
+        {
+            var operand = new LookupIdValueOperand("123");
+            string caml = operand.ToCaml().ToString();
+            Assert.That(caml, Is.EqualTo("<Value Type=\"Lookup\">123</Value>"));
+        }
+
+        [Test]
+        [ExpectedException(typeof(InvalidValueForOperandTypeException))]
+        public void test_WHEN_string_is_not_valid_integer_THEN_exception_is_thrown()
+        {
+            var operand = new LookupIdValueOperand("asd");
+            Assert.That(operand.Value, Is.EqualTo(1));
+        }
     }
 }
