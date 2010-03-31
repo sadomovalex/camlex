@@ -47,13 +47,15 @@ namespace CamlexNET.Impl.Operations.Lt
 
         public override IOperation GetOperation(LambdaExpression expr)
         {
-            if (!this.IsValid(expr))
-            {
-                throw new NonSupportedExpressionException(expr);
-            }
-            var fieldRefOperand = this.getFieldRefOperand(expr);
-            var valueOperand = this.getValueOperand(expr);
-            return new LtOperation(this.operationResultBuilder, fieldRefOperand, valueOperand);
+//            if (!this.IsValid(expr))
+//            {
+//                throw new NonSupportedExpressionException(expr);
+//            }
+//            var fieldRefOperand = this.getFieldRefOperand(expr);
+//            var valueOperand = this.getValueOperand(expr);
+//            return new LtOperation(this.operationResultBuilder, fieldRefOperand, valueOperand);
+            return this.getOperation(expr,
+                (operationResultBuilder, fieldRefOperand, valueOperand) => new LtOperation(this.operationResultBuilder, fieldRefOperand, valueOperand));
         }
     }
 }

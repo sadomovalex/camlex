@@ -268,5 +268,18 @@ namespace CamlexNET.Impl
             }
             throw new NonSupportedExpressionException(body.Right);
         }
+
+        protected IOperation getOperation<T>(LambdaExpression expr,
+            Func<IOperationResultBuilder, IOperand, IOperand, T> creator)
+            where T : IOperation
+        {
+            if (!this.IsValid(expr))
+            {
+                throw new NonSupportedExpressionException(expr);
+            }
+            var fieldRefOperand = this.getFieldRefOperand(expr);
+            var valueOperand = this.getValueOperand(expr);
+            return creator(this.operationResultBuilder, fieldRefOperand, valueOperand);
+        }
     }
 }
