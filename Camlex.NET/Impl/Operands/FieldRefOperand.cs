@@ -26,6 +26,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Xml.Linq;
 using CamlexNET.Interfaces;
 
@@ -35,6 +36,7 @@ namespace CamlexNET.Impl.Operands
     {
         protected readonly string fieldName;
         private readonly Guid? id;
+        private List<KeyValuePair<string, string>> attributes;
 
         public string FieldName
         {
@@ -52,7 +54,18 @@ namespace CamlexNET.Impl.Operands
 //            }
 //        }
 
+        protected FieldRefOperand(List<KeyValuePair<string, string>> attributes)
+        {
+            this.attributes = attributes;
+        }
+
         public FieldRefOperand(string fieldName)
+        {
+            this.fieldName = fieldName;
+        }
+
+        public FieldRefOperand(string fieldName, List<KeyValuePair<string, string>> attributes) :
+            this (attributes)
         {
             this.fieldName = fieldName;
         }
@@ -62,13 +75,38 @@ namespace CamlexNET.Impl.Operands
             this.id = id;
         }
 
+        public FieldRefOperand(Guid id, List<KeyValuePair<string, string>> attributes) :
+            this(attributes)
+        {
+            this.id = id;
+        }
+
         public virtual XElement ToCaml()
         {
+            XElement element;
             if (this.id != null)
             {
-                return new XElement(Tags.FieldRef, new XAttribute(Attributes.ID, this.id.Value));
+                element = new XElement(Tags.FieldRef, new XAttribute(Attributes.ID, this.id.Value));
             }
-            return new XElement(Tags.FieldRef, new XAttribute(Attributes.Name, this.fieldName));
+            else
+            {
+                element = new XElement(Tags.FieldRef, new XAttribute(Attributes.Name, this.fieldName));
+            }
+
+            if (this.attributes != null)
+            {
+                foreach (var attr in this.attributes)
+                {
+                    // should not specify id or name twice
+                    if (string.Compare(attr.Key, Attributes.ID, true) == 0 ||
+                        string.Compare(attr.Key, Attributes.Name, true) == 0)
+                    {
+                        continue;
+                    }
+                    element.Add(new XAttribute(attr.Key, attr.Value));
+                }
+            }
+            return element;
         }
     }
 }

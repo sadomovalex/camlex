@@ -61,6 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CamlexJoinsTest.cs" />
+    <Compile Include="CamlexLookupTests.cs" />
     <Compile Include="CamlexTests.cs">
       <SubType>Code</SubType>
     </Compile>

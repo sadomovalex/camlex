@@ -65,7 +65,18 @@ namespace CamlexNET
         public class Guid : BaseFieldType { }
         public class Integer : BaseFieldType { }
         public class Invalid : BaseFieldType { }
-        public class Lookup : BaseFieldType { }
+        
+        //public class Lookup : BaseFieldType { }
+        public class LookupId : BaseFieldType
+        {
+            // todo: allow cast from integer to LookupId
+//            public static explicit operator LookupId(int id)
+//            {
+//                return null;
+//            }
+        }
+        public class LookupValue : BaseFieldType { }
+
         public class MaxItems : BaseFieldType { }
         public class ModStat : BaseFieldType { }
         public class MultiChoice : BaseFieldType { }
