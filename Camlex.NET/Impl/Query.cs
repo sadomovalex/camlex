@@ -72,7 +72,7 @@ namespace CamlexNET.Impl
             Expression result;
             if (expressions.Count() == 1)
             {
-                result = expressions.First();
+                result = expressions.First().Body;
             }
             else
             {

@@ -141,5 +141,71 @@ namespace CamlexNET.UnitTests
 
             Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
         }
+
+        [Test]
+        [ExpectedException(typeof(EmptyExpressionsListException))]
+        public void test_WHEN_expressions_list_is_empty_THEN_exception_is_thrown()
+        {
+            var expressions = new List<Expression<Func<SPListItem, bool>>>();
+            Camlex.Query().WhereAny(expressions).ToString();
+        }
+
+        [Test]
+        [ExpectedException(typeof(EmptyExpressionsListException))]
+        public void test_WHEN_expressions_list_is_null_THEN_exception_is_thrown()
+        {
+            Camlex.Query().WhereAny(null).ToString();
+        }
+
+        [Test]
+        public void test_THAT_join_any_with_1_element_IS_translated_sucessfully()
+        {
+            var ids = new List<int> { 1 };
+            var expressions = new List<Expression<Func<SPListItem, bool>>>();
+
+            foreach (int i in ids)
+            {
+                int i1 = i;
+                expressions.Add(x => (int)x["ID"] == i1);
+            }
+
+            string caml = Camlex.Query().WhereAny(expressions).ToString();
+
+            string expected =
+                "   <Where>" +
+                "               <Eq>" +
+                "                   <FieldRef Name=\"ID\" />" +
+                "                   <Value Type=\"Integer\">1</Value>" +
+                "               </Eq>" +
+                "   </Where>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        [Test]
+        public void test_THAT_join_all_with_1_element_IS_translated_sucessfully()
+        {
+            var ids = new List<int> { 1 };
+            var expressions = new List<Expression<Func<SPListItem, bool>>>();
+
+            foreach (int i in ids)
+            {
+                int i1 = i;
+                expressions.Add(x => (int)x["ID"] == i1);
+            }
+
+            string caml = Camlex.Query().WhereAll(expressions).ToString();
+
+            string expected =
+                "   <Where>" +
+                "               <Eq>" +
+                "                   <FieldRef Name=\"ID\" />" +
+                "                   <Value Type=\"Integer\">1</Value>" +
+                "               </Eq>" +
+                "   </Where>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
     }
 }
