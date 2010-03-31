@@ -66,7 +66,12 @@ namespace CamlexNET
         public class Integer : BaseFieldType { }
         public class Invalid : BaseFieldType { }
         
-        //public class Lookup : BaseFieldType { }
+        internal class Lookup : BaseFieldType { }
+
+        // There is no LookupId and LookupValue datatypes in CAML. There is only
+        // Lookup datatype. We introduced different lookup datatypes in order
+        // to simplify distinguish between lookup values and lookup ids search.
+        // See http://camlex.codeplex.com/Thread/View.aspx?ThreadId=203560 for details
         public class LookupId : BaseFieldType
         {
             // todo: allow cast from integer to LookupId

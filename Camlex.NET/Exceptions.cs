@@ -107,7 +107,7 @@ namespace CamlexNET
     internal class EmptyExpressionsListException : GenericException
     {
         public EmptyExpressionsListException() :
-            base(ErrorMessages.EMPTY_EXPRESSIONS_LIST_EXCEPTION)
+            base(ErrorMessages.EMPTY_EXPRESSIONS_LIST)
         {
         }
     }
@@ -115,8 +115,16 @@ namespace CamlexNET
 //    internal class DifferentArgumentsNamesExceptions : GenericException
 //    {
 //        public DifferentArgumentsNamesExceptions() :
-//            base(ErrorMessages.DIFFERENT_ARGUMENTS_NAMES_EXCEPTIONS)
+//            base(ErrorMessages.DIFFERENT_ARGUMENTS_NAMES)
 //        {
 //        }
 //    }
+
+    internal class InvalidLookupIdException : GenericException
+    {
+        public InvalidLookupIdException(object value) :
+            base(ErrorMessages.INVALID_LOOKUP_ID, value)
+        {
+        }
+    }
 }

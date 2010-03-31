@@ -235,6 +235,25 @@ namespace CamlexNET.Impl.Factories
             // for rest of generic types create generic string based operand
             if (type.IsSubclassOf(typeof(BaseFieldType)))
             {
+                // there is no LookupId and LookupValue datatypes in CAML. There is only
+                // Lookup datatype. We introduced different lookup datatypes in order
+                // to simplify distinguish between lookup values and lookup ids search.
+                // See http://camlex.codeplex.com/Thread/View.aspx?ThreadId=203560 for details
+                if (type == typeof(DataTypes.LookupId))
+                {
+                    int id;
+                    if (!int.TryParse((string)value, out id))
+                    {
+                        throw new InvalidLookupIdException(value);
+                    }
+                    // lookup id should be rendered as Lookup data type
+                    return new GenericStringBasedValueOperand(typeof(DataTypes.Lookup), (string)value);
+                }
+                else if (type == typeof(DataTypes.LookupValue))
+                {
+                    // lookup value should be rendered as Lookup data type
+                    return new GenericStringBasedValueOperand(typeof(DataTypes.Lookup), (string)value);
+                }
                 return new GenericStringBasedValueOperand(type, (string) value);
             }
             throw new NonSupportedOperandTypeException(type);
