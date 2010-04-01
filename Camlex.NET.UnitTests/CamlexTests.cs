@@ -29,6 +29,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using CamlexNET.UnitTests.Helpers;
+using Microsoft.SharePoint;
 using NUnit.Framework;
 using CamlexNET;
 
@@ -1017,5 +1018,20 @@ namespace CamlexNET.UnitTests
             return new Guid("4feaf1f3-5b04-4d93-b0fc-4e48d0c60eed");
         }
 
+        [Test]
+        public void test_THAT_expression_with_spbuiltinfield_IS_translated_sucessfully()
+        {
+            string caml = Camlex.Query().Where(x => (string)x[SPBuiltInFieldId.Title] == "foo").ToString();
+
+            string expected =
+                "   <Where>" +
+                "       <Eq>" +
+                "           <FieldRef ID=\"fa564e0f-0c70-4ab9-b863-0177e6ddd247\" />" +
+                "           <Value Type=\"Text\">foo</Value>" +
+                "       </Eq>" +
+                "   </Where>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
     }
 }
