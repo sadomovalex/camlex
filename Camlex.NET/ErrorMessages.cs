@@ -46,5 +46,6 @@ namespace CamlexNET
         public const string EMPTY_EXPRESSIONS_LIST = "Can not join list of expressions because it is empty. You should specify at least one expression in list";
         //public const string DIFFERENT_ARGUMENTS_NAMES = "Expressions have different arguments names. All expressions should have the same argument name";
         //public const string INVALID_LOOKUP_ID = "Value '{0}' is not valid for lookup id. Lookup id should be integer";
+        public const string FIELD_REF_SHOULD_CONTAIN_NAME_OR_ID = "Field ref element should contain at least one attribute: Name or ID";
     }
 }

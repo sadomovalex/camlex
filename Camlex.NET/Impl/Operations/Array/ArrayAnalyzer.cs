@@ -60,7 +60,7 @@ namespace CamlexNET.Impl.Operations.Array
                 if (methodCall == null) return;
                 if (methodCall.Method.Name != ReflectionHelper.IndexerMethodName) return;
                 if (methodCall.Arguments.Count != 1) return;
-                if (!(methodCall.Arguments[0] is ConstantExpression)) return;
+                //if (!(methodCall.Arguments[0] is ConstantExpression)) return;
                 counter++;
             });
             return (body.Expressions.Count == counter);

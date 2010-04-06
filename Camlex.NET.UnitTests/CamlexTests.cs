@@ -1033,5 +1033,34 @@ namespace CamlexNET.UnitTests
 
             Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
         }
+
+        [Test]
+        public void test_THAT_groupby_expression_with_non_constant_parameters_IS_translated_sucessfully()
+        {
+            bool b = true;
+            var caml = Camlex.Query().GroupBy(x => x[b ? "field1" : "field2"]).ToString();
+
+            var expected =
+                "  <GroupBy>" +
+                "    <FieldRef Name=\"field1\" />" +
+                "  </GroupBy>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        [Test]
+        public void test_THAT_orderby_expression_with_non_constant_parameters_IS_translated_sucessfully()
+        {
+            bool b = true;
+            var caml = Camlex.Query().OrderBy(x => new [] { x[b ? SPBuiltInFieldId.Title : SPBuiltInFieldId.UniqueId], x[SPBuiltInFieldId.Modified] as Camlex.Asc }).ToString();
+
+            var expected =
+            "<OrderBy>" +
+            "  <FieldRef ID=\"fa564e0f-0c70-4ab9-b863-0177e6ddd247\" />" +
+            "  <FieldRef ID=\"28cf69c5-fa48-462a-b5cd-27b6f9d2bd5f\" Ascending=\"True\" />" +
+            "</OrderBy>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
     }
 }

@@ -64,5 +64,13 @@ namespace CamlexNET.UnitTests.Array
             //assert
             Assert.That(operation, Is.InstanceOf<ArrayOperation>());
         }
+
+        [Test]
+        public void test_THAT_array_expression_with_guids_IS_valid()
+        {
+            var analyzer = new ArrayAnalyzer(null, null);
+            Expression<Func<SPListItem, object[]>> expr = (x => new[] { x[SPBuiltInFieldId.ContentTypeId], x["field2"] as Camlex.Asc, x[SPBuiltInFieldId.Modified] as Camlex.Desc });
+            Assert.That(analyzer.IsValid(expr), Is.True);
+        }
     }
 }

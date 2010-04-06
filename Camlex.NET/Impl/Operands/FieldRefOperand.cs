@@ -34,8 +34,8 @@ namespace CamlexNET.Impl.Operands
 {
     internal class FieldRefOperand : IOperand
     {
-        protected readonly string fieldName;
-        private readonly Guid? id;
+        protected string fieldName;
+        protected Guid? id;
         private List<KeyValuePair<string, string>> attributes;
 
         public string FieldName
@@ -46,13 +46,13 @@ namespace CamlexNET.Impl.Operands
             }
         }
 
-//        public Guid? FieldId
-//        {
-//            get
-//            {
-//                return id;
-//            }
-//        }
+        public Guid? FieldId
+        {
+            get
+            {
+                return id;
+            }
+        }
 
         protected FieldRefOperand(List<KeyValuePair<string, string>> attributes)
         {
@@ -61,24 +61,34 @@ namespace CamlexNET.Impl.Operands
 
         public FieldRefOperand(string fieldName)
         {
-            this.fieldName = fieldName;
+            this.initialize(fieldName);
         }
 
         public FieldRefOperand(string fieldName, List<KeyValuePair<string, string>> attributes) :
             this (attributes)
         {
-            this.fieldName = fieldName;
+            this.initialize(fieldName);
         }
 
         public FieldRefOperand(Guid id)
         {
-            this.id = id;
+            this.initialize(id);
         }
 
         public FieldRefOperand(Guid id, List<KeyValuePair<string, string>> attributes) :
             this(attributes)
         {
+            this.initialize(id);
+        }
+
+        protected void initialize(Guid id)
+        {
             this.id = id;
+        }
+
+        protected void initialize(string fieldName)
+        {
+            this.fieldName = fieldName;
         }
 
         public virtual XElement ToCaml()
@@ -88,9 +98,13 @@ namespace CamlexNET.Impl.Operands
             {
                 element = new XElement(Tags.FieldRef, new XAttribute(Attributes.ID, this.id.Value));
             }
-            else
+            else if (!string.IsNullOrEmpty(this.fieldName))
             {
                 element = new XElement(Tags.FieldRef, new XAttribute(Attributes.Name, this.fieldName));
+            }
+            else
+            {
+                throw new FieldRefOperandShouldContainNameOrIdException();
             }
 
             if (this.attributes != null)
