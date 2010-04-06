@@ -37,8 +37,20 @@ namespace CamlexNET.Impl.Operands
         private readonly Camlex.OrderDirection orderDirection;
 
         public FieldRefOperandWithOrdering(FieldRefOperand fieldRefOperand, Camlex.OrderDirection orderDirection)
-            : base(fieldRefOperand.FieldName)
+            : base(string.Empty) // just in order to avoid compiler error that base type doesn't contain parameterless constructor
         {
+            if (fieldRefOperand.FieldId != null)
+            {
+                this.initialize(fieldRefOperand.FieldId.Value);
+            }
+            else if (!string.IsNullOrEmpty(fieldRefOperand.FieldName))
+            {
+                this.initialize(fieldRefOperand.FieldName);
+            }
+            else
+            {
+                throw new FieldRefOperandShouldContainNameOrIdException();
+            }
             this.orderDirection = orderDirection;
         }
 

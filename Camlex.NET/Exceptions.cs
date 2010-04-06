@@ -127,4 +127,12 @@ namespace CamlexNET
 //        {
 //        }
 //    }
+
+    internal class FieldRefOperandShouldContainNameOrIdException : GenericException
+    {
+        public FieldRefOperandShouldContainNameOrIdException() :
+            base(ErrorMessages.EMPTY_EXPRESSIONS_LIST)
+        {
+        }
+    }
 }
