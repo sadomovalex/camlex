@@ -33,10 +33,14 @@ namespace CamlexNET
 {
     public class BaseFieldType
     {
-        public static explicit operator BaseFieldType(string s)
-        {
-            return null;
-        }
+        public static explicit operator BaseFieldType(string s) { return null; }
+
+        public static bool operator ==(object c1, BaseFieldType c2) { return false; }
+        public static bool operator !=(object c1, BaseFieldType c2) { return false; }
+        public static bool operator <(object c1, BaseFieldType c2) { return false; }
+        public static bool operator >(object c1, BaseFieldType c2) { return false; }
+        public static bool operator <=(object c1, BaseFieldType c2) { return false; }
+        public static bool operator >=(object c1, BaseFieldType c2) { return false; }
     }
 
     public class StringBasedFieldType : BaseFieldType
@@ -58,7 +62,13 @@ namespace CamlexNET
         public class Counter : BaseFieldType { }
         public class CrossProjectLink : BaseFieldType { }
         public class Currency : BaseFieldType { }
-        public class DateTime : BaseFieldType { public DateTime IncludeTimeValue() { return this; } }
+        public class DateTime : BaseFieldType
+        {
+            public DateTime IncludeTimeValue()
+            {
+                return this;
+            }
+        }
         public class Error : BaseFieldType { }
         public class File : BaseFieldType { }
         public class GridChoice : BaseFieldType { }

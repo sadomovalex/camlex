@@ -744,6 +744,24 @@ namespace CamlexNET.UnitTests
         }
 
         [Test]
+        public void test_THAT_single_neq_expression_IS_translated_sucessfully()
+        {
+            string caml = Camlex.Query().Where(x => (int)x["ID"] != 1).ToString();
+
+            string expected =
+                //                "<Query>" +
+                "   <Where>" +
+                "       <Neq>" +
+                "           <FieldRef Name=\"ID\" />" +
+                "           <Value Type=\"Integer\">1</Value>" +
+                "       </Neq>" +
+                "   </Where>";
+            //                "</Query>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        [Test]
         public void test_THAT_single_geq_expression_IS_translated_sucessfully()
         {
             string caml = Camlex.Query().Where(x => (int)x["ID"] >= 1).ToString();
@@ -811,6 +829,96 @@ namespace CamlexNET.UnitTests
                 "       </Lt>" +
                 "   </Where>";
 //                "</Query>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        [Test]
+        public void test_THAT_single_neq_expression_with_DataTypes_IS_translated_sucessfully()
+        {
+            var caml = Camlex.Query().Where(x => x["ID"] != (DataTypes.Currency)"1.2345").ToString();
+
+            var expected =
+//                "<Query>" +
+                "   <Where>" +
+                "       <Neq>" +
+                "           <FieldRef Name=\"ID\" />" +
+                "           <Value Type=\"Currency\">1.2345</Value>" +
+                "       </Neq>" +
+                "   </Where>";
+//                "</Query>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        [Test]
+        public void test_THAT_single_geq_expression_with_DataTypes_IS_translated_sucessfully()
+        {
+            var caml = Camlex.Query().Where(x => x["ID"] >= (DataTypes.Currency)"1.2345").ToString();
+
+            var expected =
+//                "<Query>" +
+                "   <Where>" +
+                "       <Geq>" +
+                "           <FieldRef Name=\"ID\" />" +
+                "           <Value Type=\"Currency\">1.2345</Value>" +
+                "       </Geq>" +
+                "   </Where>";
+//                "</Query>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        [Test]
+        public void test_THAT_single_gt_expression_with_DataTypes_IS_translated_sucessfully()
+        {
+            var caml = Camlex.Query().Where(x => x["ID"] > (DataTypes.Currency)"1.2345").ToString();
+
+            var expected =
+                //                "<Query>" +
+                "   <Where>" +
+                "       <Gt>" +
+                "           <FieldRef Name=\"ID\" />" +
+                "           <Value Type=\"Currency\">1.2345</Value>" +
+                "       </Gt>" +
+                "   </Where>";
+            //                "</Query>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        [Test]
+        public void test_THAT_single_leg_expression_with_DataTypes_IS_translated_sucessfully()
+        {
+            var caml = Camlex.Query().Where(x => x["ID"] <= (DataTypes.Currency)"1.2345").ToString();
+
+            var expected =
+                //                "<Query>" +
+                "   <Where>" +
+                "       <Leq>" +
+                "           <FieldRef Name=\"ID\" />" +
+                "           <Value Type=\"Currency\">1.2345</Value>" +
+                "       </Leq>" +
+                "   </Where>";
+            //                "</Query>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        [Test]
+        public void test_THAT_single_lt_expression_with_DataTypes_IS_translated_sucessfully()
+        {
+            var caml = Camlex.Query().Where(x => x["ID"] < (DataTypes.Currency)"1.2345").ToString();
+
+            var expected =
+                //                "<Query>" +
+                "   <Where>" +
+                "       <Lt>" +
+                "           <FieldRef Name=\"ID\" />" +
+                "           <Value Type=\"Currency\">1.2345</Value>" +
+                "       </Lt>" +
+                "   </Where>";
+            //                "</Query>";
 
             Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
         }
