@@ -34,16 +34,17 @@ namespace CamlexNET
     public class BaseFieldType
     {
         public static explicit operator BaseFieldType(string s) { return null; }
-
-        public static bool operator ==(object c1, BaseFieldType c2) { return false; }
-        public static bool operator !=(object c1, BaseFieldType c2) { return false; }
-        public static bool operator <(object c1, BaseFieldType c2) { return false; }
-        public static bool operator >(object c1, BaseFieldType c2) { return false; }
-        public static bool operator <=(object c1, BaseFieldType c2) { return false; }
-        public static bool operator >=(object c1, BaseFieldType c2) { return false; }
     }
 
-    public class StringBasedFieldType : BaseFieldType
+    public class BaseFieldTypeWithOperators : BaseFieldType
+    {
+        public static bool operator <(object c1, BaseFieldTypeWithOperators c2) { return false; }
+        public static bool operator >(object c1, BaseFieldTypeWithOperators c2) { return false; }
+        public static bool operator <=(object c1, BaseFieldTypeWithOperators c2) { return false; }
+        public static bool operator >=(object c1, BaseFieldTypeWithOperators c2) { return false; }
+    }
+
+    public class StringBasedFieldType : BaseFieldTypeWithOperators
     {
         public bool Contains(string text) { return true; }
         public bool StartsWith(string text) { return true; }
@@ -61,19 +62,16 @@ namespace CamlexNET
         public class ContentTypeId : BaseFieldType { }
         public class Counter : BaseFieldType { }
         public class CrossProjectLink : BaseFieldType { }
-        public class Currency : BaseFieldType { }
-        public class DateTime : BaseFieldType
+        public class Currency : BaseFieldTypeWithOperators { }
+        public class DateTime : BaseFieldTypeWithOperators
         {
-            public DateTime IncludeTimeValue()
-            {
-                return this;
-            }
+            public DateTime IncludeTimeValue() { return this; }
         }
         public class Error : BaseFieldType { }
         public class File : BaseFieldType { }
         public class GridChoice : BaseFieldType { }
         public class Guid : BaseFieldType { }
-        public class Integer : BaseFieldType { }
+        public class Integer : BaseFieldTypeWithOperators { }
         public class Invalid : BaseFieldType { }
         
         internal class Lookup : BaseFieldType { }
@@ -82,7 +80,7 @@ namespace CamlexNET
         // Lookup datatype. We introduced different lookup datatypes in order
         // to simplify distinguish between lookup values and lookup ids search.
         // See http://camlex.codeplex.com/Thread/View.aspx?ThreadId=203560 for details
-        public class LookupId : BaseFieldType
+        public class LookupId : BaseFieldTypeWithOperators
         {
             // todo: allow cast from integer to LookupId
 //            public static explicit operator LookupId(int id)
@@ -96,7 +94,7 @@ namespace CamlexNET
         public class ModStat : BaseFieldType { }
         public class MultiChoice : BaseFieldType { }
         public class Note : StringBasedFieldType { }
-        public class Number : BaseFieldType { }
+        public class Number : BaseFieldTypeWithOperators { }
         public class PageSeparator : BaseFieldType { }
         public class Recurrence : BaseFieldType { }
         public class Text : StringBasedFieldType { }
