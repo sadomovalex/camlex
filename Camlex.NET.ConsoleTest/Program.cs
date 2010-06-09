@@ -150,17 +150,17 @@ namespace CamlexNET.ConsoleTest
         // Suppose that you need to retrieve all items modified by Administrator:
         // <Query>
         //   <Where>
-        //     <Eq>
-        //       <FieldRef Name="ModifiedBy" />
-        //       <Value Type="User">Administrator</Value>
-        //     </Eq>
+        //     <Gt>
+        //       <FieldRef Name="Modified" />
+        //       <Value Type="Currency">1.2345</Value>
+        //     </Gt>
         //   </Where>
         // </Query>
         public static void Scenario5()
         {
             var caml =
                 Camlex.Query()
-                    .Where(x => x["ModifiedBy"] == (DataTypes.User)"Administrator")
+                    .Where(x => x["Modified"] > (DataTypes.Currency)"1.2345")
                             .ToString();
 
             Console.WriteLine(caml);
