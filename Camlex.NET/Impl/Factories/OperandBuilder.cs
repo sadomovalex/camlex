@@ -30,6 +30,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
+using CamlexNET.Impl.Helpers;
 using CamlexNET.Impl.Operands;
 using CamlexNET.Interfaces;
 
@@ -143,7 +144,7 @@ namespace CamlexNET.Impl.Factories
 
         public IOperand CreateValueOperandForStringBasedSyntax(Expression expr)
         {
-            var newExpr = ExpressionHelper.RemoveIncludeTimeValueMethodCallIfAny(expr);
+            var newExpr = ExpressionsHelper.RemoveIncludeTimeValueMethodCallIfAny(expr);
 
             // retrieve internal native expression from string based syntax
             var internalExpression = ((UnaryExpression)((UnaryExpression)newExpr).Operand).Operand;
@@ -223,7 +224,7 @@ namespace CamlexNET.Impl.Factories
             // DateTime operand can be native or string based
             if (type == typeof(DateTime) || type == typeof(DataTypes.DateTime))
             {
-                var includeTimeValue = ExpressionHelper.IncludeTimeValue(expr);
+                var includeTimeValue = ExpressionsHelper.IncludeTimeValue(expr);
 
                 if (value.GetType() == typeof(DateTime))
                 {

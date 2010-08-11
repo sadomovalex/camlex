@@ -29,6 +29,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using CamlexNET.Impl.Helpers;
 using CamlexNET.Impl.Operands;
 using CamlexNET.Interfaces;
 using Microsoft.SharePoint;
@@ -125,7 +126,7 @@ namespace CamlexNET.Impl
         private bool isExpressionWithStringBasedSyntax(Expression rightExpression)
         {
             // it is for case when right expression is a method call to IncludeTimeValue method
-            rightExpression = ExpressionHelper.RemoveIncludeTimeValueMethodCallIfAny(rightExpression);
+            rightExpression = ExpressionsHelper.RemoveIncludeTimeValueMethodCallIfAny(rightExpression);
 
             return (rightExpression.NodeType == ExpressionType.Convert &&
                 rightExpression.Type.IsSubclassOf(typeof(BaseFieldType)));
@@ -195,7 +196,7 @@ namespace CamlexNET.Impl
         protected bool isValidRightExpressionWithStringBasedSyntax(Expression rightExpression)
         {
             // it is for case when right expression is a method call to IncludeTimeValue method
-            rightExpression = ExpressionHelper.RemoveIncludeTimeValueMethodCallIfAny(rightExpression);
+            rightExpression = ExpressionsHelper.RemoveIncludeTimeValueMethodCallIfAny(rightExpression);
 
             // 1st convertion is conversion to specific subclass of BaseFieldType
             if (!(rightExpression is UnaryExpression))
