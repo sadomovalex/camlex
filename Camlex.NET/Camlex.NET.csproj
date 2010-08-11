@@ -62,6 +62,7 @@
     <Compile Include="Impl\BinaryOperationBase.cs" />
     <Compile Include="Impl\CompositeExpressionBaseAnalyzer.cs" />
     <Compile Include="Impl\CompositeOperationBase.cs" />
+    <Compile Include="Impl\Helpers\ExpressionsHelper.cs" />
     <Compile Include="Impl\Operands\BooleanValueOperand.cs" />
     <Compile Include="Impl\Operands\LookupValueValueOperand.cs" />
     <Compile Include="Impl\Operands\GuidValueOperand.cs" />

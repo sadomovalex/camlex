@@ -26,10 +26,10 @@
 #endregion
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Xml.Linq;
+using CamlexNET.Impl.Helpers;
 using CamlexNET.Interfaces;
 using Microsoft.SharePoint;
 
@@ -56,94 +56,14 @@ namespace CamlexNET.Impl
 
         public IQuery WhereAll(IEnumerable<Expression<Func<SPListItem, bool>>> expressions)
         {
-            return this.whereAllOrAny(expressions, ExpressionType.AndAlso);
-        }
-
-        private IQuery whereAllOrAny(IEnumerable<Expression<Func<SPListItem, bool>>> expressions, ExpressionType type)
-        {
-            if (expressions == null || expressions.Count() == 0)
-            {
-                throw new EmptyExpressionsListException();
-            }
-
-//            if (!this.allExpressionsHaveTheSameArgumentName(expressions))
-//            {
-//                throw new DifferentArgumentsNamesExceptions();
-//            }
-            // todo: check that all expressions are valid
-
-            Expression result;
-            if (expressions.Count() == 1)
-            {
-                result = expressions.First().Body;
-            }
-            else
-            {
-                result = this.joinExpressions(expressions, type);
-            }
-
-            // todo: determined parameter name
-            var lambda = Expression.Lambda<Func<SPListItem, bool>>(result,
-                Expression.Parameter(typeof(SPListItem), "x"));
-            return this.Where(lambda);
-        }
-
-//        private bool allExpressionsHaveTheSameArgumentName(IEnumerable<Expression<Func<SPListItem, bool>>> expressions)
-//        {
-//            if (expressions.Count() == 0)
-//            {
-//                throw new EmptyExpressionsListException();
-//            }
-//
-//            // there is no need to check number of parameters, as compiler checked it when
-//            // we specified Func<SPListItem, bool> func which can't have another number
-//            // of parameters except single param
-//            string argumentName = expressions.First().Parameters[0].Name;
-//            for (int i = 1; i < expressions.Count(); i++)
-//            {
-//                if (expressions.ElementAt(i).Parameters[0].Name != argumentName)
-//                {
-//                    return false;
-//                }
-//            }
-//            return true;
-//        }
-
-        private BinaryExpression joinExpressions(IEnumerable<Expression<Func<SPListItem, bool>>> expressions, ExpressionType type)
-        {
-            return this.joinExpressions(1, expressions, expressions.ElementAt(0).Body, type);
-        }
-
-        // See http://sadomovalex.blogspot.com/2010/02/build-dynamic-expressions-for-caml.html
-        private BinaryExpression joinExpressions(int currentIdxToAdd, IEnumerable<Expression<Func<SPListItem, bool>>> expressions,
-            Expression prevExpr, ExpressionType type)
-        {
-            if (currentIdxToAdd >= expressions.Count())
-            {
-                return (BinaryExpression) prevExpr;
-            }
-
-            var currentExpression = expressions.ElementAt(currentIdxToAdd);
-
-            Expression resultExpr;
-            if (type == ExpressionType.OrElse)
-            {
-                resultExpr = Expression.OrElse(prevExpr, currentExpression.Body);
-            }
-            else if (type == ExpressionType.AndAlso)
-            {
-                resultExpr = Expression.AndAlso(prevExpr, currentExpression.Body);
-            }
-            else
-            {
-                throw new OnlyOrAndBinaryExpressionsAllowedForJoinsExceptions();
-            }
-            return joinExpressions(currentIdxToAdd + 1, expressions, resultExpr, type);
+            var combinedExpression = ExpressionsHelper.CombineAnd(expressions);
+            return this.Where(combinedExpression);
         }
 
         public IQuery WhereAny(IEnumerable<Expression<Func<SPListItem, bool>>> expressions)
         {
-            return this.whereAllOrAny(expressions, ExpressionType.OrElse);
+            var combinedExpression = ExpressionsHelper.CombineOr(expressions);
+            return this.Where(combinedExpression);
         }
 
         public IQuery OrderBy(Expression<Func<SPListItem, object>> expr)
