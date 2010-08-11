@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using CamlexNET.Impl.Helpers;
 using CamlexNET.UnitTests.Helpers;
 using Microsoft.SharePoint;
 using NUnit.Framework;
@@ -254,5 +255,52 @@ namespace CamlexNET.UnitTests
 
             Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
         }
+
+        [Test]
+        public void test_THAT_expressions_with_different_methods_IS_translated_successfully()
+        {
+            var expressionsList = new List<Expression<Func<SPListItem, bool>>>
+            {
+                x => (int) x["ID"] == 1,
+                y => (int) y["ID"] == 2,
+                z => (int) z["ID"] == 3
+            };
+            Expression<Func<SPListItem, bool>> additionalExpression = (w => (string)w["Title"] == "Test");
+
+            var combinedExpressions = ExpressionsHelper.CombineOr(expressionsList);
+            var finalExpression = ExpressionsHelper.CombineAnd(new[] {combinedExpressions, additionalExpression});
+            var caml = Camlex.Query().Where(finalExpression).ToString();
+
+            var expected =
+                "   <Where>" +
+                "       <And>" +
+                "           <Or>" +
+                "               <Or>" +
+                "                   <Eq>" +
+                "                       <FieldRef Name=\"ID\" />" +
+                "                       <Value Type=\"Integer\">1</Value>" +
+                "                   </Eq>" +
+                "                   <Eq>" +
+                "                       <FieldRef Name=\"ID\" />" +
+                "                       <Value Type=\"Integer\">2</Value>" +
+                "                   </Eq>" +
+                "               </Or>" +
+                "               <Eq>" +
+                "                   <FieldRef Name=\"ID\" />" +
+                "                   <Value Type=\"Integer\">3</Value>" +
+                "               </Eq>" +
+                "           </Or>" +
+                "           <Eq>" +
+                "               <FieldRef Name=\"Title\" />" +
+                "               <Value Type=\"Text\">Test</Value>" +
+                "           </Eq>" +
+                "       </And>" +
+                "   </Where>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+
+
     }
 }
