@@ -172,7 +172,8 @@ namespace CamlexNET.UnitTests.Factories
 
             var valueOperand = operand as DateTimeValueOperand;
             Assert.That(valueOperand.Type, Is.EqualTo(typeof(DataTypes.DateTime)));
-            Assert.That(valueOperand.Value, Is.EqualTo(new DateTime(2010, 1, 2, 3, 4, 5)));
+            var expected = DateTime.Parse("02.01.2010 03:04:05");
+            Assert.That(valueOperand.Value, Is.EqualTo(expected));
             Assert.That(valueOperand.IncludeTimeValue, Is.False);
         }
 
@@ -187,7 +188,8 @@ namespace CamlexNET.UnitTests.Factories
 
             var valueOperand = operand as DateTimeValueOperand;
             Assert.That(valueOperand.Type, Is.EqualTo(typeof(DataTypes.DateTime)));
-            Assert.That(valueOperand.Value, Is.EqualTo(new DateTime(2010, 1, 2, 3, 4, 5)));
+            var expected = DateTime.Parse("02.01.2010 03:04:05");
+            Assert.That(valueOperand.Value, Is.EqualTo(expected));
             Assert.That(valueOperand.IncludeTimeValue, Is.True);
         }
 
