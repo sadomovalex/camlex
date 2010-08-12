@@ -613,12 +613,12 @@ namespace CamlexNET.UnitTests
             var expected =
 //                "<Query>" +
                 "  <Where>" +
-                "    <DataRangesOverlap>" +
+                "    <DateRangesOverlap>" +
                 "      <FieldRef Name=\"StartField\" />" +
                 "      <FieldRef Name=\"StopField\" />" +
                 "      <FieldRef Name=\"RecurrenceID\" />" +
                 "      <Value Type=\"DateTime\">" + now.ToString("s") + "Z</Value>" +
-                "    </DataRangesOverlap>" +
+                "    </DateRangesOverlap>" +
                 "  </Where>";
 //                "</Query>";
 
@@ -635,12 +635,12 @@ namespace CamlexNET.UnitTests
             var expected =
 //                "<Query>" +
                 "  <Where>" +
-                "    <DataRangesOverlap>" +
+                "    <DateRangesOverlap>" +
                 "      <FieldRef Name=\"StartField\" />" +
                 "      <FieldRef Name=\"StopField\" />" +
                 "      <FieldRef Name=\"RecurrenceID\" />" +
                 "      <Value Type=\"DateTime\">" + DateTime.Parse(now).ToString("s") + "Z</Value>" +
-                "    </DataRangesOverlap>" +
+                "    </DateRangesOverlap>" +
                 "  </Where>";
 //                "</Query>";
 
@@ -656,12 +656,12 @@ namespace CamlexNET.UnitTests
             var expected =
 //                "<Query>" +
                 "  <Where>" +
-                "    <DataRangesOverlap>" +
+                "    <DateRangesOverlap>" +
                 "      <FieldRef Name=\"StartField\" />" +
                 "      <FieldRef Name=\"StopField\" />" +
                 "      <FieldRef Name=\"RecurrenceID\" />" +
                 "      <Value Type=\"DateTime\"><Month /></Value>" +
-                "    </DataRangesOverlap>" +
+                "    </DateRangesOverlap>" +
                 "  </Where>";
 //                "</Query>";
 

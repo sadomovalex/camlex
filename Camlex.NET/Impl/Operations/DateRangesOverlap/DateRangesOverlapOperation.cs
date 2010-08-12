@@ -48,7 +48,7 @@ namespace CamlexNET.Impl.Operations.DateRangesOverlap
 
         public override IOperationResult ToResult()
         {
-            var result = new XElement(Tags.DataRangesOverlap,
+            var result = new XElement(Tags.DateRangesOverlap,
                              startFieldRefOperand.ToCaml(),
                              stopFieldRefOperand.ToCaml(),
                              recurrenceFieldRefOperand.ToCaml(),

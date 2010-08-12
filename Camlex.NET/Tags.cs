@@ -51,6 +51,6 @@ namespace CamlexNET
         public const string IsNull = "IsNull";
         public const string BeginsWith = "BeginsWith";
         public const string Contains = "Contains";
-        public const string DataRangesOverlap = "DataRangesOverlap";
+        public const string DateRangesOverlap = "DateRangesOverlap";
     }
 }

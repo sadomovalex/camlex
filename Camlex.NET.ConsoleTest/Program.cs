@@ -247,12 +247,12 @@ namespace CamlexNET.ConsoleTest
         // Lets suppose that you need to retrieve items which are recurrent events and their periods overlap specified one
         // <Query>
         //   <Where>
-        //     <DataRangesOverlap>
+        //     <DateRangesOverlap>
         //       <FieldRef Name="StartField" />
         //       <FieldRef Name="StopField" />
         //       <FieldRef Name="RecurrenceID" />
         //       <Value Type="DateTime"><Month /></Value>
-        //     </DataRangesOverlap>
+        //     </DateRangesOverlap>
         //   </Where>
         // </Query>
         public static void Scenario9()
