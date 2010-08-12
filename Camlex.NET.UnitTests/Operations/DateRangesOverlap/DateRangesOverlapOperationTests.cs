@@ -34,12 +34,12 @@ namespace CamlexNET.UnitTests.Operations.DateRangesOverlap
 
             // assert
             const string expected =
-                @"<DataRangesOverlap>
+                @"<DateRangesOverlap>
                     <startFieldRefOperandStub />
                     <stopFieldRefOperandStub />
                     <recurrenceFieldRefOperandStub />
                     <dateTimevalueOperandStub />
-                </DataRangesOverlap>";
+                </DateRangesOverlap>";
             Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
         }
     }
