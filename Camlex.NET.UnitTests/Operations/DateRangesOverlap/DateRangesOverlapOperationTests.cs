@@ -1,7 +1,7 @@
 ﻿using System.Xml.Linq;
 using CamlexNET.Impl.Factories;
 using CamlexNET.Impl.Operands;
-using CamlexNET.Impl.Operations.DataRangesOverlap;
+using CamlexNET.Impl.Operations.DateRangesOverlap;
 using CamlexNET.UnitTests.Helpers;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -9,10 +9,10 @@ using Rhino.Mocks;
 namespace CamlexNET.UnitTests.Operations.DateRangesOverlap
 {
     [TestFixture]
-    public class DataRangesOverlapOperationTests
+    public class DateRangesOverlapOperationTests
     {
         [Test]
-        public void test_THAT_datarangesoverlap_operation_IS_rendered_to_caml_properly()
+        public void test_THAT_daterangesoverlap_operation_IS_rendered_to_caml_properly()
         {
             // arrange
             var startFieldRefOperandStub = MockRepository.GenerateStub<FieldRefOperand>("");
@@ -26,7 +26,7 @@ namespace CamlexNET.UnitTests.Operations.DateRangesOverlap
             dateTimevalueOperandStub.Stub(o => o.ToCaml()).Return(new XElement("dateTimevalueOperandStub"));
 
             var resultBuilder = new OperationResultBuilder();
-            var operation = new DataRangesOverlapOperation(resultBuilder,
+            var operation = new DateRangesOverlapOperation(resultBuilder,
                 startFieldRefOperandStub, stopFieldRefOperandStub, recurrenceFieldRefOperandStub, dateTimevalueOperandStub);
 
             // act

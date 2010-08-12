@@ -31,11 +31,11 @@ using System.Linq.Expressions;
 using System.Text;
 using CamlexNET.Interfaces;
 
-namespace CamlexNET.Impl.Operations.DataRangesOverlap
+namespace CamlexNET.Impl.Operations.DateRangesOverlap
 {
-    internal class DataRangesOverlapAnalyzer : BinaryExpressionBaseAnalyzer
+    internal class DateRangesOverlapAnalyzer : BinaryExpressionBaseAnalyzer
     {
-        public DataRangesOverlapAnalyzer(IOperationResultBuilder operationResultBuilder, IOperandBuilder operandBuilder)
+        public DateRangesOverlapAnalyzer(IOperationResultBuilder operationResultBuilder, IOperandBuilder operandBuilder)
             : base(operationResultBuilder, operandBuilder)
         {
         }
@@ -72,7 +72,7 @@ namespace CamlexNET.Impl.Operations.DataRangesOverlap
                 dateTimeValue = operandBuilder.CreateValueOperandForStringBasedSyntax(methodCall.Arguments[3]);
             }
 
-            var operation = new DataRangesOverlapOperation(
+            var operation = new DateRangesOverlapOperation(
                 operationResultBuilder, startFieldRef, stopFieldRef, recurrenceFieldRef, dateTimeValue);
 
             return operation;

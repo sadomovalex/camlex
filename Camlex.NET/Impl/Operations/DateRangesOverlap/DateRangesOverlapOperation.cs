@@ -27,16 +27,16 @@
 using System.Xml.Linq;
 using CamlexNET.Interfaces;
 
-namespace CamlexNET.Impl.Operations.DataRangesOverlap
+namespace CamlexNET.Impl.Operations.DateRangesOverlap
 {
-    internal class DataRangesOverlapOperation : OperationBase
+    internal class DateRangesOverlapOperation : OperationBase
     {
         protected IOperand startFieldRefOperand;
         protected IOperand stopFieldRefOperand;
         protected IOperand recurrenceFieldRefOperand;
         protected IOperand dateTimeOperand;
 
-        public DataRangesOverlapOperation(IOperationResultBuilder operationResultBuilder,
+        public DateRangesOverlapOperation(IOperationResultBuilder operationResultBuilder,
             IOperand startFieldRefOperand, IOperand stopFieldRefOperand, IOperand recurrenceFieldRefOperand, IOperand dateTimeOperand) :
             base(operationResultBuilder)
         {
