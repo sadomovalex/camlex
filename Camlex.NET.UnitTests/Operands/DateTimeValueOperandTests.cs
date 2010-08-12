@@ -60,7 +60,8 @@ namespace CamlexNET.UnitTests.Operands
         public void test_THAT_datetime_value_IS_successfully_created_from_valid_string()
         {
             var operand = new DateTimeValueOperand("02.01.2010 03:04:05", true);
-            Assert.That(operand.Value, Is.EqualTo(new DateTime(2010, 1, 2, 3, 4, 5)));
+            var expected = DateTime.Parse("02.01.2010 03:04:05");
+            Assert.That(operand.Value, Is.EqualTo(expected));
         }
 
         [Test]
