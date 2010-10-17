@@ -26,6 +26,7 @@
 #endregion
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Xml.Linq;
@@ -108,6 +109,40 @@ namespace CamlexNET.Impl
             return GroupBy(lambda, collapse, null);
         }
 
+        public string ViewFields(Expression<Func<SPListItem, object>> expr)
+        {
+            return ViewFields(expr, false);
+        }
+
+        public string ViewFields(Expression<Func<SPListItem, object>> expr, bool includeViewFieldsTag)
+        {
+            var lambda = Expression.Lambda<Func<SPListItem, object[]>>(
+                Expression.NewArrayInit(typeof(object), expr.Body), expr.Parameters);
+            return ViewFields(lambda, includeViewFieldsTag);
+        }
+
+        public string ViewFields(Expression<Func<SPListItem, object[]>> expr)
+        {
+            return ViewFields(expr, false);
+        }
+
+        public string ViewFields(Expression<Func<SPListItem, object[]>> expr, bool includeViewFieldsTag)
+        {
+            var translator = translatorFactory.Create(expr);
+            var viewFields = translator.TranslateViewFields(expr);
+
+            if (!includeViewFieldsTag)
+            {
+                var elements = viewFields.Elements();
+                if (elements == null || !elements.Any())
+                {
+                    return string.Empty;
+                }
+                return this.convertToString(elements.ToArray());
+            }
+            return viewFields.ToString();
+        }
+
         public IQuery GroupBy(Expression<Func<SPListItem, object>> expr, int? groupLimit)
         {
             var lambda = Expression.Lambda<Func<SPListItem, object[]>>(
@@ -151,8 +186,13 @@ namespace CamlexNET.Impl
 
         public string ToString(bool includeQueryTag)
         {
-            var sb = new StringBuilder();
             var elements = this.ToCaml(includeQueryTag);
+            return convertToString(elements);
+        }
+
+        private string convertToString(XElement[] elements)
+        {
+            var sb = new StringBuilder();
             Array.ForEach(elements, e => sb.Append(e.ToString()));
             return sb.ToString();
         }

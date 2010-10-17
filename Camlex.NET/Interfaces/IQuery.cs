@@ -46,6 +46,10 @@ namespace CamlexNET.Interfaces
         IQuery GroupBy(Expression<Func<SPListItem, object>> expr, bool? collapse, int? groupLimit);
         IQuery GroupBy(Expression<Func<SPListItem, object>> expr, int? groupLimit);
         IQuery GroupBy(Expression<Func<SPListItem, object>> expr, bool? collapse);
+        string ViewFields(Expression<Func<SPListItem, object>> expr);
+        string ViewFields(Expression<Func<SPListItem, object>> expr, bool includeViewFieldsTag);
+        string ViewFields(Expression<Func<SPListItem, object[]>> expr);
+        string ViewFields(Expression<Func<SPListItem, object[]>> expr, bool includeViewFieldsTag);
         XElement[] ToCaml(bool includeQueryTag);
         string ToString();
         string ToString(bool includeQueryTag);

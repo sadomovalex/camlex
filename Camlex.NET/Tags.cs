@@ -28,6 +28,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml.Linq;
 
 namespace CamlexNET
 {
@@ -52,5 +53,6 @@ namespace CamlexNET
         public const string BeginsWith = "BeginsWith";
         public const string Contains = "Contains";
         public const string DateRangesOverlap = "DateRangesOverlap";
+        public const string ViewFields = "ViewFields";
     }
 }
