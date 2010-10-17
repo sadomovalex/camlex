@@ -95,5 +95,19 @@ namespace CamlexNET.Impl
 
             return caml;
         }
+
+        public XElement TranslateViewFields(Expression<Func<SPListItem, object[]>> expr)
+        {
+            if (!this.analyzer.IsValid(expr))
+            {
+                throw new NonSupportedExpressionException(expr);
+            }
+
+            var operation = this.analyzer.GetOperation(expr);
+            var result = (XElementArrayOperationResult)operation.ToResult();
+
+            var caml = new XElement(Tags.ViewFields, result.Value);
+            return caml;
+        }
     }
 }
