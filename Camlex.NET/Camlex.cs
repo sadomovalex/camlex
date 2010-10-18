@@ -107,7 +107,7 @@ namespace CamlexNET
             translatorFactory = new TranslatorFactory(analyzerFactory);
         }
 
-        public static IQuery Query()
+        public static IQueryEx Query()
         {
             return new Query(translatorFactory);
         }

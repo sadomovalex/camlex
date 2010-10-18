@@ -122,6 +122,7 @@
     <Compile Include="Interfaces\IOperationResult.cs" />
     <Compile Include="Interfaces\IOperationResultBuilder.cs" />
     <Compile Include="Interfaces\IQuery.cs" />
+    <Compile Include="Interfaces\IQueryEx.cs" />
     <Compile Include="Interfaces\ITranslator.cs" />
     <Compile Include="Interfaces\ITranslatorFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
