@@ -36,7 +36,7 @@ using Microsoft.SharePoint;
 
 namespace CamlexNET.Impl
 {
-    internal class Query : IQuery
+    internal class Query : IQueryEx
     {
         private readonly ITranslatorFactory translatorFactory;
         private XElement where;
