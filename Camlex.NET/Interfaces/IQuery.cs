@@ -41,6 +41,7 @@ namespace CamlexNET.Interfaces
         IQuery WhereAny(IEnumerable<Expression<Func<SPListItem, bool>>> expressions);
         IQuery OrderBy(Expression<Func<SPListItem, object>> expr);
         IQuery OrderBy(Expression<Func<SPListItem, object[]>> expr);
+        IQuery OrderBy(IEnumerable<Expression<Func<SPListItem, object>>> expressions);
         IQuery GroupBy(Expression<Func<SPListItem, object>> expr);
         IQuery GroupBy(Expression<Func<SPListItem, object[]>> expr, bool? collapse, int? groupLimit);
         IQuery GroupBy(Expression<Func<SPListItem, object>> expr, bool? collapse, int? groupLimit);

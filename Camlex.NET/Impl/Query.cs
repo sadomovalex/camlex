@@ -81,6 +81,24 @@ namespace CamlexNET.Impl
             return this;
         }
 
+        public IQuery OrderBy(IEnumerable<Expression<Func<SPListItem, object>>> expressions)
+        {
+            if (expressions == null || !expressions.Any())
+            {
+                throw new EmptyExpressionsListException();
+            }
+
+            var expr = expressions.FirstOrDefault();
+            if (expr == null)
+            {
+                throw new EmptyExpressionsListException();
+            }
+
+            var lambda = Expression.Lambda<Func<SPListItem, object[]>>(
+                Expression.NewArrayInit(typeof(object), expressions.Select(e => e.Body)), expr.Parameters);
+            return OrderBy(lambda);
+        }
+
         public IQuery GroupBy(Expression<Func<SPListItem, object>> expr)
         {
             var lambda = Expression.Lambda<Func<SPListItem, object[]>>(
