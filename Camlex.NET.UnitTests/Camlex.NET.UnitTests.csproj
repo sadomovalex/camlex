@@ -191,6 +191,7 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReverseEngeneering\ExpressionBuilderTests.cs" />
+    <Compile Include="ReverseEngeneering\Operands\BooleanValueOperandTests.cs" />
     <Compile Include="ReverseEngeneering\Operands\FieldRefOperandTests.cs" />
   </ItemGroup>
   <ItemGroup>
