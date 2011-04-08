@@ -47,5 +47,6 @@ namespace CamlexNET
         //public const string DIFFERENT_ARGUMENTS_NAMES = "Expressions have different arguments names. All expressions should have the same argument name";
         //public const string INVALID_LOOKUP_ID = "Value '{0}' is not valid for lookup id. Lookup id should be integer";
         public const string FIELD_REF_SHOULD_CONTAIN_NAME_OR_ID = "Field ref element should contain at least one attribute: Name or ID";
+        public const string XML_NOT_WELL_FORMED_EXCEPTION = "Xml not well formed";
     }
 }

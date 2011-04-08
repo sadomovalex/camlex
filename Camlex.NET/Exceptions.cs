@@ -33,7 +33,7 @@ using Microsoft.SharePoint;
 
 namespace CamlexNET
 {
-    internal class GenericException : Exception
+    public class GenericException : Exception
     {
         public GenericException(string message, params object[] args) :
             base(string.Format(message, args))
@@ -132,6 +132,14 @@ namespace CamlexNET
     {
         public FieldRefOperandShouldContainNameOrIdException() :
             base(ErrorMessages.EMPTY_EXPRESSIONS_LIST)
+        {
+        }
+    }
+
+    public class XmlNotWellFormedException : GenericException
+    {
+        public XmlNotWellFormedException() :
+            base(ErrorMessages.XML_NOT_WELL_FORMED_EXCEPTION)
         {
         }
     }
