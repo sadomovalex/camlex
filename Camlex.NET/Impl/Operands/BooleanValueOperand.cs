@@ -80,7 +80,7 @@ namespace CamlexNET.Impl.Operands
 
         public override Expression ToExpression()
         {
-            throw new NotImplementedException();
+            return Expression.Constant(this.Value);
         }
     }
 }
