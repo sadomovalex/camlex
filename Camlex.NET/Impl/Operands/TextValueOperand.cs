@@ -25,6 +25,7 @@
 // -----------------------------------------------------------------------------
 #endregion
 using System;
+using System.Linq.Expressions;
 using System.Xml.Linq;
 using CamlexNET.Interfaces;
 
@@ -42,6 +43,11 @@ namespace CamlexNET.Impl.Operands
             return
                 new XElement(Tags.Value, new XAttribute(Attributes.Type, this.TypeName),
                     new XText(this.Value));
+        }
+
+        public override Expression ToExpression()
+        {
+            throw new NotImplementedException();
         }
     }
 }

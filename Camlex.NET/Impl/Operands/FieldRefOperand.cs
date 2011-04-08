@@ -27,8 +27,11 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
+using System.Reflection;
 using System.Xml.Linq;
 using CamlexNET.Interfaces;
+using Microsoft.SharePoint;
 
 namespace CamlexNET.Impl.Operands
 {
@@ -121,6 +124,33 @@ namespace CamlexNET.Impl.Operands
                 }
             }
             return element;
+        }
+
+        public Expression ToExpression()
+        {
+            //var methodInfo = typeof(SPListItem).FindMembers(MemberTypes.Method, BindingFlags.Default, new MemberFilter(), )
+            // todo: use attributes
+            // todo: what with type conversion? We need to know type of value in order to add it. But here we don't know value type)
+            if (this.id != null)
+            {
+                var mi = typeof(SPListItem).GetProperty(ReflectionHelper.Item, typeof(object), new[] { typeof(Guid) }, null).GetGetMethod();
+                return
+                    LambdaExpression.Call(
+                        LambdaExpression.Parameter(typeof(SPListItem), ReflectionHelper.CommonParameterName),
+                        mi, new[] { LambdaExpression.Constant(this.id.Value) });
+            }
+            else if (!string.IsNullOrEmpty(this.fieldName))
+            {
+                var mi = typeof(SPListItem).GetProperty(ReflectionHelper.Item, typeof(object), new[] { typeof(string) }, null).GetGetMethod();
+                return
+                    LambdaExpression.Call(
+                        LambdaExpression.Parameter(typeof(SPListItem), ReflectionHelper.CommonParameterName),
+                        mi, new[] { LambdaExpression.Constant(this.fieldName) });
+            }
+            else
+            {
+                throw new FieldRefOperandShouldContainNameOrIdException();
+            }
         }
     }
 }
