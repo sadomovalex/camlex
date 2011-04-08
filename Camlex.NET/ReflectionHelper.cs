@@ -40,6 +40,8 @@ namespace CamlexNET
         public const string ContainsMethodName = "Contains";
         public const string IncludeTimeValue = "IncludeTimeValue";
         public const string DateRangesOverlap = "DateRangesOverlap";
+        public const string CommonParameterName = "x";
+        public const string Item = "Item";
 
 //        public static IEnumerable<ParameterExpression> GetExpressionParameters(ParameterInfo[] parameterInfos)
 //        {

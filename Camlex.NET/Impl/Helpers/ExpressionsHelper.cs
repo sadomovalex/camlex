@@ -61,7 +61,6 @@ namespace CamlexNET.Impl.Helpers
             // {
             //     throw new DifferentArgumentsNamesExceptions();
             // }
-            // todo: check that all expressions are valid
 
             Expression result;
             if (expressions.Count() == 1)
@@ -73,9 +72,8 @@ namespace CamlexNET.Impl.Helpers
                 result = joinExpressions(expressions, type);
             }
 
-            // todo: determined parameter name
             var lambda = Expression.Lambda<Func<SPListItem, bool>>(result,
-                Expression.Parameter(typeof(SPListItem), "x"));
+                Expression.Parameter(typeof(SPListItem), ReflectionHelper.CommonParameterName));
             return lambda;
         }
 
