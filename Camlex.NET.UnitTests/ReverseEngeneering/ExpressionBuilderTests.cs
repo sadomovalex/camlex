@@ -30,5 +30,12 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
         {
             ExpressionBuilder.BuildFromXml(" ");
         }
+
+        [Test]
+        [ExpectedException(typeof(XmlNotWellFormedException))]
+        public void test_WHEN_argument_is_not_well_formed_xml_THEN_exception_is_thrown()
+        {
+            ExpressionBuilder.BuildFromXml("foo");
+        }
     }
 }
