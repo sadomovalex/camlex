@@ -24,6 +24,9 @@
 // fitness for a particular purpose and non-infringement.
 // -----------------------------------------------------------------------------
 #endregion
+
+using System;
+using System.Linq.Expressions;
 using System.Xml.Linq;
 using CamlexNET.Interfaces;
 
@@ -54,6 +57,11 @@ namespace CamlexNET.Impl.Operations.DateRangesOverlap
                              recurrenceFieldRefOperand.ToCaml(),
                              dateTimeOperand.ToCaml());
             return operationResultBuilder.CreateResult(result);
+        }
+
+        public override Expression ToExpression()
+        {
+            throw new NotImplementedException();
         }
     }
 }

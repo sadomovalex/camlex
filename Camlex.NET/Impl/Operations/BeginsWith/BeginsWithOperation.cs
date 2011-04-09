@@ -24,6 +24,9 @@
 // fitness for a particular purpose and non-infringement.
 // -----------------------------------------------------------------------------
 #endregion
+
+using System;
+using System.Linq.Expressions;
 using System.Xml.Linq;
 using CamlexNET.Interfaces;
 
@@ -43,6 +46,11 @@ namespace CamlexNET.Impl.Operations.BeginsWith
                              fieldRefOperand.ToCaml(),
                              valueOperand.ToCaml());
             return operationResultBuilder.CreateResult(result);
+        }
+
+        public override Expression ToExpression()
+        {
+            throw new NotImplementedException();
         }
     }
 }

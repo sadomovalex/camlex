@@ -27,6 +27,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Xml.Linq;
 using CamlexNET.Interfaces;
@@ -42,10 +43,19 @@ namespace CamlexNET.Impl.Operations.Results
             this.element = element;
         }
 
+//        public XElementOperationResult(Expression expression)
+//            : base(expression)
+//        {}
+
         public object Value
         {
             get { return this.element; }
         }
+
+//        public Expression Expression
+//        {
+//            get { return this.expression; }
+//        }
 
         public override string ToString()
         {
