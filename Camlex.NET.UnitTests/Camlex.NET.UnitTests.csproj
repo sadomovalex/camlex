@@ -195,6 +195,7 @@
     <Compile Include="ReverseEngeneering\Operands\BooleanValueOperandTests.cs" />
     <Compile Include="ReverseEngeneering\Operands\IntegerValueOperandTests.cs" />
     <Compile Include="ReverseEngeneering\Operands\FieldRefOperandTests.cs" />
+    <Compile Include="ReverseEngeneering\Operands\NullValueOperandTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Camlex.NET.snk" />
