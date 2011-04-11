@@ -44,7 +44,7 @@ namespace CamlexNET.Impl.Operands
 
         public Expression ToExpression()
         {
-            throw new NotImplementedException();
+            return Expression.Constant(null);
         }
     }
 }
