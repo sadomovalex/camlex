@@ -193,6 +193,7 @@
     <Compile Include="ReverseEngeneering\EqOperationTests.cs" />
     <Compile Include="ReverseEngeneering\ExpressionBuilderTests.cs" />
     <Compile Include="ReverseEngeneering\Operands\BooleanValueOperandTests.cs" />
+    <Compile Include="ReverseEngeneering\Operands\IntegerValueOperandTests.cs" />
     <Compile Include="ReverseEngeneering\Operands\FieldRefOperandTests.cs" />
   </ItemGroup>
   <ItemGroup>
