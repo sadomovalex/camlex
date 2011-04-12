@@ -16,7 +16,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Operands
         {
             var op = new NullValueOperand();
             var expr = op.ToExpression();
-            Assert.That("null", Is.EqualTo(expr.ToString()));
+            Assert.That(expr.ToString(), Is.EqualTo("null"));
         }
     }
 }

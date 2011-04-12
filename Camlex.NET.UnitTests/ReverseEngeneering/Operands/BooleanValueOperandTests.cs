@@ -16,7 +16,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Operands
         {
             var op = new BooleanValueOperand(true);
             var expr = op.ToExpression();
-            Assert.That("true", Is.EqualTo(expr.ToString()).Using(new CaseInsensetiveComparer()));
+            Assert.That(expr.ToString(), Is.EqualTo("true").Using(new CaseInsensetiveComparer()));
         }
 
         [Test]
@@ -24,7 +24,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Operands
         {
             var op = new BooleanValueOperand(false);
             var expr = op.ToExpression();
-            Assert.That("false", Is.EqualTo(expr.ToString()).Using(new CaseInsensetiveComparer()));
+            Assert.That(expr.ToString(), Is.EqualTo("false").Using(new CaseInsensetiveComparer()));
         }
     }
 }
