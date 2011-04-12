@@ -17,7 +17,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Operands
             var id = new Guid("{7742D3F8-A2B7-430F-BDEB-B2DDBF853901}");
             var op = new FieldRefOperand(id);
             var expr = op.ToExpression();
-            Assert.That("x.get_Item(7742D3F8-A2B7-430F-BDEB-B2DDBF853901)", Is.EqualTo(expr.ToString()).Using(new CaseInsensetiveComparer()));
+            Assert.That(expr.ToString(), Is.EqualTo("x.get_Item(7742D3F8-A2B7-430F-BDEB-B2DDBF853901)").Using(new CaseInsensetiveComparer()));
         }
 
         [Test]
@@ -25,7 +25,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Operands
         {
             var op = new FieldRefOperand("Title");
             var expr = op.ToExpression();
-            Assert.That("x.get_Item(\"Title\")", Is.EqualTo(expr.ToString()).Using(new CaseInsensetiveComparer()));
+            Assert.That(expr.ToString(), Is.EqualTo("x.get_Item(\"Title\")").Using(new CaseInsensetiveComparer()));
         }
     }
 }

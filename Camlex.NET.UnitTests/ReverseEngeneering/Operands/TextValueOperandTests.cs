@@ -15,7 +15,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Operands
         {
             var op = new TextValueOperand("foo");
             var expr = op.ToExpression();
-            Assert.That("\"foo\"", Is.EqualTo(expr.ToString()));
+            Assert.That(expr.ToString(), Is.EqualTo("\"foo\""));
         }
     }
 }

@@ -16,7 +16,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Operands
         {
             var op = new IntegerValueOperand(123);
             var expr = op.ToExpression();
-            Assert.That("123", Is.EqualTo(expr.ToString()));
+            Assert.That(expr.ToString(), Is.EqualTo("123"));
         }
     }
 }
