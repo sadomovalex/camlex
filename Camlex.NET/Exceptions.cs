@@ -29,11 +29,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using CamlexNET.Impl.Operands;
 using Microsoft.SharePoint;
 
 namespace CamlexNET
 {
-    public class GenericException : Exception
+    internal class GenericException : Exception
     {
         public GenericException(string message, params object[] args) :
             base(string.Format(message, args))
@@ -76,6 +77,14 @@ namespace CamlexNET
     {
         public InvalidValueForOperandTypeException(object value, Type operandType) :
             base(ErrorMessages.INVALID_VALUE_FOR_OPERAND_TYPE, value, operandType)
+        {
+        }
+    }
+
+    internal class DateTimeOperandModeNotSupportedException : GenericException
+    {
+        public DateTimeOperandModeNotSupportedException(DateTimeValueOperand.DateTimeValueMode mode) :
+            base(ErrorMessages.DATETIME_OPERAND_MODE_NOT_SUPPORTED, mode)
         {
         }
     }
@@ -136,7 +145,7 @@ namespace CamlexNET
         }
     }
 
-    public class XmlNotWellFormedException : GenericException
+    internal class XmlNotWellFormedException : GenericException
     {
         public XmlNotWellFormedException() :
             base(ErrorMessages.XML_NOT_WELL_FORMED_EXCEPTION)

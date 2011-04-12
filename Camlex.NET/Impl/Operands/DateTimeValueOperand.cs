@@ -67,7 +67,7 @@ namespace CamlexNET.Impl.Operands
         {
             object dateTime;
             if (Mode == DateTimeValueMode.Native)
-                dateTime = new XText(Value.ToString("s") + "Z");
+                dateTime = new XText(this.getStringFromDateTime(this.Value));
             else dateTime = new XElement(Mode.ToString());
             
             if (IncludeTimeValue)
@@ -82,9 +82,45 @@ namespace CamlexNET.Impl.Operands
                                 dateTime);
         }
 
+        private string getStringFromDateTime(DateTime dt)
+        {
+            return (dt.ToString("s") + "Z");
+        }
+
+        // Todo: how to use IncludeTimeValue?
         public override Expression ToExpression()
         {
-            throw new NotImplementedException();
+            if (this.Mode == DateTimeValueMode.Native)
+            {
+                return Expression.Constant(this.Value);
+            }
+            else
+            {
+                string val = getValueByMode(this.Mode);
+                return Expression.Convert(Expression.Convert(Expression.Constant(val), typeof(BaseFieldType)),
+                                        typeof (DataTypes.DateTime));
+            }
+        }
+
+        private string getValueByMode(DateTimeValueMode mode)
+        {
+            switch (mode)
+            {
+                case DateTimeValueMode.Native:
+                    return this.getStringFromDateTime(this.Value);
+                case DateTimeValueMode.Now:
+                    return Camlex.Now;
+                case DateTimeValueMode.Today:
+                    return Camlex.Today;
+                case DateTimeValueMode.Week:
+                    return Camlex.Week;
+                case DateTimeValueMode.Month:
+                    return Camlex.Month;
+                case DateTimeValueMode.Year:
+                    return Camlex.Year;
+                default:
+                    throw new DateTimeOperandModeNotSupportedException(mode);
+            }
         }
     }
 }
