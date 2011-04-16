@@ -28,6 +28,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Text;
 using System.Xml.Linq;
 
@@ -90,6 +91,22 @@ namespace CamlexNET.Impl.Operands
         // Todo: how to use IncludeTimeValue?
         public override Expression ToExpression()
         {
+            if (this.IncludeTimeValue)
+            {
+                var mi =
+                    ReflectionHelper.GetExtensionMethods(typeof(Camlex).Assembly, typeof (DateTime)).FirstOrDefault(
+                        m => m.Name == ReflectionHelper.IncludeTimeValue);
+                var valExpr = getExpressionForValue();
+                return Expression.Call(mi, valExpr);
+            }
+            else
+            {
+                return getExpressionForValue();
+            }
+        }
+
+        private Expression getExpressionForValue()
+        {
             if (this.Mode == DateTimeValueMode.Native)
             {
                 return Expression.Constant(this.Value);
@@ -98,7 +115,7 @@ namespace CamlexNET.Impl.Operands
             {
                 string val = getValueByMode(this.Mode);
                 return Expression.Convert(Expression.Convert(Expression.Constant(val), typeof(BaseFieldType)),
-                                        typeof (DataTypes.DateTime));
+                                          typeof (DataTypes.DateTime));
             }
         }
 
