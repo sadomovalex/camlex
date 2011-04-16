@@ -91,31 +91,36 @@ namespace CamlexNET.Impl.Operands
         // Todo: how to use IncludeTimeValue?
         public override Expression ToExpression()
         {
-            if (this.IncludeTimeValue)
-            {
-                var mi =
-                    ReflectionHelper.GetExtensionMethods(typeof(Camlex).Assembly, typeof (DateTime)).FirstOrDefault(
-                        m => m.Name == ReflectionHelper.IncludeTimeValue);
-                var valExpr = getExpressionForValue();
-                return Expression.Call(mi, valExpr);
-            }
-            else
-            {
-                return getExpressionForValue();
-            }
-        }
-
-        private Expression getExpressionForValue()
-        {
             if (this.Mode == DateTimeValueMode.Native)
             {
-                return Expression.Constant(this.Value);
+                var expr = Expression.Constant(this.Value);
+                if (this.IncludeTimeValue)
+                {
+                    var mi =
+                        ReflectionHelper.GetExtensionMethods(typeof(Camlex).Assembly, typeof(DateTime)).FirstOrDefault(
+                            m => m.Name == ReflectionHelper.IncludeTimeValue);
+                    return Expression.Call(mi, expr);
+                }
+                else
+                {
+                    return expr;
+                }
             }
             else
             {
                 string val = getValueByMode(this.Mode);
-                return Expression.Convert(Expression.Convert(Expression.Constant(val), typeof(BaseFieldType)),
-                                          typeof (DataTypes.DateTime));
+                var expr = Expression.Convert(Expression.Convert(Expression.Constant(val), typeof(BaseFieldType)),
+                                          typeof(DataTypes.DateTime));
+                if (this.IncludeTimeValue)
+                {
+                    var mi =
+                        typeof(DataTypes.DateTime).GetMethod(ReflectionHelper.IncludeTimeValue);
+                    return Expression.Call(expr, mi);
+                }
+                else
+                {
+                    return expr;
+                }
             }
         }
 

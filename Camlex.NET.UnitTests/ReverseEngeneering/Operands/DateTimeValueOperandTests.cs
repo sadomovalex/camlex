@@ -76,5 +76,13 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Operands
             var expr = op.ToExpression();
             Assert.That(expr.ToString(), Is.EqualTo(dt + ".IncludeTimeValue()"));
         }
+
+        [Test]
+        public void test_THAT_string_based_operand_with_includetimevalue_IS_conveted_to_expression_correctly()
+        {
+            var op = new DateTimeValueOperand(Camlex.Now, true);
+            var expr = op.ToExpression();
+            Assert.That(expr.ToString(), Is.EqualTo("Convert(Convert(\"Now\")).IncludeTimeValue()"));
+        }
     }
 }
