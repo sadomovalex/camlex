@@ -88,7 +88,6 @@ namespace CamlexNET.Impl.Operands
             return (dt.ToString("s") + "Z");
         }
 
-        // Todo: how to use IncludeTimeValue?
         public override Expression ToExpression()
         {
             if (this.Mode == DateTimeValueMode.Native)
