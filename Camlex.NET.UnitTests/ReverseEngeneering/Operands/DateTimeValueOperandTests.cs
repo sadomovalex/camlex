@@ -67,5 +67,14 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Operands
             var expr = op.ToExpression();
             Assert.That(expr.ToString(), Is.EqualTo("Convert(Convert(\"Year\"))"));
         }
+
+        [Test]
+        public void test_THAT_native_operand_with_includetimevalue_IS_conveted_to_expression_correctly()
+        {
+            var dt = new DateTime(2011, 4, 16, 22, 00, 00, 00);
+            var op = new DateTimeValueOperand(dt.ToString(), true);
+            var expr = op.ToExpression();
+            Assert.That(expr.ToString(), Is.EqualTo(dt + ".IncludeTimeValue()"));
+        }
     }
 }
