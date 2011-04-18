@@ -27,6 +27,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Xml.Linq;
 
@@ -62,6 +63,16 @@ namespace CamlexNET.Impl.Operands
                 xmlElement.SetAttributeValue(Attributes.Ascending, orderDirection.ToString());
             }
             return xmlElement;
+        }
+
+        public override Expression ToExpression()
+        {
+            var expr = base.ToExpression();
+            if (this.orderDirection.IsDefault())
+            {
+                return expr;
+            }
+            return Expression.TypeAs(expr, this.orderDirection.GetType());
         }
     }
 }

@@ -126,7 +126,7 @@ namespace CamlexNET.Impl.Operands
             return element;
         }
 
-        public Expression ToExpression()
+        public virtual Expression ToExpression()
         {
             //var methodInfo = typeof(SPListItem).FindMembers(MemberTypes.Method, BindingFlags.Default, new MemberFilter(), )
             // todo: use attributes
