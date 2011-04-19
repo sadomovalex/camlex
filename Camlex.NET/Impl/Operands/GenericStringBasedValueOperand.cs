@@ -48,7 +48,7 @@ namespace CamlexNET.Impl.Operands
 
         public override Expression ToExpression()
         {
-            throw new NotImplementedException();
+            return Expression.Convert(Expression.Convert(Expression.Constant(this.Value), typeof(BaseFieldType)), this.Type);
         }
     }
 }

@@ -195,6 +195,7 @@
     <Compile Include="ReverseEngeneering\Operands\BooleanValueOperandTests.cs" />
     <Compile Include="ReverseEngeneering\Operands\DateTimeValueOperandTests.cs" />
     <Compile Include="ReverseEngeneering\Operands\FieldRefOperandWithOrderingTests.cs" />
+    <Compile Include="ReverseEngeneering\Operands\GenericStringBasedValueOperandTests.cs" />
     <Compile Include="ReverseEngeneering\Operands\GuidValueOperandTests.cs" />
     <Compile Include="ReverseEngeneering\Operands\IntegerValueOperandTests.cs" />
     <Compile Include="ReverseEngeneering\Operands\FieldRefOperandTests.cs" />
