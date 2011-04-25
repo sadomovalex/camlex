@@ -30,6 +30,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Xml.Linq;
+using CamlexNET.Impl.Helpers;
 using CamlexNET.Impl.Operands;
 using CamlexNET.Interfaces;
 
@@ -48,8 +49,7 @@ namespace CamlexNET.Impl
             this.valueOperand = valueOperand;
         }
 
-        // Here we know both FieldRef operand and Value operand. So in those cases when we need knowledge from FieldRef for Value
-        // (e.g. if FieldRef has LookupId attribute - in this case we need to case Value operand to DataTypes.LookupId),
+        // Here we know both FieldRef operand and Value operand. So in those cases when we need knowledge from FieldRef for Value,
         // or from Value to FieldRef (e.g. for native syntax we need to know the type of the Value operand in order to perform casting for FieldRef)
         protected virtual Expression getFieldRefOperandExpression()
         {
