@@ -128,10 +128,6 @@ namespace CamlexNET.Impl.Operands
 
         public virtual Expression ToExpression()
         {
-            // todo: use attributes. Currently the only attribute which should be checked is Attributes.LookupId. But this information
-            // should be used not here - but in appropriate value operand (because we cast rvalue to DataType.LookupId in this case)
-            // todo: what with type conversion? We need to know type of value in order to add it (for native syntax. For string based
-            // we don't use conversion in lvalues). But here we don't know value type
             if (this.id != null)
             {
                 var mi = typeof(SPListItem).GetProperty(ReflectionHelper.Item, typeof(object), new[] { typeof(Guid) }, null).GetGetMethod();
