@@ -53,12 +53,10 @@ namespace CamlexNET.Impl.Operations.Eq
         {
             // in the field ref operand we don't know what type of the value it has. So perform
             // conversion here
-            var left = this.fieldRefOperand.ToExpression();
-            var right = (ConstantExpression)this.valueOperand.ToExpression();
+            var fieldRef = this.getFieldRefOperandExpression();
+            var value = this.getValueOperandExpression();
 
-            left = Expression.Convert(left, right.Value.GetType());
-
-            return Expression.Equal(left, right);
+            return Expression.Equal(fieldRef, value);
         }
     }
 }
