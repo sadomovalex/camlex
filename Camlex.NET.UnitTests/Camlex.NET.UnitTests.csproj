@@ -200,6 +200,7 @@
     <Compile Include="ReverseEngeneering\Operands\FieldRefOperandTests.cs" />
     <Compile Include="ReverseEngeneering\Operands\NullValueOperandTests.cs" />
     <Compile Include="ReverseEngeneering\Operands\TextValueOperandTests.cs" />
+    <Compile Include="ReverseEngeneering\Operations\AndAlsoOperationTests.cs" />
     <Compile Include="ReverseEngeneering\Operations\EqOperationTests.cs" />
   </ItemGroup>
   <ItemGroup>
