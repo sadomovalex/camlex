@@ -152,4 +152,13 @@ namespace CamlexNET
         {
         }
     }
+
+    internal class ArrayOperationShouldContainOnlyFieldRefOperandsException : GenericException
+    {
+        public ArrayOperationShouldContainOnlyFieldRefOperandsException() :
+            base(ErrorMessages.ARRAY_OPERATION_SHOULD_CONTAIN_ONLY_FIELD_REF_OPERANDS_EXCEPTION)
+        {
+        }
+    }
+
 }
