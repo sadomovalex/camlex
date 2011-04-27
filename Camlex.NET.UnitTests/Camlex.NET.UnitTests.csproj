@@ -202,6 +202,7 @@
     <Compile Include="ReverseEngeneering\Operands\TextValueOperandTests.cs" />
     <Compile Include="ReverseEngeneering\Operations\AndAlsoOperationTests.cs" />
     <Compile Include="ReverseEngeneering\Operations\ArrayOperationTests.cs" />
+    <Compile Include="ReverseEngeneering\Operations\BeginsWithOperationTests.cs" />
     <Compile Include="ReverseEngeneering\Operations\EqOperationTests.cs" />
   </ItemGroup>
   <ItemGroup>
