@@ -137,18 +137,18 @@ namespace CamlexNET
         }
     }
 
-    internal class BeginsWithOperationShouldContainFieldRefOperandException : GenericException
+    internal class OperationShouldContainFieldRefOperandException : GenericException
     {
-        public BeginsWithOperationShouldContainFieldRefOperandException() :
-            base(ErrorMessages.BEGINS_WITH_OPERATION_SHOULD_CONTAIN_FIELD_REF_OPERAND_EXCEPTION)
+        public OperationShouldContainFieldRefOperandException() :
+            base(ErrorMessages.OPERATION_SHOULD_CONTAIN_FIELD_REF_OPERAND_EXCEPTION)
         {
         }
     }
 
-    internal class BeginsWithOperationShouldContainTextValueOperandException : GenericException
+    internal class OperationShouldContainTextValueOperandException : GenericException
     {
-        public BeginsWithOperationShouldContainTextValueOperandException() :
-            base(ErrorMessages.BEGINS_WITH_OPERATION_SHOULD_CONTAIN_TEXT_VALUE_OPERAND_EXCEPTION)
+        public OperationShouldContainTextValueOperandException() :
+            base(ErrorMessages.OPERATION_SHOULD_CONTAIN_TEXT_VALUE_OPERAND_EXCEPTION)
         {
         }
     }
