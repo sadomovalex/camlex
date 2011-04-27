@@ -54,11 +54,11 @@ namespace CamlexNET.Impl.Operations.BeginsWith
         {
             if (!(this.fieldRefOperand is FieldRefOperand))
             {
-                throw new BeginsWithOperationShouldContainFieldRefOperandException();
+                throw new OperationShouldContainFieldRefOperandException();
             }
             if (!(this.valueOperand is TextValueOperand))
             {
-                throw new BeginsWithOperationShouldContainTextValueOperandException();
+                throw new OperationShouldContainTextValueOperandException();
             }
             var fieldRefExpr = this.getFieldRefOperandExpression();
             var valueExpr = this.getValueOperandExpression();

@@ -50,7 +50,7 @@ namespace CamlexNET
         public const string XML_NOT_WELL_FORMED_EXCEPTION = "Xml not well formed";
         public const string DATETIME_OPERAND_MODE_NOT_SUPPORTED = "Mode '{0}' is not supported for DateTime operand";
         public const string ARRAY_OPERATION_SHOULD_CONTAIN_ONLY_FIELD_REF_OPERANDS_EXCEPTION = "Array operation should contain only field ref operands";
-        public const string BEGINS_WITH_OPERATION_SHOULD_CONTAIN_FIELD_REF_OPERAND_EXCEPTION = "BeginsWithOperation should contain FieldRefOperand";
-        public const string BEGINS_WITH_OPERATION_SHOULD_CONTAIN_TEXT_VALUE_OPERAND_EXCEPTION = "BeginsWithOperation should contain TextValueOperand";
+        public const string OPERATION_SHOULD_CONTAIN_FIELD_REF_OPERAND_EXCEPTION = "Operation should contain FieldRefOperand";
+        public const string OPERATION_SHOULD_CONTAIN_TEXT_VALUE_OPERAND_EXCEPTION = "hOperation should contain TextValueOperand";
     }
 }
