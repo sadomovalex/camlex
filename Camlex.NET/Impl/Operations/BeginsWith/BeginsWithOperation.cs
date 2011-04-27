@@ -27,7 +27,9 @@
 
 using System;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Xml.Linq;
+using CamlexNET.Impl.Operands;
 using CamlexNET.Interfaces;
 
 namespace CamlexNET.Impl.Operations.BeginsWith
@@ -50,7 +52,18 @@ namespace CamlexNET.Impl.Operations.BeginsWith
 
         public override Expression ToExpression()
         {
-            throw new NotImplementedException();
+            if (!(this.fieldRefOperand is FieldRefOperand))
+            {
+                throw new BeginsWithOperationShouldContainFieldRefOperandException();
+            }
+            if (!(this.valueOperand is TextValueOperand))
+            {
+                throw new BeginsWithOperationShouldContainTextValueOperandException();
+            }
+            var fieldRefExpr = this.getFieldRefOperandExpression();
+            var valueExpr = this.getValueOperandExpression();
+            var mi = typeof (string).GetMethod(ReflectionHelper.StartsWithMethodName, new[]{typeof(string)});
+            return Expression.Call(fieldRefExpr, mi, valueExpr);
         }
     }
 }

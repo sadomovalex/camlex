@@ -89,14 +89,6 @@ namespace CamlexNET
         }
     }
 
-//    internal class InvalidFieldNameForFieldRefException : GenericException
-//    {
-//        public InvalidFieldNameForFieldRefException(object value) :
-//            base(ErrorMessages.INVALID_FIELD_NAME_FOR_FIELD_REF_OPERAND, value)
-//        {
-//        }
-//    }
-
     internal class InvalidValueForFieldRefException : GenericException
     {
         public InvalidValueForFieldRefException(object value) :
@@ -121,22 +113,6 @@ namespace CamlexNET
         }
     }
 
-//    internal class DifferentArgumentsNamesExceptions : GenericException
-//    {
-//        public DifferentArgumentsNamesExceptions() :
-//            base(ErrorMessages.DIFFERENT_ARGUMENTS_NAMES)
-//        {
-//        }
-//    }
-
-//    internal class InvalidLookupIdException : GenericException
-//    {
-//        public InvalidLookupIdException(object value) :
-//            base(ErrorMessages.INVALID_LOOKUP_ID, value)
-//        {
-//        }
-//    }
-
     internal class FieldRefOperandShouldContainNameOrIdException : GenericException
     {
         public FieldRefOperandShouldContainNameOrIdException() :
@@ -157,6 +133,22 @@ namespace CamlexNET
     {
         public ArrayOperationShouldContainOnlyFieldRefOperandsException() :
             base(ErrorMessages.ARRAY_OPERATION_SHOULD_CONTAIN_ONLY_FIELD_REF_OPERANDS_EXCEPTION)
+        {
+        }
+    }
+
+    internal class BeginsWithOperationShouldContainFieldRefOperandException : GenericException
+    {
+        public BeginsWithOperationShouldContainFieldRefOperandException() :
+            base(ErrorMessages.BEGINS_WITH_OPERATION_SHOULD_CONTAIN_FIELD_REF_OPERAND_EXCEPTION)
+        {
+        }
+    }
+
+    internal class BeginsWithOperationShouldContainTextValueOperandException : GenericException
+    {
+        public BeginsWithOperationShouldContainTextValueOperandException() :
+            base(ErrorMessages.BEGINS_WITH_OPERATION_SHOULD_CONTAIN_TEXT_VALUE_OPERAND_EXCEPTION)
         {
         }
     }
