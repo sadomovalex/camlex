@@ -51,7 +51,10 @@ namespace CamlexNET.Impl.Operations.Geq
 
         public override Expression ToExpression()
         {
-            throw new NotImplementedException();
+            var fieldRef = this.getFieldRefOperandExpression();
+            var value = this.getValueOperandExpression();
+
+            return Expression.GreaterThanOrEqual(fieldRef, value);
         }
     }
 }
