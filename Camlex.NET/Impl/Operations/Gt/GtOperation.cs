@@ -52,7 +52,10 @@ namespace CamlexNET.Impl.Operations.Gt
 
         public override Expression ToExpression()
         {
-            throw new NotImplementedException();
+            var fieldRef = this.getFieldRefOperandExpression();
+            var value = this.getValueOperandExpression();
+
+            return Expression.GreaterThan(fieldRef, value);
         }
     }
 }
