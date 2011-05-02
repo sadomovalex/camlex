@@ -50,7 +50,12 @@ namespace CamlexNET.Impl.Operations.IsNull
 
         public override Expression ToExpression()
         {
-            throw new NotImplementedException();
+            if (this.fieldRefOperand == null)
+            {
+                throw new NullReferenceException("fieldRefOperand");
+            }
+            var fieldRefExpr = this.fieldRefOperand.ToExpression();
+            return Expression.Equal(fieldRefExpr, Expression.Constant(null));
         }
     }
 }
