@@ -52,10 +52,6 @@ namespace CamlexNET.Impl.Operations.Gt
 
         public override Expression ToExpression()
         {
-            if (this.fieldRefOperand == null)
-            {
-                throw new NullReferenceException("fieldRefOperand");
-            }
             var fieldRef = this.getFieldRefOperandExpression();
             var value = this.getValueOperandExpression();
 
