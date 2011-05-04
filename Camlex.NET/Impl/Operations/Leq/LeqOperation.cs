@@ -51,7 +51,10 @@ namespace CamlexNET.Impl.Operations.Leq
 
         public override Expression ToExpression()
         {
-            throw new NotImplementedException();
+            var fieldRef = this.getFieldRefOperandExpression();
+            var value = this.getValueOperandExpression();
+
+            return Expression.LessThanOrEqual(fieldRef, value);
         }
     }
 }
