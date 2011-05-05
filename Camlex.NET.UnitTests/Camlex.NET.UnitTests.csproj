@@ -204,6 +204,8 @@
     <Compile Include="ReverseEngeneering\Operations\ArrayOperationTests.cs" />
     <Compile Include="ReverseEngeneering\Operations\BeginsWithOperationTests.cs" />
     <Compile Include="ReverseEngeneering\Operations\ContainsOperationTests.cs" />
+    <Compile Include="ReverseEngeneering\Operations\OrElseOperationTests.cs" />
+    <Compile Include="ReverseEngeneering\Operations\NeqOperationTests.cs" />
     <Compile Include="ReverseEngeneering\Operations\LtOperationTests.cs" />
     <Compile Include="ReverseEngeneering\Operations\LeqOperationTests.cs" />
     <Compile Include="ReverseEngeneering\Operations\IsNullOperationTests.cs" />

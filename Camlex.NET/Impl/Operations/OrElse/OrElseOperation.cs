@@ -51,7 +51,9 @@ namespace CamlexNET.Impl.Operations.OrElse
 
         public override Expression ToExpression()
         {
-            throw new NotImplementedException();
+            var leftOperationExpr = this.getLeftOperationExpression();
+            var rightOperationExpr = this.getRightOperationExpression();
+            return Expression.OrElse(leftOperationExpr, rightOperationExpr);
         }
     }
 }

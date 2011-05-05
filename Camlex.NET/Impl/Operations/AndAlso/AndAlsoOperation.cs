@@ -51,15 +51,9 @@ namespace CamlexNET.Impl.Operations.AndAlso
 
         public override Expression ToExpression()
         {
-            if (this.leftOperation == null)
-            {
-                throw new NullReferenceException("leftOperation");
-            }
-            if (this.rightOperation == null)
-            {
-                throw new NullReferenceException("rightOperation");
-            }
-            return Expression.AndAlso(this.leftOperation.ToExpression(), this.rightOperation.ToExpression());
+            var leftOperationExpr = this.getLeftOperationExpression();
+            var rightOperationExpr = this.getRightOperationExpression();
+            return Expression.AndAlso(leftOperationExpr, rightOperationExpr);
         }
     }
 }
