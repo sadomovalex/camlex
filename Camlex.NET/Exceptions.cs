@@ -153,4 +153,12 @@ namespace CamlexNET
         }
     }
 
+    internal class DateTimeValueOperandExpectedException : GenericException
+    {
+        public DateTimeValueOperandExpectedException() :
+            base(ErrorMessages.DATE_TIME_VALUE_OPERAND_EXPECTED_EXCEPTION)
+        {
+        }
+    }
+
 }
