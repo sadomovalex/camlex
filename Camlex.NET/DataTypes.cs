@@ -74,6 +74,7 @@ namespace CamlexNET
         public class Integer : BaseFieldTypeWithOperators { }
         public class Invalid : BaseFieldType { }
         
+        // Lookup class is made internal. LookupValue and LookupId should be used instead
         internal class Lookup : BaseFieldType { }
 
         // There is no LookupId and LookupValue datatypes in CAML. There is only
