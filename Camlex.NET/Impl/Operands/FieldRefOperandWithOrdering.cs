@@ -59,7 +59,7 @@ namespace CamlexNET.Impl.Operands
             var xmlElement = base.ToCaml();
             if (!orderDirection.IsDefault())
             {
-                xmlElement.SetAttributeValue(Attributes.Ascending, orderDirection.ToString());
+                xmlElement.SetAttributeValue(CamlexNET.Attributes.Ascending, orderDirection.ToString());
             }
             return xmlElement;
         }
