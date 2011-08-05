@@ -99,7 +99,8 @@ namespace CamlexNET.Impl.Factories
 
         private List<KeyValuePair<string, string>> getAdditionalAttributesForFieldRefOperands(IOperand valueOperand)
         {
-            if (valueOperand is LookupIdValueOperand)
+            if (valueOperand is LookupIdValueOperand ||
+                valueOperand is UserIdValueOperand)
             {
                 var attrs = new List<KeyValuePair<string, string>>();
                 attrs.Add(new KeyValuePair<string, string>(Attributes.LookupId, true.ToString()));

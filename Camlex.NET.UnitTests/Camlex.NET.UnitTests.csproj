@@ -67,6 +67,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="CamlexViewFieldsTests.cs" />
+    <Compile Include="CamlexUserTests.cs" />
     <Compile Include="Factories\AnalyzerFactoryTests.cs">
       <SubType>Code</SubType>
     </Compile>

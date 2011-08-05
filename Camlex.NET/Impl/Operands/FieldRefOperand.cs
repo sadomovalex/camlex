@@ -50,7 +50,15 @@ namespace CamlexNET.Impl.Operands
         {
             get
             {
-                return id;
+                return this.id;
+            }
+        }
+
+        public List<KeyValuePair<string, string>> Attributes
+        {
+            get
+            {
+                return this.attributes;
             }
         }
 
@@ -96,11 +104,11 @@ namespace CamlexNET.Impl.Operands
             XElement element;
             if (this.id != null)
             {
-                element = new XElement(Tags.FieldRef, new XAttribute(Attributes.ID, this.id.Value));
+                element = new XElement(Tags.FieldRef, new XAttribute(CamlexNET.Attributes.ID, this.id.Value));
             }
             else if (!string.IsNullOrEmpty(this.fieldName))
             {
-                element = new XElement(Tags.FieldRef, new XAttribute(Attributes.Name, this.fieldName));
+                element = new XElement(Tags.FieldRef, new XAttribute(CamlexNET.Attributes.Name, this.fieldName));
             }
             else
             {
@@ -112,8 +120,8 @@ namespace CamlexNET.Impl.Operands
                 foreach (var attr in this.attributes)
                 {
                     // should not specify id or name twice
-                    if (string.Compare(attr.Key, Attributes.ID, true) == 0 ||
-                        string.Compare(attr.Key, Attributes.Name, true) == 0)
+                    if (string.Compare(attr.Key, CamlexNET.Attributes.ID, true) == 0 ||
+                        string.Compare(attr.Key, CamlexNET.Attributes.Name, true) == 0)
                     {
                         continue;
                     }
