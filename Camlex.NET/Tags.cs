@@ -54,5 +54,6 @@ namespace CamlexNET
         public const string Contains = "Contains";
         public const string DateRangesOverlap = "DateRangesOverlap";
         public const string ViewFields = "ViewFields";
+        public const string UserID = "UserID";
     }
 }
