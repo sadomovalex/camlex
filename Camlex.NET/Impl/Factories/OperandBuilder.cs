@@ -153,18 +153,12 @@ namespace CamlexNET.Impl.Factories
             // Camlex.UserID.ToString() should not be evaluated. This is marker method
             if (newExpr.Type.FullName == typeof(DataTypes.Integer).FullName)
             {
-                if (internalExpression is MethodCallExpression &&
-                    ((MethodCallExpression) internalExpression).Method.Name == ReflectionHelper.ToStringMethodName)
+                if (internalExpression is MemberExpression &&
+                    ((MemberExpression)internalExpression).Member.DeclaringType.FullName ==
+                    typeof (Camlex).FullName &&
+                    ((MemberExpression)internalExpression).Member.Name == ReflectionHelper.UserID)
                 {
-                    var tostringMethodCallExpr = (MethodCallExpression) internalExpression;
-                    if (tostringMethodCallExpr.Object is MemberExpression &&
-                        ((MemberExpression) tostringMethodCallExpr.Object).Member.DeclaringType.FullName ==
-                        typeof (Camlex).FullName &&
-                        ((MemberExpression) tostringMethodCallExpr.Object).Member.Name == ReflectionHelper.UserID)
-                    {
-                        return new UserIdConstValueOperand();
-                    }
-
+                    return new UserIdConstValueOperand();
                 }
             }
 

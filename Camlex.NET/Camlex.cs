@@ -97,7 +97,7 @@ namespace CamlexNET
         #endregion
 
         #region User
-        public static int UserID = 0;
+        public static string UserID = "";
         #endregion
 
         private static ITranslatorFactory translatorFactory;
