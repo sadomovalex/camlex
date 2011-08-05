@@ -381,7 +381,7 @@ namespace CamlexNET.UnitTests.Factories
         }
 
         [Test]
-        public void test_WHEN_string_based_value_is_lookup_id_THEN_lookup_value_operand_is_created()
+        public void test_WHEN_string_based_value_is_lookup_id_THEN_lookup_id_operand_is_created()
         {
             var operandBuilder = new OperandBuilder();
             Expression<Func<SPListItem, bool>> expr = x => x["Foo"] == (DataTypes.LookupId)"1";
@@ -405,6 +405,20 @@ namespace CamlexNET.UnitTests.Factories
 
             var valueOperand = operand as LookupValueValueOperand;
             Assert.That(valueOperand.Type, Is.EqualTo(typeof(DataTypes.LookupValue)));
+            Assert.That(valueOperand.Value, Is.EqualTo("1"));
+        }
+
+        [Test]
+        public void test_WHEN_string_based_value_is_user_id_THEN_lookup_id_operand_is_created()
+        {
+            var operandBuilder = new OperandBuilder();
+            Expression<Func<SPListItem, bool>> expr = x => x["Foo"] == (DataTypes.UserId)"1";
+            var operand = operandBuilder.CreateValueOperandForStringBasedSyntax(((BinaryExpression)expr.Body).Right);
+
+            Assert.That(operand, Is.InstanceOf<UserIdValueOperand>());
+
+            var valueOperand = operand as UserIdValueOperand;
+            Assert.That(valueOperand.Type, Is.EqualTo(typeof(DataTypes.UserId)));
             Assert.That(valueOperand.Value, Is.EqualTo("1"));
         }
     }
