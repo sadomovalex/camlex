@@ -15,10 +15,7 @@ namespace CamlexNET.Impl.Operands
 
         public override XElement ToCaml()
         {
-            // there is no LookupId and LookupValue datatypes in CAML. There is only
-            // Lookup datatype. We introduced different lookup datatypes in order
-            // to simplify distinguish between lookup values and lookup ids search.
-            // See http://camlex.codeplex.com/Thread/View.aspx?ThreadId=203560 for details
+            // use Lookup type both for LookupValue operand and LookupId operand
             return
                 new XElement(Tags.Value, new XAttribute(Attributes.Type, typeof(DataTypes.Lookup).Name),
                     new XText(this.Value));

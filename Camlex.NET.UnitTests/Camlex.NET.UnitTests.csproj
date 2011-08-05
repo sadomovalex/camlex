@@ -88,6 +88,7 @@
     <Compile Include="Operands\BooleanValueOperandTests.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Operands\UserIdValueOperandTests.cs" />
     <Compile Include="Operands\FieldRefOperandWithOrderingTests.cs" />
     <Compile Include="Operands\LookupValueValueOperandTests.cs" />
     <Compile Include="Operands\LookupIdValueOperandTests.cs" />

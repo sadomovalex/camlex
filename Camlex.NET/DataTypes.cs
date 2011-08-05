@@ -102,6 +102,11 @@ namespace CamlexNET
         public class Threading : BaseFieldType { }
         public class URL : BaseFieldType { }
         public class User : BaseFieldType { }
+
+        // As with LookupId there is no such data type as UserId. It is introduced
+        // for simplifying querying by user id. See http://camlex.codeplex.com/discussions/264821
+        public class UserId : BaseFieldType { }
+
         public class WorkflowEventType : BaseFieldType { }
         public class WorkflowStatus : BaseFieldType { }
     }

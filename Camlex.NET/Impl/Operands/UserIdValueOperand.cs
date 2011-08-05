@@ -6,10 +6,10 @@ using System.Xml.Linq;
 
 namespace CamlexNET.Impl.Operands
 {
-    internal class LookupIdValueOperand : GenericStringBasedValueOperand
+    internal class UserIdValueOperand : GenericStringBasedValueOperand
     {
-        public LookupIdValueOperand(string value)
-            : base(typeof(DataTypes.LookupId), value)
+        public UserIdValueOperand(string value)
+            : base(typeof(DataTypes.UserId), value)
         {
             int id;
             if (!int.TryParse(value, out id))
@@ -20,9 +20,9 @@ namespace CamlexNET.Impl.Operands
 
         public override XElement ToCaml()
         {
-            // use Lookup type both for LookupValue operand and LookupId operand
+            // use User type both for User operand and UserId operand
             return
-                new XElement(Tags.Value, new XAttribute(Attributes.Type, typeof(DataTypes.Lookup).Name),
+                new XElement(Tags.Value, new XAttribute(Attributes.Type, typeof(DataTypes.User).Name),
                     new XText(this.Value));
         }
     }

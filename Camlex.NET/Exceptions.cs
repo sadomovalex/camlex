@@ -112,22 +112,6 @@ namespace CamlexNET
         }
     }
 
-//    internal class DifferentArgumentsNamesExceptions : GenericException
-//    {
-//        public DifferentArgumentsNamesExceptions() :
-//            base(ErrorMessages.DIFFERENT_ARGUMENTS_NAMES)
-//        {
-//        }
-//    }
-
-//    internal class InvalidLookupIdException : GenericException
-//    {
-//        public InvalidLookupIdException(object value) :
-//            base(ErrorMessages.INVALID_LOOKUP_ID, value)
-//        {
-//        }
-//    }
-
     internal class FieldRefOperandShouldContainNameOrIdException : GenericException
     {
         public FieldRefOperandShouldContainNameOrIdException() :
