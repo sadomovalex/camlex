@@ -62,7 +62,7 @@ namespace CamlexNET.UnitTests
         [Test]
         public void test_THAT_expression_with_user_id_call_IS_translated_successfully()
         {
-            string caml = Camlex.Query().Where(x => x["foo"] == (DataTypes.Integer)Camlex.UserID.ToString()).ToString();
+            string caml = Camlex.Query().Where(x => x["foo"] == (DataTypes.Integer)Camlex.UserID).ToString();
 
             string expected =
                 "   <Where>" +
