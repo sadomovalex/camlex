@@ -33,31 +33,73 @@ using NUnit.Framework;
 namespace CamlexNET.UnitTests.Operands
 {
     [TestFixture]
-    public class FieldRefOperandWithOrderingTests
+    public class FieldRefOperandTests
     {
-        [Test]
-        [ExpectedException(typeof(FieldRefOperandShouldContainNameOrIdException))]
-        public void test_WHEN_both_name_and_id_are_empty_THEN_exception_is_thrown_in_contructor()
-        {
-            var fr = new FieldRefOperand("");
-            var frOrder = new FieldRefOperandWithOrdering(fr, new Camlex.Asc());
-        }
-
         [Test]
         public void test_THAT_field_ref_with_name_IS_rendered_to_caml_properly()
         {
-            var fr = new FieldRefOperandWithOrdering(new FieldRefOperand("Title"), new Camlex.Asc());
+            var fr = new FieldRefOperand("Title");
             string caml = fr.ToCaml().ToString();
-            Assert.That(caml, Is.EqualTo("<FieldRef Name=\"Title\" Ascending=\"True\" />"));
+            Assert.That(caml, Is.EqualTo("<FieldRef Name=\"Title\" />"));
         }
 
         [Test]
         public void test_THAT_field_ref_with_guid_IS_rendered_to_caml_properly()
         {
             var guid = new Guid("4feaf1f3-5b04-4d93-b0fc-4e48d0c60eed");
-            var fr = new FieldRefOperandWithOrdering(new FieldRefOperand(guid), new Camlex.Asc());
+            var fr = new FieldRefOperand(guid);
             string caml = fr.ToCaml().ToString();
-            Assert.That(caml, Is.EqualTo("<FieldRef ID=\"4feaf1f3-5b04-4d93-b0fc-4e48d0c60eed\" Ascending=\"True\" />"));
+            Assert.That(caml, Is.EqualTo("<FieldRef ID=\"4feaf1f3-5b04-4d93-b0fc-4e48d0c60eed\" />"));
+        }
+
+        [Test]
+        public void test_THAT_field_ref_with_guid_and_attributes_IS_rendered_to_caml_properly()
+        {
+            var guid = new Guid("4feaf1f3-5b04-4d93-b0fc-4e48d0c60eed");
+            var attr = new List<KeyValuePair<string, string>>();
+            attr.Add(new KeyValuePair<string, string>("LookupId", "True"));
+            var fr = new FieldRefOperand(guid, attr);
+            string caml = fr.ToCaml().ToString();
+            Assert.That(caml, Is.EqualTo("<FieldRef ID=\"4feaf1f3-5b04-4d93-b0fc-4e48d0c60eed\" LookupId=\"True\" />"));
+        }
+
+        [Test]
+        public void test_WHEN_attribute_contains_id_THEN_it_is_ignored()
+        {
+            var guid = new Guid("4feaf1f3-5b04-4d93-b0fc-4e48d0c60eed");
+            var attr = new List<KeyValuePair<string, string>>();
+            attr.Add(new KeyValuePair<string, string>("id", "foo"));
+            var fr = new FieldRefOperand(guid, attr);
+            string caml = fr.ToCaml().ToString();
+            Assert.That(caml, Is.EqualTo("<FieldRef ID=\"4feaf1f3-5b04-4d93-b0fc-4e48d0c60eed\" />"));
+        }
+
+        [Test]
+        public void test_THAT_field_ref_with_name_and_attributes_IS_rendered_to_caml_properly()
+        {
+            var attr = new List<KeyValuePair<string, string>>();
+            attr.Add(new KeyValuePair<string, string>("LookupId", "True"));
+            var fr = new FieldRefOperand("Title", attr);
+            string caml = fr.ToCaml().ToString();
+            Assert.That(caml, Is.EqualTo("<FieldRef Name=\"Title\" LookupId=\"True\" />"));
+        }
+
+        [Test]
+        public void test_WHEN_attribute_contains_name_THEN_it_is_ignored()
+        {
+            var attr = new List<KeyValuePair<string, string>>();
+            attr.Add(new KeyValuePair<string, string>("nAmE", "foo"));
+            var fr = new FieldRefOperand("Title", attr);
+            string caml = fr.ToCaml().ToString();
+            Assert.That(caml, Is.EqualTo("<FieldRef Name=\"Title\" />"));
+        }
+
+        [Test]
+        [ExpectedException(typeof(FieldRefOperandShouldContainNameOrIdException))]
+        public void test_WHEN_both_name_and_id_are_empty_THEN_exception_is_thrown_during_translation_to_caml()
+        {
+            var fr = new FieldRefOperand("");
+            fr.ToCaml();
         }
     }
 }
