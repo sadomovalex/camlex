@@ -149,6 +149,25 @@ namespace CamlexNET.Impl.Factories
 
             // retrieve internal native expression from string based syntax
             var internalExpression = ((UnaryExpression)((UnaryExpression)newExpr).Operand).Operand;
+
+            // Camlex.UserID.ToString() should not be evaluated. This is marker method
+            if (newExpr.Type.FullName == typeof(DataTypes.Integer).FullName)
+            {
+                if (internalExpression is MethodCallExpression &&
+                    ((MethodCallExpression) internalExpression).Method.Name == ReflectionHelper.ToStringMethodName)
+                {
+                    var tostringMethodCallExpr = (MethodCallExpression) internalExpression;
+                    if (tostringMethodCallExpr.Object is MemberExpression &&
+                        ((MemberExpression) tostringMethodCallExpr.Object).Member.DeclaringType.FullName ==
+                        typeof (Camlex).FullName &&
+                        ((MemberExpression) tostringMethodCallExpr.Object).Member.Name == ReflectionHelper.UserID)
+                    {
+                        return new UserIdConstValueOperand();
+                    }
+
+                }
+            }
+
             // use conversion type as operand type (subclass of BaseFieldType should be used here)
             // because conversion operand has always string type for string based syntax
             return this.CreateValueOperandForNativeSyntax(internalExpression, newExpr.Type, expr);

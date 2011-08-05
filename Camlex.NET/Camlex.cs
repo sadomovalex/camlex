@@ -96,6 +96,10 @@ namespace CamlexNET
 
         #endregion
 
+        #region User
+        public static int UserID = 0;
+        #endregion
+
         private static ITranslatorFactory translatorFactory;
 
         static Camlex()

@@ -58,5 +58,21 @@ namespace CamlexNET.UnitTests
 
             Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
         }
+
+        [Test]
+        public void test_THAT_expression_with_user_id_call_IS_translated_successfully()
+        {
+            string caml = Camlex.Query().Where(x => x["foo"] == (DataTypes.Integer)Camlex.UserID.ToString()).ToString();
+
+            string expected =
+                "   <Where>" +
+                "       <Eq>" +
+                "           <FieldRef Name=\"foo\" />" +
+                "           <Value Type=\"Integer\"><UserID /></Value>" +
+                "       </Eq>" +
+                "   </Where>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
     }
 }
