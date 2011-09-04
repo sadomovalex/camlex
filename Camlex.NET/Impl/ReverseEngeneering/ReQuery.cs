@@ -32,7 +32,21 @@ namespace CamlexNET.Impl.ReverseEngeneering
             }
             
             // todo: merge expressions from all translators
+            var where = this.getExpression(translatorForWhere);
+            var orderBy = this.getExpression(translatorForOrderBy);
+            var groupBy = this.getExpression(translatorForGroupBy);
+            var viewFields = this.getExpression(translatorForViewFields);
+
             throw new NotImplementedException();
+        }
+
+        private Expression getExpression(IReTranslator translator)
+        {
+            if (translator == null)
+            {
+                return null;
+            }
+            return translator.Translate();
         }
     }
 }

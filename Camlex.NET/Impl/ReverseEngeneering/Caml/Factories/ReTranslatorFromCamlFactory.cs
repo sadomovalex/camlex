@@ -16,10 +16,10 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Factories
             this.analyzerFactory = analyzerFactory;
         }
 
-        private IReTranslator create(XElement el)
+        private IReTranslator create(XElement el, string tag)
         {
             var analyzer = this.analyzerFactory.Create(el);
-            return new ReTranslatorFromCaml(analyzer);
+            return new ReTranslatorFromCaml(analyzer, tag);
         }
 
         private IReTranslator createForTag(string input, string tag)
@@ -51,7 +51,7 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Factories
                     {
                         return null;
                     }
-                    return this.create(el);
+                    return this.create(el, tag);
                 }
             }
             catch (XmlException)
