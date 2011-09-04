@@ -31,6 +31,6 @@ namespace CamlexNET.Interfaces.ReverseEngeneering
 {
     internal interface IReAnalyzerFactory
     {
-        IReAnalyzer Create(string str);
+        IReAnalyzer Create(string input);
     }
 }
