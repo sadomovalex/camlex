@@ -20,8 +20,19 @@ namespace CamlexNET.Impl.ReverseEngeneering
 
         public Expression ToExpression()
         {
-            var translator = this.translatorFactory.Create(input);
-            return translator.Translate(input);
+            var translatorForWhere = this.translatorFactory.CreateForWhere(input);
+            var translatorForOrderBy = this.translatorFactory.CreateForOrderBy(input);
+            var translatorForGroupBy = this.translatorFactory.CreateForGroupBy(input);
+            var translatorForViewFields = this.translatorFactory.CreateForViewFields(input);
+
+            if (translatorForWhere == null && translatorForOrderBy == null &&
+                translatorForGroupBy == null && translatorForViewFields == null)
+            {
+                throw new Exception("All parts are empty (Where, OrderBy, GroupBy, ViewFields). At least one part should be non-empty");
+            }
+            
+            // todo: merge expressions from all translators
+            throw new NotImplementedException();
         }
     }
 }

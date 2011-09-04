@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Xml;
+using System.Xml.Linq;
 using CamlexNET.Interfaces.ReverseEngeneering;
 
 namespace CamlexNET.Impl.ReverseEngeneering.Caml.Factories
@@ -18,7 +21,7 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Factories
             this.operationResultBuilder = operationResultBuilder;
         }
 
-        public IReAnalyzer Create(string input)
+        public IReAnalyzer Create(XElement el)
         {
             throw new NotImplementedException();
         }

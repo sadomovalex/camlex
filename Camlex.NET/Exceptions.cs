@@ -125,14 +125,6 @@ namespace CamlexNET
         }
     }
 
-    internal class XmlNotWellFormedException : GenericException
-    {
-        public XmlNotWellFormedException() :
-            base(ErrorMessages.XML_NOT_WELL_FORMED_EXCEPTION)
-        {
-        }
-    }
-
     internal class ArrayOperationShouldContainOnlyFieldRefOperandsException : GenericException
     {
         public ArrayOperationShouldContainOnlyFieldRefOperandsException() :
@@ -161,6 +153,14 @@ namespace CamlexNET
     {
         public DateTimeValueOperandExpectedException() :
             base(ErrorMessages.DATE_TIME_VALUE_OPERAND_EXPECTED_EXCEPTION)
+        {
+        }
+    }
+
+    internal class XmlNotWellFormedException : GenericException
+    {
+        public XmlNotWellFormedException() :
+            base(ErrorMessages.XML_NOT_WELL_FORMED_EXCEPTION)
         {
         }
     }
