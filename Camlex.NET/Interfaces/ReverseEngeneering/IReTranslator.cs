@@ -31,6 +31,6 @@ namespace CamlexNET.Interfaces.ReverseEngeneering
 {
     internal interface IReTranslator
     {
-        Expression Translate(string input);
+        Expression Translate();
     }
 }
