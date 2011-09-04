@@ -25,13 +25,17 @@
 // -----------------------------------------------------------------------------
 #endregion
 
+using System;
 using System.Linq.Expressions;
 
 namespace CamlexNET.Interfaces.ReverseEngeneering
 {
-    internal interface IReAnalyzer
+    internal interface IReOperandBuilder
     {
-        bool IsValid(string input);
-        IOperation GetOperation(string input);
+        IOperand CreateFieldRefOperand(string input, IOperand valueOperand);
+        IOperand CreateFieldRefOperandWithOrdering(string input, Camlex.OrderDirection orderDirection);
+        IOperand CreateValueOperandForNativeSyntax(string input);
+        IOperand CreateValueOperandForNativeSyntax(string input, Type explicitOperandType);
+        IOperand CreateValueOperandForStringBasedSyntax(string input);
     }
 }

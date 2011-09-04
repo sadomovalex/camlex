@@ -29,9 +29,8 @@ using System.Linq.Expressions;
 
 namespace CamlexNET.Interfaces.ReverseEngeneering
 {
-    internal interface IReAnalyzer
+    public interface IReOperationResult
     {
-        bool IsValid(string input);
-        IOperation GetOperation(string input);
+        Expression Value { get; }
     }
 }

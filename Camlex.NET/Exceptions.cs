@@ -34,6 +34,10 @@ using Microsoft.SharePoint;
 
 namespace CamlexNET
 {
+    // All exceptions are internal cause we don't want users to implement logic
+    // based on exceptions. Is there a case when exceptions from Camlex should be
+    // known on client side?
+
     internal class GenericException : Exception
     {
         public GenericException(string message, params object[] args) :
