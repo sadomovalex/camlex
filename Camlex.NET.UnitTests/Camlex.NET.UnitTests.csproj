@@ -190,6 +190,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReverseEngeneering\Factories\ReTranslatorFromCamlFactoryTests.cs" />
     <Compile Include="ReverseEngeneering\Operands\BooleanValueOperandTests.cs" />
     <Compile Include="ReverseEngeneering\Operands\DateTimeValueOperandTests.cs" />
     <Compile Include="ReverseEngeneering\Operands\FieldRefOperandWithOrderingTests.cs" />
