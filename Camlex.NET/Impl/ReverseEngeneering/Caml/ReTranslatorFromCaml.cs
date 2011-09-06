@@ -12,6 +12,16 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml
         private readonly IReAnalyzer analyzerForGroupBy;
         private readonly IReAnalyzer analyzerForViewFields;
 
+        public XElement Where { get { return this.getElement(this.analyzerForWhere); } }
+        public XElement OrderBy { get { return this.getElement(this.analyzerForOrderBy); } }
+        public XElement GroupBy { get { return this.getElement(this.analyzerForGroupBy); } }
+        public XElement ViewFields { get { return this.getElement(this.analyzerForViewFields); } }
+
+        private XElement getElement(IReAnalyzer analyzer)
+        {
+            return (analyzer == null ? null : analyzer.Element);
+        }
+
         public ReTranslatorFromCaml(IReAnalyzer analyzerForWhere, IReAnalyzer analyzerForOrderBy,
             IReAnalyzer analyzerForGroupBy, IReAnalyzer analyzerForViewFields)
         {

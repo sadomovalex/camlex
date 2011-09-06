@@ -7,7 +7,7 @@ using CamlexNET.Interfaces.ReverseEngeneering;
 
 namespace CamlexNET.Impl.ReverseEngeneering.Caml.Factories
 {
-    internal class ReOperandBuilder : IReOperandBuilder
+    internal class ReOperandBuilderFromCaml : IReOperandBuilder
     {
         public IOperand CreateFieldRefOperand(string input, IOperand valueOperand)
         {

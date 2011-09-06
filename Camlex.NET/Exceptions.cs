@@ -179,4 +179,11 @@ namespace CamlexNET
                 Tags.Where, Tags.OrderBy, Tags.GroupBy, Tags.ViewFields))
         {}
     }
+
+    internal class LinkerFromCamlRequiresTranslatorFromCamlException : Exception
+    {
+        public LinkerFromCamlRequiresTranslatorFromCamlException(Type type)
+            : base(string.Format("Incorrect translator type was passed to the linker: '{0}'. Linker from CAML requires translator from CAML", type))
+        {}
+    }
 }

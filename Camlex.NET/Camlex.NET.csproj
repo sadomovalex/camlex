@@ -81,9 +81,10 @@
     <Compile Include="Impl\Operations\Results\ExpressionOperationResult.cs" />
     <Compile Include="Impl\Query.cs" />
     <Compile Include="Impl\ReverseEngeneering\Caml\Factories\ReAnalyzerFromCamlFactory.cs" />
-    <Compile Include="Impl\ReverseEngeneering\Caml\Factories\ReOperandBuilder.cs" />
-    <Compile Include="Impl\ReverseEngeneering\Caml\Factories\ReOperationResultBuilder.cs" />
+    <Compile Include="Impl\ReverseEngeneering\Caml\Factories\ReLinkerFromCamlFactory.cs" />
+    <Compile Include="Impl\ReverseEngeneering\Caml\Factories\ReOperandBuilderFromCaml.cs" />
     <Compile Include="Impl\ReverseEngeneering\Caml\Factories\ReTranslatorFromCamlFactory.cs" />
+    <Compile Include="Impl\ReverseEngeneering\Caml\ReLinkerFromCaml.cs" />
     <Compile Include="Impl\ReverseEngeneering\ReQuery.cs" />
     <Compile Include="Impl\ReverseEngeneering\Caml\ReTranslatorFromCaml.cs" />
     <Compile Include="Impl\UnaryExpressionBaseAnalyzer.cs" />
@@ -136,8 +137,9 @@
     <Compile Include="Interfaces\IQueryEx.cs" />
     <Compile Include="Interfaces\ITranslator.cs" />
     <Compile Include="Interfaces\ITranslatorFactory.cs" />
+    <Compile Include="Interfaces\ReverseEngeneering\IReLinker.cs" />
+    <Compile Include="Interfaces\ReverseEngeneering\IReLinkerFactory.cs" />
     <Compile Include="Interfaces\ReverseEngeneering\IReOperationResult.cs" />
-    <Compile Include="Interfaces\ReverseEngeneering\IReOperationResultBuilder.cs" />
     <Compile Include="Interfaces\ReverseEngeneering\IReOperandBuilder.cs" />
     <Compile Include="Interfaces\ReverseEngeneering\IReAnalyzer.cs" />
     <Compile Include="Interfaces\ReverseEngeneering\IReAnalyzerFactory.cs" />

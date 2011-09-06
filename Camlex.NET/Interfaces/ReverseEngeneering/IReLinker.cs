@@ -26,14 +26,11 @@
 #endregion
 
 using System.Linq.Expressions;
-using System.Xml.Linq;
 
 namespace CamlexNET.Interfaces.ReverseEngeneering
 {
-    internal interface IReAnalyzer
+    internal interface IReLinker
     {
-        XElement Element { get; }
-        bool IsValid();
-        IOperation GetOperation();
+        Expression Link(Expression where, Expression orderBy, Expression groupBy, Expression viewFields);
     }
 }

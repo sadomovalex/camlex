@@ -9,12 +9,14 @@ namespace CamlexNET.Impl.ReverseEngeneering
 {
     internal class ReQuery : IReQuery
     {
-        private readonly IReTranslatorFactory translatorFactory;
-        private readonly string input;
+        private IReTranslatorFactory translatorFactory;
+        private IReLinkerFactory linkerFactory;
+        private string input;
 
-        public ReQuery(IReTranslatorFactory translatorFactory, string input)
+        public ReQuery(IReTranslatorFactory translatorFactory, IReLinkerFactory linkerFactory, string input)
         {
             this.translatorFactory = translatorFactory;
+            this.linkerFactory = linkerFactory;
             this.input = input;
         }
 
@@ -26,33 +28,8 @@ namespace CamlexNET.Impl.ReverseEngeneering
             var groupBy = translator.TranslateGroupBy();
             var viewFields = translator.TranslateViewFields();
 
-            string firstMethodName = this.getFirstMethodName(where, orderBy, groupBy, viewFields);
-            if (string.IsNullOrEmpty(firstMethodName))
-            {
-                throw new AtLeastOneCamlPartShouldNotBeEmptyException();
-            }
-            throw new NotImplementedException();
-        }
-
-        private string getFirstMethodName(Expression where, Expression orderBy, Expression groupBy, Expression viewFields)
-        {
-            if (where != null)
-            {
-                return ReflectionHelper.WhereMethodName;
-            }
-            if (orderBy != null)
-            {
-                return ReflectionHelper.OrderByMethodName;
-            }
-            if (groupBy != null)
-            {
-                return ReflectionHelper.GroupByMethodName;
-            }
-            if (viewFields != null)
-            {
-                return ReflectionHelper.ViewFieldsMethodName;
-            }
-            return null;
+            var linker = this.linkerFactory.Create(translator);
+            return linker.Link(where, orderBy, groupBy, viewFields);
         }
     }
 
