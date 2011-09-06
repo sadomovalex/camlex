@@ -30,9 +30,9 @@ using System.Xml.Linq;
 
 namespace CamlexNET.Interfaces.ReverseEngeneering
 {
-    internal interface IReOperationResultBuilder
+    internal interface IReLinkerFactory
     {
-        IReOperationResult CreateResult(Expression expr);
-        IReOperationResult CreateResult(Expression[] exprs);
+        //IReLinker Create(XElement where, XElement orderBy, XElement groupBy, XElement viewFields);
+        IReLinker Create(IReTranslator translator);
     }
 }

@@ -101,6 +101,7 @@ namespace CamlexNET
 
         private static ITranslatorFactory translatorFactory;
         private static IReTranslatorFactory retranslatorFactory;
+        private static IReLinkerFactory relinkerFactory;
 
         static Camlex()
         {
@@ -111,10 +112,10 @@ namespace CamlexNET
             translatorFactory = new TranslatorFactory(analyzerFactory);
 
             // re
-            var reoperandBuilder = new ReOperandBuilder();
-            var reoperationResultBuilder = new ReOperationResultBuilder();
-            var reanalyzerFactory = new ReAnalyzerFromCamlFactory(reoperandBuilder, reoperationResultBuilder);
+            var reoperandBuilder = new ReOperandBuilderFromCaml();
+            var reanalyzerFactory = new ReAnalyzerFromCamlFactory(reoperandBuilder);
             retranslatorFactory = new ReTranslatorFromCamlFactory(reanalyzerFactory);
+            relinkerFactory = new ReLinkerFromCamlFactory();
         }
 
         public static IQueryEx Query()
@@ -124,7 +125,7 @@ namespace CamlexNET
 
         public static IReQuery QueryFromString(string input)
         {
-            return new ReQuery(retranslatorFactory, input);
+            return new ReQuery(retranslatorFactory, relinkerFactory, input);
         }
     }
 }

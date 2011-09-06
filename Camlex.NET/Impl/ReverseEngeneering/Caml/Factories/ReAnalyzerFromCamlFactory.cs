@@ -11,14 +11,12 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Factories
 {
     internal class ReAnalyzerFromCamlFactory : IReAnalyzerFactory
     {
-        private readonly ReOperandBuilder operandBuilder;
-        private readonly ReOperationResultBuilder operationResultBuilder;
+        private readonly IReOperandBuilder operandBuilder;
+        //private readonly ReOperationResultBuilder operationResultBuilder;
 
-        public ReAnalyzerFromCamlFactory(ReOperandBuilder operandBuilder,
-            ReOperationResultBuilder operationResultBuilder)
+        public ReAnalyzerFromCamlFactory(IReOperandBuilder operandBuilder)
         {
             this.operandBuilder = operandBuilder;
-            this.operationResultBuilder = operationResultBuilder;
         }
 
         public IReAnalyzer Create(XElement el)
