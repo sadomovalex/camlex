@@ -214,6 +214,7 @@
     <Compile Include="ReverseEngeneering\Operations\GtOperationTests.cs" />
     <Compile Include="ReverseEngeneering\Operations\GeqOperationTests.cs" />
     <Compile Include="ReverseEngeneering\Operations\EqOperationTests.cs" />
+    <Compile Include="ReverseEngeneering\ReLinkerFromCamlTests.cs" />
     <Compile Include="ReverseEngeneering\ReQueryTests.cs" />
   </ItemGroup>
   <ItemGroup>

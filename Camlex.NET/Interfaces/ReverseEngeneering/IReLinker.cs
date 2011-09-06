@@ -31,6 +31,6 @@ namespace CamlexNET.Interfaces.ReverseEngeneering
 {
     internal interface IReLinker
     {
-        Expression Link(Expression where, Expression orderBy, Expression groupBy, Expression viewFields);
+        Expression Link(LambdaExpression where, LambdaExpression orderBy, LambdaExpression groupBy, LambdaExpression viewFields);
     }
 }

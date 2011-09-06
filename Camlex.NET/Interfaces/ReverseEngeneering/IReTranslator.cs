@@ -31,9 +31,9 @@ namespace CamlexNET.Interfaces.ReverseEngeneering
 {
     internal interface IReTranslator
     {
-        Expression TranslateWhere();
-        Expression TranslateOrderBy();
-        Expression TranslateGroupBy();
-        Expression TranslateViewFields();
+        LambdaExpression TranslateWhere();
+        LambdaExpression TranslateOrderBy();
+        LambdaExpression TranslateGroupBy();
+        LambdaExpression TranslateViewFields();
     }
 }

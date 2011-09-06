@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Text;
 using System.Xml.Linq;
+using CamlexNET.Interfaces;
 using CamlexNET.Interfaces.ReverseEngeneering;
 
 namespace CamlexNET.Impl.ReverseEngeneering.Caml
@@ -23,35 +25,43 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml
             this.orderBy = orderBy;
         }
 
-        public Expression Link(Expression where, Expression orderBy, Expression groupBy, Expression viewFields)
+        public Expression Link(LambdaExpression where, LambdaExpression orderBy, LambdaExpression groupBy, LambdaExpression viewFields)
         {
-            string firstMethodName = this.getFirstMethodName(where, orderBy, groupBy, viewFields);
-            if (string.IsNullOrEmpty(firstMethodName))
+            var list = new List<KeyValuePair<string, LambdaExpression>>();
+            list.Add(new KeyValuePair<string, LambdaExpression>(ReflectionHelper.WhereMethodName, where));
+            list.Add(new KeyValuePair<string, LambdaExpression>(ReflectionHelper.OrderByMethodName, orderBy));
+            list.Add(new KeyValuePair<string, LambdaExpression>(ReflectionHelper.GroupByMethodName, groupBy));
+            list.Add(new KeyValuePair<string, LambdaExpression>(ReflectionHelper.ViewFieldsMethodName, viewFields));
+
+            if (list.All(kv => kv.Value == null))
             {
                 throw new AtLeastOneCamlPartShouldNotBeEmptyException();
             }
-            throw new NotImplementedException();
+
+
+            var queryMi = ReflectionHelper.GetMethodInfo(typeof (Camlex), ReflectionHelper.QueryMethodName);
+            var queryCall = Expression.Call(queryMi);
+
+            var expr = queryCall;
+            for (int i = 0; i < list.Count; i++)
+            {
+                var kv = list[i];
+                if (kv.Value != null)
+                {
+                    var mi = this.getMethodInfo(kv.Key);
+                    expr = Expression.Call(expr, mi, kv.Value);
+                }
+            }
+            return expr;
         }
 
-        private string getFirstMethodName(Expression where, Expression orderBy, Expression groupBy, Expression viewFields)
+        private MethodInfo getMethodInfo(string methodName)
         {
-            if (where != null)
+            if (methodName == ReflectionHelper.WhereMethodName)
             {
-                return ReflectionHelper.WhereMethodName;
+                return ReflectionHelper.GetMethodInfo(typeof (IQuery), methodName);
             }
-            if (orderBy != null)
-            {
-                return ReflectionHelper.OrderByMethodName;
-            }
-            if (groupBy != null)
-            {
-                return ReflectionHelper.GroupByMethodName;
-            }
-            if (viewFields != null)
-            {
-                return ReflectionHelper.ViewFieldsMethodName;
-            }
-            return null;
+            throw new NotImplementedException();
         }
     }
 }

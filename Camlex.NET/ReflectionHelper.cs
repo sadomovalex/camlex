@@ -36,6 +36,7 @@ namespace CamlexNET
 {
     internal static class ReflectionHelper
     {
+        public const string QueryMethodName = "Query";
         public const string WhereMethodName = "Where";
         public const string OrderByMethodName = "OrderBy";
         public const string GroupByMethodName = "GroupBy";
@@ -66,6 +67,11 @@ namespace CamlexNET
                         where method.GetParameters()[0].ParameterType == extendedType
                         select method;
             return query;
+        }
+
+        public static MethodInfo GetMethodInfo(Type type, string methodName)
+        {
+            return type.GetMethod(methodName);
         }
     }
 }
