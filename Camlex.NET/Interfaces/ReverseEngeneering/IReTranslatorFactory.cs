@@ -31,9 +31,6 @@ namespace CamlexNET.Interfaces.ReverseEngeneering
 {
     internal interface IReTranslatorFactory
     {
-        IReTranslator CreateForWhere(string input);
-        IReTranslator CreateForOrderBy(string input);
-        IReTranslator CreateForGroupBy(string input);
-        IReTranslator CreateForViewFields(string input);
+        IReTranslator Create(string input);
     }
 }

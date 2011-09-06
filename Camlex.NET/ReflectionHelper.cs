@@ -36,6 +36,10 @@ namespace CamlexNET
 {
     internal static class ReflectionHelper
     {
+        public const string WhereMethodName = "Where";
+        public const string OrderByMethodName = "OrderBy";
+        public const string GroupByMethodName = "GroupBy";
+        public const string ViewFieldsMethodName = "ViewFields";
         public const string IndexerMethodName = "get_Item";
         public const string StartsWithMethodName = "StartsWith";
         public const string ContainsMethodName = "Contains";

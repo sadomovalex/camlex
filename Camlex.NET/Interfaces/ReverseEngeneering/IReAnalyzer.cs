@@ -31,7 +31,7 @@ namespace CamlexNET.Interfaces.ReverseEngeneering
 {
     internal interface IReAnalyzer
     {
-        bool IsValid(string input);
-        IOperation GetOperation(string input);
+        bool IsValid();
+        IOperation GetOperation();
     }
 }
