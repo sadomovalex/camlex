@@ -20,33 +20,40 @@ namespace CamlexNET.Impl.ReverseEngeneering
 
         public Expression ToExpression()
         {
-            var translatorForWhere = this.translatorFactory.CreateForWhere(input);
-            var translatorForOrderBy = this.translatorFactory.CreateForOrderBy(input);
-            var translatorForGroupBy = this.translatorFactory.CreateForGroupBy(input);
-            var translatorForViewFields = this.translatorFactory.CreateForViewFields(input);
+            var translator = this.translatorFactory.Create(input);
+            var where = translator.TranslateWhere();
+            var orderBy = translator.TranslateOrderBy();
+            var groupBy = translator.TranslateGroupBy();
+            var viewFields = translator.TranslateViewFields();
 
-            if (translatorForWhere == null && translatorForOrderBy == null &&
-                translatorForGroupBy == null && translatorForViewFields == null)
+            string firstMethodName = this.getFirstMethodName(where, orderBy, groupBy, viewFields);
+            if (string.IsNullOrEmpty(firstMethodName))
             {
-                throw new Exception("All parts are empty (Where, OrderBy, GroupBy, ViewFields). At least one part should be non-empty");
+                throw new AtLeastOneCamlPartShouldNotBeEmptyException();
             }
-            
-            // todo: merge expressions from all translators
-            var where = this.getExpression(translatorForWhere);
-            var orderBy = this.getExpression(translatorForOrderBy);
-            var groupBy = this.getExpression(translatorForGroupBy);
-            var viewFields = this.getExpression(translatorForViewFields);
-
             throw new NotImplementedException();
         }
 
-        private Expression getExpression(IReTranslator translator)
+        private string getFirstMethodName(Expression where, Expression orderBy, Expression groupBy, Expression viewFields)
         {
-            if (translator == null)
+            if (where != null)
             {
-                return null;
+                return ReflectionHelper.WhereMethodName;
             }
-            return translator.Translate();
+            if (orderBy != null)
+            {
+                return ReflectionHelper.OrderByMethodName;
+            }
+            if (groupBy != null)
+            {
+                return ReflectionHelper.GroupByMethodName;
+            }
+            if (viewFields != null)
+            {
+                return ReflectionHelper.ViewFieldsMethodName;
+            }
+            return null;
         }
     }
+
 }

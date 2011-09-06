@@ -16,13 +16,22 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Factories
             this.analyzerFactory = analyzerFactory;
         }
 
-        private IReTranslator create(XElement el, string tag)
+        public IReTranslator Create(string input)
         {
-            var analyzer = this.analyzerFactory.Create(el);
-            return new ReTranslatorFromCaml(analyzer, tag);
+            var where = this.createForTag(input, Tags.Where);
+            var orderBy = this.createForTag(input, Tags.OrderBy);
+            var groupBy = this.createForTag(input, Tags.GroupBy);
+            var viewFields = this.createForTag(input, Tags.ViewFields);
+
+            var analyzerForWhere = this.analyzerFactory.Create(where);
+            var analyzerForOrderBy = this.analyzerFactory.Create(orderBy);
+            var analyzerForGroupBy = this.analyzerFactory.Create(groupBy);
+            var analyzerForViewFields = this.analyzerFactory.Create(viewFields);
+
+            return new ReTranslatorFromCaml(analyzerForWhere, analyzerForOrderBy, analyzerForGroupBy, analyzerForViewFields);
         }
 
-        private IReTranslator createForTag(string input, string tag)
+        private XElement createForTag(string input, string tag)
         {
             if (string.IsNullOrEmpty(input) || string.IsNullOrEmpty(input.Trim()))
             {
@@ -46,38 +55,13 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Factories
                         throw new XmlNotWellFormedException();
                     }
 
-                    var el = doc.Descendants().FirstOrDefault(x => x.Name == tag);
-                    if (el == null)
-                    {
-                        return null;
-                    }
-                    return this.create(el, tag);
+                    return doc.Descendants().FirstOrDefault(x => x.Name == tag);
                 }
             }
             catch (XmlException)
             {
                 throw new XmlNotWellFormedException();
             }
-        }
-
-        public IReTranslator CreateForWhere(string input)
-        {
-            return this.createForTag(input, Tags.Where);
-        }
-
-        public IReTranslator CreateForOrderBy(string input)
-        {
-            return this.createForTag(input, Tags.OrderBy);
-        }
-
-        public IReTranslator CreateForGroupBy(string input)
-        {
-            return this.createForTag(input, Tags.GroupBy);
-        }
-
-        public IReTranslator CreateForViewFields(string input)
-        {
-            return this.createForTag(input, Tags.ViewFields);
         }
     }
 }

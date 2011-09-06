@@ -165,4 +165,18 @@ namespace CamlexNET
         }
     }
 
+    internal class IncorrectCamlException : Exception
+    {
+        public IncorrectCamlException(string tag)
+            : base(string.Format("Caml specified for tag '{0}' can not be translated to code", tag))
+        { }
+    }
+
+    internal class AtLeastOneCamlPartShouldNotBeEmptyException : Exception
+    {
+        public AtLeastOneCamlPartShouldNotBeEmptyException()
+            : base(string.Format("At least one part for the CAML should not be empty: {0}, {1}, {2}, {3}",
+                Tags.Where, Tags.OrderBy, Tags.GroupBy, Tags.ViewFields))
+        {}
+    }
 }
