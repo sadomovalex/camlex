@@ -2,6 +2,7 @@
 using System.Linq.Expressions;
 using System.Xml.Linq;
 using CamlexNET.Interfaces.ReverseEngeneering;
+using Microsoft.SharePoint;
 
 namespace CamlexNET.Impl.ReverseEngeneering.Caml
 {
@@ -31,12 +32,12 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml
             this.analyzerForViewFields = analyzerForViewFields;
         }
 
-        public Expression TranslateWhere()
+        public LambdaExpression TranslateWhere()
         {
             return this.translate(this.analyzerForWhere, Tags.Where);
         }
 
-        private Expression translate(IReAnalyzer analyzer, string tag)
+        private LambdaExpression translate(IReAnalyzer analyzer, string tag)
         {
             if (analyzer == null)
             {
@@ -47,20 +48,21 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml
                 throw new IncorrectCamlException(tag);
             }
             var operation = analyzer.GetOperation();
-            return operation.ToExpression();
+            var expr = operation.ToExpression();
+            return Expression.Lambda(expr, Expression.Parameter(typeof(SPListItem), ReflectionHelper.CommonParameterName));
         }
 
-        public Expression TranslateOrderBy()
+        public LambdaExpression TranslateOrderBy()
         {
             return this.translate(this.analyzerForOrderBy, Tags.OrderBy);
         }
 
-        public Expression TranslateGroupBy()
+        public LambdaExpression TranslateGroupBy()
         {
             return this.translate(this.analyzerForGroupBy, Tags.GroupBy);
         }
 
-        public Expression TranslateViewFields()
+        public LambdaExpression TranslateViewFields()
         {
             return this.translate(this.analyzerForViewFields, Tags.ViewFields);
         }
