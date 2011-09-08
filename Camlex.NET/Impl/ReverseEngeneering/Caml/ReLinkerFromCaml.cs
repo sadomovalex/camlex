@@ -69,7 +69,65 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml
             {
                 return this.getOrderByMethodInfo();
             }
+            if (methodName == ReflectionHelper.GroupByMethodName)
+            {
+                return this.getGroupByMethodInfo();
+            }
             throw new NotImplementedException();
+        }
+
+        private MethodInfo getGroupByMethodInfo()
+        {
+            var count = this.groupBy.Descendants(Tags.FieldRef).Count();
+            if (count == 0)
+            {
+                return null;
+            }
+            if (count == 1)
+            {
+                bool hasCollapse = this.groupBy.Attributes(Attributes.Collapse).Count() > 0;
+                bool hasGroupLimit = this.groupBy.Attributes(Attributes.GroupLimit).Count() > 0;
+
+                if (hasCollapse && hasGroupLimit)
+                {
+//                    bool collapse;
+//                    if (!bool.TryParse((string)groupBy.Attribute(Attributes.Collapse), out collapse))
+//                    {
+//                        throw new CantParseBooleanAttributeException(Attributes.Collapse);
+//                    }
+//                    int groupLimit;
+//                    if (!int.TryParse((string)groupBy.Attribute(Attributes.GroupLimit), out groupLimit))
+//                    {
+//                        throw new CantParseIntegerAttributeException(Attributes.GroupLimit);
+//                    }
+                    return typeof(IQuery).GetMethod(ReflectionHelper.GroupByMethodName,
+                                                    new[] { typeof(Expression<Func<SPListItem, object>>), typeof(bool?), typeof(int?) });
+                }
+                if (hasCollapse && !hasGroupLimit)
+                {
+//                    bool collapse;
+//                    if (!bool.TryParse((string)groupBy.Attribute(Attributes.Collapse), out collapse))
+//                    {
+//                        throw new CantParseBooleanAttributeException(Attributes.Collapse);
+//                    }
+                    return typeof(IQuery).GetMethod(ReflectionHelper.GroupByMethodName,
+                                                    new[] { typeof(Expression<Func<SPListItem, object>>), typeof(bool?) });
+                }
+                if (!hasCollapse && hasGroupLimit)
+                {
+//                    int groupLimit;
+//                    if (!int.TryParse((string)groupBy.Attribute(Attributes.GroupLimit), out groupLimit))
+//                    {
+//                        throw new CantParseIntegerAttributeException(Attributes.GroupLimit);
+//                    }
+                    return typeof(IQuery).GetMethod(ReflectionHelper.GroupByMethodName,
+                                                    new[] { typeof(Expression<Func<SPListItem, object>>), typeof(int?) });
+                }
+                return typeof(IQuery).GetMethod(ReflectionHelper.GroupByMethodName,
+                                                new[] { typeof(Expression<Func<SPListItem, object>>) });
+            }
+            else return typeof(IQuery).GetMethod(ReflectionHelper.GroupByMethodName,
+                                                new[] { typeof(Expression<Func<SPListItem, object[]>>), typeof(bool?), typeof(int?) });
         }
 
         private MethodInfo getOrderByMethodInfo()

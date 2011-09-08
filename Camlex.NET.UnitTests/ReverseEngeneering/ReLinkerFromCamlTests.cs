@@ -85,5 +85,31 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
             var expr = l.Link((Expression<Func<SPListItem, bool>>)(x => (int)x["foo"] == 1), (Expression<Func<SPListItem, object>>)(x => x["Title"] as Camlex.Asc), null, null);
             Assert.That(expr.ToString(), Is.EqualTo("Query().Where(x => (Convert(x.get_Item(\"foo\")) = 1)).OrderBy(x => (x.get_Item(\"Title\") As Asc))"));
         }
+
+        [Test]
+        public void test_WHEN_group_by_is_specified_THEN_expressions_are_linked_correctly()
+        {
+            var groupBy =
+                "  <GroupBy>" +
+                "    <FieldRef Name=\"field1\" />" +
+                "  </GroupBy>";
+
+            var l = new ReLinkerFromCaml(null, null, XmlHelper.Get(groupBy), null);
+            var expr = l.Link(null, null, (Expression<Func<SPListItem, object>>)(x => x["field1"]), null);
+            Assert.That(expr.ToString(), Is.EqualTo("Query().GroupBy(x => x.get_Item(\"field1\"))"));
+        }
+
+        [Test]
+        public void test_WHEN_group_by_with_collapse_is_specified_THEN_expressions_are_linked_correctly()
+        {
+            var groupBy =
+                "  <GroupBy Collapse=\"True\">" +
+                "    <FieldRef Name=\"field1\" />" +
+                "  </GroupBy>";
+
+            var l = new ReLinkerFromCaml(null, null, XmlHelper.Get(groupBy), null);
+            var expr = l.Link(null, null, (Expression<Func<SPListItem, object>>)(x => x["field1"]), null);
+            Assert.That(expr.ToString(), Is.EqualTo("Query().GroupBy(x => x.get_Item(\"field1\"), true)"));
+        }
     }
 }
