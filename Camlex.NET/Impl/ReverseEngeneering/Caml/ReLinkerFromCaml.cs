@@ -7,6 +7,7 @@ using System.Text;
 using System.Xml.Linq;
 using CamlexNET.Interfaces;
 using CamlexNET.Interfaces.ReverseEngeneering;
+using Microsoft.SharePoint;
 
 namespace CamlexNET.Impl.ReverseEngeneering.Caml
 {
@@ -49,7 +50,10 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml
                 if (kv.Value != null)
                 {
                     var mi = this.getMethodInfo(kv.Key);
-                    expr = Expression.Call(expr, mi, kv.Value);
+                    if (mi != null)
+                    {
+                        expr = Expression.Call(expr, mi, kv.Value);
+                    }
                 }
             }
             return expr;
@@ -61,7 +65,27 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml
             {
                 return ReflectionHelper.GetMethodInfo(typeof (IQuery), methodName);
             }
+            if (methodName == ReflectionHelper.OrderByMethodName)
+            {
+                return this.getOrderByMethodInfo();
+            }
             throw new NotImplementedException();
+        }
+
+        private MethodInfo getOrderByMethodInfo()
+        {
+            var count = this.orderBy.Descendants(Tags.FieldRef).Count();
+            if (count == 0)
+            {
+                return null;
+            }
+            if (count == 1)
+            {
+                return typeof(IQuery).GetMethod(ReflectionHelper.OrderByMethodName,
+                                                new[] {typeof (Expression<Func<SPListItem, object>>)});
+            }
+            else return typeof(IQuery).GetMethod(ReflectionHelper.OrderByMethodName,
+                                                new[] { typeof(Expression<Func<SPListItem, object[]>>) });
         }
     }
 }
