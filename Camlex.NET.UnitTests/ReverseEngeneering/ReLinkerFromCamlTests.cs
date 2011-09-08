@@ -111,5 +111,18 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
             var expr = l.Link(null, null, (Expression<Func<SPListItem, object>>)(x => x["field1"]), null);
             Assert.That(expr.ToString(), Is.EqualTo("Query().GroupBy(x => x.get_Item(\"field1\"), true)"));
         }
+
+        [Test]
+        public void test_WHEN_view_fields_is_specified_THEN_expressions_are_linked_correctly()
+        {
+            string viewFields =
+                "<ViewFields>" +
+                    "<FieldRef Name=\"Title\" />" +
+                "</ViewFields>";
+
+            var l = new ReLinkerFromCaml(null, null, null, XmlHelper.Get(viewFields));
+            var expr = l.Link(null, null, null, (Expression<Func<SPListItem, object>>)(x => x["Title"]));
+            Assert.That(expr.ToString(), Is.EqualTo("Query().ViewFields(x => x.get_Item(\"Title\"))"));
+        }
     }
 }

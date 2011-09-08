@@ -73,7 +73,27 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml
             {
                 return this.getGroupByMethodInfo();
             }
+            if (methodName == ReflectionHelper.ViewFieldsMethodName)
+            {
+                return this.getViewFieldsMethodInfo();
+            }
             throw new NotImplementedException();
+        }
+
+        private MethodInfo getViewFieldsMethodInfo()
+        {
+            var count = this.viewFields.Descendants(Tags.FieldRef).Count();
+            if (count == 0)
+            {
+                return null;
+            }
+            if (count == 1)
+            {
+                return typeof(IQueryEx).GetMethod(ReflectionHelper.ViewFieldsMethodName,
+                                                new[] { typeof(Expression<Func<SPListItem, object>>), typeof(bool) });
+            }
+            else return typeof(IQueryEx).GetMethod(ReflectionHelper.OrderByMethodName,
+                                                new[] { typeof(Expression<Func<SPListItem, object[]>>), typeof(bool) });
         }
 
         private MethodInfo getGroupByMethodInfo()
