@@ -18,6 +18,17 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml
         private XElement groupBy;
         private XElement viewFields;
 
+        private class MethodInfoWithParams
+        {
+            public MethodInfo MethodInfo { get; set; }
+            public List<Expression> Params { get; set; }
+            public MethodInfoWithParams(MethodInfo mi, List<Expression> p)
+            {
+                this.MethodInfo = mi;
+                this.Params = p;
+            }
+        }
+
         public ReLinkerFromCaml(XElement where, XElement orderBy, XElement groupBy, XElement viewFields)
         {
             this.where = where;
@@ -50,20 +61,29 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml
                 if (kv.Value != null)
                 {
                     var mi = this.getMethodInfo(kv.Key);
-                    if (mi != null)
+                    if (mi != null && mi.MethodInfo != null)
                     {
-                        expr = Expression.Call(expr, mi, kv.Value);
+                        var args = new List<Expression>();
+                        // 1st param is always lambda expression
+                        args.Add(kv.Value);
+                        if (mi.Params != null && mi.Params.Count > 0)
+                        {
+                            mi.Params.ForEach(p => args.Add(p));
+                        }
+                        // as we use fluent interfaces we just pass on next step value which we got from prev step
+                        expr = Expression.Call(expr, mi.MethodInfo, args);
                     }
                 }
             }
             return expr;
         }
 
-        private MethodInfo getMethodInfo(string methodName)
+        private MethodInfoWithParams getMethodInfo(string methodName)
         {
             if (methodName == ReflectionHelper.WhereMethodName)
             {
-                return ReflectionHelper.GetMethodInfo(typeof (IQuery), methodName);
+                var mi = ReflectionHelper.GetMethodInfo(typeof (IQuery), methodName);
+                return new MethodInfoWithParams(mi, null);
             }
             if (methodName == ReflectionHelper.OrderByMethodName)
             {
@@ -77,93 +97,151 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml
             {
                 return this.getViewFieldsMethodInfo();
             }
-            throw new NotImplementedException();
+            return null;
         }
 
-        private MethodInfo getViewFieldsMethodInfo()
+        private MethodInfoWithParams getViewFieldsMethodInfo()
         {
             var count = this.viewFields.Descendants(Tags.FieldRef).Count();
             if (count == 0)
             {
                 return null;
             }
+            MethodInfo mi = null;
             if (count == 1)
             {
-                return typeof(IQueryEx).GetMethod(ReflectionHelper.ViewFieldsMethodName,
+                mi = typeof(IQueryEx).GetMethod(ReflectionHelper.ViewFieldsMethodName,
                                                 new[] { typeof(Expression<Func<SPListItem, object>>), typeof(bool) });
             }
-            else return typeof(IQueryEx).GetMethod(ReflectionHelper.OrderByMethodName,
+            else
+            {
+                mi = typeof(IQueryEx).GetMethod(ReflectionHelper.OrderByMethodName,
                                                 new[] { typeof(Expression<Func<SPListItem, object[]>>), typeof(bool) });
+            }
+            return new MethodInfoWithParams(mi, null);
         }
 
-        private MethodInfo getGroupByMethodInfo()
+        private MethodInfoWithParams getGroupByMethodInfo()
         {
             var count = this.groupBy.Descendants(Tags.FieldRef).Count();
             if (count == 0)
             {
                 return null;
             }
-            if (count == 1)
-            {
-                bool hasCollapse = this.groupBy.Attributes(Attributes.Collapse).Count() > 0;
-                bool hasGroupLimit = this.groupBy.Attributes(Attributes.GroupLimit).Count() > 0;
 
-                if (hasCollapse && hasGroupLimit)
+            bool hasCollapse = this.groupBy.Attributes(Attributes.Collapse).Count() > 0;
+            bool hasGroupLimit = this.groupBy.Attributes(Attributes.GroupLimit).Count() > 0;
+
+            bool collapse = false;
+            int groupLimit = 0;
+
+            if (hasCollapse)
+            {
+                if (!bool.TryParse((string) groupBy.Attribute(Attributes.Collapse), out collapse))
                 {
-//                    bool collapse;
-//                    if (!bool.TryParse((string)groupBy.Attribute(Attributes.Collapse), out collapse))
-//                    {
-//                        throw new CantParseBooleanAttributeException(Attributes.Collapse);
-//                    }
-//                    int groupLimit;
-//                    if (!int.TryParse((string)groupBy.Attribute(Attributes.GroupLimit), out groupLimit))
-//                    {
-//                        throw new CantParseIntegerAttributeException(Attributes.GroupLimit);
-//                    }
-                    return typeof(IQuery).GetMethod(ReflectionHelper.GroupByMethodName,
-                                                    new[] { typeof(Expression<Func<SPListItem, object>>), typeof(bool?), typeof(int?) });
+                    throw new CantParseBooleanAttributeException(Attributes.Collapse);
                 }
-                if (hasCollapse && !hasGroupLimit)
-                {
-//                    bool collapse;
-//                    if (!bool.TryParse((string)groupBy.Attribute(Attributes.Collapse), out collapse))
-//                    {
-//                        throw new CantParseBooleanAttributeException(Attributes.Collapse);
-//                    }
-                    return typeof(IQuery).GetMethod(ReflectionHelper.GroupByMethodName,
-                                                    new[] { typeof(Expression<Func<SPListItem, object>>), typeof(bool?) });
-                }
-                if (!hasCollapse && hasGroupLimit)
-                {
-//                    int groupLimit;
-//                    if (!int.TryParse((string)groupBy.Attribute(Attributes.GroupLimit), out groupLimit))
-//                    {
-//                        throw new CantParseIntegerAttributeException(Attributes.GroupLimit);
-//                    }
-                    return typeof(IQuery).GetMethod(ReflectionHelper.GroupByMethodName,
-                                                    new[] { typeof(Expression<Func<SPListItem, object>>), typeof(int?) });
-                }
-                return typeof(IQuery).GetMethod(ReflectionHelper.GroupByMethodName,
-                                                new[] { typeof(Expression<Func<SPListItem, object>>) });
             }
-            else return typeof(IQuery).GetMethod(ReflectionHelper.GroupByMethodName,
-                                                new[] { typeof(Expression<Func<SPListItem, object[]>>), typeof(bool?), typeof(int?) });
+            if (hasGroupLimit)
+            {
+                if (!int.TryParse((string) groupBy.Attribute(Attributes.GroupLimit), out groupLimit))
+                {
+                    throw new CantParseIntegerAttributeException(Attributes.GroupLimit);
+                }
+            }
+
+            var p = this.getGroupByParams(hasGroupLimit, hasCollapse, groupLimit, collapse);
+            var mi =  this.getGroupByMethodInfo(count, hasCollapse, hasGroupLimit);
+            return new MethodInfoWithParams(mi, p);
         }
 
-        private MethodInfo getOrderByMethodInfo()
+        private MethodInfo getGroupByMethodInfo(int count, bool hasCollapse, bool hasGroupLimit)
+        {
+            MethodInfo mi;
+            if (count == 1)
+            {
+                if (hasCollapse && hasGroupLimit)
+                {
+                    mi = typeof (IQuery).GetMethod(ReflectionHelper.GroupByMethodName,
+                                                   new[]
+                                                       {
+                                                           typeof (Expression<Func<SPListItem, object>>), typeof (bool?), typeof (int?)
+                                                       });
+                }
+                else if (hasCollapse && !hasGroupLimit)
+                {
+                    mi = typeof (IQuery).GetMethod(ReflectionHelper.GroupByMethodName,
+                                                   new[] {typeof (Expression<Func<SPListItem, object>>), typeof (bool?)});
+                }
+                else if (!hasCollapse && hasGroupLimit)
+                {
+                    mi = typeof (IQuery).GetMethod(ReflectionHelper.GroupByMethodName,
+                                                   new[] {typeof (Expression<Func<SPListItem, object>>), typeof (int?)});
+                }
+                else
+                {
+                    mi = typeof (IQuery).GetMethod(ReflectionHelper.GroupByMethodName,
+                                                   new[] {typeof (Expression<Func<SPListItem, object>>)});
+                }
+            }
+            else
+            {
+                mi = typeof (IQuery).GetMethod(ReflectionHelper.GroupByMethodName,
+                                               new[]
+                                                   {
+                                                       typeof (Expression<Func<SPListItem, object[]>>), typeof (bool?), typeof (int?)
+                                                   });
+            }
+            return mi;
+        }
+
+        private List<Expression> getGroupByParams(bool hasGroupLimit, bool hasCollapse, int groupLimit, bool collapse)
+        {
+            List<Expression> p = null;
+            if (hasCollapse && hasGroupLimit)
+            {
+                p = new List<Expression>(new[]
+                                                 {
+                                                     Expression.Convert(Expression.Constant(collapse), typeof(bool?)),
+                                                     Expression.Convert(Expression.Constant(groupLimit), typeof(int?)),
+                                                 });
+            }
+            else if (hasCollapse && !hasGroupLimit)
+            {
+                p = new List<Expression>(new[]
+                                                 {
+                                                     Expression.Convert(Expression.Constant(collapse), typeof(bool?)),
+                                                 });
+            }
+            else if (!hasCollapse && hasGroupLimit)
+            {
+                p = new List<Expression>(new[]
+                                                 {
+                                                     Expression.Convert(Expression.Constant(groupLimit), typeof(int?)),
+                                                 });
+            }
+            return p;
+        }
+
+        private MethodInfoWithParams getOrderByMethodInfo()
         {
             var count = this.orderBy.Descendants(Tags.FieldRef).Count();
+            MethodInfo mi = null;
             if (count == 0)
             {
                 return null;
             }
             if (count == 1)
             {
-                return typeof(IQuery).GetMethod(ReflectionHelper.OrderByMethodName,
+                mi = typeof(IQuery).GetMethod(ReflectionHelper.OrderByMethodName,
                                                 new[] {typeof (Expression<Func<SPListItem, object>>)});
             }
-            else return typeof(IQuery).GetMethod(ReflectionHelper.OrderByMethodName,
+            else
+            {
+                mi = typeof(IQuery).GetMethod(ReflectionHelper.OrderByMethodName,
                                                 new[] { typeof(Expression<Func<SPListItem, object[]>>) });
+            }
+            return new MethodInfoWithParams(mi, null);
         }
     }
 }
