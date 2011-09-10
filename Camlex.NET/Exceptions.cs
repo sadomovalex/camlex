@@ -187,19 +187,19 @@ namespace CamlexNET
         {}
     }
 
-//    internal class CantParseBooleanAttributeException : Exception
-//    {
-//        public CantParseBooleanAttributeException(string attr) :
-//            base(string.Format("Can't parse boolean attribute '{0}'", attr))
-//        {
-//        }
-//    }
-//
-//    internal class CantParseIntegerAttributeException : Exception
-//    {
-//        public CantParseIntegerAttributeException(string attr) :
-//            base(string.Format("Can't parse integer attribute '{0}'", attr))
-//        {
-//        }
-//    }
+    internal class CantParseBooleanAttributeException : Exception
+    {
+        public CantParseBooleanAttributeException(string attr) :
+            base(string.Format("Can't parse boolean attribute '{0}'", attr))
+        {
+        }
+    }
+
+    internal class CantParseIntegerAttributeException : Exception
+    {
+        public CantParseIntegerAttributeException(string attr) :
+            base(string.Format("Can't parse integer attribute '{0}'", attr))
+        {
+        }
+    }
 }

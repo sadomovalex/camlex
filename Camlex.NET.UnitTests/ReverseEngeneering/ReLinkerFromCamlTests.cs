@@ -109,7 +109,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
 
             var l = new ReLinkerFromCaml(null, null, XmlHelper.Get(groupBy), null);
             var expr = l.Link(null, null, (Expression<Func<SPListItem, object>>)(x => x["field1"]), null);
-            Assert.That(expr.ToString(), Is.EqualTo("Query().GroupBy(x => x.get_Item(\"field1\"), true)"));
+            Assert.That(expr.ToString(), Is.EqualTo("Query().GroupBy(x => x.get_Item(\"field1\"), Convert(True))"));
         }
 
         [Test]
