@@ -39,12 +39,20 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml
 
         public Expression Link(LambdaExpression where, LambdaExpression orderBy, LambdaExpression groupBy, LambdaExpression viewFields)
         {
-            var list = new List<KeyValuePair<string, LambdaExpression>>();
-            list.Add(new KeyValuePair<string, LambdaExpression>(ReflectionHelper.WhereMethodName, where));
-            list.Add(new KeyValuePair<string, LambdaExpression>(ReflectionHelper.OrderByMethodName, orderBy));
-            list.Add(new KeyValuePair<string, LambdaExpression>(ReflectionHelper.GroupByMethodName, groupBy));
-            list.Add(new KeyValuePair<string, LambdaExpression>(ReflectionHelper.ViewFieldsMethodName, viewFields));
+            var listFluent = new List<KeyValuePair<string, LambdaExpression>>();
+            listFluent.Add(new KeyValuePair<string, LambdaExpression>(ReflectionHelper.WhereMethodName, where));
+            listFluent.Add(new KeyValuePair<string, LambdaExpression>(ReflectionHelper.OrderByMethodName, orderBy));
+            listFluent.Add(new KeyValuePair<string, LambdaExpression>(ReflectionHelper.GroupByMethodName, groupBy));
 
+            var listViewFields = new List<KeyValuePair<string, LambdaExpression>>();
+            listViewFields.Add(new KeyValuePair<string, LambdaExpression>(ReflectionHelper.ViewFieldsMethodName, viewFields));
+
+            if (listFluent.Any(kv => kv.Value != null) && listViewFields.Any(kv => kv.Value != null))
+            {
+                throw new OnlyOnePartOfQueryShouldBeNotNullException();
+            }
+
+            var list = listFluent.Any(kv => kv.Value != null) ? listFluent : listViewFields;
             if (list.All(kv => kv.Value == null))
             {
                 throw new AtLeastOneCamlPartShouldNotBeEmptyException();
@@ -115,10 +123,12 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml
             }
             else
             {
-                mi = typeof(IQueryEx).GetMethod(ReflectionHelper.OrderByMethodName,
+                mi = typeof(IQueryEx).GetMethod(ReflectionHelper.ViewFieldsMethodName,
                                                 new[] { typeof(Expression<Func<SPListItem, object[]>>), typeof(bool) });
             }
-            return new MethodInfoWithParams(mi, null);
+            var p = new List<Expression>();
+            p.Add(Expression.Constant(true));
+            return new MethodInfoWithParams(mi, p);
         }
 
         private MethodInfoWithParams getGroupByMethodInfo()

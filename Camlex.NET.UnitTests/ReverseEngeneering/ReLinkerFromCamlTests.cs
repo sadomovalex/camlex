@@ -195,16 +195,30 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
         }
 
         [Test]
-        public void test_WHEN_view_fields_is_specified_THEN_expressions_are_linked_correctly()
+        public void test_WHEN_view_field_is_specified_THEN_expressions_are_linked_correctly()
         {
             string viewFields =
                 "<ViewFields>" +
-                    "<FieldRef Name=\"Title\" />" +
+                    "<FieldRef Name=\"field1\" />" +
                 "</ViewFields>";
 
             var l = new ReLinkerFromCaml(null, null, null, XmlHelper.Get(viewFields));
-            var expr = l.Link(null, null, null, (Expression<Func<SPListItem, object>>)(x => x["Title"]));
-            Assert.That(expr.ToString(), Is.EqualTo("Query().ViewFields(x => x.get_Item(\"Title\"))"));
+            var expr = l.Link(null, null, null, (Expression<Func<SPListItem, object>>)(x => x["field1"]));
+            Assert.That(expr.ToString(), Is.EqualTo("Query().ViewFields(x => x.get_Item(\"field1\"), True)"));
+        }
+
+        [Test]
+        public void test_WHEN_view_several_fields_are_specified_THEN_expressions_are_linked_correctly()
+        {
+            string viewFields =
+                "<ViewFields>" +
+                    "<FieldRef Name=\"field1\" />" +
+                    "<FieldRef Name=\"field2\" />" +
+                "</ViewFields>";
+
+            var l = new ReLinkerFromCaml(null, null, null, XmlHelper.Get(viewFields));
+            var expr = l.Link(null, null, null, (Expression<Func<SPListItem, object[]>>)(x => new[] { x["field1"], x["field2"] }));
+            Assert.That(expr.ToString(), Is.EqualTo("Query().ViewFields(x => new [] {x.get_Item(\"field1\"), x.get_Item(\"field2\")}, True)"));
         }
     }
 }
