@@ -113,6 +113,88 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
         }
 
         [Test]
+        public void test_WHEN_group_by_with_group_limit_is_specified_THEN_expressions_are_linked_correctly()
+        {
+            var groupBy =
+                "  <GroupBy GroupLimit=\"1\">" +
+                "    <FieldRef Name=\"field1\" />" +
+                "  </GroupBy>";
+
+            var l = new ReLinkerFromCaml(null, null, XmlHelper.Get(groupBy), null);
+            var expr = l.Link(null, null, (Expression<Func<SPListItem, object>>)(x => x["field1"]), null);
+            Assert.That(expr.ToString(), Is.EqualTo("Query().GroupBy(x => x.get_Item(\"field1\"), Convert(1))"));
+        }
+
+        [Test]
+        public void test_WHEN_group_by_with_collapse_and_group_limit_is_specified_THEN_expressions_are_linked_correctly()
+        {
+            var groupBy =
+                "  <GroupBy Collapse=\"True\" GroupLimit=\"1\">" +
+                "    <FieldRef Name=\"field1\" />" +
+                "  </GroupBy>";
+
+            var l = new ReLinkerFromCaml(null, null, XmlHelper.Get(groupBy), null);
+            var expr = l.Link(null, null, (Expression<Func<SPListItem, object>>)(x => x["field1"]), null);
+            Assert.That(expr.ToString(), Is.EqualTo("Query().GroupBy(x => x.get_Item(\"field1\"), Convert(True), Convert(1))"));
+        }
+
+        [Test]
+        public void test_WHEN_group_by_is_specified_with_several_fied_refs_THEN_expressions_are_linked_correctly()
+        {
+            var groupBy =
+                "  <GroupBy>" +
+                "    <FieldRef Name=\"field1\" />" +
+                "    <FieldRef Name=\"field2\" />" +
+                "  </GroupBy>";
+
+            var l = new ReLinkerFromCaml(null, null, XmlHelper.Get(groupBy), null);
+            var expr = l.Link(null, null, (Expression<Func<SPListItem, object[]>>)(x => new[] { x["field1"], x["field2"] }), null);
+            Assert.That(expr.ToString(), Is.EqualTo("Query().GroupBy(x => new [] {x.get_Item(\"field1\"), x.get_Item(\"field2\")}, Convert(null), Convert(null))"));
+        }
+
+        [Test]
+        public void test_WHEN_group_by_with_collapse_is_specified_with_several_fied_refs_THEN_expressions_are_linked_correctly()
+        {
+            var groupBy =
+                "  <GroupBy Collapse=\"True\">" +
+                "    <FieldRef Name=\"field1\" />" +
+                "    <FieldRef Name=\"field2\" />" +
+                "  </GroupBy>";
+
+            var l = new ReLinkerFromCaml(null, null, XmlHelper.Get(groupBy), null);
+            var expr = l.Link(null, null, (Expression<Func<SPListItem, object[]>>)(x => new[] { x["field1"], x["field2"] }), null);
+            Assert.That(expr.ToString(), Is.EqualTo("Query().GroupBy(x => new [] {x.get_Item(\"field1\"), x.get_Item(\"field2\")}, Convert(True), Convert(null))"));
+        }
+
+        [Test]
+        public void test_WHEN_group_by_with_group_limit_is_specified_with_several_fied_refs_THEN_expressions_are_linked_correctly()
+        {
+            var groupBy =
+                "  <GroupBy GroupLimit=\"1\">" +
+                "    <FieldRef Name=\"field1\" />" +
+                "    <FieldRef Name=\"field2\" />" +
+                "  </GroupBy>";
+
+            var l = new ReLinkerFromCaml(null, null, XmlHelper.Get(groupBy), null);
+            var expr = l.Link(null, null, (Expression<Func<SPListItem, object[]>>)(x => new[] { x["field1"], x["field2"] }), null);
+            Assert.That(expr.ToString(), Is.EqualTo("Query().GroupBy(x => new [] {x.get_Item(\"field1\"), x.get_Item(\"field2\")}, Convert(null), Convert(1))"));
+        }
+
+        [Test]
+        public void test_WHEN_group_by_with_collapse_and_group_limit_is_specified_with_several_fied_refs_THEN_expressions_are_linked_correctly()
+        {
+            var groupBy =
+                "  <GroupBy Collapse=\"True\" GroupLimit=\"1\">" +
+                "    <FieldRef Name=\"field1\" />" +
+                "    <FieldRef Name=\"field2\" />" +
+                "  </GroupBy>";
+
+            var l = new ReLinkerFromCaml(null, null, XmlHelper.Get(groupBy), null);
+            var expr = l.Link(null, null, (Expression<Func<SPListItem, object[]>>)(x => new[] { x["field1"], x["field2"] }), null);
+            Assert.That(expr.ToString(), Is.EqualTo("Query().GroupBy(x => new [] {x.get_Item(\"field1\"), x.get_Item(\"field2\")}, Convert(True), Convert(1))"));
+        }
+
+        [Test]
         public void test_WHEN_view_fields_is_specified_THEN_expressions_are_linked_correctly()
         {
             string viewFields =
