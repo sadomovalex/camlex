@@ -220,5 +220,13 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
             var expr = l.Link(null, null, null, (Expression<Func<SPListItem, object[]>>)(x => new[] { x["field1"], x["field2"] }));
             Assert.That(expr.ToString(), Is.EqualTo("Query().ViewFields(x => new [] {x.get_Item(\"field1\"), x.get_Item(\"field2\")}, True)"));
         }
+
+        [Test]
+        [ExpectedException(typeof(OnlyOnePartOfQueryShouldBeNotNullException))]
+        public void test_WHEN_fluent_part_and_view_fields_are_specified_THEN_exception_is_thrown()
+        {
+            var l = new ReLinkerFromCaml(null, null, null, null);
+            var expr = l.Link((Expression<Func<SPListItem, bool>>)(x => (int)x["foo"] == 1), null, null, (Expression<Func<SPListItem, object[]>>)(x => new[] { x["field1"], x["field2"] }));
+        }
     }
 }
