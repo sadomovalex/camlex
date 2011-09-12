@@ -226,7 +226,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
         public void test_WHEN_fluent_part_and_view_fields_are_specified_THEN_exception_is_thrown()
         {
             var l = new ReLinkerFromCaml(null, null, null, null);
-            var expr = l.Link((Expression<Func<SPListItem, bool>>)(x => (int)x["foo"] == 1), null, null, (Expression<Func<SPListItem, object[]>>)(x => new[] { x["field1"], x["field2"] }));
+            l.Link((Expression<Func<SPListItem, bool>>)(x => (int)x["foo"] == 1), null, null, (Expression<Func<SPListItem, object[]>>)(x => new[] { x["field1"], x["field2"] }));
         }
     }
 }

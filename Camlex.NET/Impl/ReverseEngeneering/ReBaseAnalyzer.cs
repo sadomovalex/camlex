@@ -26,17 +26,32 @@
 #endregion
 
 using System;
-using System.Linq.Expressions;
 using System.Xml.Linq;
+using CamlexNET.Interfaces;
+using CamlexNET.Interfaces.ReverseEngeneering;
 
-namespace CamlexNET.Interfaces.ReverseEngeneering
+namespace CamlexNET.Impl.ReverseEngeneering
 {
-    internal interface IReOperandBuilder
+    internal abstract class ReBaseAnalyzer : IReAnalyzer
     {
-        IOperand CreateFieldRefOperand(XElement el, IOperand valueOperand);
-        IOperand CreateFieldRefOperandWithOrdering(XElement el, Camlex.OrderDirection orderDirection);
-//        IOperand CreateValueOperandForNativeSyntax(string input);
-//        IOperand CreateValueOperandForNativeSyntax(string input, Type explicitOperandType);
-        IOperand CreateValueOperand(XElement el);
+        protected XElement el;
+        protected IReOperandBuilder operandBuilder;
+
+        public ReBaseAnalyzer(XElement el, IReOperandBuilder operandBuilder)
+        {
+            this.el = el;
+            this.operandBuilder = operandBuilder;
+        }
+
+        public XElement Element
+        {
+            get { return this.el; }
+        }
+
+        public virtual bool IsValid()
+        {
+            return (this.el != null);
+        }
+        public abstract IOperation GetOperation();
     }
 }
