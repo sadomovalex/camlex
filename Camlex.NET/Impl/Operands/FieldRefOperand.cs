@@ -132,17 +132,17 @@ namespace CamlexNET.Impl.Operands
             {
                 var mi = typeof(SPListItem).GetProperty(ReflectionHelper.Item, typeof(object), new[] { typeof(Guid) }, null).GetGetMethod();
                 return
-                    LambdaExpression.Call(
-                        LambdaExpression.Parameter(typeof(SPListItem), ReflectionHelper.CommonParameterName),
-                        mi, new[] { LambdaExpression.Constant(this.id.Value) });
+                    Expression.Call(
+                        Expression.Parameter(typeof(SPListItem), ReflectionHelper.CommonParameterName),
+                        mi, new[] { Expression.Constant(this.id.Value) });
             }
             else if (!string.IsNullOrEmpty(this.fieldName))
             {
                 var mi = typeof(SPListItem).GetProperty(ReflectionHelper.Item, typeof(object), new[] { typeof(string) }, null).GetGetMethod();
                 return
-                    LambdaExpression.Call(
-                        LambdaExpression.Parameter(typeof(SPListItem), ReflectionHelper.CommonParameterName),
-                        mi, new[] { LambdaExpression.Constant(this.fieldName) });
+                    Expression.Call(
+                        Expression.Parameter(typeof(SPListItem), ReflectionHelper.CommonParameterName),
+                        mi, new[] { Expression.Constant(this.fieldName) });
             }
             else
             {

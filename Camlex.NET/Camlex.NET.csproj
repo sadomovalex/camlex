@@ -72,7 +72,6 @@
     <Compile Include="Impl\Operands\DateTimeValueOperand.cs" />
     <Compile Include="Impl\Operands\GenericStringBasedValueOperand.cs" />
     <Compile Include="Impl\Operands\LookupIdValueOperand.cs" />
-    <Compile Include="Impl\Operations\Array\ReArrayAnalyzer.cs" />
     <Compile Include="Impl\Operations\BeginsWith\BeginsWithAnalyzer.cs" />
     <Compile Include="Impl\Operations\BeginsWith\BeginsWithOperation.cs" />
     <Compile Include="Impl\Operations\Contains\ContainsAnalyzer.cs" />
@@ -81,6 +80,7 @@
     <Compile Include="Impl\Operations\DateRangesOverlap\DateRangesOverlapOperation.cs" />
     <Compile Include="Impl\Operations\Results\ExpressionOperationResult.cs" />
     <Compile Include="Impl\Query.cs" />
+    <Compile Include="Impl\ReverseEngeneering\Caml\Analyzers\ReArrayAnalyzer.cs" />
     <Compile Include="Impl\ReverseEngeneering\ReBaseAnalyzer.cs" />
     <Compile Include="Impl\ReverseEngeneering\Caml\Factories\ReAnalyzerFromCamlFactory.cs" />
     <Compile Include="Impl\ReverseEngeneering\Caml\Factories\ReLinkerFromCamlFactory.cs" />

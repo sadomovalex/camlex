@@ -11,18 +11,6 @@ using NUnit.Framework;
 
 namespace CamlexNET.UnitTests.ReverseEngeneering
 {
-    public static class XmlHelper
-    {
-        public static XElement Get(string xml)
-        {
-            using (var tr = new StringReader(xml))
-            {
-                var doc = XDocument.Load(tr);
-                return doc.Descendants().First();
-            }
-        }
-    }
-
     [TestFixture]
     public class ReLinkerFromCamlTests
     {
