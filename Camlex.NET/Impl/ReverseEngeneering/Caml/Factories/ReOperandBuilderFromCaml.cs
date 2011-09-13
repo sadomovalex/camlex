@@ -37,7 +37,7 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Factories
                 }
                 catch
                 {
-                    throw new NotCorrectAttrValueException(idAttr.Value, Attributes.ID);
+                    throw new CamlAnalysisException(string.Format("Value '{0}' is not correct for attribute '{1}'", idAttr.Value, Attributes.ID));
                 }
             }
 
@@ -50,12 +50,12 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Factories
 
             if (id != null && !string.IsNullOrEmpty(name))
             {
-                throw new OnlyOneAttributeShouldBeSpecified(Attributes.ID, Attributes.Name);
+                throw new CamlAnalysisException(string.Format("Only one from two attributes should be specified: {0} or {1}", Attributes.ID, Attributes.Name));
             }
 
             if (id == null && string.IsNullOrEmpty(name))
             {
-                throw new AtLeastOneAttributeShouldBeSpecified(Attributes.ID, Attributes.Name);
+                throw new CamlAnalysisException(string.Format("At least one from two attributes should be specified: {0} or {1}", Attributes.ID, Attributes.Name));
             }
 
             var attributes = el.Attributes().Where(

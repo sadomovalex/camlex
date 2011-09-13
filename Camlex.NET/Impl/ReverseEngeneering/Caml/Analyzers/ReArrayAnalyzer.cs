@@ -25,16 +25,14 @@
 // -----------------------------------------------------------------------------
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Xml.Linq;
-using CamlexNET.Impl.ReverseEngeneering;
+using CamlexNET.Impl.Operations.Array;
 using CamlexNET.Interfaces;
 using CamlexNET.Interfaces.ReverseEngeneering;
 
-namespace CamlexNET.Impl.Operations.Array
+namespace CamlexNET.Impl.ReverseEngeneering.Caml.Analyzers
 {
     internal class ReArrayAnalyzer : ReBaseAnalyzer
     {
@@ -65,7 +63,7 @@ namespace CamlexNET.Impl.Operations.Array
         {
             if (!IsValid())
             {
-                throw new NonSupportedXmlException(this.el);
+                throw new CamlAnalysisException(string.Format("Xml element '{0}' is not supported", el));
             }
             var operands = getFieldRefOperands(this.el);
             return new ArrayOperation(null, operands);

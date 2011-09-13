@@ -6,6 +6,7 @@ using System.Text;
 using System.Xml;
 using System.Xml.Linq;
 using CamlexNET.Impl.Operations.Array;
+using CamlexNET.Impl.ReverseEngeneering.Caml.Analyzers;
 using CamlexNET.Interfaces.ReverseEngeneering;
 
 namespace CamlexNET.Impl.ReverseEngeneering.Caml.Factories
@@ -37,7 +38,7 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Factories
             {
                 return this.getAnalyzerForAray(el);
             }
-            throw new NonSupportedTagException(el.Name.ToString());
+            throw new CamlAnalysisException(string.Format("Tag '{0}' is not supported. Supported tags are: {1}, {2}, {3}, {4}", el.Name, Tags.Where, Tags.OrderBy, Tags.GroupBy, Tags.ViewFields));
         }
 
         private IReAnalyzer getAnalyzerForAray(XElement el)
