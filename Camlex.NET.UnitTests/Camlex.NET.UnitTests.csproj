@@ -192,6 +192,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReverseEngeneering\Analyzers\ReArrayAnalyzerTests.cs" />
     <Compile Include="ReverseEngeneering\Factories\ReAnalyzerFromCamlFactoryTests.cs" />
+    <Compile Include="ReverseEngeneering\Factories\ReOperandBuilderFromCamlTests.cs" />
     <Compile Include="ReverseEngeneering\Factories\ReTranslatorFromCamlFactoryTests.cs" />
     <Compile Include="ReverseEngeneering\Operands\BooleanValueOperandTests.cs" />
     <Compile Include="ReverseEngeneering\Operands\DateTimeValueOperandTests.cs" />

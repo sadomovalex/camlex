@@ -76,7 +76,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers
                 "  </OrderBy>";
 
             var b = MockRepository.GenerateStub<IReOperandBuilder>();
-            b.Stub(c => c.CreateFieldRefOperand(null, null)).Return(new FieldRefOperand("1")).IgnoreArguments();
+            b.Stub(c => c.CreateFieldRefOperand(null)).Return(new FieldRefOperand("1")).IgnoreArguments();
             b.Stub(c => c.CreateFieldRefOperandWithOrdering(null, null)).Return(new FieldRefOperandWithOrdering(new FieldRefOperand("2"), new Camlex.Asc())).IgnoreArguments();
 
             var analyzer = new ReArrayAnalyzer(XmlHelper.Get(xml), b);

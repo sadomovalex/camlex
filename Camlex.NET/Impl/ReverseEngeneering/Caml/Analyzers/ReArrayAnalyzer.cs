@@ -86,7 +86,7 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Analyzers
                         }
                         else
                         {
-                            operand = this.operandBuilder.CreateFieldRefOperand(e, null);
+                            operand = this.operandBuilder.CreateFieldRefOperand(e);
                         }
 
                         if (operand != null)
