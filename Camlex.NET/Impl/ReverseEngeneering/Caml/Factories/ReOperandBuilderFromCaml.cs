@@ -11,22 +11,12 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Factories
 {
     internal class ReOperandBuilderFromCaml : IReOperandBuilder
     {
-        public IOperand CreateFieldRefOperand(XElement el, IOperand valueOperand)
+        public IOperand CreateFieldRefOperand(XElement el)
         {
             if (el == null)
             {
                 throw new ArgumentNullException("el");
             }
-            throw new NotImplementedException();
-        }
-
-        public IOperand CreateFieldRefOperandWithOrdering(XElement el, Camlex.OrderDirection orderDirection)
-        {
-            if (el == null)
-            {
-                throw new ArgumentNullException("el");
-            }
-
             Guid? id = null;
             var idAttr = el.Attributes().FirstOrDefault(a => a.Name == Attributes.ID);
             if (idAttr != null)
@@ -66,11 +56,18 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Factories
                 })
                     .Select(attr => new KeyValuePair<string, string>(attr.Name.ToString(), attr.Value))
                     .ToList();
-            if (id != null)
+
+            return (id != null ? new FieldRefOperand(id.Value, attributes) : new FieldRefOperand(name, attributes));
+        }
+
+        public IOperand CreateFieldRefOperandWithOrdering(XElement el, Camlex.OrderDirection orderDirection)
+        {
+            var fieldRefOperand = this.CreateFieldRefOperand(el) as FieldRefOperand;
+            if (fieldRefOperand == null)
             {
-                return new FieldRefOperand(id.Value, attributes);
+                throw new CamlAnalysisException(string.Format("Can't create field ref operand with ordering: underlying field ref operand is null. Xml which causes issue: '{0}'", el));
             }
-            return new FieldRefOperand(name, attributes);
+            return new FieldRefOperandWithOrdering(fieldRefOperand, orderDirection);
         }
 
         public IOperand CreateValueOperand(XElement el)

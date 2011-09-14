@@ -33,7 +33,7 @@ namespace CamlexNET.Interfaces.ReverseEngeneering
 {
     internal interface IReOperandBuilder
     {
-        IOperand CreateFieldRefOperand(XElement el, IOperand valueOperand);
+        IOperand CreateFieldRefOperand(XElement el);
         IOperand CreateFieldRefOperandWithOrdering(XElement el, Camlex.OrderDirection orderDirection);
 //        IOperand CreateValueOperandForNativeSyntax(string input);
 //        IOperand CreateValueOperandForNativeSyntax(string input, Type explicitOperandType);
