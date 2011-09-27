@@ -187,6 +187,12 @@ namespace CamlexNET.Impl.Factories
 
         private IOperand createValueOperand(Type type, object value, Expression expr)
         {
+            var includeTimeValue = ExpressionsHelper.IncludeTimeValue(expr);
+            return CreateValueOperand(type, value, includeTimeValue);
+        }
+
+        internal static IOperand CreateValueOperand(Type type, object value, bool includeTimeValue)
+        {
             // it is important to have check on NullValueOperand on 1st place
             if (value == null)
             {
@@ -224,8 +230,6 @@ namespace CamlexNET.Impl.Factories
             // DateTime operand can be native or string based
             if (type == typeof(DateTime) || type == typeof(DataTypes.DateTime))
             {
-                var includeTimeValue = ExpressionsHelper.IncludeTimeValue(expr);
-
                 if (value.GetType() == typeof(DateTime))
                 {
                     return new DateTimeValueOperand((DateTime)value, includeTimeValue);

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
+using CamlexNET.Impl.Factories;
 using CamlexNET.Impl.Operands;
 using CamlexNET.Interfaces;
 using CamlexNET.Interfaces.ReverseEngeneering;
@@ -65,7 +66,10 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Factories
             var fieldRefOperand = this.CreateFieldRefOperand(el) as FieldRefOperand;
             if (fieldRefOperand == null)
             {
-                throw new CamlAnalysisException(string.Format("Can't create field ref operand with ordering: underlying field ref operand is null. Xml which causes issue: '{0}'", el));
+                throw new CamlAnalysisException(
+                    string.Format(
+                        "Can't create field ref operand with ordering: underlying field ref operand is null. Xml which causes issue:\n{0}",
+                        el));
             }
             return new FieldRefOperandWithOrdering(fieldRefOperand, orderDirection);
         }
@@ -76,7 +80,47 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Factories
             {
                 throw new ArgumentNullException("el");
             }
-            throw new NotImplementedException();
+            var typeAttr = el.Attributes().FirstOrDefault(a => a.Name == Attributes.Type);
+            if (typeAttr == null)
+            {
+                throw new CamlAnalysisException(
+                    string.Format(
+                        "Can't create value operand: Type attribute is missing. Xml which causes issue:\n{0}", el));
+            }
+
+            string typeName = string.Format("{0}.{1}+{2}, {3}", typeof(DataTypes).Namespace, typeof(DataTypes).Name, typeAttr.Value, typeof(DataTypes).Assembly.FullName);
+            Type type = null;
+            try
+            {
+                type = Type.GetType(typeName, false);
+            }
+            catch
+            {
+                type = null;
+            }
+
+            if (type == null)
+            {
+                throw new CamlAnalysisException(
+                    string.Format(
+                        "Can't create value operand: Type attribute '{0}' is incorrect type name. It should have CAML-compatible type name", typeAttr.Value));                
+            }
+
+            bool includeTimeValue = false;
+            var includeTimeValueAttr = el.Attributes().FirstOrDefault(a => a.Name == Attributes.IncludeTimeValue);
+            if (includeTimeValueAttr != null)
+            {
+                if (!bool.TryParse(includeTimeValueAttr.Value, out includeTimeValue))
+                {
+                    throw new CamlAnalysisException(
+                        string.Format(
+                            "Can't create value operand: attribute '{0}' has incorrect value '{1}'. It should have boolean value", includeTimeValueAttr.Name, includeTimeValueAttr.Value));
+                }
+            }
+
+            // currently only string-based value operand will be returned
+            // todo: add support of native operands here (see OperandBuilder.CreateValueOperand() for details)
+            return OperandBuilder.CreateValueOperand(type, el.Value, includeTimeValue);
         }
     }
 }
