@@ -105,7 +105,40 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Factories
         public void test_WHEN_xml_is_null_THEN_exception_is_thrown_for_create_value_operand()
         {
             var b = new ReOperandBuilderFromCaml();
-            b.CreateFieldRefOperandWithOrdering(null, null);
+            b.CreateValueOperand(null);
+        }
+
+        [Test]
+        [ExpectedException(typeof(CamlAnalysisException))]
+        public void test_WHEN_type_attr_is_missing_THEN_exception_is_thrown_for_create_value_operand()
+        {
+            var xml = "<Value>1</Value>";
+
+            var b = new ReOperandBuilderFromCaml();
+            b.CreateValueOperand(XmlHelper.Get(xml));
+        }
+
+        [Test]
+        [ExpectedException(typeof(CamlAnalysisException))]
+        public void test_WHEN_type_attr_has_incorrect_value_THEN_exception_is_thrown_for_create_value_operand()
+        {
+            var xml = "<Value Type=\"foo\">1</Value>";
+
+            var b = new ReOperandBuilderFromCaml();
+            b.CreateValueOperand(XmlHelper.Get(xml));
+        }
+
+        [Test]
+        public void test_WHEN_type_attr_has_correct_value_THEN_value_operand_is_sucessfully_created()
+        {
+            var b = new ReOperandBuilderFromCaml();
+            Assert.That(b.CreateValueOperand(XmlHelper.Get("<Value Type=\"Boolean\">1</Value>")).ToCaml().ToString(),
+                Is.EqualTo("<Value Type=\"Boolean\">1</Value>"));
+            Assert.That(b.CreateValueOperand(XmlHelper.Get("<Value Type=\"Boolean\">0</Value>")).ToCaml().ToString(),
+                Is.EqualTo("<Value Type=\"Boolean\">0</Value>"));
+            var dt = DateTime.Now;
+            Assert.That(b.CreateValueOperand(XmlHelper.Get("<Value Type=\"DateTime\">2010-02-01T03:04:05Z</Value>")).ToCaml().ToString(),
+                Is.EqualTo("<Value Type=\"DateTime\">2010-02-01T03:04:05Z</Value>"));
         }
     }
 }
