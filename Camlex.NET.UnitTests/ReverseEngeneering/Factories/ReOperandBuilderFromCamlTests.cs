@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using CamlexNET.Impl.Operands;
 using CamlexNET.Impl.ReverseEngeneering.Caml.Factories;
+using CamlexNET.UnitTests.Helpers;
 using NUnit.Framework;
 
 namespace CamlexNET.UnitTests.ReverseEngeneering.Factories
@@ -138,6 +139,16 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Factories
                 Is.EqualTo("<Value Type=\"Boolean\">0</Value>"));
             Assert.That(b.CreateValueOperand(XmlHelper.Get("<Value Type=\"DateTime\">2010-02-01T03:04:05Z</Value>")).ToCaml().ToString(),
                 Is.EqualTo("<Value Type=\"DateTime\">2010-02-01T03:04:05Z</Value>"));
+            Assert.That(b.CreateValueOperand(XmlHelper.Get("<Value Type=\"DateTime\"><Now /></Value>")).ToCaml().ToString(),
+                Is.EqualTo("<Value Type=\"DateTime\"><Now /></Value>").Using(new CamlComparer()));
+            Assert.That(b.CreateValueOperand(XmlHelper.Get("<Value Type=\"DateTime\"><Today /></Value>")).ToCaml().ToString(),
+                Is.EqualTo("<Value Type=\"DateTime\"><Today /></Value>").Using(new CamlComparer()));
+            Assert.That(b.CreateValueOperand(XmlHelper.Get("<Value Type=\"DateTime\"><Week /></Value>")).ToCaml().ToString(),
+                Is.EqualTo("<Value Type=\"DateTime\"><Week /></Value>").Using(new CamlComparer()));
+            Assert.That(b.CreateValueOperand(XmlHelper.Get("<Value Type=\"DateTime\"><Month /></Value>")).ToCaml().ToString(),
+                Is.EqualTo("<Value Type=\"DateTime\"><Month /></Value>").Using(new CamlComparer()));
+            Assert.That(b.CreateValueOperand(XmlHelper.Get("<Value Type=\"DateTime\"><Year /></Value>")).ToCaml().ToString(),
+                Is.EqualTo("<Value Type=\"DateTime\"><Year /></Value>").Using(new CamlComparer()));
         }
     }
 }
