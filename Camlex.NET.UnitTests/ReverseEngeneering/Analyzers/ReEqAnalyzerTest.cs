@@ -151,7 +151,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers
 
             var b = MockRepository.GenerateStub<IReOperandBuilder>();
             b.Stub(c => c.CreateFieldRefOperand(null)).Return(new FieldRefOperand("Title")).IgnoreArguments();
-            b.Stub(c => c.CreateValueOperand(null)).Return(new TextValueOperand("testValue")).IgnoreArguments();
+            b.Stub(c => c.CreateValueOperand(null, null)).Return(new TextValueOperand("testValue")).IgnoreArguments();
 
             var analyzer = new ReEqAnalyzer(XmlHelper.Get(xml), b);
             var operation = analyzer.GetOperation();

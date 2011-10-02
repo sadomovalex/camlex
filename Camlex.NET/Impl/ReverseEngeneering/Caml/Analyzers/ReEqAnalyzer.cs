@@ -85,11 +85,14 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Analyzers
         public override IOperation GetOperation()
         {
             if (!IsValid())
-                throw new CamlAnalysisException(string.Format("Xml element '{0}' is not supported", el));
+                throw new CamlAnalysisException(string.Format("Can't create EqOperation from the following xml: ", el));
 
-            var operand = this.operandBuilder.CreateFieldRefOperand(el);
-            var value = this.operandBuilder.CreateValueOperand(el);
-            return new EqOperation(null, operand, value);
+            var fieldRefElement = this.el.Descendants(Tags.FieldRef).First();
+            var valueElement = this.el.Descendants(Tags.Value).First();
+
+            var fieldRefOperand = this.operandBuilder.CreateFieldRefOperand(fieldRefElement);
+            var valueOperand = this.operandBuilder.CreateValueOperand(valueElement, fieldRefElement);
+            return new EqOperation(null, fieldRefOperand, valueOperand);
         }
     }
 }

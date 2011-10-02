@@ -63,7 +63,7 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Analyzers
         {
             if (!IsValid())
             {
-                throw new CamlAnalysisException(string.Format("Xml element '{0}' is not supported", el));
+                throw new CamlAnalysisException(string.Format("Can't create ArrayOperation from the following xml: '{0}'", el));
             }
             var operands = getFieldRefOperands(this.el);
             return new ArrayOperation(null, operands);
