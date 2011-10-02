@@ -80,6 +80,11 @@
     <Compile Include="Impl\Operations\DateRangesOverlap\DateRangesOverlapOperation.cs" />
     <Compile Include="Impl\Operations\Results\ExpressionOperationResult.cs" />
     <Compile Include="Impl\Query.cs" />
+    <Compile Include="Impl\ReverseEngeneering\Caml\Analyzers\ReGeqAnalyzer.cs" />
+    <Compile Include="Impl\ReverseEngeneering\Caml\Analyzers\ReGtAnalyzer.cs" />
+    <Compile Include="Impl\ReverseEngeneering\Caml\Analyzers\ReLeqAnalyzer.cs" />
+    <Compile Include="Impl\ReverseEngeneering\Caml\Analyzers\ReLtAnalyzer.cs" />
+    <Compile Include="Impl\ReverseEngeneering\Caml\Analyzers\ReNeqAnalyzer.cs" />
     <Compile Include="Impl\ReverseEngeneering\ReBinaryExpressionBaseAnalyzer.cs" />
     <Compile Include="Impl\ReverseEngeneering\Caml\Analyzers\ReArrayAnalyzer.cs" />
     <Compile Include="Impl\ReverseEngeneering\Caml\Analyzers\ReEqAnalyzer.cs" />

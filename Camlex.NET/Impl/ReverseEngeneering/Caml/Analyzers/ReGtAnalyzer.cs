@@ -26,15 +26,15 @@
 #endregion
 
 using System.Xml.Linq;
-using CamlexNET.Impl.Operations.Eq;
+using CamlexNET.Impl.Operations.Gt;
 using CamlexNET.Interfaces;
 using CamlexNET.Interfaces.ReverseEngeneering;
 
 namespace CamlexNET.Impl.ReverseEngeneering.Caml.Analyzers
 {
-    internal class ReEqAnalyzer : ReBinaryExpressionBaseAnalyzer
+    internal class ReGtAnalyzer : ReBinaryExpressionBaseAnalyzer
     {
-        public ReEqAnalyzer(XElement el, IReOperandBuilder operandBuilder) :
+        public ReGtAnalyzer(XElement el, IReOperandBuilder operandBuilder) :
             base(el, operandBuilder)
         {
         }
@@ -42,14 +42,14 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Analyzers
         public override bool IsValid()
         {
             if (!base.IsValid()) return false;
-            if (el.Name != Tags.Eq) return false;
+            if (el.Name != Tags.Gt) return false;
             return true;
         }
 
         public override IOperation GetOperation()
         {
             return getOperation((fieldRefOperand, valueOperand) => 
-                new EqOperation(null, fieldRefOperand, valueOperand));
+                new GtOperation(null, fieldRefOperand, valueOperand));
         }
     }
 }

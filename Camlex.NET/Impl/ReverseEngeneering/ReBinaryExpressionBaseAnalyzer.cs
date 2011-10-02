@@ -17,6 +17,7 @@ namespace CamlexNET.Impl.ReverseEngeneering
         public override bool IsValid()
         {
             if (!base.IsValid()) return false;
+            if (el.Attributes().Count() > 0) return false;
 
             // check presence of FieldRef tag with ID or Name attribute
             if (el.Descendants(Tags.FieldRef).Count() != 1) return false;
