@@ -120,7 +120,7 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Factories
 
             // currently only string-based value operand will be returned
             // todo: add support of native operands here (see OperandBuilder.CreateValueOperand() for details)
-            return OperandBuilder.CreateValueOperand(type, el.Value, includeTimeValue);
+            return OperandBuilder.CreateValueOperand(type, el.Value, includeTimeValue, true);
         }
     }
 }

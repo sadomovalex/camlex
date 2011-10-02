@@ -26,6 +26,7 @@
 #endregion
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -51,6 +52,11 @@ namespace CamlexNET.Impl.Operands
         }
 
         public DateTimeValueOperand(string value, bool includeTimeValue) :
+            this(value, includeTimeValue, false)
+        {
+        }
+
+        public DateTimeValueOperand(string value, bool includeTimeValue, bool parseExact) :
             base(typeof(DataTypes.DateTime), DateTime.MinValue)
         {
             IncludeTimeValue = includeTimeValue;
@@ -60,9 +66,27 @@ namespace CamlexNET.Impl.Operands
             else if (value == Camlex.Week) Mode = DateTimeValueMode.Week;
             else if (value == Camlex.Month) Mode = DateTimeValueMode.Month;
             else if (value == Camlex.Year) Mode = DateTimeValueMode.Year;
-            else if (DateTime.TryParse(value, out this.value)) Mode = DateTimeValueMode.Native;
+            else if (!parseExact && DateTime.TryParse(value, out this.value))
+            {
+                Mode = DateTimeValueMode.Native;
+            }
+            // from re value come in sortable format ("s"), so we need to use ParseExact instead of Parse
+            else if (parseExact)
+            {
+                if (!string.IsNullOrEmpty(value) && value.EndsWith("Z"))
+                {
+                    value = value.Substring(0, value.Length - 1);
+                }
+
+                if (DateTime.TryParseExact(value, "s", null, DateTimeStyles.None, out this.value))
+                {
+                    Mode = DateTimeValueMode.Native;
+                }
+                else throw new InvalidValueForOperandTypeException(value, Type);
+            }
             else throw new InvalidValueForOperandTypeException(value, Type);
         }
+
 
         public override XElement ToCaml()
         {

@@ -136,7 +136,6 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Factories
                 Is.EqualTo("<Value Type=\"Boolean\">1</Value>"));
             Assert.That(b.CreateValueOperand(XmlHelper.Get("<Value Type=\"Boolean\">0</Value>")).ToCaml().ToString(),
                 Is.EqualTo("<Value Type=\"Boolean\">0</Value>"));
-            var dt = DateTime.Now;
             Assert.That(b.CreateValueOperand(XmlHelper.Get("<Value Type=\"DateTime\">2010-02-01T03:04:05Z</Value>")).ToCaml().ToString(),
                 Is.EqualTo("<Value Type=\"DateTime\">2010-02-01T03:04:05Z</Value>"));
         }
