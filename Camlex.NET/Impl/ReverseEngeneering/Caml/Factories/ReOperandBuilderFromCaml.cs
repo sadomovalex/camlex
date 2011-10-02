@@ -106,6 +106,9 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Factories
                         "Can't create value operand: Type attribute '{0}' is incorrect type name. It should have CAML-compatible type name", typeAttr.Value));                
             }
 
+            // DataTypes.Lookup is internal. Users should use LookupValue or LookupId. But in order to determine what exact type
+            // should be used - we also need to analyze FieldRef operand because it contains LookupId="True" attribute (i.e. not Value
+            // operand contains it)
             if (type == typeof(DataTypes.Lookup))
             {
                 type = typeof (DataTypes.LookupValue);
