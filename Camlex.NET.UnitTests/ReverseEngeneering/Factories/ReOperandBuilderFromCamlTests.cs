@@ -170,6 +170,9 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Factories
             Assert.IsInstanceOf<LookupIdValueOperand>(valueOperand);
             Assert.That(valueOperand.ToCaml().ToString(),
                 Is.EqualTo("<Value Type=\"Lookup\">1</Value>"));
+
+            Assert.That(b.CreateValueOperand(XmlHelper.Get("<Value Type=\"Note\">foo</Value>"), null).ToCaml().ToString(),
+                Is.EqualTo("<Value Type=\"Note\">foo</Value>"));
         }
     }
 }
