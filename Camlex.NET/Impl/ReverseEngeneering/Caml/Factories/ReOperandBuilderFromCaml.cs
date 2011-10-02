@@ -118,9 +118,17 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Factories
                 }
             }
 
+            string value = el.Value;
+            if (type == typeof(DataTypes.DateTime) && el.Descendants().Count() == 1)
+            {
+                // for DateTime instead of real (Native) value there can be <Now />, <Today />, etc.
+                // See the full list from DateTimeValueOperand
+                value = el.Descendants().First().Name.ToString();
+            }
+
             // currently only string-based value operand will be returned
             // todo: add support of native operands here (see OperandBuilder.CreateValueOperand() for details)
-            return OperandBuilder.CreateValueOperand(type, el.Value, includeTimeValue, true);
+            return OperandBuilder.CreateValueOperand(type, value, includeTimeValue, true);
         }
     }
 }
