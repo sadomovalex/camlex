@@ -35,14 +35,14 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers
         };
 
         [Test]
-        public void test_WHEN_xml_is_null_THEN_extression_is_not_valid()
+        public void test_WHEN_xml_is_null_THEN_expression_is_not_valid()
         {
             var analyzer = new ReEqAnalyzer(null, null);
             Assert.IsFalse(analyzer.IsValid());
         }
 
         [Test]
-        public void test_WHEN_neither_field_ref_nor_value_specified_THEN_extression_is_not_valid()
+        public void test_WHEN_neither_field_ref_nor_value_specified_THEN_expression_is_not_valid()
         {
             var xml =
                 "  <Eq>" +
@@ -53,7 +53,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers
         }
 
         [Test]
-        public void test_WHEN_field_ref_specified_and_value_not_specified_THEN_extression_is_not_valid()
+        public void test_WHEN_field_ref_specified_and_value_not_specified_THEN_expression_is_not_valid()
         {
             var xml =
                 "<Eq>" +
@@ -65,7 +65,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers
         }
 
         [Test]
-        public void test_WHEN_field_ref_not_specified_and_value_specified_THEN_extression_is_not_valid()
+        public void test_WHEN_field_ref_not_specified_and_value_specified_THEN_expression_is_not_valid()
         {
             var xml =
                 "<Eq>" +
@@ -77,7 +77,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers
         }
 
         [Test]
-        public void test_WHEN_field_ref_and_text_value_specified_THEN_extression_is_valid()
+        public void test_WHEN_field_ref_and_text_value_specified_THEN_expression_is_valid()
         {
             var xml =
                 "<Eq>" +
@@ -90,7 +90,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers
         }
 
         [Test]
-        public void test_WHEN_supported_value_type_specified_THEN_extression_is_valid()
+        public void test_WHEN_supported_value_type_specified_THEN_expression_is_valid()
         {
             typeof(DataTypes).GetMembers()
                 .Where(x => x.MemberType == MemberTypes.NestedType).Select(x => x.Name).ToList().ForEach(x =>
@@ -112,7 +112,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers
         }
 
         [Test]
-        public void test_WHEN_not_supported_value_type_specified_THEN_extression_is_not_valid()
+        public void test_WHEN_not_supported_value_type_specified_THEN_expression_is_not_valid()
         {
             typeof(DataTypes).GetMembers()
                 .Where(x => x.MemberType == MemberTypes.NestedType).Select(x => x.Name).ToList().ForEach(x =>

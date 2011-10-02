@@ -38,61 +38,17 @@ using CamlexNET.Interfaces.ReverseEngeneering;
 
 namespace CamlexNET.Impl.ReverseEngeneering.Caml.Analyzers
 {
-    internal class ReEqAnalyzer : ReBaseAnalyzer
+    internal class ReEqAnalyzer : ReBinaryExpressionBaseAnalyzer
     {
         public ReEqAnalyzer(XElement el, IReOperandBuilder operandBuilder) :
             base(el, operandBuilder)
         {
         }
 
-        public override bool IsValid()
-        {
-            if (!base.IsValid()) return false;
-
-            // check presence of FieldRef tag with ID or Name attribute
-            if (this.el.Descendants(Tags.FieldRef).Count() != 1) return false;
-            var fieldRefElement = this.el.Descendants(Tags.FieldRef).First();
-            var isIdOrNamePresent = fieldRefElement.Attributes()
-                .Any(a => a.Name == Attributes.ID || a.Name == Attributes.Name);
-            if (!isIdOrNamePresent) return false;
-
-            // check presence of Value tag with Type attribute
-            if (this.el.Descendants(Tags.Value).Count() != 1) return false;
-            var valueElement = this.el.Descendants(Tags.Value).First();
-            var typeAttribute = valueElement.Attributes()
-                .Where(a => a.Name == Attributes.Type).FirstOrDefault();
-            if (typeAttribute == null) return false;
-
-            // check whether we support this value type
-            if (typeAttribute.Value != typeof(DataTypes.Text).Name &&
-                string.IsNullOrEmpty(valueElement.Value)) return false;
-            var value = valueElement.Value;
-            try
-            {
-                if (typeAttribute.Value == typeof(DataTypes.Boolean).Name) new BooleanValueOperand(value);
-                else if (typeAttribute.Value == typeof(DataTypes.DateTime).Name) new DateTimeValueOperand(value, false);
-                else if (typeAttribute.Value == typeof(DataTypes.Guid).Name) new GuidValueOperand(value);
-                else if (typeAttribute.Value == typeof(DataTypes.Integer).Name) new IntegerValueOperand(value);
-                else if (typeAttribute.Value == typeof(DataTypes.Lookup).Name) new LookupValueValueOperand(value);
-                else if (typeAttribute.Value == typeof(DataTypes.Text).Name) { }
-                else throw new InvalidValueForOperandTypeException(null, null);
-            }
-            catch (InvalidValueForOperandTypeException) { return false; }
-
-            return true;
-        }
-
         public override IOperation GetOperation()
         {
-            if (!IsValid())
-                throw new CamlAnalysisException(string.Format("Can't create EqOperation from the following xml: ", el));
-
-            var fieldRefElement = this.el.Descendants(Tags.FieldRef).First();
-            var valueElement = this.el.Descendants(Tags.Value).First();
-
-            var fieldRefOperand = this.operandBuilder.CreateFieldRefOperand(fieldRefElement);
-            var valueOperand = this.operandBuilder.CreateValueOperand(valueElement, fieldRefElement);
-            return new EqOperation(null, fieldRefOperand, valueOperand);
+            return getOperation((fieldRefOperand, valueOperand) => 
+                new EqOperation(null, fieldRefOperand, valueOperand));
         }
     }
 }
