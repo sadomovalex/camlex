@@ -37,6 +37,6 @@ namespace CamlexNET.Interfaces.ReverseEngeneering
         IOperand CreateFieldRefOperandWithOrdering(XElement el, Camlex.OrderDirection orderDirection);
 //        IOperand CreateValueOperandForNativeSyntax(string input);
 //        IOperand CreateValueOperandForNativeSyntax(string input, Type explicitOperandType);
-        IOperand CreateValueOperand(XElement el);
+        IOperand CreateValueOperand(XElement el, XElement fieldRefElement);
     }
 }
