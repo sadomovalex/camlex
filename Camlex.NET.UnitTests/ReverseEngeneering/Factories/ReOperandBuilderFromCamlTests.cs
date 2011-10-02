@@ -137,6 +137,10 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Factories
         public void test_WHEN_type_attr_has_correct_value_THEN_value_operand_is_sucessfully_created()
         {
             var b = new ReOperandBuilderFromCaml();
+            Assert.That(b.CreateValueOperand(XmlHelper.Get("<Value Type=\"Text\">foo</Value>"), null).ToCaml().ToString(),
+                Is.EqualTo("<Value Type=\"Text\">foo</Value>"));
+            Assert.That(b.CreateValueOperand(XmlHelper.Get("<Value Type=\"Integer\">123</Value>"), null).ToCaml().ToString(),
+                Is.EqualTo("<Value Type=\"Integer\">123</Value>"));
             Assert.That(b.CreateValueOperand(XmlHelper.Get("<Value Type=\"Boolean\">1</Value>"), null).ToCaml().ToString(),
                 Is.EqualTo("<Value Type=\"Boolean\">1</Value>"));
             Assert.That(b.CreateValueOperand(XmlHelper.Get("<Value Type=\"Boolean\">0</Value>"), null).ToCaml().ToString(),
