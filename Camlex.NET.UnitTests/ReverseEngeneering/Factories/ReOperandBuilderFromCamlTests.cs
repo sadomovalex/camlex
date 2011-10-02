@@ -149,6 +149,11 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Factories
                 Is.EqualTo("<Value Type=\"DateTime\"><Month /></Value>").Using(new CamlComparer()));
             Assert.That(b.CreateValueOperand(XmlHelper.Get("<Value Type=\"DateTime\"><Year /></Value>")).ToCaml().ToString(),
                 Is.EqualTo("<Value Type=\"DateTime\"><Year /></Value>").Using(new CamlComparer()));
+            Assert.That(b.CreateValueOperand(XmlHelper.Get("<Value Type=\"Guid\">{AD524A0C-D90E-4C04-B6FB-CB6E9F6CA7BD}</Value>")).ToCaml().ToString(),
+                Is.EqualTo("<Value Type=\"Guid\">ad524a0c-d90e-4c04-b6fb-cb6e9f6ca7bd</Value>"));
+            Assert.That(b.CreateValueOperand(XmlHelper.Get("<Value Type=\"Lookup\">1</Value>")).ToCaml().ToString(),
+                Is.EqualTo("<Value Type=\"Lookup\">1</Value>"));
+
         }
     }
 }
