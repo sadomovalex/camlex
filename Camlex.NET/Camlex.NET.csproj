@@ -81,6 +81,7 @@
     <Compile Include="Impl\Operations\Results\ExpressionOperationResult.cs" />
     <Compile Include="Impl\Query.cs" />
     <Compile Include="Impl\ReverseEngeneering\Caml\Analyzers\ReArrayAnalyzer.cs" />
+    <Compile Include="Impl\ReverseEngeneering\Caml\Analyzers\ReEqAnalyzer.cs" />
     <Compile Include="Impl\ReverseEngeneering\ReBaseAnalyzer.cs" />
     <Compile Include="Impl\ReverseEngeneering\Caml\Factories\ReAnalyzerFromCamlFactory.cs" />
     <Compile Include="Impl\ReverseEngeneering\Caml\Factories\ReLinkerFromCamlFactory.cs" />
