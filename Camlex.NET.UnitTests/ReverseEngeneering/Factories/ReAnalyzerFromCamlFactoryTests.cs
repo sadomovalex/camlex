@@ -80,6 +80,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Factories
             Assert.IsInstanceOf<ReLeqAnalyzer>(f.Create(XmlHelper.Get("<Where><Leq></Leq></Where>")));
             Assert.IsInstanceOf<ReLtAnalyzer>(f.Create(XmlHelper.Get("<Where><Lt></Lt></Where>")));
             Assert.IsInstanceOf<ReNeqAnalyzer>(f.Create(XmlHelper.Get("<Where><Neq></Neq></Where>")));
+            Assert.Fail("Todo: add other analyzers");
         }
 
         [Test]
