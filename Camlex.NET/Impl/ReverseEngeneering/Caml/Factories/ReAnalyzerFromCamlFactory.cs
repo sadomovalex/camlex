@@ -83,8 +83,28 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Factories
             {
                 return new ReNeqAnalyzer(element, operandBuilder);
             }
+            element = el.Elements().FirstOrDefault(e => e.Name == Tags.IsNull);
+            if (element != null)
+            {
+                return new ReIsNullAnalyzer(element, operandBuilder);
+            }
+            element = el.Elements().FirstOrDefault(e => e.Name == Tags.IsNotNull);
+            if (element != null)
+            {
+                return new ReIsNotNullAnalyzer(element, operandBuilder);
+            }
             element = el.Elements().First();
             throw new CamlAnalysisException(string.Format("Where tag contain element which can't be translated: \n{0}", element));
         }
+
+//        private IReAnalyzer getAnalyzer<T>(XElement el, string tagName, Func<XElement, IReOperandBuilder, T> constructor)
+//            where T : IReAnalyzer
+//        {
+//            var element = el.Elements().FirstOrDefault(e => e.Name == tagName);
+//            if (element != null)
+//            {
+//                return constructor(element, this.operandBuilder);
+//            }
+//        }
     }
 }
