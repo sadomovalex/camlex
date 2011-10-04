@@ -48,9 +48,38 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Factories
         }
 
         [Test]
-        public void test_THAT_for_where_binary_operation_analyzer_IS_returned()
+        [ExpectedException(typeof(CamlAnalysisException))]
+        public void test_WHEN_where_is_empty_THEN_exception_is_thrown()
         {
-            Assert.Fail("Not implemented");
+            var xml =
+                "<Where>" +
+                "</Where>";
+            var f = new ReAnalyzerFromCamlFactory(null);
+            f.Create(XmlHelper.Get(xml));
+        }
+
+        [Test]
+        [ExpectedException(typeof(CamlAnalysisException))]
+        public void test_WHEN_where_contains_unknown_child_THEN_exception_is_thrown()
+        {
+            var xml =
+                "<Where>" +
+                "<foo></foo>" +
+                "</Where>";
+            var f = new ReAnalyzerFromCamlFactory(null);
+            f.Create(XmlHelper.Get(xml));
+        }
+
+        [Test]
+        public void test_THAT_for_where_correct_analyzer_IS_returned()
+        {
+            var f = new ReAnalyzerFromCamlFactory(null);
+            Assert.IsInstanceOf<ReEqAnalyzer>(f.Create(XmlHelper.Get("<Where><Eq></Eq></Where>")));
+            Assert.IsInstanceOf<ReGeqAnalyzer>(f.Create(XmlHelper.Get("<Where><Geq></Geq></Where>")));
+            Assert.IsInstanceOf<ReGtAnalyzer>(f.Create(XmlHelper.Get("<Where><Gt></Gt></Where>")));
+            Assert.IsInstanceOf<ReLeqAnalyzer>(f.Create(XmlHelper.Get("<Where><Leq></Leq></Where>")));
+            Assert.IsInstanceOf<ReLtAnalyzer>(f.Create(XmlHelper.Get("<Where><Lt></Lt></Where>")));
+            Assert.IsInstanceOf<ReNeqAnalyzer>(f.Create(XmlHelper.Get("<Where><Neq></Neq></Where>")));
         }
 
         [Test]
