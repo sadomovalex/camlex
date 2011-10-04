@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using CamlexNET.ExpressionToCodeAdapter;
+﻿using CamlexNET.ExpressionToCodeAdapter;
 using NUnit.Framework;
 
-namespace CamlexNET.UnitTests.ExpressionToCode
+namespace CamlexNET.ExpressionToCode.UnitTests
 {
     [TestFixture]
     public class ExpressionToCodeAdapterTests
@@ -25,7 +21,7 @@ namespace CamlexNET.UnitTests.ExpressionToCode
 
             var expr = Camlex.QueryFromString(xml).ToExpression();
             string code = Adapter.ToCode(expr);
-            Assert.That(code, Is.EqualTo(""));
+            Assert.That(code, Is.EqualTo("Camlex.Query().Where(x => (string)x[\"Title\"] == \"testValue\")"));
         }
     }
 }
