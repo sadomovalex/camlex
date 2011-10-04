@@ -67,6 +67,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="CamlexViewFieldsTests.cs" />
+    <Compile Include="ExpressionToCode\ExpressionToCodeAdapterTests.cs" />
     <Compile Include="Factories\AnalyzerFactoryTests.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -226,6 +227,10 @@
     <None Include="Camlex.NET.snk" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Camlex.NET.ExpressionToCodeAdapter\Camlex.NET.ExpressionToCodeAdapter.csproj">
+      <Project>{18E0AB69-DCE2-46E3-B79D-921BC7493B5B}</Project>
+      <Name>Camlex.NET.ExpressionToCodeAdapter</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Camlex.NET\Camlex.NET.csproj">
       <Project>{99FC65CD-823C-47AA-9D68-0BB9F31CDC72}</Project>
       <Name>Camlex.NET</Name>
