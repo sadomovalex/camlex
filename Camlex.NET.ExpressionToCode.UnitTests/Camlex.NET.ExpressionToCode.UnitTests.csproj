@@ -5,14 +5,13 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{18E0AB69-DCE2-46E3-B79D-921BC7493B5B}</ProjectGuid>
+    <ProjectGuid>{2472C93B-2475-4656-8F4F-AF69DA486B58}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CamlexNET.ExpressionToCodeAdapter</RootNamespace>
-    <AssemblyName>Camlex.NET.ExpressionToCodeAdapter</AssemblyName>
+    <RootNamespace>CamlexNET.ExpressionToCode.UnitTests</RootNamespace>
+    <AssemblyName>Camlex.NET.ExpressionToCode.UnitTests</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -38,21 +37,33 @@
     <AssemblyOriginatorKeyFile>Camlex.NET.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="nunit.framework">
+      <HintPath>..\Camlex.NET.Foreign\NUnit\2.5.3.9345\bin\net-2.0\nunit.framework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Adapter.cs" />
+    <Compile Include="ExpressionToCodeAdapterTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Camlex.NET.snk" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Camlex.NET.ExpressionToCodeAdapter\Camlex.NET.ExpressionToCodeAdapter.csproj">
+      <Project>{18E0AB69-DCE2-46E3-B79D-921BC7493B5B}</Project>
+      <Name>Camlex.NET.ExpressionToCodeAdapter</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Camlex.NET\Camlex.NET.csproj">
+      <Project>{99FC65CD-823C-47AA-9D68-0BB9F31CDC72}</Project>
+      <Name>Camlex.NET</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ExpressionToCodeLib\ExpressionToCodeLib.csproj">
       <Project>{2472FFFC-E2F9-4043-8CA6-EB65D4059A0F}</Project>
       <Name>ExpressionToCodeLib</Name>
