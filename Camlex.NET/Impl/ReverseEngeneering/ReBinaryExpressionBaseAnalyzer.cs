@@ -16,19 +16,34 @@ namespace CamlexNET.Impl.ReverseEngeneering
 
         public override bool IsValid()
         {
-            if (!base.IsValid()) return false;
-            if (el.Attributes().Count() > 0) return false;
+            if (!base.IsValid())
+            {
+                return false;
+            }
+            if (el.Attributes().Count() > 0)
+            {
+                return false;
+            }
 
             // check presence of FieldRef tag with ID or Name attribute
-            if (el.Descendants(Tags.FieldRef).Count() != 1) return false;
-            var fieldRefElement = el.Descendants(Tags.FieldRef).First();
-            var isIdOrNamePresent = fieldRefElement.Attributes()
-                .Any(a => a.Name == Attributes.ID || a.Name == Attributes.Name);
-            if (!isIdOrNamePresent) return false;
+            if (!this.hasValidFieldRefElement())
+            {
+                return false;
+            }
 
             // check presence of Value tag with Type attribute
-            if (el.Descendants(Tags.Value).Count() != 1) return false;
-            var valueElement = el.Descendants(Tags.Value).First();
+            if (!hasValidValueElement())
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        protected bool hasValidValueElement()
+        {
+            if (el.Elements(Tags.Value).Count() != 1) return false;
+            var valueElement = el.Elements(Tags.Value).First();
             var typeAttribute = valueElement.Attributes()
                 .Where(a => a.Name == Attributes.Type).FirstOrDefault();
             if (typeAttribute == null) return false;
@@ -48,7 +63,16 @@ namespace CamlexNET.Impl.ReverseEngeneering
                 else throw new InvalidValueForOperandTypeException(null, null);
             }
             catch (InvalidValueForOperandTypeException) { return false; }
+            return true;
+        }
 
+        protected bool hasValidFieldRefElement()
+        {
+            if (el.Elements(Tags.FieldRef).Count() != 1) return false;
+            var fieldRefElement = el.Elements(Tags.FieldRef).First();
+            var isIdOrNamePresent = fieldRefElement.Attributes()
+                .Any(a => a.Name == Attributes.ID || a.Name == Attributes.Name);
+            if (!isIdOrNamePresent) return false;
             return true;
         }
 
@@ -59,8 +83,8 @@ namespace CamlexNET.Impl.ReverseEngeneering
                 throw new CamlAnalysisException(string.Format(
                     "Can't create {0} from the following xml: {1}", typeof(T).Name, el));
 
-            var fieldRefElement = this.el.Descendants(Tags.FieldRef).First();
-            var valueElement = this.el.Descendants(Tags.Value).First();
+            var fieldRefElement = this.el.Elements(Tags.FieldRef).First();
+            var valueElement = this.el.Elements(Tags.Value).First();
 
             var fieldRefOperand = this.operandBuilder.CreateFieldRefOperand(fieldRefElement);
             var valueOperand = this.operandBuilder.CreateValueOperand(valueElement, fieldRefElement);
