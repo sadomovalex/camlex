@@ -34,9 +34,9 @@ using CamlexNET.Interfaces.ReverseEngeneering;
 
 namespace CamlexNET.Impl.ReverseEngeneering.Caml.Analyzers
 {
-    internal class ReIsNotNullAnalyzer : ReNullabilityBaseAnalyzer
+    internal class ReIsNullAnalyzer : ReNullabilityBaseAnalyzer
     {
-        public ReIsNotNullAnalyzer(XElement element, IReOperandBuilder operandBuilder)
+        public ReIsNullAnalyzer(XElement element, IReOperandBuilder operandBuilder)
             : base(element, operandBuilder)
         {
         }
@@ -48,12 +48,12 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Analyzers
                 return false;
             }
 
-            return (this.el.Name == Tags.IsNotNull);
+            return (this.el.Name == Tags.IsNull);
         }
 
         public override IOperation GetOperation()
         {
-            return getOperation((fieldRefOperand, valueOperand) => new IsNotNullOperation(null, fieldRefOperand));
+            return getNullabilityOperation((operationResultBuilder, fieldRefOperand) => new IsNullOperation(operationResultBuilder, fieldRefOperand));
         }
     }
 }
