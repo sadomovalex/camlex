@@ -85,6 +85,7 @@
     <Compile Include="Impl\ReverseEngeneering\Caml\Analyzers\ReLeqAnalyzer.cs" />
     <Compile Include="Impl\ReverseEngeneering\Caml\Analyzers\ReLtAnalyzer.cs" />
     <Compile Include="Impl\ReverseEngeneering\Caml\Analyzers\ReNeqAnalyzer.cs" />
+    <Compile Include="Impl\ReverseEngeneering\ReNullabilityBaseAnalyzer.cs" />
     <Compile Include="Impl\ReverseEngeneering\ReBinaryExpressionBaseAnalyzer.cs" />
     <Compile Include="Impl\ReverseEngeneering\Caml\Analyzers\ReArrayAnalyzer.cs" />
     <Compile Include="Impl\ReverseEngeneering\Caml\Analyzers\ReEqAnalyzer.cs" />
