@@ -48,42 +48,42 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Factories
 
         private IReAnalyzer getAnalyzerForWhere(XElement el)
         {
-            if (el.Descendants().Count() != 1)
+            if (el.Elements().Count() != 1)
             {
                 throw new CamlAnalysisException("Where tag should contain only 1 child element");
             }
 
-            var element = el.Descendants().FirstOrDefault(e => e.Name == Tags.Eq);
+            var element = el.Elements().FirstOrDefault(e => e.Name == Tags.Eq);
             if (element != null)
             {
                 return new ReEqAnalyzer(element, operandBuilder);
             }
-            element = el.Descendants().FirstOrDefault(e => e.Name == Tags.Geq);
+            element = el.Elements().FirstOrDefault(e => e.Name == Tags.Geq);
             if (element != null)
             {
                 return new ReGeqAnalyzer(element, operandBuilder);
             }
-            element = el.Descendants().FirstOrDefault(e => e.Name == Tags.Gt);
+            element = el.Elements().FirstOrDefault(e => e.Name == Tags.Gt);
             if (element != null)
             {
                 return new ReGtAnalyzer(element, operandBuilder);
             }
-            element = el.Descendants().FirstOrDefault(e => e.Name == Tags.Leq);
+            element = el.Elements().FirstOrDefault(e => e.Name == Tags.Leq);
             if (element != null)
             {
                 return new ReLeqAnalyzer(element, operandBuilder);
             }
-            element = el.Descendants().FirstOrDefault(e => e.Name == Tags.Lt);
+            element = el.Elements().FirstOrDefault(e => e.Name == Tags.Lt);
             if (element != null)
             {
                 return new ReLtAnalyzer(element, operandBuilder);
             }
-            element = el.Descendants().FirstOrDefault(e => e.Name == Tags.Neq);
+            element = el.Elements().FirstOrDefault(e => e.Name == Tags.Neq);
             if (element != null)
             {
                 return new ReNeqAnalyzer(element, operandBuilder);
             }
-            element = el.Descendants().First();
+            element = el.Elements().First();
             throw new CamlAnalysisException(string.Format("Where tag contain element which can't be translated: \n{0}", element));
         }
     }
