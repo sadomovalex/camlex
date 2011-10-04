@@ -63,7 +63,8 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Analyzers
         {
             if (!IsValid())
             {
-                throw new CamlAnalysisException(string.Format("Can't create ArrayOperation from the following xml: '{0}'", el));
+                throw new CamlAnalysisException(string.Format(
+                    "Can't create {0} from the following xml: {1}", typeof(ArrayOperation).Name, el));
             }
             var operands = getFieldRefOperands(this.el);
             return new ArrayOperation(null, operands);

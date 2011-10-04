@@ -25,52 +25,34 @@
 // -----------------------------------------------------------------------------
 #endregion
 
-using System;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Xml.Linq;
-using CamlexNET.Impl.Operands;
+using CamlexNET.Impl.Operations.IsNull;
 using CamlexNET.Interfaces;
 using CamlexNET.Interfaces.ReverseEngeneering;
 
-namespace CamlexNET.Impl.ReverseEngeneering
+namespace CamlexNET.Impl.ReverseEngeneering.Caml.Analyzers
 {
-    internal abstract class ReNullabilityBaseAnalyzer : ReBinaryExpressionBaseAnalyzer
+    internal class ReIsNullAnalyzer : ReNullabilityBaseAnalyzer
     {
-        protected ReNullabilityBaseAnalyzer(XElement el, IReOperandBuilder operandBuilder)
-            : base(el, operandBuilder)
+        public ReIsNullAnalyzer(XElement element, IReOperandBuilder operandBuilder)
+            : base(element, operandBuilder)
         {
         }
 
         public override bool IsValid()
         {
-            if (this.el == null)
+            if (!base.IsValid())
             {
                 return false;
             }
 
-            if (el.Elements().Count() != 1)
-            {
-                return false;
-            }
-
-            if (!this.hasValidFieldRefElement())
-            {
-                return false;
-            }
-            return true;
+            return (this.el.Name == Tags.IsNull);
         }
 
-        protected IOperation getOperation<T>(Func<IOperand, T> constructor)
-            where T : IOperation
+        public override IOperation GetOperation()
         {
-            if (!IsValid())
-                throw new CamlAnalysisException(string.Format(
-                    "Can't create {0} from the following xml: {1}", typeof(T).Name, el));
-
-            var fieldRefElement = this.el.Elements(Tags.FieldRef).First();
-            var fieldRefOperand = this.operandBuilder.CreateFieldRefOperand(fieldRefElement);
-            return constructor(fieldRefOperand);
+            return getOperation((fieldRefOperand, valueOperand) => new IsNullOperation(null, fieldRefOperand));
         }
     }
 }
