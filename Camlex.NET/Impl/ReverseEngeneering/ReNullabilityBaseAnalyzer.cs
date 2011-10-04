@@ -61,7 +61,7 @@ namespace CamlexNET.Impl.ReverseEngeneering
             return true;
         }
 
-        protected IOperation getOperation<T>(Func<IOperand, T> constructor)
+        protected IOperation getNullabilityOperation<T>(Func<IOperationResultBuilder, IOperand, T> constructor)
             where T : IOperation
         {
             if (!IsValid())
@@ -70,7 +70,7 @@ namespace CamlexNET.Impl.ReverseEngeneering
 
             var fieldRefElement = this.el.Elements(Tags.FieldRef).First();
             var fieldRefOperand = this.operandBuilder.CreateFieldRefOperand(fieldRefElement);
-            return constructor(fieldRefOperand);
+            return constructor(null, fieldRefOperand);
         }
     }
 }

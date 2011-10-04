@@ -27,15 +27,16 @@
 
 using System.Linq.Expressions;
 using System.Xml.Linq;
+using CamlexNET.Impl.Operations.IsNotNull;
 using CamlexNET.Impl.Operations.IsNull;
 using CamlexNET.Interfaces;
 using CamlexNET.Interfaces.ReverseEngeneering;
 
 namespace CamlexNET.Impl.ReverseEngeneering.Caml.Analyzers
 {
-    internal class ReIsNullAnalyzer : ReNullabilityBaseAnalyzer
+    internal class ReIsNotNullAnalyzer : ReNullabilityBaseAnalyzer
     {
-        public ReIsNullAnalyzer(XElement element, IReOperandBuilder operandBuilder)
+        public ReIsNotNullAnalyzer(XElement element, IReOperandBuilder operandBuilder)
             : base(element, operandBuilder)
         {
         }
@@ -47,12 +48,12 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Analyzers
                 return false;
             }
 
-            return (this.el.Name == Tags.IsNull);
+            return (this.el.Name == Tags.IsNotNull);
         }
 
         public override IOperation GetOperation()
         {
-            return getOperation((fieldRefOperand, valueOperand) => new IsNullOperation(null, fieldRefOperand));
+            return getNullabilityOperation((operationResultBuilder, fieldRefOperand) => new IsNotNullOperation(operationResultBuilder, fieldRefOperand));
         }
     }
 }
