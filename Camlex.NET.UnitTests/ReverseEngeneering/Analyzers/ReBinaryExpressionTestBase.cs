@@ -6,7 +6,6 @@ using System.Xml.Linq;
 using CamlexNET.Impl;
 using CamlexNET.Impl.Operands;
 using CamlexNET.Impl.ReverseEngeneering;
-using CamlexNET.Impl.ReverseEngeneering.Caml.Analyzers;
 using CamlexNET.Impl.ReverseEngeneering.Caml.Factories;
 using CamlexNET.Interfaces;
 using CamlexNET.Interfaces.ReverseEngeneering;

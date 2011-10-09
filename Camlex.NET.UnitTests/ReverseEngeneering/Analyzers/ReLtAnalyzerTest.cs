@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Xml.Linq;
-using CamlexNET.Impl.Operations.Geq;
+using CamlexNET.Impl.Operations.Lt;
 using CamlexNET.Impl.ReverseEngeneering.Caml.Analyzers;
 using CamlexNET.Interfaces.ReverseEngeneering;
 using NUnit.Framework;
 
 namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers
 {
-    internal class ReGeqAnalyzerTest : ReBinaryExpressionTestBase<ReGeqAnalyzer, GeqOperation>
+    internal class ReLtAnalyzerTest : ReBinaryExpressionTestBase<ReLtAnalyzer, LtOperation>
     {
-        private readonly Func<XElement, IReOperandBuilder, ReGeqAnalyzer>
-            ANALYZER_CONSTRUCTOR = (el, operandBuilder) => new ReGeqAnalyzer(el, operandBuilder);
-        private const string OPERATION_NAME = "Geq";
-        private const string OPERATION_SYMBOL = ">=";
+        private readonly Func<XElement, IReOperandBuilder, ReLtAnalyzer>
+            ANALYZER_CONSTRUCTOR = (el, operandBuilder) => new ReLtAnalyzer(el, operandBuilder);
+        private const string OPERATION_NAME = "Lt";
+        private const string OPERATION_SYMBOL = "<";
 
         [Test]
         public void test_WHEN_xml_is_null_THEN_expression_is_not_valid()
