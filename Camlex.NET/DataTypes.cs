@@ -62,16 +62,33 @@ namespace CamlexNET
         public class ContentTypeId : BaseFieldType { }
         public class Counter : BaseFieldType { }
         public class CrossProjectLink : BaseFieldType { }
-        public class Currency : BaseFieldTypeWithOperators { }
+        public class Currency : BaseFieldTypeWithOperators
+        {
+            public static bool operator <(object c1, Currency c2) { return false; }
+            public static bool operator >(object c1, Currency c2) { return false; }
+            public static bool operator <=(object c1, Currency c2) { return false; }
+            public static bool operator >=(object c1, Currency c2) { return false; }
+        }
         public class DateTime : BaseFieldTypeWithOperators
         {
+            public static bool operator <(object c1, DateTime c2) { return false; }
+            public static bool operator >(object c1, DateTime c2) { return false; }
+            public static bool operator <=(object c1, DateTime c2) { return false; }
+            public static bool operator >=(object c1, DateTime c2) { return false; }
+
             public DateTime IncludeTimeValue() { return this; }
         }
         public class Error : BaseFieldType { }
         public class File : BaseFieldType { }
         public class GridChoice : BaseFieldType { }
         public class Guid : BaseFieldType { }
-        public class Integer : BaseFieldTypeWithOperators { }
+        public class Integer : BaseFieldTypeWithOperators
+        {
+            public static bool operator <(object c1, Integer c2) { return false; }
+            public static bool operator >(object c1, Integer c2) { return false; }
+            public static bool operator <=(object c1, Integer c2) { return false; }
+            public static bool operator >=(object c1, Integer c2) { return false; }
+        }
         public class Invalid : BaseFieldType { }
         
         internal class Lookup : BaseFieldType { }
@@ -82,6 +99,11 @@ namespace CamlexNET
         // See http://camlex.codeplex.com/Thread/View.aspx?ThreadId=203560 for details
         public class LookupId : BaseFieldTypeWithOperators
         {
+            public static bool operator <(object c1, LookupId c2) { return false; }
+            public static bool operator >(object c1, LookupId c2) { return false; }
+            public static bool operator <=(object c1, LookupId c2) { return false; }
+            public static bool operator >=(object c1, LookupId c2) { return false; }
+
             // todo: allow cast from integer to LookupId
 //            public static explicit operator LookupId(int id)
 //            {
@@ -93,11 +115,29 @@ namespace CamlexNET
         public class MaxItems : BaseFieldType { }
         public class ModStat : BaseFieldType { }
         public class MultiChoice : BaseFieldType { }
-        public class Note : StringBasedFieldType { }
-        public class Number : BaseFieldTypeWithOperators { }
+        public class Note : StringBasedFieldType
+        {
+            public static bool operator <(object c1, Note c2) { return false; }
+            public static bool operator >(object c1, Note c2) { return false; }
+            public static bool operator <=(object c1, Note c2) { return false; }
+            public static bool operator >=(object c1, Note c2) { return false; }
+        }
+        public class Number : BaseFieldTypeWithOperators
+        {
+            public static bool operator <(object c1, Number c2) { return false; }
+            public static bool operator >(object c1, Number c2) { return false; }
+            public static bool operator <=(object c1, Number c2) { return false; }
+            public static bool operator >=(object c1, Number c2) { return false; }
+        }
         public class PageSeparator : BaseFieldType { }
         public class Recurrence : BaseFieldType { }
-        public class Text : StringBasedFieldType { }
+        public class Text : StringBasedFieldType
+        {
+            public static bool operator <(object c1, Text c2) { return false; }
+            public static bool operator >(object c1, Text c2) { return false; }
+            public static bool operator <=(object c1, Text c2) { return false; }
+            public static bool operator >=(object c1, Text c2) { return false; }
+        }
         public class ThreadIndex : BaseFieldType { }
         public class Threading : BaseFieldType { }
         public class URL : BaseFieldType { }

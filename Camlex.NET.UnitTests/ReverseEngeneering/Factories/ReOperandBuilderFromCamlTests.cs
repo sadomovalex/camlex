@@ -110,68 +110,68 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Factories
         public void test_WHEN_xml_is_null_THEN_exception_is_thrown_for_create_value_operand()
         {
             var b = new ReOperandBuilderFromCaml();
-            b.CreateValueOperand(null, null);
+            b.CreateValueOperand(null);
         }
 
         [Test]
         [ExpectedException(typeof(CamlAnalysisException))]
         public void test_WHEN_type_attr_is_missing_THEN_exception_is_thrown_for_create_value_operand()
         {
-            var xml = "<Value>1</Value>";
+            var xml = "<Operation><Value>1</Value></Operation>";
 
             var b = new ReOperandBuilderFromCaml();
-            b.CreateValueOperand(XmlHelper.Get(xml), null);
+            b.CreateValueOperand(XmlHelper.Get(xml));
         }
 
         [Test]
         [ExpectedException(typeof(CamlAnalysisException))]
         public void test_WHEN_type_attr_has_incorrect_value_THEN_exception_is_thrown_for_create_value_operand()
         {
-            var xml = "<Value Type=\"foo\">1</Value>";
+            var xml = "<Operation><Value Type=\"foo\">1</Value></Operation>";
 
             var b = new ReOperandBuilderFromCaml();
-            b.CreateValueOperand(XmlHelper.Get(xml), null);
+            b.CreateValueOperand(XmlHelper.Get(xml));
         }
 
         [Test]
         public void test_WHEN_type_attr_has_correct_value_THEN_value_operand_is_sucessfully_created()
         {
             var b = new ReOperandBuilderFromCaml();
-            Assert.That(b.CreateValueOperand(XmlHelper.Get("<Value Type=\"Text\">foo</Value>"), null).ToCaml().ToString(),
+            Assert.That(b.CreateValueOperand(XmlHelper.Get("<Operation><Value Type=\"Text\">foo</Value></Operation>")).ToCaml().ToString(),
                 Is.EqualTo("<Value Type=\"Text\">foo</Value>"));
-            Assert.That(b.CreateValueOperand(XmlHelper.Get("<Value Type=\"Integer\">123</Value>"), null).ToCaml().ToString(),
+            Assert.That(b.CreateValueOperand(XmlHelper.Get("<Operation><Value Type=\"Integer\">123</Value></Operation>")).ToCaml().ToString(),
                 Is.EqualTo("<Value Type=\"Integer\">123</Value>"));
-            Assert.That(b.CreateValueOperand(XmlHelper.Get("<Value Type=\"Boolean\">1</Value>"), null).ToCaml().ToString(),
+            Assert.That(b.CreateValueOperand(XmlHelper.Get("<Operation><Value Type=\"Boolean\">1</Value></Operation>")).ToCaml().ToString(),
                 Is.EqualTo("<Value Type=\"Boolean\">1</Value>"));
-            Assert.That(b.CreateValueOperand(XmlHelper.Get("<Value Type=\"Boolean\">0</Value>"), null).ToCaml().ToString(),
+            Assert.That(b.CreateValueOperand(XmlHelper.Get("<Operation><Value Type=\"Boolean\">0</Value></Operation>")).ToCaml().ToString(),
                 Is.EqualTo("<Value Type=\"Boolean\">0</Value>"));
-            Assert.That(b.CreateValueOperand(XmlHelper.Get("<Value Type=\"DateTime\">2010-02-01T03:04:05Z</Value>"), null).ToCaml().ToString(),
+            Assert.That(b.CreateValueOperand(XmlHelper.Get("<Operation><Value Type=\"DateTime\">2010-02-01T03:04:05Z</Value></Operation>")).ToCaml().ToString(),
                 Is.EqualTo("<Value Type=\"DateTime\">2010-02-01T03:04:05Z</Value>"));
-            Assert.That(b.CreateValueOperand(XmlHelper.Get("<Value Type=\"DateTime\"><Now /></Value>"), null).ToCaml().ToString(),
+            Assert.That(b.CreateValueOperand(XmlHelper.Get("<Operation><Value Type=\"DateTime\"><Now /></Value></Operation>")).ToCaml().ToString(),
                 Is.EqualTo("<Value Type=\"DateTime\"><Now /></Value>").Using(new CamlComparer()));
-            Assert.That(b.CreateValueOperand(XmlHelper.Get("<Value Type=\"DateTime\"><Today /></Value>"), null).ToCaml().ToString(),
+            Assert.That(b.CreateValueOperand(XmlHelper.Get("<Operation><Value Type=\"DateTime\"><Today /></Value></Operation>")).ToCaml().ToString(),
                 Is.EqualTo("<Value Type=\"DateTime\"><Today /></Value>").Using(new CamlComparer()));
-            Assert.That(b.CreateValueOperand(XmlHelper.Get("<Value Type=\"DateTime\"><Week /></Value>"), null).ToCaml().ToString(),
+            Assert.That(b.CreateValueOperand(XmlHelper.Get("<Operation><Value Type=\"DateTime\"><Week /></Value></Operation>")).ToCaml().ToString(),
                 Is.EqualTo("<Value Type=\"DateTime\"><Week /></Value>").Using(new CamlComparer()));
-            Assert.That(b.CreateValueOperand(XmlHelper.Get("<Value Type=\"DateTime\"><Month /></Value>"), null).ToCaml().ToString(),
+            Assert.That(b.CreateValueOperand(XmlHelper.Get("<Operation><Value Type=\"DateTime\"><Month /></Value></Operation>")).ToCaml().ToString(),
                 Is.EqualTo("<Value Type=\"DateTime\"><Month /></Value>").Using(new CamlComparer()));
-            Assert.That(b.CreateValueOperand(XmlHelper.Get("<Value Type=\"DateTime\"><Year /></Value>"), null).ToCaml().ToString(),
+            Assert.That(b.CreateValueOperand(XmlHelper.Get("<Operation><Value Type=\"DateTime\"><Year /></Value></Operation>")).ToCaml().ToString(),
                 Is.EqualTo("<Value Type=\"DateTime\"><Year /></Value>").Using(new CamlComparer()));
-            Assert.That(b.CreateValueOperand(XmlHelper.Get("<Value Type=\"Guid\">{AD524A0C-D90E-4C04-B6FB-CB6E9F6CA7BD}</Value>"), null).ToCaml().ToString(),
+            Assert.That(b.CreateValueOperand(XmlHelper.Get("<Operation><Value Type=\"Guid\">{AD524A0C-D90E-4C04-B6FB-CB6E9F6CA7BD}</Value></Operation>")).ToCaml().ToString(),
                 Is.EqualTo("<Value Type=\"Guid\">ad524a0c-d90e-4c04-b6fb-cb6e9f6ca7bd</Value>"));
 
-            var valueOperand = b.CreateValueOperand(XmlHelper.Get("<Value Type=\"Lookup\">1</Value>"), null);
+            var valueOperand = b.CreateValueOperand(XmlHelper.Get("<Operation><Value Type=\"Lookup\">1</Value></Operation>"));
             Assert.IsInstanceOf<LookupValueValueOperand>(valueOperand);
             Assert.That(valueOperand.ToCaml().ToString(),
                 Is.EqualTo("<Value Type=\"Lookup\">1</Value>"));
 
-            valueOperand = b.CreateValueOperand(XmlHelper.Get("<Value Type=\"Lookup\">1</Value>"),
-                                                    XmlHelper.Get("<FieldRef Name=\"Status\" LookupId=\"True\" />"));
+            valueOperand = b.CreateValueOperand(XmlHelper.Get(
+                "<Operation><Value Type=\"Lookup\">1</Value><FieldRef Name=\"Status\" LookupId=\"True\" /></Operation>"));
             Assert.IsInstanceOf<LookupIdValueOperand>(valueOperand);
             Assert.That(valueOperand.ToCaml().ToString(),
                 Is.EqualTo("<Value Type=\"Lookup\">1</Value>"));
 
-            Assert.That(b.CreateValueOperand(XmlHelper.Get("<Value Type=\"Note\">foo</Value>"), null).ToCaml().ToString(),
+            Assert.That(b.CreateValueOperand(XmlHelper.Get("<Operation><Value Type=\"Note\">foo</Value></Operation>")).ToCaml().ToString(),
                 Is.EqualTo("<Value Type=\"Note\">foo</Value>"));
         }
     }
