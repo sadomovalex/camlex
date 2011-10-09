@@ -193,6 +193,7 @@
     <Compile Include="ReverseEngeneering\Analyzers\ReBinaryExpressionTestBase.cs" />
     <Compile Include="ReverseEngeneering\Analyzers\ReEqAnalyzerTest.cs" />
     <Compile Include="ReverseEngeneering\Analyzers\ReArrayAnalyzerTests.cs" />
+    <Compile Include="ReverseEngeneering\Analyzers\ReGeqAnalyzerTest.cs" />
     <Compile Include="ReverseEngeneering\Analyzers\ReIsNullAnalyzerTest.cs" />
     <Compile Include="ReverseEngeneering\Factories\ReAnalyzerFromCamlFactoryTests.cs" />
     <Compile Include="ReverseEngeneering\Factories\ReOperandBuilderFromCamlTests.cs" />
