@@ -7,12 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Camlex.NET.ConsoleTest", "C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Camlex.NET.UnitTests", "Camlex.NET.UnitTests\Camlex.NET.UnitTests.csproj", "{298ACD3C-082D-406B-B4BB-8B8CAD5B18A6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Camlex.NET.ExpressionToCodeAdapter", "Camlex.NET.ExpressionToCodeAdapter\Camlex.NET.ExpressionToCodeAdapter.csproj", "{18E0AB69-DCE2-46E3-B79D-921BC7493B5B}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExpressionToCodeLib", "ExpressionToCodeLib\ExpressionToCodeLib.csproj", "{2472FFFC-E2F9-4043-8CA6-EB65D4059A0F}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Camlex.NET.ExpressionToCode.UnitTests", "Camlex.NET.ExpressionToCode.UnitTests\Camlex.NET.ExpressionToCode.UnitTests.csproj", "{2472C93B-2475-4656-8F4F-AF69DA486B58}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,18 +25,6 @@ Global
 		{298ACD3C-082D-406B-B4BB-8B8CAD5B18A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{298ACD3C-082D-406B-B4BB-8B8CAD5B18A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{298ACD3C-082D-406B-B4BB-8B8CAD5B18A6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{18E0AB69-DCE2-46E3-B79D-921BC7493B5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{18E0AB69-DCE2-46E3-B79D-921BC7493B5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{18E0AB69-DCE2-46E3-B79D-921BC7493B5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{18E0AB69-DCE2-46E3-B79D-921BC7493B5B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2472FFFC-E2F9-4043-8CA6-EB65D4059A0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2472FFFC-E2F9-4043-8CA6-EB65D4059A0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2472FFFC-E2F9-4043-8CA6-EB65D4059A0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2472FFFC-E2F9-4043-8CA6-EB65D4059A0F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2472C93B-2475-4656-8F4F-AF69DA486B58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2472C93B-2475-4656-8F4F-AF69DA486B58}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2472C93B-2475-4656-8F4F-AF69DA486B58}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2472C93B-2475-4656-8F4F-AF69DA486B58}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
