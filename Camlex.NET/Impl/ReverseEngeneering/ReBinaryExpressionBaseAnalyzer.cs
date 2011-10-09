@@ -54,9 +54,10 @@ namespace CamlexNET.Impl.ReverseEngeneering
             var value = valueElement.Value;
             try
             {
-                if (typeAttribute.Value == typeof(DataTypes.Boolean).Name) new BooleanValueOperand(value);
+                var isComparison = operandBuilder.IsOperationComparison(el);
+                if (typeAttribute.Value == typeof(DataTypes.Boolean).Name && !isComparison) new BooleanValueOperand(value);
                 else if (typeAttribute.Value == typeof(DataTypes.DateTime).Name) new DateTimeValueOperand(value, false);
-                else if (typeAttribute.Value == typeof(DataTypes.Guid).Name) new GuidValueOperand(value);
+                else if (typeAttribute.Value == typeof(DataTypes.Guid).Name && !isComparison) new GuidValueOperand(value);
                 else if (typeAttribute.Value == typeof(DataTypes.Integer).Name) new IntegerValueOperand(value);
                 else if (typeAttribute.Value == typeof(DataTypes.Lookup).Name) new LookupValueValueOperand(value);
                 else if (typeAttribute.Value == typeof(DataTypes.Text).Name) { }
@@ -83,11 +84,9 @@ namespace CamlexNET.Impl.ReverseEngeneering
                 throw new CamlAnalysisException(string.Format(
                     "Can't create {0} from the following xml: {1}", typeof(T).Name, el));
 
-            var fieldRefElement = this.el.Elements(Tags.FieldRef).First();
-            var valueElement = this.el.Elements(Tags.Value).First();
-
-            var fieldRefOperand = this.operandBuilder.CreateFieldRefOperand(fieldRefElement);
-            var valueOperand = this.operandBuilder.CreateValueOperand(valueElement, fieldRefElement);
+            var fieldRefElement = el.Elements(Tags.FieldRef).First();
+            var fieldRefOperand = operandBuilder.CreateFieldRefOperand(fieldRefElement);
+            var valueOperand = operandBuilder.CreateValueOperand(el);
             return constructor(fieldRefOperand, valueOperand);
         }
     }

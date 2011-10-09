@@ -74,8 +74,14 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Factories
             return new FieldRefOperandWithOrdering(fieldRefOperand, orderDirection);
         }
 
-        public IOperand CreateValueOperand(XElement valueElement, XElement fieldRefElement)
+        public IOperand CreateValueOperand(XElement operationElement)
         {
+            if (operationElement == null)
+            {
+                throw new ArgumentNullException("operationElement");
+            }
+            var fieldRefElement = operationElement.Elements(Tags.FieldRef).FirstOrDefault();
+            var valueElement = operationElement.Elements(Tags.Value).FirstOrDefault();
             if (valueElement == null)
             {
                 throw new ArgumentNullException("valueElement");
@@ -149,7 +155,15 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Factories
 
             // currently only string-based value operand will be returned
             // todo: add support of native operands here (see OperandBuilder.CreateValueOperand() for details)
-            return OperandBuilder.CreateValueOperand(type, value, includeTimeValue, true);
+            return OperandBuilder.CreateValueOperand(
+                type, value, includeTimeValue, true, IsOperationComparison(operationElement));
+        }
+
+        public bool IsOperationComparison(XElement operationElement)
+        {
+            var operationName = operationElement.Name.LocalName;
+            return (string.Compare(operationName, "geq", true) == 0 || string.Compare(operationName, "gt", true) == 0 ||
+                string.Compare(operationName, "lt", true) == 0 || string.Compare(operationName, "leq", true) == 0);
         }
     }
 }
