@@ -46,7 +46,6 @@ namespace CamlexNET.Impl.Operations.Gt
             var result = new XElement(Tags.Gt,
                              this.fieldRefOperand.ToCaml(),
                              this.valueOperand.ToCaml());
-
             return this.operationResultBuilder.CreateResult(result);
         }
 
@@ -55,7 +54,15 @@ namespace CamlexNET.Impl.Operations.Gt
             var fieldRef = this.getFieldRefOperandExpression();
             var value = this.getValueOperandExpression();
 
-            return Expression.GreaterThan(fieldRef, value);
+            if (!value.Type.IsSubclassOf(typeof(BaseFieldTypeWithOperators)))
+            {
+                return Expression.GreaterThan(fieldRef, value);
+            }
+            else
+            {
+                var methodInfo = typeof(BaseFieldTypeWithOperators).GetMethod(Comparisons.Gt.Method);
+                return Expression.GreaterThan(fieldRef, value, false, methodInfo);
+            }
         }
     }
 }

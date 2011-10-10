@@ -54,7 +54,15 @@ namespace CamlexNET.Impl.Operations.Leq
             var fieldRef = this.getFieldRefOperandExpression();
             var value = this.getValueOperandExpression();
 
-            return Expression.LessThanOrEqual(fieldRef, value);
+            if (!value.Type.IsSubclassOf(typeof(BaseFieldTypeWithOperators)))
+            {
+                return Expression.LessThanOrEqual(fieldRef, value);
+            }
+            else
+            {
+                var methodInfo = typeof(BaseFieldTypeWithOperators).GetMethod(Comparisons.Leq.Method);
+                return Expression.LessThanOrEqual(fieldRef, value, false, methodInfo);
+            }
         }
     }
 }

@@ -11,8 +11,8 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers
     {
         private readonly Func<XElement, IReOperandBuilder, ReLeqAnalyzer>
             ANALYZER_CONSTRUCTOR = (el, operandBuilder) => new ReLeqAnalyzer(el, operandBuilder);
-        private const string OPERATION_NAME = "Leq";
-        private const string OPERATION_SYMBOL = "<=";
+        private const string OPERATION_NAME = Comparisons.Leq.Name;
+        private const string OPERATION_SYMBOL = Comparisons.Leq.Symbol;
 
         [Test]
         public void test_WHEN_xml_is_null_THEN_expression_is_not_valid()
