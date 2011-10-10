@@ -11,7 +11,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers
     {
         private readonly Func<XElement, IReOperandBuilder, ReEqAnalyzer> 
             ANALYZER_CONSTRUCTOR = (el, operandBuilder) => new ReEqAnalyzer(el, operandBuilder);
-        private const string OPERATION_NAME = "Eq";
+        private const string OPERATION_NAME = Tags.Eq;
         private const string OPERATION_SYMBOL = "=";
 
         [Test]

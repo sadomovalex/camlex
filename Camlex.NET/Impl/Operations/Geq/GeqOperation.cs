@@ -54,7 +54,15 @@ namespace CamlexNET.Impl.Operations.Geq
             var fieldRef = this.getFieldRefOperandExpression();
             var value = this.getValueOperandExpression();
 
-            return Expression.GreaterThanOrEqual(fieldRef, value);
+            if (!value.Type.IsSubclassOf(typeof(BaseFieldTypeWithOperators)))
+            {
+                return Expression.GreaterThanOrEqual(fieldRef, value);
+            }
+            else
+            {
+                var methodInfo = typeof(BaseFieldTypeWithOperators).GetMethod(Comparisons.Geq.Method);
+                return Expression.GreaterThanOrEqual(fieldRef, value, false, methodInfo);
+            }
         }
     }
 }

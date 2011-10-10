@@ -162,8 +162,10 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Factories
         public bool IsOperationComparison(XElement operationElement)
         {
             var operationName = operationElement.Name.LocalName;
-            return (string.Compare(operationName, "geq", true) == 0 || string.Compare(operationName, "gt", true) == 0 ||
-                string.Compare(operationName, "lt", true) == 0 || string.Compare(operationName, "leq", true) == 0);
+            return (string.Compare(operationName, Comparisons.Geq.Name, true) == 0 ||
+                    string.Compare(operationName, Comparisons.Gt.Name, true) == 0 ||
+                    string.Compare(operationName, Comparisons.Lt.Name, true) == 0 ||
+                    string.Compare(operationName, Comparisons.Leq.Name, true) == 0);
         }
     }
 }
