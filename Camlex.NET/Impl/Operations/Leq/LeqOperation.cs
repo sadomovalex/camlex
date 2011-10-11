@@ -60,7 +60,7 @@ namespace CamlexNET.Impl.Operations.Leq
             }
             else
             {
-                var methodInfo = typeof(BaseFieldTypeWithOperators).GetMethod(Comparisons.Leq.Method);
+                var methodInfo = typeof(BaseFieldTypeWithOperators).GetMethod(ReflectionHelper.LessThanOrEqualMethodName);
                 return Expression.LessThanOrEqual(fieldRef, value, false, methodInfo);
             }
         }

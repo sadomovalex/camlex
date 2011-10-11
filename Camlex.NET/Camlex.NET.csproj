@@ -56,7 +56,6 @@
   <ItemGroup>
     <Compile Include="Attributes.cs" />
     <Compile Include="Camlex.cs" />
-    <Compile Include="Comparisons.cs" />
     <Compile Include="DataTypes.cs" />
     <Compile Include="ErrorMessages.cs" />
     <Compile Include="Exceptions.cs" />
@@ -81,6 +80,8 @@
     <Compile Include="Impl\Operations\DateRangesOverlap\DateRangesOverlapOperation.cs" />
     <Compile Include="Impl\Operations\Results\ExpressionOperationResult.cs" />
     <Compile Include="Impl\Query.cs" />
+    <Compile Include="Impl\ReverseEngeneering\Caml\Analyzers\ReBeginsWithAnalyzer.cs" />
+    <Compile Include="Impl\ReverseEngeneering\Caml\Analyzers\ReContainsAnalyzer.cs" />
     <Compile Include="Impl\ReverseEngeneering\Caml\Analyzers\ReIsNotNullAnalyzer.cs" />
     <Compile Include="Impl\ReverseEngeneering\Caml\Analyzers\ReIsNullAnalyzer.cs" />
     <Compile Include="Impl\ReverseEngeneering\Caml\Analyzers\ReGeqAnalyzer.cs" />

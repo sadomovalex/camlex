@@ -37,8 +37,8 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers
     {
         private readonly Func<XElement, IReOperandBuilder, ReGtAnalyzer>
             ANALYZER_CONSTRUCTOR = (el, operandBuilder) => new ReGtAnalyzer(el, operandBuilder);
-        private const string OPERATION_NAME = Comparisons.Gt.Name;
-        private const string OPERATION_SYMBOL = Comparisons.Gt.Symbol;
+        private const string OPERATION_NAME = Tags.Gt;
+        private const string OPERATION_SYMBOL = ReflectionHelper.GreaterThanMethodSymbol;
 
         [Test]
         public void test_WHEN_xml_is_null_THEN_expression_is_not_valid()
