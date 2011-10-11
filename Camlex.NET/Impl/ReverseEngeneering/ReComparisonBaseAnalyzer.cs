@@ -26,30 +26,23 @@
 #endregion
 
 using System.Xml.Linq;
-using CamlexNET.Impl.Operations.Geq;
-using CamlexNET.Interfaces;
 using CamlexNET.Interfaces.ReverseEngeneering;
 
-namespace CamlexNET.Impl.ReverseEngeneering.Caml.Analyzers
+namespace CamlexNET.Impl.ReverseEngeneering
 {
-    internal class ReGeqAnalyzer : ReComparisonBaseAnalyzer
+    internal abstract class ReComparisonBaseAnalyzer : ReBinaryExpressionBaseAnalyzer
     {
-        public ReGeqAnalyzer(XElement el, IReOperandBuilder operandBuilder) :
+        protected ReComparisonBaseAnalyzer(XElement el, IReOperandBuilder operandBuilder) :
             base(el, operandBuilder)
         {
         }
 
-        public override bool IsValid()
+        protected override bool doesOperationSupportValueType(string valueType, string value)
         {
-            if (!base.IsValid()) return false;
-            if (el.Name != Tags.Geq) return false;
-            return true;
-        }
-
-        public override IOperation GetOperation()
-        {
-            return getOperation((fieldRefOperand, valueOperand) =>
-                new GeqOperation(null, fieldRefOperand, valueOperand));
+            var isComparison = operandBuilder.IsOperationComparison(el);
+            if (valueType == typeof(DataTypes.Boolean).Name && isComparison) return false;
+            if (valueType == typeof(DataTypes.Guid).Name && isComparison) return false;
+            return base.doesOperationSupportValueType(valueType, value);
         }
     }
 }

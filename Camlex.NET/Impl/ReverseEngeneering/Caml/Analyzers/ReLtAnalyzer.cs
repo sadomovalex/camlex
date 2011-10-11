@@ -32,7 +32,7 @@ using CamlexNET.Interfaces.ReverseEngeneering;
 
 namespace CamlexNET.Impl.ReverseEngeneering.Caml.Analyzers
 {
-    internal class ReLtAnalyzer : ReBinaryExpressionBaseAnalyzer
+    internal class ReLtAnalyzer : ReComparisonBaseAnalyzer
     {
         public ReLtAnalyzer(XElement el, IReOperandBuilder operandBuilder) :
             base(el, operandBuilder)

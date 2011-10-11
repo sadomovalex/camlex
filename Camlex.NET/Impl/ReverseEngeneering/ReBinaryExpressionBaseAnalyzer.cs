@@ -24,6 +24,7 @@
 // fitness for a particular purpose and non-infringement.
 // -----------------------------------------------------------------------------
 #endregion
+
 using System;
 using System.Linq;
 using System.Xml.Linq;
@@ -42,27 +43,25 @@ namespace CamlexNET.Impl.ReverseEngeneering
 
         public override bool IsValid()
         {
-            if (!base.IsValid())
-            {
-                return false;
-            }
-            if (el.Attributes().Count() > 0)
-            {
-                return false;
-            }
+            if (!base.IsValid()) return false;
+            if (el.Attributes().Count() > 0) return false;
 
             // check presence of FieldRef tag with ID or Name attribute
-            if (!this.hasValidFieldRefElement())
-            {
-                return false;
-            }
+            if (!this.hasValidFieldRefElement()) return false;
 
             // check presence of Value tag with Type attribute
-            if (!hasValidValueElement())
-            {
-                return false;
-            }
+            if (!hasValidValueElement()) return false;
 
+            return true;
+        }
+
+        protected bool hasValidFieldRefElement()
+        {
+            if (el.Elements(Tags.FieldRef).Count() != 1) return false;
+            var fieldRefElement = el.Elements(Tags.FieldRef).First();
+            var isIdOrNamePresent = fieldRefElement.Attributes()
+                .Any(a => a.Name == Attributes.ID || a.Name == Attributes.Name);
+            if (!isIdOrNamePresent) return false;
             return true;
         }
 
@@ -77,29 +76,22 @@ namespace CamlexNET.Impl.ReverseEngeneering
             // check whether we support this value type
             if (typeAttribute.Value != typeof(DataTypes.Text).Name &&
                 string.IsNullOrEmpty(valueElement.Value)) return false;
-            var value = valueElement.Value;
-            try
-            {
-                var isComparison = operandBuilder.IsOperationComparison(el);
-                if (typeAttribute.Value == typeof(DataTypes.Boolean).Name && !isComparison) new BooleanValueOperand(value);
-                else if (typeAttribute.Value == typeof(DataTypes.DateTime).Name) new DateTimeValueOperand(value, false);
-                else if (typeAttribute.Value == typeof(DataTypes.Guid).Name && !isComparison) new GuidValueOperand(value);
-                else if (typeAttribute.Value == typeof(DataTypes.Integer).Name) new IntegerValueOperand(value);
-                else if (typeAttribute.Value == typeof(DataTypes.Lookup).Name) new LookupValueValueOperand(value);
-                else if (typeAttribute.Value == typeof(DataTypes.Text).Name) { }
-                else throw new InvalidValueForOperandTypeException(null, null);
-            }
-            catch (InvalidValueForOperandTypeException) { return false; }
-            return true;
+            return doesOperationSupportValueType(typeAttribute.Value, valueElement.Value);
         }
 
-        protected bool hasValidFieldRefElement()
+        protected virtual bool doesOperationSupportValueType(string valueType, string value)
         {
-            if (el.Elements(Tags.FieldRef).Count() != 1) return false;
-            var fieldRefElement = el.Elements(Tags.FieldRef).First();
-            var isIdOrNamePresent = fieldRefElement.Attributes()
-                .Any(a => a.Name == Attributes.ID || a.Name == Attributes.Name);
-            if (!isIdOrNamePresent) return false;
+            try
+            {
+                if (valueType == typeof(DataTypes.Boolean).Name) new BooleanValueOperand(value);
+                else if (valueType == typeof(DataTypes.DateTime).Name) new DateTimeValueOperand(value, false);
+                else if (valueType == typeof(DataTypes.Guid).Name) new GuidValueOperand(value);
+                else if (valueType == typeof(DataTypes.Integer).Name) new IntegerValueOperand(value);
+                else if (valueType == typeof(DataTypes.Lookup).Name) new LookupValueValueOperand(value);
+                else if (valueType == typeof(DataTypes.Text).Name) { }
+                else return false;
+            }
+            catch (InvalidValueForOperandTypeException) { return false; }
             return true;
         }
 
