@@ -60,7 +60,7 @@ namespace CamlexNET.Impl.Operations.Geq
             }
             else
             {
-                var methodInfo = typeof(BaseFieldTypeWithOperators).GetMethod(Comparisons.Geq.Method);
+                var methodInfo = typeof(BaseFieldTypeWithOperators).GetMethod(ReflectionHelper.GreaterThanOrEqualMethodName);
                 return Expression.GreaterThanOrEqual(fieldRef, value, false, methodInfo);
             }
         }

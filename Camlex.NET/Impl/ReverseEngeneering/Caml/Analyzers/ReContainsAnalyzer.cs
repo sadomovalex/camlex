@@ -24,36 +24,39 @@
 // fitness for a particular purpose and non-infringement.
 // -----------------------------------------------------------------------------
 #endregion
-namespace CamlexNET
+
+using System.Xml.Linq;
+using CamlexNET.Impl.Operations.Contains;
+using CamlexNET.Interfaces;
+using CamlexNET.Interfaces.ReverseEngeneering;
+
+namespace CamlexNET.Impl.ReverseEngeneering.Caml.Analyzers
 {
-    internal static class Comparisons
+    internal class ReContainsAnalyzer : ReComparisonBaseAnalyzer
     {
-        internal static class Gt
+        public ReContainsAnalyzer(XElement el, IReOperandBuilder operandBuilder) :
+            base(el, operandBuilder)
         {
-            public const string Name = Tags.Gt;
-            public const string Symbol = ">";
-            public const string Method = "op_GreaterThan";
         }
 
-        internal static class Geq
+        public override bool IsValid()
         {
-            public const string Name = Tags.Geq;
-            public const string Symbol = ">=";
-            public const string Method = "op_GreaterThanOrEqual";
+            if (!base.IsValid()) return false;
+            if (el.Name != Tags.Contains) return false;
+            return true;
         }
 
-        internal static class Lt
+        protected override bool doesOperationSupportValueType(string valueType, string value)
         {
-            public const string Name = Tags.Lt;
-            public const string Symbol = "<";
-            public const string Method = "op_LessThan";
+            if (valueType != typeof(DataTypes.Text).Name) return false;
+            return base.doesOperationSupportValueType(valueType, value);
         }
 
-        internal static class Leq
+        public override IOperation GetOperation()
         {
-            public const string Name = Tags.Leq;
-            public const string Symbol = "<=";
-            public const string Method = "op_LessThanOrEqual";
+            return getOperation((fieldRefOperand, valueOperand) =>
+                new ContainsOperation(null, fieldRefOperand, valueOperand));
         }
     }
 }
+

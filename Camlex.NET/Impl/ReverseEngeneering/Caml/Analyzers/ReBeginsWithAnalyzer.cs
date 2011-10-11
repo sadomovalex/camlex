@@ -25,46 +25,38 @@
 // -----------------------------------------------------------------------------
 #endregion
 
-using System;
-using System.Linq.Expressions;
 using System.Xml.Linq;
-using CamlexNET.Impl.Factories;
+using CamlexNET.Impl.Operations.BeginsWith;
 using CamlexNET.Interfaces;
+using CamlexNET.Interfaces.ReverseEngeneering;
 
-namespace CamlexNET.Impl.Operations.Gt
+namespace CamlexNET.Impl.ReverseEngeneering.Caml.Analyzers
 {
-    internal class GtOperation : BinaryOperationBase
+    internal class ReBeginsWithAnalyzer : ReComparisonBaseAnalyzer
     {
-        public GtOperation(IOperationResultBuilder operationResultBuilder,
-            IOperand fieldRefOperand, IOperand valueOperand)
-            : base(operationResultBuilder, fieldRefOperand, valueOperand)
+        public ReBeginsWithAnalyzer(XElement el, IReOperandBuilder operandBuilder) :
+            base(el, operandBuilder)
         {
         }
 
-        public override IOperationResult ToResult()
+        public override bool IsValid()
         {
-            var result = new XElement(Tags.Gt,
-                             this.fieldRefOperand.ToCaml(),
-                             this.valueOperand.ToCaml());
-            return this.operationResultBuilder.CreateResult(result);
+            if (!base.IsValid()) return false;
+            if (el.Name != Tags.BeginsWith) return false;
+            return true;
         }
 
-        public override Expression ToExpression()
+        protected override bool doesOperationSupportValueType(string valueType, string value)
         {
-            var fieldRef = this.getFieldRefOperandExpression();
-            var value = this.getValueOperandExpression();
+            if (valueType != typeof(DataTypes.Text).Name) return false;
+            return base.doesOperationSupportValueType(valueType, value);
+        }
 
-            if (!value.Type.IsSubclassOf(typeof(BaseFieldTypeWithOperators)))
-            {
-                return Expression.GreaterThan(fieldRef, value);
-            }
-            else
-            {
-                var methodInfo = typeof(BaseFieldTypeWithOperators).GetMethod(ReflectionHelper.GreaterThanMethodName);
-                return Expression.GreaterThan(fieldRef, value, false, methodInfo);
-            }
+        public override IOperation GetOperation()
+        {
+            return getOperation((fieldRefOperand, valueOperand) =>
+                new BeginsWithOperation(null, fieldRefOperand, valueOperand));
         }
     }
 }
-
 

@@ -37,8 +37,8 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers
     {
         private readonly Func<XElement, IReOperandBuilder, ReGeqAnalyzer>
             ANALYZER_CONSTRUCTOR = (el, operandBuilder) => new ReGeqAnalyzer(el, operandBuilder);
-        private const string OPERATION_NAME = Comparisons.Geq.Name;
-        private const string OPERATION_SYMBOL = Comparisons.Geq.Symbol;
+        private const string OPERATION_NAME = Tags.Geq;
+        private const string OPERATION_SYMBOL = ReflectionHelper.GreaterThanOrEqualMethodSymbol;
 
         [Test]
         public void test_WHEN_xml_is_null_THEN_expression_is_not_valid()

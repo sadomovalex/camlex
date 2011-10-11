@@ -49,6 +49,16 @@ namespace CamlexNET
         public const string CommonParameterName = "x";
         public const string Item = "Item";
 
+        public const string GreaterThanMethodName = "op_GreaterThan";
+        public const string GreaterThanOrEqualMethodName = "op_GreaterThanOrEqual";
+        public const string LessThanMethodName = "op_LessThan";
+        public const string LessThanOrEqualMethodName = "op_LessThanOrEqual";
+
+        public const string GreaterThanMethodSymbol = ">";
+        public const string GreaterThanOrEqualMethodSymbol = ">=";
+        public const string LessThanMethodSymbol = "<";
+        public const string LessThanOrEqualMethodSymbol = "<=";
+
 //        public static IEnumerable<ParameterExpression> GetExpressionParameters(ParameterInfo[] parameterInfos)
 //        {
 //            var result = new List<ParameterExpression>();
