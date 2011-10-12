@@ -26,24 +26,30 @@
 #endregion
 
 using System.Xml.Linq;
+using CamlexNET.Impl.Operations.OrElse;
+using CamlexNET.Interfaces;
 using CamlexNET.Interfaces.ReverseEngeneering;
 
-namespace CamlexNET.Impl.ReverseEngeneering
+namespace CamlexNET.Impl.ReverseEngeneering.Caml.Analyzers
 {
-    // base class for Geq, Gt, Leq, Lt analyzers
-    internal abstract class ReComparisonBaseAnalyzer : ReBinaryExpressionBaseAnalyzer
+    internal class ReOrElseAnalyzer : ReCompositeExpressionBaseAnalyzer
     {
-        protected ReComparisonBaseAnalyzer(XElement el, IReOperandBuilder operandBuilder) :
-            base(el, operandBuilder)
+        public ReOrElseAnalyzer(XElement el, IReOperandBuilder operandBuilder, IReAnalyzerFactory reAnalyzerFactory)
+            : base(el, operandBuilder, reAnalyzerFactory)
         {
         }
 
-        protected override bool doesOperationSupportValueType(string valueType, string value)
+        public override bool IsValid()
         {
-            var isComparison = operandBuilder.IsOperationComparison(el);
-            if (valueType == typeof(DataTypes.Boolean).Name && isComparison) return false;
-            if (valueType == typeof(DataTypes.Guid).Name && isComparison) return false;
-            return base.doesOperationSupportValueType(valueType, value);
+            if (!base.IsValid()) return false;
+            if (el.Name != Tags.Or) return false;
+            return true;
+        }
+
+        public override IOperation GetOperation()
+        {
+            return getOperation((firstOperation, secondOperation) =>
+                new OrElseOperation(null, firstOperation, secondOperation));
         }
     }
 }
