@@ -45,23 +45,30 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers
         where TOperation : BinaryOperationBase
     {
         #region Helpers
+
+        internal enum OperationType
+        {
+            Normal, Comparison, Textual
+        }
+
         class SupportedValueType
         {
             public Type SupportedType { get; set; }
             public string ExampleValue { get; set; }
             public bool ComparisonOperationsSupport { get; set; }
+            public bool TextualOperationsSupport { get; set; }
         }
 
         List<SupportedValueType> supportedTypesWithExamples = new List<SupportedValueType>
         {
-            new SupportedValueType { SupportedType = typeof(DataTypes.Boolean), ExampleValue = bool.TrueString, ComparisonOperationsSupport = false },
-            new SupportedValueType { SupportedType = typeof(DataTypes.Boolean), ExampleValue = 1.ToString(), ComparisonOperationsSupport = false },
-            new SupportedValueType { SupportedType = typeof(DataTypes.DateTime), ExampleValue = DateTime.Now.ToString(), ComparisonOperationsSupport = true },
-            new SupportedValueType { SupportedType = typeof(DataTypes.DateTime), ExampleValue = Camlex.Now, ComparisonOperationsSupport = true },
-            new SupportedValueType { SupportedType = typeof(DataTypes.Guid), ExampleValue = Guid.NewGuid().ToString(), ComparisonOperationsSupport = false },
-            new SupportedValueType { SupportedType = typeof(DataTypes.Integer), ExampleValue = 12345.ToString(), ComparisonOperationsSupport = true },
-            new SupportedValueType { SupportedType = typeof(DataTypes.Lookup), ExampleValue = "lookup", ComparisonOperationsSupport = true },
-            new SupportedValueType { SupportedType = typeof(DataTypes.Text), ExampleValue = "text", ComparisonOperationsSupport = true }
+            new SupportedValueType { SupportedType = typeof(DataTypes.Boolean), ExampleValue = bool.TrueString, ComparisonOperationsSupport = false, TextualOperationsSupport = false },
+            new SupportedValueType { SupportedType = typeof(DataTypes.Boolean), ExampleValue = 1.ToString(), ComparisonOperationsSupport = false, TextualOperationsSupport = false },
+            new SupportedValueType { SupportedType = typeof(DataTypes.DateTime), ExampleValue = DateTime.Now.ToString(), ComparisonOperationsSupport = true, TextualOperationsSupport = false },
+            new SupportedValueType { SupportedType = typeof(DataTypes.DateTime), ExampleValue = Camlex.Now, ComparisonOperationsSupport = true, TextualOperationsSupport = false },
+            new SupportedValueType { SupportedType = typeof(DataTypes.Guid), ExampleValue = Guid.NewGuid().ToString(), ComparisonOperationsSupport = false, TextualOperationsSupport = false },
+            new SupportedValueType { SupportedType = typeof(DataTypes.Integer), ExampleValue = 12345.ToString(), ComparisonOperationsSupport = true, TextualOperationsSupport = false },
+            new SupportedValueType { SupportedType = typeof(DataTypes.Lookup), ExampleValue = "lookup", ComparisonOperationsSupport = true, TextualOperationsSupport = false },
+            new SupportedValueType { SupportedType = typeof(DataTypes.Text), ExampleValue = "text", ComparisonOperationsSupport = true, TextualOperationsSupport = true }
         };
 
         #endregion
@@ -126,14 +133,16 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers
         }
 
         internal void BASE_test_WHEN_supported_value_type_specified_THEN_expression_is_valid
-            (Func<XElement, IReOperandBuilder, TAnalyzer> constructor, string operationName, bool isComparisonOperation) 
+            (Func<XElement, IReOperandBuilder, TAnalyzer> constructor, string operationName, OperationType operationType) 
         {
             typeof(DataTypes).GetMembers()
                 .Where(x => x.MemberType == MemberTypes.NestedType).Select(x => x.Name).ToList().ForEach(x =>
                 {
                     var foundItem = supportedTypesWithExamples
                         .Where(y => y.SupportedType.Name == x).FirstOrDefault();
-                    if (foundItem == null || (isComparisonOperation && !foundItem.ComparisonOperationsSupport)) return;
+                    if (foundItem == null ||
+                        (operationType == OperationType.Comparison && !foundItem.ComparisonOperationsSupport) ||
+                        (operationType == OperationType.Textual && !foundItem.TextualOperationsSupport)) return;
 
                     var xml = string.Format(
                         "<{0}>" +
@@ -148,14 +157,16 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers
         }
 
         internal void BASE_test_WHEN_not_supported_value_type_specified_THEN_expression_is_not_valid
-            (Func<XElement, IReOperandBuilder, TAnalyzer> constructor, string operationName, bool isComparisonOperation) 
+            (Func<XElement, IReOperandBuilder, TAnalyzer> constructor, string operationName, OperationType operationType) 
         {
             typeof(DataTypes).GetMembers()
                 .Where(x => x.MemberType == MemberTypes.NestedType).Select(x => x.Name).ToList().ForEach(x =>
                 {
                     var foundItem = supportedTypesWithExamples
                         .Where(y => y.SupportedType.Name == x).FirstOrDefault();
-                    if (foundItem != null && !(isComparisonOperation && !foundItem.ComparisonOperationsSupport)) return;
+                    if (foundItem != null &&
+                        !(operationType == OperationType.Comparison && !foundItem.ComparisonOperationsSupport) &&
+                        !(operationType == OperationType.Textual && !foundItem.TextualOperationsSupport)) return;
 
                     var xml = string.Format(
                         "<{0}>" +
@@ -177,14 +188,16 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers
         }
 
         internal void BASE_test_WHEN_expression_is_valid_THEN_operation_is_returned
-            (Func<XElement, IReOperandBuilder, TAnalyzer> constructor, string operationName, bool isComparisonOperation, string operationSymbol)
+            (Func<XElement, IReOperandBuilder, TAnalyzer> constructor, string operationName, OperationType operationType, string operationSymbol)
         {
             typeof(DataTypes).GetMembers()
                 .Where(x => x.MemberType == MemberTypes.NestedType).Select(x => x.Name).ToList().ForEach(x =>
                 {
                     var foundItem = supportedTypesWithExamples
                         .Where(y => y.SupportedType.Name == x).FirstOrDefault();
-                    if (foundItem == null || (isComparisonOperation && !foundItem.ComparisonOperationsSupport)) return;
+                    if (foundItem == null ||
+                        (operationType == OperationType.Comparison && !foundItem.ComparisonOperationsSupport) ||
+                        (operationType == OperationType.Textual && !foundItem.TextualOperationsSupport)) return;
 
                     var xml = string.Format(
                         "<{0}>" +
@@ -195,18 +208,29 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers
 
                     var b = MockRepository.GenerateStub<IReOperandBuilder>();
                     b.Stub(c => c.CreateFieldRefOperand(null)).Return(new FieldRefOperand("Title")).IgnoreArguments();
-                    var valueOperand = !isComparisonOperation
-                        ? (IOperand)new TextValueOperand(foundItem.ExampleValue)
-                        : new GenericStringBasedValueOperand(foundItem.SupportedType, foundItem.ExampleValue);
+
+                    var valueOperand = default(IOperand);
+                    if (operationType == OperationType.Normal)
+                        valueOperand = new TextValueOperand(foundItem.ExampleValue);
+                    if (operationType == OperationType.Comparison)
+                        valueOperand = new GenericStringBasedValueOperand(foundItem.SupportedType, foundItem.ExampleValue);
+                    if (operationType == OperationType.Textual)
+                        valueOperand = new TextValueOperand(foundItem.ExampleValue);
+
                     b.Stub(c => c.CreateValueOperand(null)).Return(valueOperand).IgnoreArguments();
                     var analyzer = constructor(XmlHelper.Get(xml), b);
                     var operation = analyzer.GetOperation();
                     Assert.IsInstanceOf<TOperation>(operation);
                     var operationT = (TOperation)operation;
 
-                    var exprectedResult = !isComparisonOperation
-                        ? string.Format("(Convert(x.get_Item(\"Title\")) {0} \"{1}\")", operationSymbol, foundItem.ExampleValue)
-                        : string.Format("(x.get_Item(\"Title\") {0} Convert(Convert(\"{1}\")))", operationSymbol, foundItem.ExampleValue);
+                    var exprectedResult = default(string);
+                    if (operationType == OperationType.Normal)
+                        exprectedResult = string.Format("(Convert(x.get_Item(\"Title\")) {0} \"{1}\")", operationSymbol, foundItem.ExampleValue);
+                    if (operationType == OperationType.Comparison)
+                        exprectedResult = string.Format("(x.get_Item(\"Title\") {0} Convert(Convert(\"{1}\")))", operationSymbol, foundItem.ExampleValue);
+                    if (operationType == OperationType.Textual)
+                        exprectedResult = string.Format("Convert(x.get_Item(\"Title\")).{0}(\"{1}\")", operationSymbol, foundItem.ExampleValue);
+
                     Assert.That(operationT.ToExpression().ToString(), Is.EqualTo(exprectedResult));
                 });
         }
