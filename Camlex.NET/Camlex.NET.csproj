@@ -80,6 +80,7 @@
     <Compile Include="Impl\Operations\DateRangesOverlap\DateRangesOverlapOperation.cs" />
     <Compile Include="Impl\Operations\Results\ExpressionOperationResult.cs" />
     <Compile Include="Impl\Query.cs" />
+    <Compile Include="Impl\ReverseEngeneering\Caml\Analyzers\ReAndAlsoAnalyzer.cs" />
     <Compile Include="Impl\ReverseEngeneering\Caml\Analyzers\ReBeginsWithAnalyzer.cs" />
     <Compile Include="Impl\ReverseEngeneering\Caml\Analyzers\ReContainsAnalyzer.cs" />
     <Compile Include="Impl\ReverseEngeneering\Caml\Analyzers\ReIsNotNullAnalyzer.cs" />
@@ -89,7 +90,9 @@
     <Compile Include="Impl\ReverseEngeneering\Caml\Analyzers\ReLeqAnalyzer.cs" />
     <Compile Include="Impl\ReverseEngeneering\Caml\Analyzers\ReLtAnalyzer.cs" />
     <Compile Include="Impl\ReverseEngeneering\Caml\Analyzers\ReNeqAnalyzer.cs" />
+    <Compile Include="Impl\ReverseEngeneering\Caml\Analyzers\ReOrElseAnalyzer.cs" />
     <Compile Include="Impl\ReverseEngeneering\ReComparisonBaseAnalyzer.cs" />
+    <Compile Include="Impl\ReverseEngeneering\ReCompositeExpressionBaseAnalyzer.cs" />
     <Compile Include="Impl\ReverseEngeneering\ReNullabilityBaseAnalyzer.cs" />
     <Compile Include="Impl\ReverseEngeneering\ReBinaryExpressionBaseAnalyzer.cs" />
     <Compile Include="Impl\ReverseEngeneering\Caml\Analyzers\ReArrayAnalyzer.cs" />
