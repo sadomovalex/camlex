@@ -197,6 +197,7 @@
     <Compile Include="ReverseEngeneering\Analyzers\ReArrayAnalyzerTests.cs" />
     <Compile Include="ReverseEngeneering\Analyzers\ReGeqAnalyzerTest.cs" />
     <Compile Include="ReverseEngeneering\Analyzers\ReGtAnalyzerTest.cs" />
+    <Compile Include="ReverseEngeneering\Analyzers\ReIsNotNullAnalyzerTest.cs" />
     <Compile Include="ReverseEngeneering\Analyzers\ReIsNullAnalyzerTest.cs" />
     <Compile Include="ReverseEngeneering\Analyzers\ReLeqAnalyzerTest.cs" />
     <Compile Include="ReverseEngeneering\Analyzers\ReLtAnalyzerTest.cs" />

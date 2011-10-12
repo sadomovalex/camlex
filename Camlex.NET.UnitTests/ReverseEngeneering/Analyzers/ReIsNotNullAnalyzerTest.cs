@@ -30,12 +30,12 @@ using NUnit.Framework;
 
 namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers
 {
-    public class ReIsNullAnalyzerTest
+    public class ReIsNotNullAnalyzerTest
     {
         [Test]
         public void test_WHEN_xml_is_null_THEN_expression_is_not_valid()
         {
-            var analyzer = new ReIsNullAnalyzer(null, null);
+            var analyzer = new ReIsNotNullAnalyzer(null, null);
             Assert.IsFalse(analyzer.IsValid());
         }
 
@@ -43,10 +43,10 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers
         public void test_WHEN_field_ref_not_specified_THEN_expression_is_not_valid()
         {
             var xml =
-                "<IsNull>" +
-                "</IsNull>";
+                "<IsNotNull>" +
+                "</IsNotNull>";
 
-            var analyzer = new ReIsNullAnalyzer(XmlHelper.Get(xml), null);
+            var analyzer = new ReIsNotNullAnalyzer(XmlHelper.Get(xml), null);
             Assert.IsFalse(analyzer.IsValid());
         }
 
@@ -54,11 +54,11 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers
         public void test_WHEN_field_ref_specified_THEN_expression_is_valid()
         {
             var xml =
-                "<IsNull>" +
+                "<IsNotNull>" +
                 "    <FieldRef Name=\"Title\" />" +
-                "</IsNull>";
+                "</IsNotNull>";
 
-            var analyzer = new ReIsNullAnalyzer(XmlHelper.Get(xml), null);
+            var analyzer = new ReIsNotNullAnalyzer(XmlHelper.Get(xml), null);
             Assert.IsTrue(analyzer.IsValid());
         }
 
@@ -66,11 +66,11 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers
         public void test_WHEN_field_ref_specified_THEN_is_not_null_expression_is_valid()
         {
             var xml =
-                "<IsNull>" +
+                "<IsNotNull>" +
                 "    <FieldRef Name=\"Title\" />" +
-                "</IsNull>";
+                "</IsNotNull>";
 
-            var analyzer = new ReIsNullAnalyzer(XmlHelper.Get(xml), null);
+            var analyzer = new ReIsNotNullAnalyzer(XmlHelper.Get(xml), null);
             Assert.IsTrue(analyzer.IsValid());
         }
     }

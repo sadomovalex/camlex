@@ -48,7 +48,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers
 
         internal enum OperationType
         {
-            Normal, Comparison, Textual
+            Equality, Comparison, Textual
         }
 
         class SupportedValueType
@@ -210,7 +210,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers
                     b.Stub(c => c.CreateFieldRefOperand(null)).Return(new FieldRefOperand("Title")).IgnoreArguments();
 
                     var valueOperand = default(IOperand);
-                    if (operationType == OperationType.Normal)
+                    if (operationType == OperationType.Equality)
                         valueOperand = new TextValueOperand(foundItem.ExampleValue);
                     if (operationType == OperationType.Comparison)
                         valueOperand = new GenericStringBasedValueOperand(foundItem.SupportedType, foundItem.ExampleValue);
@@ -224,7 +224,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers
                     var operationT = (TOperation)operation;
 
                     var exprectedResult = default(string);
-                    if (operationType == OperationType.Normal)
+                    if (operationType == OperationType.Equality)
                         exprectedResult = string.Format("(Convert(x.get_Item(\"Title\")) {0} \"{1}\")", operationSymbol, foundItem.ExampleValue);
                     if (operationType == OperationType.Comparison)
                         exprectedResult = string.Format("(x.get_Item(\"Title\") {0} Convert(Convert(\"{1}\")))", operationSymbol, foundItem.ExampleValue);

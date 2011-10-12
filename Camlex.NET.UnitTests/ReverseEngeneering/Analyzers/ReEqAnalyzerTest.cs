@@ -73,13 +73,13 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers
         [Test]
         public void test_WHEN_supported_value_type_specified_THEN_expression_is_valid()
         {
-            BASE_test_WHEN_supported_value_type_specified_THEN_expression_is_valid(ANALYZER_CONSTRUCTOR, OPERATION_NAME, OperationType.Normal);
+            BASE_test_WHEN_supported_value_type_specified_THEN_expression_is_valid(ANALYZER_CONSTRUCTOR, OPERATION_NAME, OperationType.Equality);
         }
 
         [Test]
         public void test_WHEN_not_supported_value_type_specified_THEN_expression_is_not_valid()
         {
-            BASE_test_WHEN_not_supported_value_type_specified_THEN_expression_is_not_valid(ANALYZER_CONSTRUCTOR, OPERATION_NAME, OperationType.Normal);
+            BASE_test_WHEN_not_supported_value_type_specified_THEN_expression_is_not_valid(ANALYZER_CONSTRUCTOR, OPERATION_NAME, OperationType.Equality);
         }
 
         [Test]
@@ -92,7 +92,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers
         [Test]
         public void test_WHEN_expression_is_valid_THEN_operation_is_returned()
         {
-            BASE_test_WHEN_expression_is_valid_THEN_operation_is_returned(ANALYZER_CONSTRUCTOR, OPERATION_NAME, OperationType.Normal, OPERATION_SYMBOL);
+            BASE_test_WHEN_expression_is_valid_THEN_operation_is_returned(ANALYZER_CONSTRUCTOR, OPERATION_NAME, OperationType.Equality, OPERATION_SYMBOL);
         }
     }
 }
