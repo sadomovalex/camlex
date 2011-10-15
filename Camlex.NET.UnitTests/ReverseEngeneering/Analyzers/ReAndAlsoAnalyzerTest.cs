@@ -66,6 +66,13 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers
         }
 
         [Test]
+        [ExpectedException(typeof(CamlAnalysisException))]
+        public void test_WHEN_expression_is_not_valid_THEN_exception_is_thrown()
+        {
+            BASE_test_WHEN_expression_is_not_valid_THEN_exception_is_thrown(ANALYZER_CONSTRUCTOR);
+        }
+
+        [Test]
         public void test_WHEN_expression_is_valid_THEN_operation_is_returned()
         {
             BASE_test_WHEN_expression_is_valid_THEN_operation_is_returned(ANALYZER_CONSTRUCTOR, OPERATION_NAME, OPERATION_SYMBOL);

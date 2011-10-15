@@ -205,6 +205,7 @@
     <Compile Include="ReverseEngeneering\Analyzers\ReLtAnalyzerTest.cs" />
     <Compile Include="ReverseEngeneering\Analyzers\ReNeqAnalyzerTest.cs" />
     <Compile Include="ReverseEngeneering\Analyzers\TestBase\ReCompositeExpressionTestBase.cs" />
+    <Compile Include="ReverseEngeneering\Analyzers\ReDateRangesOverlapAnalyzerTest.cs" />
     <Compile Include="ReverseEngeneering\Analyzers\TestBase\ReUnaryExpressionTestBase.cs" />
     <Compile Include="ReverseEngeneering\Factories\ReAnalyzerFromCamlFactoryTests.cs" />
     <Compile Include="ReverseEngeneering\Factories\ReOperandBuilderFromCamlTests.cs" />

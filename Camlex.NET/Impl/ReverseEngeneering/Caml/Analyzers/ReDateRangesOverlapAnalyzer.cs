@@ -34,9 +34,9 @@ using CamlexNET.Interfaces.ReverseEngeneering;
 
 namespace CamlexNET.Impl.ReverseEngeneering
 {
-    internal abstract class ReDateRangesOverlapAnalyzer : ReBaseAnalyzer
+    internal class ReDateRangesOverlapAnalyzer : ReBaseAnalyzer
     {
-        protected ReDateRangesOverlapAnalyzer(XElement el, IReOperandBuilder operandBuilder) 
+        public ReDateRangesOverlapAnalyzer(XElement el, IReOperandBuilder operandBuilder) 
             : base(el, operandBuilder)
         {
         }
@@ -45,13 +45,8 @@ namespace CamlexNET.Impl.ReverseEngeneering
         {
             if (!base.IsValid()) return false;
             if (el.Attributes().Count() > 0) return false;
-
-            // check presence of FieldRef tags with ID or Name attribute
             if (!hasValidFieldRefElements()) return false;
-
-            // check presence of Value tag with Type attribute
             if (!hasValidValueElement()) return false;
-
             return true;
         }
 
@@ -75,7 +70,7 @@ namespace CamlexNET.Impl.ReverseEngeneering
             var typeAttribute = valueElement.Attributes()
                 .Where(a => a.Name == Attributes.Type).FirstOrDefault();
             if (typeAttribute == null) return false;
-            if (typeAttribute.Value == typeof(DataTypes.DateTime).Name) return false;
+            if (typeAttribute.Value != typeof(DataTypes.DateTime).Name) return false;
             if (string.IsNullOrEmpty(valueElement.Value)) return false;
             try { new DateTimeValueOperand(valueElement.Value, false); }
             catch (InvalidValueForOperandTypeException) { return false; }
