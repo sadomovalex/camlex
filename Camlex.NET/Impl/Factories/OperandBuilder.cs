@@ -201,10 +201,25 @@ namespace CamlexNET.Impl.Factories
 
         private IOperand createValueOperand(Type type, object value, Expression expr)
         {
+            var includeTimeValue = ExpressionsHelper.IncludeTimeValue(expr);
+            return CreateValueOperand(type, value, includeTimeValue, false, false);
+        }
+
+        internal static IOperand CreateValueOperand(Type type, object value, bool includeTimeValue, bool parseExactDateTime, bool stringBasedValueOperandRequired)
+        {
             // it is important to have check on NullValueOperand on 1st place
             if (value == null)
             {
                 return new NullValueOperand();
+            }
+            // if cast to DataTypes.* class is required
+            if (stringBasedValueOperandRequired)
+            {
+                if (type.IsSubclassOf(typeof(BaseFieldTypeWithOperators)))
+                {
+                    return new GenericStringBasedValueOperand(type, (string) value);
+                }
+                throw new NonSupportedOperandTypeException(type);
             }
             // string operand can be native or string based
             if (type == typeof(string) || type == typeof(DataTypes.Text))
@@ -238,15 +253,15 @@ namespace CamlexNET.Impl.Factories
             // DateTime operand can be native or string based
             if (type == typeof(DateTime) || type == typeof(DataTypes.DateTime))
             {
-                var includeTimeValue = ExpressionsHelper.IncludeTimeValue(expr);
-
                 if (value.GetType() == typeof(DateTime))
                 {
                     return new DateTimeValueOperand((DateTime)value, includeTimeValue);
                 }
                 if (value.GetType() == typeof(string))
                 {
-                    return new DateTimeValueOperand((string)value, includeTimeValue);
+                    // for string based datetimes we need to specify additional parameter: should use ParseExact
+                    // or simple Parse. Because from re it comes in sortable format ("s") and we need to use parse exact
+                    return new DateTimeValueOperand((string)value, includeTimeValue, parseExactDateTime);
                 }
             }
             // guid operand can be native or string based

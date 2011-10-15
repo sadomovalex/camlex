@@ -27,8 +27,11 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
+using System.Reflection;
 using System.Xml.Linq;
 using CamlexNET.Interfaces;
+using Microsoft.SharePoint;
 
 namespace CamlexNET.Impl.Operands
 {
@@ -129,6 +132,30 @@ namespace CamlexNET.Impl.Operands
                 }
             }
             return element;
+        }
+
+        public virtual Expression ToExpression()
+        {
+            if (this.id != null)
+            {
+                var mi = typeof(SPListItem).GetProperty(ReflectionHelper.Item, typeof(object), new[] { typeof(Guid) }, null).GetGetMethod();
+                return
+                    Expression.Call(
+                        Expression.Parameter(typeof(SPListItem), ReflectionHelper.CommonParameterName),
+                        mi, new[] { Expression.Constant(this.id.Value) });
+            }
+            else if (!string.IsNullOrEmpty(this.fieldName))
+            {
+                var mi = typeof(SPListItem).GetProperty(ReflectionHelper.Item, typeof(object), new[] { typeof(string) }, null).GetGetMethod();
+                return
+                    Expression.Call(
+                        Expression.Parameter(typeof(SPListItem), ReflectionHelper.CommonParameterName),
+                        mi, new[] { Expression.Constant(this.fieldName) });
+            }
+            else
+            {
+                throw new FieldRefOperandShouldContainNameOrIdException();
+            }
         }
     }
 }
