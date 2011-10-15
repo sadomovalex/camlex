@@ -27,6 +27,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Xml.Linq;
 
@@ -43,6 +44,11 @@ namespace CamlexNET.Impl.Operands
             return
                 new XElement(Tags.Value, new XAttribute(Attributes.Type, this.TypeName),
                     new XText(this.Value));
+        }
+
+        public override Expression ToExpression()
+        {
+            return Expression.Convert(Expression.Convert(Expression.Constant(this.Value), typeof(BaseFieldType)), this.Type);
         }
     }
 }

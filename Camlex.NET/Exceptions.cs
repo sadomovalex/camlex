@@ -29,10 +29,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using System.Xml.Linq;
+using CamlexNET.Impl.Operands;
 using Microsoft.SharePoint;
 
 namespace CamlexNET
 {
+    // All exceptions are internal cause we don't want users to implement logic
+    // based on exceptions. Is there a case when exceptions from Camlex should be
+    // known on client side?
+
     internal class GenericException : Exception
     {
         public GenericException(string message, params object[] args) :
@@ -80,13 +86,13 @@ namespace CamlexNET
         }
     }
 
-//    internal class InvalidFieldNameForFieldRefException : GenericException
-//    {
-//        public InvalidFieldNameForFieldRefException(object value) :
-//            base(ErrorMessages.INVALID_FIELD_NAME_FOR_FIELD_REF_OPERAND, value)
-//        {
-//        }
-//    }
+    internal class DateTimeOperandModeNotSupportedException : GenericException
+    {
+        public DateTimeOperandModeNotSupportedException(DateTimeValueOperand.DateTimeValueMode mode) :
+            base(ErrorMessages.DATETIME_OPERAND_MODE_NOT_SUPPORTED, mode)
+        {
+        }
+    }
 
     internal class InvalidValueForFieldRefException : GenericException
     {
@@ -118,5 +124,138 @@ namespace CamlexNET
             base(ErrorMessages.EMPTY_EXPRESSIONS_LIST)
         {
         }
+    }
+
+    internal class ArrayOperationShouldContainOnlyFieldRefOperandsException : GenericException
+    {
+        public ArrayOperationShouldContainOnlyFieldRefOperandsException() :
+            base(ErrorMessages.ARRAY_OPERATION_SHOULD_CONTAIN_ONLY_FIELD_REF_OPERANDS_EXCEPTION)
+        {
+        }
+    }
+
+    internal class OperationShouldContainFieldRefOperandException : GenericException
+    {
+        public OperationShouldContainFieldRefOperandException() :
+            base(ErrorMessages.OPERATION_SHOULD_CONTAIN_FIELD_REF_OPERAND_EXCEPTION)
+        {
+        }
+    }
+
+    internal class OperationShouldContainTextValueOperandException : GenericException
+    {
+        public OperationShouldContainTextValueOperandException() :
+            base(ErrorMessages.OPERATION_SHOULD_CONTAIN_TEXT_VALUE_OPERAND_EXCEPTION)
+        {
+        }
+    }
+
+    internal class DateTimeValueOperandExpectedException : GenericException
+    {
+        public DateTimeValueOperandExpectedException() :
+            base(ErrorMessages.DATE_TIME_VALUE_OPERAND_EXPECTED_EXCEPTION)
+        {
+        }
+    }
+
+    internal class XmlNotWellFormedException : GenericException
+    {
+        public XmlNotWellFormedException() :
+            base(ErrorMessages.XML_NOT_WELL_FORMED_EXCEPTION)
+        {
+        }
+    }
+
+    internal class IncorrectCamlException : Exception
+    {
+        public IncorrectCamlException(string tag)
+            : base(string.Format("Caml specified for tag '{0}' can not be translated to code", tag))
+        { }
+    }
+
+    internal class AtLeastOneCamlPartShouldNotBeEmptyException : Exception
+    {
+        public AtLeastOneCamlPartShouldNotBeEmptyException()
+            : base(string.Format("At least one part for the CAML should not be empty: {0}, {1}, {2}, {3}",
+                Tags.Where, Tags.OrderBy, Tags.GroupBy, Tags.ViewFields))
+        {}
+    }
+
+    internal class LinkerFromCamlRequiresTranslatorFromCamlException : Exception
+    {
+        public LinkerFromCamlRequiresTranslatorFromCamlException(Type type)
+            : base(string.Format("Incorrect translator type was passed to the linker: '{0}'. Linker from CAML requires translator from CAML", type))
+        {}
+    }
+
+    internal class CantParseBooleanAttributeException : Exception
+    {
+        public CantParseBooleanAttributeException(string attr) :
+            base(string.Format("Can't parse boolean attribute '{0}'", attr))
+        {
+        }
+    }
+
+    internal class CantParseIntegerAttributeException : Exception
+    {
+        public CantParseIntegerAttributeException(string attr) :
+            base(string.Format("Can't parse integer attribute '{0}'", attr))
+        {
+        }
+    }
+
+    internal class OnlyOnePartOfQueryShouldBeNotNullException : Exception
+    {
+        public OnlyOnePartOfQueryShouldBeNotNullException() :
+            base(string.Format("Only one part of query can be not null: ({0}, {1}, {2}) or {3}", Tags.Where, Tags.OrderBy, Tags.GroupBy, Tags.ViewFields))
+        {
+        }
+    }
+
+//    internal class NonSupportedTagException : Exception
+//    {
+//        public NonSupportedTagException(string name) :
+//            base(string.Format("Tag '{0}' is not supported. Supported tags are: {1}, {2}, {3}, {4}", name, Tags.Where, Tags.OrderBy, Tags.GroupBy, Tags.ViewFields))
+//        {
+//        }
+//    }
+
+//    internal class NonSupportedXmlException : Exception
+//    {
+//        public NonSupportedXmlException(XElement el) :
+//            base(string.Format("Xml element '{0}' is not supported", el))
+//        {
+//        }
+//    }
+//
+//    internal class AtLeastOneAttributeShouldBeSpecifiedException : Exception
+//    {
+//        public AtLeastOneAttributeShouldBeSpecifiedException(string attr1, string attr2) :
+//            base(string.Format("At least one from two attributes should be specified: {0} or {1}", attr1, attr2))
+//        {
+//        }
+//    }
+//
+//    internal class OnlyOneAttributeShouldBeSpecifiedException : Exception
+//    {
+//        public OnlyOneAttributeShouldBeSpecifiedException(string attr1, string attr2) :
+//            base(string.Format("Only one from two attributes should be specified: {0} or {1}", attr1, attr2))
+//        {
+//        }
+//    }
+//
+//    internal class NotCorrectAttrValueException : Exception
+//    {
+//        public NotCorrectAttrValueException(string value, string attr) :
+//            base(string.Format("Value '{0}' is not correct for attribute '{1}'", value, attr))
+//        {
+//        }
+//    }
+
+    internal class CamlAnalysisException : Exception
+    {
+        public CamlAnalysisException(string msg) :
+            base(msg)
+        {}
     }
 }

@@ -27,8 +27,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Xml.Linq;
+using CamlexNET.Impl.Helpers;
 using CamlexNET.Impl.Operands;
 using CamlexNET.Interfaces;
 
@@ -45,6 +47,52 @@ namespace CamlexNET.Impl
         {
             this.fieldRefOperand = fieldRefOperand;
             this.valueOperand = valueOperand;
+        }
+
+        // Here we know both FieldRef operand and Value operand. So in those cases when we need knowledge from FieldRef for Value,
+        // or from Value to FieldRef (e.g. for native syntax we need to know the type of the Value operand in order to perform casting for FieldRef)
+        protected virtual Expression getFieldRefOperandExpression()
+        {
+            if (this.fieldRefOperand == null)
+            {
+                throw new NullReferenceException("fieldRefOperand");
+            }
+            if (this.valueOperand == null)
+            {
+                throw new NullReferenceException("valueOperand");
+            }
+
+            var fieldRefOperandExpr = this.fieldRefOperand.ToExpression();
+            var valueOperandExpr = this.valueOperand.ToExpression();
+            if (valueOperandExpr is ConstantExpression)
+            {
+                var valueOperandType = ((ConstantExpression) valueOperandExpr).Value.GetType();
+                return Expression.Convert(fieldRefOperandExpr, valueOperandType);
+            }
+            else if (valueOperandExpr is MethodCallExpression)
+            {
+                // special case for DateTimeValueOperand - we should cast left value to the DateTime only if rvalue is native
+                if (valueOperand is DateTimeValueOperand && ((DateTimeValueOperand)valueOperand).Mode == DateTimeValueOperand.DateTimeValueMode.Native)
+                {
+                    var valueOperandType = ((MethodCallExpression) valueOperandExpr).Method.ReturnType;
+                    return Expression.Convert(fieldRefOperandExpr, valueOperandType);
+                }
+            }
+            return fieldRefOperandExpr;
+        }
+
+        protected virtual Expression getValueOperandExpression()
+        {
+            if (this.fieldRefOperand == null)
+            {
+                throw new NullReferenceException("fieldRefOperand");
+            }
+            if (this.valueOperand == null)
+            {
+                throw new NullReferenceException("valueOperand");
+            }
+
+            return this.valueOperand.ToExpression();
         }
     }
 }

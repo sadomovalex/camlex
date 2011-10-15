@@ -24,7 +24,12 @@
 // fitness for a particular purpose and non-infringement.
 // -----------------------------------------------------------------------------
 #endregion
+
+using System;
+using System.Linq.Expressions;
+using System.Reflection;
 using System.Xml.Linq;
+using CamlexNET.Impl.Operands;
 using CamlexNET.Interfaces;
 
 namespace CamlexNET.Impl.Operations.BeginsWith
@@ -43,6 +48,22 @@ namespace CamlexNET.Impl.Operations.BeginsWith
                              fieldRefOperand.ToCaml(),
                              valueOperand.ToCaml());
             return operationResultBuilder.CreateResult(result);
+        }
+
+        public override Expression ToExpression()
+        {
+            if (!(this.fieldRefOperand is FieldRefOperand))
+            {
+                throw new OperationShouldContainFieldRefOperandException();
+            }
+            if (!(this.valueOperand is TextValueOperand))
+            {
+                throw new OperationShouldContainTextValueOperandException();
+            }
+            var fieldRefExpr = this.getFieldRefOperandExpression();
+            var valueExpr = this.getValueOperandExpression();
+            var mi = typeof (string).GetMethod(ReflectionHelper.StartsWithMethodName, new[]{typeof(string)});
+            return Expression.Call(fieldRefExpr, mi, valueExpr);
         }
     }
 }

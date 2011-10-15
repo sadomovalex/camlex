@@ -24,6 +24,9 @@
 // fitness for a particular purpose and non-infringement.
 // -----------------------------------------------------------------------------
 #endregion
+
+using System;
+using System.Linq.Expressions;
 using System.Xml.Linq;
 using CamlexNET.Impl.Factories;
 using CamlexNET.Interfaces;
@@ -44,6 +47,13 @@ namespace CamlexNET.Impl.Operations.AndAlso
                              this.leftOperation.ToResult().Value,
                              this.rightOperation.ToResult().Value);
             return this.operationResultBuilder.CreateResult(result);
+        }
+
+        public override Expression ToExpression()
+        {
+            var leftOperationExpr = this.getLeftOperationExpression();
+            var rightOperationExpr = this.getRightOperationExpression();
+            return Expression.AndAlso(leftOperationExpr, rightOperationExpr);
         }
     }
 }

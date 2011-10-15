@@ -86,6 +86,7 @@
     <Compile Include="Helpers\CamlComparer.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Helpers\CaseInsensetiveComparer.cs" />
     <Compile Include="Operands\BooleanValueOperandTests.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -191,6 +192,52 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReverseEngeneering\Analyzers\ReAndAlsoAnalyzerTest.cs" />
+    <Compile Include="ReverseEngeneering\Analyzers\ReBeginsWithAnalyzerTest.cs" />
+    <Compile Include="ReverseEngeneering\Analyzers\ReOrElseAnalyzerTest.cs" />
+    <Compile Include="ReverseEngeneering\Analyzers\TestBase\ReBinaryExpressionTestBase.cs" />
+    <Compile Include="ReverseEngeneering\Analyzers\ReContainsAnalyzerTest.cs" />
+    <Compile Include="ReverseEngeneering\Analyzers\ReEqAnalyzerTest.cs" />
+    <Compile Include="ReverseEngeneering\Analyzers\ReArrayAnalyzerTests.cs" />
+    <Compile Include="ReverseEngeneering\Analyzers\ReGeqAnalyzerTest.cs" />
+    <Compile Include="ReverseEngeneering\Analyzers\ReGtAnalyzerTest.cs" />
+    <Compile Include="ReverseEngeneering\Analyzers\ReIsNotNullAnalyzerTest.cs" />
+    <Compile Include="ReverseEngeneering\Analyzers\ReIsNullAnalyzerTest.cs" />
+    <Compile Include="ReverseEngeneering\Analyzers\ReLeqAnalyzerTest.cs" />
+    <Compile Include="ReverseEngeneering\Analyzers\ReLtAnalyzerTest.cs" />
+    <Compile Include="ReverseEngeneering\Analyzers\ReNeqAnalyzerTest.cs" />
+    <Compile Include="ReverseEngeneering\Analyzers\TestBase\ReCompositeExpressionTestBase.cs" />
+    <Compile Include="ReverseEngeneering\Analyzers\ReDateRangesOverlapAnalyzerTest.cs" />
+    <Compile Include="ReverseEngeneering\Analyzers\TestBase\ReUnaryExpressionTestBase.cs" />
+    <Compile Include="ReverseEngeneering\Factories\ReAnalyzerFromCamlFactoryTests.cs" />
+    <Compile Include="ReverseEngeneering\Factories\ReOperandBuilderFromCamlTests.cs" />
+    <Compile Include="ReverseEngeneering\Factories\ReTranslatorFromCamlFactoryTests.cs" />
+    <Compile Include="ReverseEngeneering\Operands\BooleanValueOperandTests.cs" />
+    <Compile Include="ReverseEngeneering\Operands\DateTimeValueOperandTests.cs" />
+    <Compile Include="ReverseEngeneering\Operands\FieldRefOperandWithOrderingTests.cs" />
+    <Compile Include="ReverseEngeneering\Operands\GenericStringBasedValueOperandTests.cs" />
+    <Compile Include="ReverseEngeneering\Operands\GuidValueOperandTests.cs" />
+    <Compile Include="ReverseEngeneering\Operands\IntegerValueOperandTests.cs" />
+    <Compile Include="ReverseEngeneering\Operands\FieldRefOperandTests.cs" />
+    <Compile Include="ReverseEngeneering\Operands\NullValueOperandTests.cs" />
+    <Compile Include="ReverseEngeneering\Operands\TextValueOperandTests.cs" />
+    <Compile Include="ReverseEngeneering\Operations\AndAlsoOperationTests.cs" />
+    <Compile Include="ReverseEngeneering\Operations\ArrayOperationTests.cs" />
+    <Compile Include="ReverseEngeneering\Operations\BeginsWithOperationTests.cs" />
+    <Compile Include="ReverseEngeneering\Operations\ContainsOperationTests.cs" />
+    <Compile Include="ReverseEngeneering\Operations\DateRangesOverlapOperationTests.cs" />
+    <Compile Include="ReverseEngeneering\Operations\OrElseOperationTests.cs" />
+    <Compile Include="ReverseEngeneering\Operations\NeqOperationTests.cs" />
+    <Compile Include="ReverseEngeneering\Operations\LtOperationTests.cs" />
+    <Compile Include="ReverseEngeneering\Operations\LeqOperationTests.cs" />
+    <Compile Include="ReverseEngeneering\Operations\IsNullOperationTests.cs" />
+    <Compile Include="ReverseEngeneering\Operations\IsNotNullOperationTests.cs" />
+    <Compile Include="ReverseEngeneering\Operations\GtOperationTests.cs" />
+    <Compile Include="ReverseEngeneering\Operations\GeqOperationTests.cs" />
+    <Compile Include="ReverseEngeneering\Operations\EqOperationTests.cs" />
+    <Compile Include="ReverseEngeneering\ReLinkerFromCamlTests.cs" />
+    <Compile Include="ReverseEngeneering\ReQueryTests.cs" />
+    <Compile Include="ReverseEngeneering\XmlHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Camlex.NET.snk" />
@@ -201,6 +248,7 @@
       <Name>Camlex.NET</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
