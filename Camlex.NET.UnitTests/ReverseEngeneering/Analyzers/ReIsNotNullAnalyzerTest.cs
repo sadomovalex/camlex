@@ -61,17 +61,5 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers
             var analyzer = new ReIsNotNullAnalyzer(XmlHelper.Get(xml), null);
             Assert.IsTrue(analyzer.IsValid());
         }
-
-        [Test]
-        public void test_WHEN_field_ref_specified_THEN_is_not_null_expression_is_valid()
-        {
-            var xml =
-                "<IsNotNull>" +
-                "    <FieldRef Name=\"Title\" />" +
-                "</IsNotNull>";
-
-            var analyzer = new ReIsNotNullAnalyzer(XmlHelper.Get(xml), null);
-            Assert.IsTrue(analyzer.IsValid());
-        }
     }
 }

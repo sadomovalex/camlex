@@ -201,6 +201,7 @@
     <Compile Include="ReverseEngeneering\Analyzers\ReIsNullAnalyzerTest.cs" />
     <Compile Include="ReverseEngeneering\Analyzers\ReLeqAnalyzerTest.cs" />
     <Compile Include="ReverseEngeneering\Analyzers\ReLtAnalyzerTest.cs" />
+    <Compile Include="ReverseEngeneering\Analyzers\ReNeqAnalyzerTest.cs" />
     <Compile Include="ReverseEngeneering\Factories\ReAnalyzerFromCamlFactoryTests.cs" />
     <Compile Include="ReverseEngeneering\Factories\ReOperandBuilderFromCamlTests.cs" />
     <Compile Include="ReverseEngeneering\Factories\ReTranslatorFromCamlFactoryTests.cs" />

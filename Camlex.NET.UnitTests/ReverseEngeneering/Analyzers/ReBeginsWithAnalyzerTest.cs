@@ -71,6 +71,18 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers
         }
 
         [Test]
+        public void test_WHEN_field_ref_without_name_attribute_and_text_value_specified_THEN_expression_is_not_valid()
+        {
+            BASE_test_WHEN_field_ref_without_name_attribute_and_text_value_specified_THEN_expression_is_not_valid(ANALYZER_CONSTRUCTOR, OPERATION_NAME);
+        }
+
+        [Test]
+        public void test_WHEN_field_ref_and_text_value_without_type_attribute_specified_THEN_expression_is_not_valid()
+        {
+            BASE_test_WHEN_field_ref_and_text_value_without_type_attribute_specified_THEN_expression_is_not_valid(ANALYZER_CONSTRUCTOR, OPERATION_NAME);
+        }
+
+        [Test]
         public void test_WHEN_supported_value_type_specified_THEN_expression_is_valid()
         {
             BASE_test_WHEN_supported_value_type_specified_THEN_expression_is_valid(ANALYZER_CONSTRUCTOR, OPERATION_NAME, OperationType.Textual);
@@ -80,6 +92,12 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers
         public void test_WHEN_not_supported_value_type_specified_THEN_expression_is_not_valid()
         {
             BASE_test_WHEN_not_supported_value_type_specified_THEN_expression_is_not_valid(ANALYZER_CONSTRUCTOR, OPERATION_NAME, OperationType.Textual);
+        }
+
+        [Test]
+        public void test_WHEN_supported_value_type_with_incorrect_value_specified_THEN_expression_is_not_valid()
+        {
+            BASE_test_WHEN_supported_value_type_with_incorrect_value_specified_THEN_expression_is_not_valid(ANALYZER_CONSTRUCTOR, OPERATION_NAME, OperationType.Textual);
         }
 
         [Test]
