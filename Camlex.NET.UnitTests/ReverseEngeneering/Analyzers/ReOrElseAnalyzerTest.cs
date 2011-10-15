@@ -27,7 +27,7 @@
 
 using System;
 using System.Xml.Linq;
-using CamlexNET.Impl.Operations.IsNotNull;
+using CamlexNET.Impl.Operations.OrElse;
 using CamlexNET.Impl.ReverseEngeneering.Caml.Analyzers;
 using CamlexNET.Interfaces.ReverseEngeneering;
 using CamlexNET.UnitTests.ReverseEngeneering.Analyzers.TestBase;
@@ -35,12 +35,12 @@ using NUnit.Framework;
 
 namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers
 {
-    internal class ReIsNotNullAnalyzerTest : ReUnaryExpressionTestBase<ReIsNotNullAnalyzer, IsNotNullOperation>
+    internal class ReOrElseAnalyzerTest : ReCompositeExpressionTestBase<ReOrElseAnalyzer, OrElseOperation>
     {
-        private readonly Func<XElement, IReOperandBuilder, ReIsNotNullAnalyzer>
-            ANALYZER_CONSTRUCTOR = (el, operandBuilder) => new ReIsNotNullAnalyzer(el, operandBuilder);
-        private const string OPERATION_NAME = Tags.IsNotNull;
-        private const string OPERATION_SYMBOL = "!= null";
+        private readonly Func<XElement, IReOperandBuilder, IReAnalyzerFactory, ReOrElseAnalyzer>
+            ANALYZER_CONSTRUCTOR = (el, operandBuilder, analyzerFactory) => new ReOrElseAnalyzer(el, operandBuilder, analyzerFactory);
+        private const string OPERATION_NAME = Tags.Or;
+        private const string OPERATION_SYMBOL = "||";
 
         [Test]
         public void test_WHEN_xml_is_null_THEN_expression_is_not_valid()
@@ -49,21 +49,21 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers
         }
 
         [Test]
-        public void test_WHEN_field_ref_not_specified_THEN_expression_is_not_valid()
+        public void test_WHEN_neither_field_ref_nor_value_specified_THEN_expression_is_not_valid()
         {
             BASE_test_WHEN_neither_field_ref_nor_value_specified_THEN_expression_is_not_valid(ANALYZER_CONSTRUCTOR, OPERATION_NAME);
         }
 
         [Test]
-        public void test_WHEN_field_ref_without_name_attribute_specified_THEN_expression_is_not_valid()
+        public void test_WHEN_both_suboperations_are_valid_THEN_expression_is_not_valid()
         {
-            BASE_test_WHEN_field_ref_without_name_attribute_specified_THEN_expression_is_not_valid(ANALYZER_CONSTRUCTOR, OPERATION_NAME);
+            BASE_test_WHEN_both_suboperations_are_valid_THEN_expression_is_valid(ANALYZER_CONSTRUCTOR, OPERATION_NAME);
         }
 
         [Test]
-        public void test_WHEN_field_ref_specified_THEN_expression_is_valid()
+        public void test_WHEN_either_suboperation_is_not_valid_THEN_expression_is_not_valid()
         {
-            BASE_test_WHEN_field_ref_specified_and_value_not_specified_THEN_expression_is_not_valid(ANALYZER_CONSTRUCTOR, OPERATION_NAME);
+            BASE_test_WHEN_either_suboperation_is_not_valid_THEN_expression_is_not_valid(ANALYZER_CONSTRUCTOR, OPERATION_NAME);
         }
 
         [Test]

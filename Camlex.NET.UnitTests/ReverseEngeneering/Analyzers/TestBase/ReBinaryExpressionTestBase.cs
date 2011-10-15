@@ -24,6 +24,7 @@
 // fitness for a particular purpose and non-infringement.
 // -----------------------------------------------------------------------------
 #endregion
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,7 +39,7 @@ using CamlexNET.Interfaces.ReverseEngeneering;
 using NUnit.Framework;
 using Rhino.Mocks;
 
-namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers
+namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers.TestBase
 {
     internal class ReBinaryExpressionTestBase<TAnalyzer, TOperation>
         where TAnalyzer : ReBinaryExpressionBaseAnalyzer
