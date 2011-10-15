@@ -35,7 +35,7 @@ using CamlexNET.Interfaces.ReverseEngeneering;
 using NUnit.Framework;
 using Rhino.Mocks;
 
-namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers
+namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers.TestBase
 {
     internal class ReUnaryExpressionTestBase<TAnalyzer, TOperation>
         where TAnalyzer : ReNullabilityBaseAnalyzer

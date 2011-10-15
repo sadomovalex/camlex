@@ -29,6 +29,7 @@ using System.Xml.Linq;
 using CamlexNET.Impl.Operations.Leq;
 using CamlexNET.Impl.ReverseEngeneering.Caml.Analyzers;
 using CamlexNET.Interfaces.ReverseEngeneering;
+using CamlexNET.UnitTests.ReverseEngeneering.Analyzers.TestBase;
 using NUnit.Framework;
 
 namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers
