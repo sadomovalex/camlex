@@ -27,34 +27,45 @@
 
 using System;
 using System.Xml.Linq;
-using CamlexNET.Impl.ReverseEngeneering.Caml.Analyzers;
+using CamlexNET.Impl.ReverseEngeneering;
 using CamlexNET.Interfaces.ReverseEngeneering;
 using NUnit.Framework;
 
 namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers
 {
-    internal class ReIsNotNullAnalyzerTest : ReUnaryExpressionTestBase<ReIsNotNullAnalyzer>
+    internal class ReUnaryExpressionTestBase<TAnalyzer>
+        where TAnalyzer : ReBinaryExpressionBaseAnalyzer
     {
-        private readonly Func<XElement, IReOperandBuilder, ReIsNotNullAnalyzer>
-            ANALYZER_CONSTRUCTOR = (el, operandBuilder) => new ReIsNotNullAnalyzer(el, operandBuilder);
-        private const string OPERATION_NAME = Tags.IsNotNull;
-
-        [Test]
-        public void test_WHEN_xml_is_null_THEN_expression_is_not_valid()
+        internal void BASE_test_WHEN_xml_is_null_THEN_expression_is_not_valid
+            (Func<XElement, IReOperandBuilder, TAnalyzer> constructor) 
         {
-            BASE_test_WHEN_xml_is_null_THEN_expression_is_not_valid(ANALYZER_CONSTRUCTOR);
+            var analyzer = constructor(null, null);
+            Assert.IsFalse(analyzer.IsValid());
         }
 
-        [Test]
-        public void test_WHEN_field_ref_not_specified_THEN_expression_is_not_valid()
+        internal void BASE_test_WHEN_neither_field_ref_nor_value_specified_THEN_expression_is_not_valid
+            (Func<XElement, IReOperandBuilder, TAnalyzer> constructor, string operationName) 
         {
-            BASE_test_WHEN_neither_field_ref_nor_value_specified_THEN_expression_is_not_valid(ANALYZER_CONSTRUCTOR, OPERATION_NAME);
+            var xml = string.Format(
+                "  <{0}>" +
+                "  </{0}>",
+                operationName);
+
+            var analyzer = constructor(XmlHelper.Get(xml), null);
+            Assert.IsFalse(analyzer.IsValid());
         }
 
-        [Test]
-        public void test_WHEN_field_ref_specified_THEN_expression_is_valid()
+        internal void BASE_test_WHEN_field_ref_specified_and_value_not_specified_THEN_expression_is_not_valid
+            (Func<XElement, IReOperandBuilder, TAnalyzer> constructor, string operationName) 
         {
-            BASE_test_WHEN_field_ref_specified_and_value_not_specified_THEN_expression_is_not_valid(ANALYZER_CONSTRUCTOR, OPERATION_NAME);
+            var xml = string.Format(
+                "<{0}>" +
+                "    <FieldRef Name=\"Title\" />" +
+                "</{0}>",
+                operationName);
+
+            var analyzer = constructor(XmlHelper.Get(xml), null);
+            Assert.IsTrue(analyzer.IsValid());
         }
     }
 }

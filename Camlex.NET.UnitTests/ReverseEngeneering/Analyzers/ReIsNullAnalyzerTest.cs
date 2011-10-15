@@ -25,41 +25,36 @@
 // -----------------------------------------------------------------------------
 #endregion
 
+using System;
+using System.Xml.Linq;
 using CamlexNET.Impl.ReverseEngeneering.Caml.Analyzers;
+using CamlexNET.Interfaces.ReverseEngeneering;
 using NUnit.Framework;
 
 namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers
 {
-    public class ReIsNullAnalyzerTest
+    internal class ReIsNullAnalyzerTest : ReUnaryExpressionTestBase<ReIsNullAnalyzer>
     {
+        private readonly Func<XElement, IReOperandBuilder, ReIsNullAnalyzer>
+            ANALYZER_CONSTRUCTOR = (el, operandBuilder) => new ReIsNullAnalyzer(el, operandBuilder);
+        private const string OPERATION_NAME = Tags.IsNull;
+
         [Test]
         public void test_WHEN_xml_is_null_THEN_expression_is_not_valid()
         {
-            var analyzer = new ReIsNullAnalyzer(null, null);
-            Assert.IsFalse(analyzer.IsValid());
+            BASE_test_WHEN_xml_is_null_THEN_expression_is_not_valid(ANALYZER_CONSTRUCTOR);
         }
 
         [Test]
         public void test_WHEN_field_ref_not_specified_THEN_expression_is_not_valid()
         {
-            var xml =
-                "<IsNull>" +
-                "</IsNull>";
-
-            var analyzer = new ReIsNullAnalyzer(XmlHelper.Get(xml), null);
-            Assert.IsFalse(analyzer.IsValid());
+            BASE_test_WHEN_neither_field_ref_nor_value_specified_THEN_expression_is_not_valid(ANALYZER_CONSTRUCTOR, OPERATION_NAME);
         }
 
         [Test]
         public void test_WHEN_field_ref_specified_THEN_expression_is_valid()
         {
-            var xml =
-                "<IsNull>" +
-                "    <FieldRef Name=\"Title\" />" +
-                "</IsNull>";
-
-            var analyzer = new ReIsNullAnalyzer(XmlHelper.Get(xml), null);
-            Assert.IsTrue(analyzer.IsValid());
+            BASE_test_WHEN_field_ref_specified_and_value_not_specified_THEN_expression_is_not_valid(ANALYZER_CONSTRUCTOR, OPERATION_NAME);
         }
     }
 }
