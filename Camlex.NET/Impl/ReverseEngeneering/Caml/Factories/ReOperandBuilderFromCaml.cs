@@ -106,7 +106,6 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Factories
             {
                 throw new ArgumentNullException("operationElement");
             }
-            var fieldRefElement = operationElement.Elements(Tags.FieldRef).FirstOrDefault();
             var valueElement = operationElement.Elements(Tags.Value).FirstOrDefault();
             if (valueElement == null)
             {
@@ -144,7 +143,7 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Factories
             if (type == typeof(DataTypes.Lookup))
             {
                 type = typeof (DataTypes.LookupValue);
-
+                var fieldRefElement = operationElement.Elements(Tags.FieldRef).FirstOrDefault();
                 if (fieldRefElement != null)
                 {
                     var lookupIdAttr = fieldRefElement.Attributes().FirstOrDefault(a => a.Name == Attributes.LookupId);

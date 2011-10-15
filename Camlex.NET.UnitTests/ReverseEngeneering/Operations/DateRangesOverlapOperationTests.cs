@@ -43,7 +43,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Operations
             var op1 = new FieldRefOperand("StartField");
             var op2 = new FieldRefOperand("StopField");
             var op3 = new FieldRefOperand("RecurrenceID");
-            var dt = new DateTime(2011, 5, 7, 21, 30, 00, 00);
+            var dt = new DateTime(2011, 5, 7, 21, 30, 00);
             var op4 = new DateTimeValueOperand(dt, false);
             var op = new DateRangesOverlapOperation(null, op1, op2, op3, op4);
 
@@ -58,7 +58,6 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Operations
             var op1 = new FieldRefOperand("StartField");
             var op2 = new FieldRefOperand("StopField");
             var op3 = new FieldRefOperand("RecurrenceID");
-            var dt = new DateTime(2011, 5, 7, 21, 30, 00, 00);
             var op4 = new DateTimeValueOperand(Camlex.Now, false);
             var op = new DateRangesOverlapOperation(null, op1, op2, op3, op4);
 
