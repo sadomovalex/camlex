@@ -86,6 +86,13 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers.TestBase
             Assert.IsTrue(analyzer.IsValid());
         }
 
+        internal void BASE_test_WHEN_expression_is_not_valid_THEN_exception_is_thrown
+            (Func<XElement, IReOperandBuilder, TAnalyzer> constructor)
+        {
+            var analyzer = constructor(null, null);
+            analyzer.GetOperation();
+        }
+
         internal void BASE_test_WHEN_expression_is_valid_THEN_operation_is_returned
             (Func<XElement, IReOperandBuilder, TAnalyzer> constructor, string operationName, string operationSymbol)
         {
