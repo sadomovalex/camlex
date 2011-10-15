@@ -24,22 +24,21 @@
 // fitness for a particular purpose and non-infringement.
 // -----------------------------------------------------------------------------
 #endregion
-
 using System;
 using System.Xml.Linq;
-using CamlexNET.Impl.Operations.Contains;
+using CamlexNET.Impl.Operations.Neq;
 using CamlexNET.Impl.ReverseEngeneering.Caml.Analyzers;
 using CamlexNET.Interfaces.ReverseEngeneering;
 using NUnit.Framework;
 
 namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers
 {
-    internal class ReContainsAnalyzerTest : ReBinaryExpressionTestBase<ReContainsAnalyzer, ContainsOperation>
+    internal class ReNeqAnalyzerTest : ReBinaryExpressionTestBase<ReNeqAnalyzer, NeqOperation>
     {
-        private readonly Func<XElement, IReOperandBuilder, ReContainsAnalyzer>
-            ANALYZER_CONSTRUCTOR = (el, operandBuilder) => new ReContainsAnalyzer(el, operandBuilder);
-        private const string OPERATION_NAME = Tags.Contains;
-        private const string OPERATION_SYMBOL = ReflectionHelper.ContainsMethodName;
+        private readonly Func<XElement, IReOperandBuilder, ReNeqAnalyzer> 
+            ANALYZER_CONSTRUCTOR = (el, operandBuilder) => new ReNeqAnalyzer(el, operandBuilder);
+        private const string OPERATION_NAME = Tags.Neq;
+        private const string OPERATION_SYMBOL = "!=";
 
         [Test]
         public void test_WHEN_xml_is_null_THEN_expression_is_not_valid()
@@ -86,13 +85,13 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers
         [Test]
         public void test_WHEN_supported_value_type_specified_THEN_expression_is_valid()
         {
-            BASE_test_WHEN_supported_value_type_specified_THEN_expression_is_valid(ANALYZER_CONSTRUCTOR, OPERATION_NAME, OperationType.Textual);
+            BASE_test_WHEN_supported_value_type_specified_THEN_expression_is_valid(ANALYZER_CONSTRUCTOR, OPERATION_NAME, OperationType.Equality);
         }
 
         [Test]
         public void test_WHEN_not_supported_value_type_specified_THEN_expression_is_not_valid()
         {
-            BASE_test_WHEN_not_supported_value_type_specified_THEN_expression_is_not_valid(ANALYZER_CONSTRUCTOR, OPERATION_NAME, OperationType.Textual);
+            BASE_test_WHEN_not_supported_value_type_specified_THEN_expression_is_not_valid(ANALYZER_CONSTRUCTOR, OPERATION_NAME, OperationType.Equality);
         }
 
         [Test]
@@ -111,7 +110,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers
         [Test]
         public void test_WHEN_expression_is_valid_THEN_operation_is_returned()
         {
-            BASE_test_WHEN_expression_is_valid_THEN_operation_is_returned(ANALYZER_CONSTRUCTOR, OPERATION_NAME, OperationType.Textual, OPERATION_SYMBOL);
+            BASE_test_WHEN_expression_is_valid_THEN_operation_is_returned(ANALYZER_CONSTRUCTOR, OPERATION_NAME, OperationType.Equality, OPERATION_SYMBOL);
         }
     }
 }
