@@ -27,14 +27,19 @@
 
 using System;
 using System.Xml.Linq;
+using CamlexNET.Impl;
+using CamlexNET.Impl.Operands;
 using CamlexNET.Impl.ReverseEngeneering;
+using CamlexNET.Impl.ReverseEngeneering.Caml.Factories;
 using CamlexNET.Interfaces.ReverseEngeneering;
 using NUnit.Framework;
+using Rhino.Mocks;
 
 namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers
 {
-    internal class ReUnaryExpressionTestBase<TAnalyzer>
-        where TAnalyzer : ReBinaryExpressionBaseAnalyzer
+    internal class ReUnaryExpressionTestBase<TAnalyzer, TOperation>
+        where TAnalyzer : ReNullabilityBaseAnalyzer
+        where TOperation : UnaryOperationBase
     {
         internal void BASE_test_WHEN_xml_is_null_THEN_expression_is_not_valid
             (Func<XElement, IReOperandBuilder, TAnalyzer> constructor) 
@@ -55,6 +60,19 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers
             Assert.IsFalse(analyzer.IsValid());
         }
 
+        internal void BASE_test_WHEN_field_ref_without_name_attribute_specified_THEN_expression_is_not_valid
+            (Func<XElement, IReOperandBuilder, TAnalyzer> constructor, string operationName)
+        {
+            var xml = string.Format(
+                "<{0}>" +
+                "    <FieldRef />" +
+                "</{0}>",
+                operationName);
+
+            var analyzer = constructor(XmlHelper.Get(xml), new ReOperandBuilderFromCaml());
+            Assert.IsFalse(analyzer.IsValid());
+        }
+
         internal void BASE_test_WHEN_field_ref_specified_and_value_not_specified_THEN_expression_is_not_valid
             (Func<XElement, IReOperandBuilder, TAnalyzer> constructor, string operationName) 
         {
@@ -66,6 +84,25 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers
 
             var analyzer = constructor(XmlHelper.Get(xml), null);
             Assert.IsTrue(analyzer.IsValid());
+        }
+
+        internal void BASE_test_WHEN_expression_is_valid_THEN_operation_is_returned
+            (Func<XElement, IReOperandBuilder, TAnalyzer> constructor, string operationName, string operationSymbol)
+        {
+            var xml = string.Format(
+                "<{0}>" +
+                "    <FieldRef Name=\"Title\" />" +
+                "</{0}>",
+                operationName);
+
+            var b = MockRepository.GenerateStub<IReOperandBuilder>();
+            b.Stub(c => c.CreateFieldRefOperand(null)).Return(new FieldRefOperand("Title")).IgnoreArguments();
+            var analyzer = constructor(XmlHelper.Get(xml), b);
+            var operation = analyzer.GetOperation();
+            Assert.IsInstanceOf<TOperation>(operation);
+            var operationT = (TOperation)operation;
+            Assert.That(operationT.ToExpression().ToString(), Is.EqualTo(
+                string.Format("(x.get_Item(\"Title\") {0})", operationSymbol)));
         }
     }
 }

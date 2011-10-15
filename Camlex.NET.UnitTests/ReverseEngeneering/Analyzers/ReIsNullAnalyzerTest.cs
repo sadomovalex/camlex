@@ -27,17 +27,19 @@
 
 using System;
 using System.Xml.Linq;
+using CamlexNET.Impl.Operations.IsNull;
 using CamlexNET.Impl.ReverseEngeneering.Caml.Analyzers;
 using CamlexNET.Interfaces.ReverseEngeneering;
 using NUnit.Framework;
 
 namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers
 {
-    internal class ReIsNullAnalyzerTest : ReUnaryExpressionTestBase<ReIsNullAnalyzer>
+    internal class ReIsNullAnalyzerTest : ReUnaryExpressionTestBase<ReIsNullAnalyzer, IsNullOperation>
     {
         private readonly Func<XElement, IReOperandBuilder, ReIsNullAnalyzer>
             ANALYZER_CONSTRUCTOR = (el, operandBuilder) => new ReIsNullAnalyzer(el, operandBuilder);
         private const string OPERATION_NAME = Tags.IsNull;
+        private const string OPERATION_SYMBOL = "= null";
 
         [Test]
         public void test_WHEN_xml_is_null_THEN_expression_is_not_valid()
@@ -52,9 +54,21 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers
         }
 
         [Test]
+        public void test_WHEN_field_ref_without_name_attribute_specified_THEN_expression_is_not_valid()
+        {
+            BASE_test_WHEN_field_ref_without_name_attribute_specified_THEN_expression_is_not_valid(ANALYZER_CONSTRUCTOR, OPERATION_NAME);
+        }
+
+        [Test]
         public void test_WHEN_field_ref_specified_THEN_expression_is_valid()
         {
             BASE_test_WHEN_field_ref_specified_and_value_not_specified_THEN_expression_is_not_valid(ANALYZER_CONSTRUCTOR, OPERATION_NAME);
+        }
+
+        [Test]
+        public void test_WHEN_expression_is_valid_THEN_operation_is_returned()
+        {
+            BASE_test_WHEN_expression_is_valid_THEN_operation_is_returned(ANALYZER_CONSTRUCTOR, OPERATION_NAME, OPERATION_SYMBOL);
         }
     }
 }
