@@ -90,6 +90,7 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Factories
         private IReAnalyzer getAnalyzer(XElement el)
         {
             if (el.Name == Tags.And) return new ReAndAlsoAnalyzer(el, operandBuilder, this);
+            if (el.Name == Tags.Or) return new ReOrElseAnalyzer(el, operandBuilder, this);
             if (el.Name == Tags.BeginsWith) return new ReBeginsWithAnalyzer(el, operandBuilder);
             if (el.Name == Tags.Contains) return new ReContainsAnalyzer(el, operandBuilder);
             if (el.Name == Tags.Eq) return new ReEqAnalyzer(el, operandBuilder);
@@ -100,7 +101,7 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Factories
             if (el.Name == Tags.Leq) return new ReLeqAnalyzer(el, operandBuilder);
             if (el.Name == Tags.Lt) return new ReLtAnalyzer(el, operandBuilder);
             if (el.Name == Tags.Neq) return new ReNeqAnalyzer(el, operandBuilder);
-            if (el.Name == Tags.Or) return new ReAndAlsoAnalyzer(el, operandBuilder, this);
+            if (el.Name == Tags.DateRangesOverlap) return new ReDateRangesOverlapAnalyzer(el, operandBuilder);
             return null;
         }
 

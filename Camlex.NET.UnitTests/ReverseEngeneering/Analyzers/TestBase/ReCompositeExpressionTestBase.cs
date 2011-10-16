@@ -82,7 +82,6 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers.TestBase
                 .Where(x => x.MemberType == MemberTypes.Field).Select(x => x.Name).ToList();
             allTags.ForEach(first =>
             {
-                int t;
                 allTags.ForEach(second =>
                 {
                     if (!SupportedSubOperations.Any(x => string.Compare(x, first, false) == 0) ||
@@ -113,7 +112,6 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers.TestBase
                 .Where(x => x.MemberType == MemberTypes.Field).Select(x => x.Name).ToList();
             allTags.ForEach(first =>
             {
-                int t;
                 allTags.ForEach(second =>
                 {
                     if (SupportedSubOperations.Any(x => string.Compare(x, first, false) == 0) &&
