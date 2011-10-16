@@ -32,7 +32,7 @@ using CamlexNET.Impl.Operations.DateRangesOverlap;
 using CamlexNET.Interfaces;
 using CamlexNET.Interfaces.ReverseEngeneering;
 
-namespace CamlexNET.Impl.ReverseEngeneering
+namespace CamlexNET.Impl.ReverseEngeneering.Caml.Analyzers
 {
     internal class ReDateRangesOverlapAnalyzer : ReBaseAnalyzer
     {

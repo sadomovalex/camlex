@@ -108,7 +108,11 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Factories
             Assert.IsInstanceOf<ReNeqAnalyzer>(f.Create(XmlHelper.Get("<Where><Neq></Neq></Where>")));
             Assert.IsInstanceOf<ReIsNullAnalyzer>(f.Create(XmlHelper.Get("<Where><IsNull></IsNull></Where>")));
             Assert.IsInstanceOf<ReIsNotNullAnalyzer>(f.Create(XmlHelper.Get("<Where><IsNotNull></IsNotNull></Where>")));
-            Assert.Fail("Todo: add other analyzers");
+            Assert.IsInstanceOf<ReAndAlsoAnalyzer>(f.Create(XmlHelper.Get("<Where><And></And></Where>")));
+            Assert.IsInstanceOf<ReBeginsWithAnalyzer>(f.Create(XmlHelper.Get("<Where><BeginsWith></BeginsWith></Where>")));
+            Assert.IsInstanceOf<ReContainsAnalyzer>(f.Create(XmlHelper.Get("<Where><Contains></Contains></Where>")));
+            Assert.IsInstanceOf<ReDateRangesOverlapAnalyzer>(f.Create(XmlHelper.Get("<Where><DateRangesOverlap></DateRangesOverlap></Where>")));
+            Assert.IsInstanceOf<ReOrElseAnalyzer>(f.Create(XmlHelper.Get("<Where><Or></Or></Where>")));
         }
 
         [Test]
