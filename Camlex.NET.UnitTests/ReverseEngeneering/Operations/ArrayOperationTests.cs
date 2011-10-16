@@ -65,5 +65,15 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Operations
             var expr = op.ToExpression();
             Assert.That(expr.ToString(), Is.EqualTo("new [] {(x.get_Item(\"Status\") As Asc), (x.get_Item(\"Title\") As Desc)}"));
         }
+
+        [Test]
+        public void test_THAT_array_operation_with_single_operands_with_ordering_IS_converted_to_expression_correctly()
+        {
+            var op1 = new FieldRefOperand("Status");
+            var op11 = new FieldRefOperandWithOrdering(op1, new Camlex.Desc());
+            var op = new ArrayOperation(null, op11);
+            var expr = op.ToExpression();
+            Assert.That(expr.ToString(), Is.EqualTo("new [] {(x.get_Item(\"Status\") As Desc)}"));
+        }
     }
 }
