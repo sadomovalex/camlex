@@ -237,6 +237,7 @@
     <Compile Include="ReverseEngeneering\Operations\EqOperationTests.cs" />
     <Compile Include="ReverseEngeneering\ReLinkerFromCamlTests.cs" />
     <Compile Include="ReverseEngeneering\ReQueryTests.cs" />
+    <Compile Include="ReverseEngeneering\ReTranslatorFromCamlTests.cs" />
     <Compile Include="ReverseEngeneering\XmlHelper.cs" />
   </ItemGroup>
   <ItemGroup>
