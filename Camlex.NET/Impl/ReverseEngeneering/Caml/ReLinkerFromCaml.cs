@@ -65,11 +65,13 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml
 
         public Expression Link(LambdaExpression where, LambdaExpression orderBy, LambdaExpression groupBy, LambdaExpression viewFields)
         {
+            // list of fluent calls
             var listFluent = new List<KeyValuePair<string, LambdaExpression>>();
             listFluent.Add(new KeyValuePair<string, LambdaExpression>(ReflectionHelper.WhereMethodName, where));
             listFluent.Add(new KeyValuePair<string, LambdaExpression>(ReflectionHelper.OrderByMethodName, orderBy));
             listFluent.Add(new KeyValuePair<string, LambdaExpression>(ReflectionHelper.GroupByMethodName, groupBy));
 
+            // view fields is not fluent
             var listViewFields = new List<KeyValuePair<string, LambdaExpression>>();
             listViewFields.Add(new KeyValuePair<string, LambdaExpression>(ReflectionHelper.ViewFieldsMethodName, viewFields));
 
