@@ -37,19 +37,36 @@ using Rhino.Mocks;
 
 namespace CamlexNET.UnitTests.ReverseEngeneering
 {
-//    [TestFixture]
-//    public class ReQueryTests
-//    {
-//        [Test]
-//        public void test_WHEN_where_is_not_empty_THEN_it_is_converted_expression()
-//        {
-//            var tr = MockRepository.GenerateStub<IReTranslator>();
-//            var tf = MockRepository.GenerateStub<IReTranslatorFactory>();
-//            tf.Stub(b => b.CreateForWhere(null)).Return(tr).IgnoreArguments();
-//
-//            var q = new ReQuery(tf, "<Query><Where></Where></Query>");
-//            var expr = q.ToExpression();
-//            Assert.Fail();
-//        }
-//    }
+    [TestFixture]
+    public class ReQueryTests
+    {
+        [Test]
+        public void test_THAT_1_order_by_IS_translated_sucessfully()
+        {
+            string xml =
+                "<Query>" +
+                "  <OrderBy>" +
+                "    <FieldRef Name=\"Modified\" Ascending=\"False\" />" +
+                "  </OrderBy>" +
+                "</Query>";
+
+            var expr = Camlex.QueryFromString(xml).ToExpression();
+            Assert.That(expr.ToString(), Is.EqualTo("Query().OrderBy(x => (x.get_Item(\"Modified\") As Desc))"));
+        }
+
+        [Test]
+        public void test_THAT_2_order_by_ARE_translated_sucessfully()
+        {
+            string xml =
+                "<Query>" +
+                "  <OrderBy>" +
+                "    <FieldRef Name=\"Title\" />" +
+                "    <FieldRef Name=\"Modified\" Ascending=\"False\" />" +
+                "  </OrderBy>" +
+                "</Query>";
+
+            var expr = Camlex.QueryFromString(xml).ToExpression();
+            Assert.That(expr.ToString(), Is.EqualTo("Query().OrderBy(x => new [] {x.get_Item(\"Title\"), (x.get_Item(\"Modified\") As Desc)})"));
+        }
+    }
 }

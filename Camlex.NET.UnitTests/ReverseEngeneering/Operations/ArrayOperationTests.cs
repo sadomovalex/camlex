@@ -41,7 +41,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Operations
             var op1 = new FieldRefOperand("Status");
             var op = new ArrayOperation(null, op1);
             var expr = op.ToExpression();
-            Assert.That(expr.ToString(), Is.EqualTo("new [] {x.get_Item(\"Status\")}"));
+            Assert.That(expr.ToString(), Is.EqualTo("x.get_Item(\"Status\")"));
         }
 
         [Test]
@@ -73,7 +73,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Operations
             var op11 = new FieldRefOperandWithOrdering(op1, new Camlex.Desc());
             var op = new ArrayOperation(null, op11);
             var expr = op.ToExpression();
-            Assert.That(expr.ToString(), Is.EqualTo("new [] {(x.get_Item(\"Status\") As Desc)}"));
+            Assert.That(expr.ToString(), Is.EqualTo("(x.get_Item(\"Status\") As Desc)"));
         }
     }
 }
