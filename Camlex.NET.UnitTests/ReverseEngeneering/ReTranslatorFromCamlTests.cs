@@ -38,7 +38,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
             var b = new ReOperandBuilderFromCaml();
             var t = new ReTranslatorFromCaml(null, new ReArrayAnalyzer(XmlHelper.Get(xml), b), null, null);
             var expr = t.TranslateOrderBy();
-            Assert.That(expr.ToString(), Is.EqualTo("x => new [] {(x.get_Item(\"Modified\") As Desc)}"));
+            Assert.That(expr.ToString(), Is.EqualTo("x => (x.get_Item(\"Modified\") As Desc)"));
         }
 
         [Test]
@@ -52,7 +52,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
             var b = new ReOperandBuilderFromCaml();
             var t = new ReTranslatorFromCaml(null, null, new ReArrayAnalyzer(XmlHelper.Get(xml), b), null);
             var expr = t.TranslateGroupBy();
-            Assert.That(expr.ToString(), Is.EqualTo("x => new [] {x.get_Item(\"field1\")}"));
+            Assert.That(expr.ToString(), Is.EqualTo("x => x.get_Item(\"field1\")"));
         }
 
         [Test]
@@ -66,7 +66,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
             var b = new ReOperandBuilderFromCaml();
             var t = new ReTranslatorFromCaml(null, null, null, new ReArrayAnalyzer(XmlHelper.Get(xml), b));
             var expr = t.TranslateViewFields();
-            Assert.That(expr.ToString(), Is.EqualTo("x => new [] {x.get_Item(\"Title\")}"));
+            Assert.That(expr.ToString(), Is.EqualTo("x => x.get_Item(\"Title\")"));
         }
     }
 }

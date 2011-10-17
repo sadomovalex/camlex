@@ -40,6 +40,11 @@ namespace CamlexNET.Impl.Operations.Array
     {
         private readonly IOperand[] fieldRefOperands;
 
+        public int OperandsCount
+        {
+            get { return this.fieldRefOperands == null ? 0 : this.fieldRefOperands.Length; }
+        }
+
         public ArrayOperation(IOperationResultBuilder operationResultBuilder,
             params IOperand[] fieldRefOperands) :
             base(operationResultBuilder)
@@ -68,7 +73,14 @@ namespace CamlexNET.Impl.Operations.Array
             {
                 throw new ArrayOperationShouldContainOnlyFieldRefOperandsException();
             }
-            return Expression.NewArrayInit(typeof(Expression), this.fieldRefOperands.Select(o => o.ToExpression()));
+
+            // if there is only 1 field ref operand - return single expression (not array)
+            if (this.fieldRefOperands.Count() == 1)
+            {
+                return this.fieldRefOperands.First().ToExpression();
+            }
+
+            return Expression.NewArrayInit(typeof(object), this.fieldRefOperands.Select(o => o.ToExpression()));
         }
     }
 }

@@ -27,6 +27,7 @@
 using System;
 using System.Linq.Expressions;
 using System.Xml.Linq;
+using CamlexNET.Impl.Operations.Array;
 using CamlexNET.Interfaces.ReverseEngeneering;
 using Microsoft.SharePoint;
 
@@ -60,10 +61,10 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml
 
         public LambdaExpression TranslateWhere()
         {
-            return this.translate(this.analyzerForWhere, Tags.Where);
+            return this.translateWhere(this.analyzerForWhere, Tags.Where);
         }
 
-        private LambdaExpression translate(IReAnalyzer analyzer, string tag)
+        private LambdaExpression translateWhere(IReAnalyzer analyzer, string tag)
         {
             if (analyzer == null)
             {
@@ -78,19 +79,62 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml
             return Expression.Lambda(expr, Expression.Parameter(typeof(SPListItem), ReflectionHelper.CommonParameterName));
         }
 
+        private LambdaExpression translateArrayOperation(IReAnalyzer analyzer, string tag)
+        {
+            if (analyzer == null)
+            {
+                return null;
+            }
+            if (!analyzer.IsValid())
+            {
+                throw new IncorrectCamlException(tag);
+            }
+            var operation = analyzer.GetOperation();
+
+            if (!(operation is ArrayOperation))
+            {
+                throw new CamlAnalysisException("ArrayOperation is expected");
+            }
+
+            int operandsCount = ((ArrayOperation) operation).OperandsCount;
+            if (operandsCount == 0)
+            {
+                throw new CamlAnalysisException(
+                    "ArrayOperation doesn't contain operands. There should be at least one operand");
+            }
+
+            var expr = operation.ToExpression();
+
+            // this is important to specify the type of returning value explicitly in generic, becase otherwise
+            // it will determine type by itself and it will be incorrect for ArrayOperation with orderings.
+            // I.e. it will be Func<SPListItem, Camlex+Desc>, instead of Func<SPListItem,object>. In turn
+            // it will cause exception in ReLinker, because parameter of type Func<SPListItem, Camlex+Desc>
+            // can not be passed to the method OrderBy(Expression<Func<SPListItem, object>> expr);
+            if (operandsCount == 1)
+            {
+                return Expression.Lambda<Func<SPListItem, object>>(expr,
+                                                           Expression.Parameter(typeof (SPListItem),
+                                                                                ReflectionHelper.CommonParameterName));
+            }
+
+            return Expression.Lambda<Func<SPListItem, object[]>>(expr,
+                                                       Expression.Parameter(typeof(SPListItem),
+                                                                            ReflectionHelper.CommonParameterName));
+        }
+
         public LambdaExpression TranslateOrderBy()
         {
-            return this.translate(this.analyzerForOrderBy, Tags.OrderBy);
+            return this.translateArrayOperation(this.analyzerForOrderBy, Tags.OrderBy);
         }
 
         public LambdaExpression TranslateGroupBy()
         {
-            return this.translate(this.analyzerForGroupBy, Tags.GroupBy);
+            return this.translateArrayOperation(this.analyzerForGroupBy, Tags.GroupBy);
         }
 
         public LambdaExpression TranslateViewFields()
         {
-            return this.translate(this.analyzerForViewFields, Tags.ViewFields);
+            return this.translateArrayOperation(this.analyzerForViewFields, Tags.ViewFields);
         }
     }
 }
