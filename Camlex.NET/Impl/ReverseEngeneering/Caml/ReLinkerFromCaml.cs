@@ -239,18 +239,18 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml
             if (hasCollapse && hasGroupLimit)
             {
                 p = new List<Expression>();
-                p.Add(Expression.Convert(Expression.Constant(collapse), typeof(bool?)));
-                p.Add(Expression.Convert(Expression.Constant(groupLimit), typeof (int?)));
+                p.Add(Expression.Constant(collapse, typeof(bool?)));
+                p.Add(Expression.Constant(groupLimit, typeof(int?)));
             }
             else if (hasCollapse && !hasGroupLimit)
             {
                 p = new List<Expression>();
-                p.Add(Expression.Convert(Expression.Constant(collapse), typeof (bool?)));
+                p.Add(Expression.Constant(collapse, typeof(bool?)));
                 // there is only 1 method which receives several field refs: GroupBy(Expression<Func<SPListItem, object[]>> expr, bool? collapse, int? groupLimit).
                 // For this method we need always provide 2 arguments);
                 if (count > 1)
                 {
-                    p.Add(Expression.Convert(Expression.Constant(null), typeof(int?)));
+                    p.Add(Expression.Constant(null, typeof(int?)));
                 }
             }
             else if (!hasCollapse && hasGroupLimit)
@@ -260,18 +260,18 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml
                 p = new List<Expression>();
                 if (count > 1)
                 {
-                    p.Add(Expression.Convert(Expression.Constant(null), typeof(bool?)));
+                    p.Add(Expression.Constant(null, typeof(bool?)));
                 }
 
-                p.Add(Expression.Convert(Expression.Constant(groupLimit), typeof(int?)));
+                p.Add(Expression.Constant(groupLimit, typeof(int?)));
             }
             else if (count > 1)
             {
                 // there is only 1 method which receives several field refs: GroupBy(Expression<Func<SPListItem, object[]>> expr, bool? collapse, int? groupLimit).
                 // For this method we need always provide 2 arguments
                 p = new List<Expression>();
-                p.Add(Expression.Convert(Expression.Constant(null), typeof(bool?)));
-                p.Add(Expression.Convert(Expression.Constant(null), typeof(int?)));
+                p.Add(Expression.Constant(null, typeof(bool?)));
+                p.Add(Expression.Constant(null, typeof(int?)));
             }
             return p;
         }
