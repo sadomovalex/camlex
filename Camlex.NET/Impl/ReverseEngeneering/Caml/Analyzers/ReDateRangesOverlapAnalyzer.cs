@@ -43,10 +43,22 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Analyzers
 
         public override bool IsValid()
         {
-            if (!base.IsValid()) return false;
-            if (el.Attributes().Count() > 0) return false;
-            if (!hasValidFieldRefElements()) return false;
-            if (!hasValidValueElement()) return false;
+            if (!base.IsValid())
+            {
+                return false;
+            }
+            if (el.Attributes().Count() > 0)
+            {
+                return false;
+            }
+            if (!this.hasValidFieldRefElements())
+            {
+                return false;
+            }
+            if (!this.hasValidValueElement())
+            {
+                return false;
+            }
             return true;
         }
 
@@ -65,23 +77,50 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Analyzers
 
         protected bool hasValidValueElement()
         {
-            if (el.Elements(Tags.Value).Count() != 1) return false;
+            if (el.Elements(Tags.Value).Count() != 1)
+            {
+                return false;
+            }
             var valueElement = el.Elements(Tags.Value).First();
             var typeAttribute = valueElement.Attributes()
                 .Where(a => a.Name == Attributes.Type).FirstOrDefault();
-            if (typeAttribute == null) return false;
-            if (typeAttribute.Value != typeof(DataTypes.DateTime).Name) return false;
-            if (string.IsNullOrEmpty(valueElement.Value)) return false;
-            try { new DateTimeValueOperand(valueElement.Value, false); }
-            catch (InvalidValueForOperandTypeException) { return false; }
+            if (typeAttribute == null)
+            {
+                return false;
+            }
+            if (typeAttribute.Value != typeof (DataTypes.DateTime).Name)
+            {
+                return false;
+            }
+            if (string.IsNullOrEmpty(valueElement.Value) && valueElement.Elements().Count() != 1)
+            {
+                return false;
+            }
+            try
+            {
+                if (!string.IsNullOrEmpty(valueElement.Value))
+                {
+                    new DateTimeValueOperand(valueElement.Value, false);
+                }
+                else if (valueElement.Elements().Count() == 1)
+                {
+                    new DateTimeValueOperand(valueElement.Elements().First().Name.ToString(), false);
+                }
+            }
+            catch (InvalidValueForOperandTypeException)
+            {
+                return false;
+            }
             return true;
         }
 
         public override IOperation GetOperation()
         {
-            if (!IsValid())
+            if (!this.IsValid())
+            {
                 throw new CamlAnalysisException(string.Format(
-                    "Can't create {0} from the following xml: {1}", typeof(DateRangesOverlapOperation).Name, el));
+                    "Can't create {0} from the following xml: {1}", typeof (DateRangesOverlapOperation).Name, el));
+            }
 
             var startFieldRefElement = el.Elements(Tags.FieldRef).First();
             var stopFieldRefElement = el.Elements(Tags.FieldRef).Skip(1).First();
