@@ -76,7 +76,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Operations
             var op2 = new DateTimeValueOperand(Camlex.Now, false);
             var op = new EqOperation(null, op1, op2);
             var expr = op.ToExpression();
-            Assert.That(expr.ToString(), Is.EqualTo("(x.get_Item(\"Modified\") = Convert(Convert(\"Now\")))"));
+            Assert.That(expr.ToString(), Is.EqualTo("(x.get_Item(\"Modified\") = Convert(Convert(Camlex.Now)))"));
         }
 
         [Test]
@@ -87,7 +87,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Operations
             var op2 = new DateTimeValueOperand(Camlex.Now, true);
             var op = new EqOperation(null, op1, op2);
             var expr = op.ToExpression();
-            Assert.That(expr.ToString(), Is.EqualTo("(x.get_Item(\"Modified\") = Convert(Convert(\"Now\")).IncludeTimeValue())"));
+            Assert.That(expr.ToString(), Is.EqualTo("(x.get_Item(\"Modified\") = Convert(Convert(Camlex.Now)).IncludeTimeValue())"));
         }
 
         [Test]
