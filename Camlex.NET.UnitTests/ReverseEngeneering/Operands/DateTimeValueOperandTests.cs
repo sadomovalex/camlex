@@ -59,7 +59,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Operands
         {
             var op = new DateTimeValueOperand(Camlex.Now, false);
             var expr = op.ToExpression();
-            Assert.That(expr.ToString(), Is.EqualTo("Convert(Convert(\"Now\"))"));
+            Assert.That(expr.ToString(), Is.EqualTo("Convert(Convert(Camlex.Now))"));
         }
 
         [Test]
@@ -67,7 +67,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Operands
         {
             var op = new DateTimeValueOperand(Camlex.Today, false);
             var expr = op.ToExpression();
-            Assert.That(expr.ToString(), Is.EqualTo("Convert(Convert(\"Today\"))"));
+            Assert.That(expr.ToString(), Is.EqualTo("Convert(Convert(Camlex.Today))"));
         }
 
         [Test]
@@ -75,7 +75,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Operands
         {
             var op = new DateTimeValueOperand(Camlex.Week, false);
             var expr = op.ToExpression();
-            Assert.That(expr.ToString(), Is.EqualTo("Convert(Convert(\"Week\"))"));
+            Assert.That(expr.ToString(), Is.EqualTo("Convert(Convert(Camlex.Week))"));
         }
 
         [Test]
@@ -83,7 +83,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Operands
         {
             var op = new DateTimeValueOperand(Camlex.Month, false);
             var expr = op.ToExpression();
-            Assert.That(expr.ToString(), Is.EqualTo("Convert(Convert(\"Month\"))"));
+            Assert.That(expr.ToString(), Is.EqualTo("Convert(Convert(Camlex.Month))"));
         }
 
         [Test]
@@ -91,7 +91,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Operands
         {
             var op = new DateTimeValueOperand(Camlex.Year, false);
             var expr = op.ToExpression();
-            Assert.That(expr.ToString(), Is.EqualTo("Convert(Convert(\"Year\"))"));
+            Assert.That(expr.ToString(), Is.EqualTo("Convert(Convert(Camlex.Year))"));
         }
 
         [Test]
@@ -108,7 +108,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Operands
         {
             var op = new DateTimeValueOperand(Camlex.Now, true);
             var expr = op.ToExpression();
-            Assert.That(expr.ToString(), Is.EqualTo("Convert(Convert(\"Now\")).IncludeTimeValue()"));
+            Assert.That(expr.ToString(), Is.EqualTo("Convert(Convert(Camlex.Now)).IncludeTimeValue()"));
         }
     }
 }

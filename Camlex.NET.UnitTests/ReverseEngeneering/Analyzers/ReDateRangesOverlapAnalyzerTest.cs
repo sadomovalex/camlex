@@ -184,7 +184,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers.TestBase
             Assert.IsInstanceOf<DateRangesOverlapOperation>(operation);
             var operationT = (DateRangesOverlapOperation)operation;
             Assert.That(operationT.ToExpression().ToString(), Is.EqualTo(
-                "DateRangesOverlap(x.get_Item(\"Title\"), x.get_Item(\"Title\"), x.get_Item(\"Title\"), Convert(Convert(\"Now\")))"));
+                "DateRangesOverlap(x.get_Item(\"Title\"), x.get_Item(\"Title\"), x.get_Item(\"Title\"), Convert(Convert(Camlex.Now)))"));
         }
     }
 }
