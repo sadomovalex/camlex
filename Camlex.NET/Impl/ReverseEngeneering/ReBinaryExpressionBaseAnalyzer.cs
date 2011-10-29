@@ -88,7 +88,39 @@ namespace CamlexNET.Impl.ReverseEngeneering
                 else if (valueType == typeof(DataTypes.Guid).Name) new GuidValueOperand(value);
                 else if (valueType == typeof(DataTypes.Integer).Name) new IntegerValueOperand(value);
                 else if (valueType == typeof(DataTypes.Lookup).Name) new LookupValueValueOperand(value);
-                else if (valueType == typeof(DataTypes.Text).Name) { }
+                // string based types
+                else if (valueType == typeof(DataTypes.AllDayEvent).Name ||
+                    valueType == typeof(DataTypes.Attachments).Name ||
+                    valueType == typeof(DataTypes.Calculated).Name ||
+                    valueType == typeof(DataTypes.Choice).Name ||
+                    valueType == typeof(DataTypes.Computed).Name ||
+                    valueType == typeof(DataTypes.ContentTypeId).Name ||
+                    valueType == typeof(DataTypes.Counter).Name ||
+                    valueType == typeof(DataTypes.CrossProjectLink).Name ||
+                    valueType == typeof(DataTypes.Currency).Name ||
+                    valueType == typeof(DataTypes.Error).Name ||
+                    valueType == typeof(DataTypes.File).Name ||
+                    valueType == typeof(DataTypes.GridChoice).Name ||
+                    valueType == typeof(DataTypes.Invalid).Name ||
+                    valueType == typeof(DataTypes.MaxItems).Name ||
+                    valueType == typeof(DataTypes.ModStat).Name ||
+                    valueType == typeof(DataTypes.MultiChoice).Name ||
+                    valueType == typeof(DataTypes.Note).Name ||
+                    valueType == typeof(DataTypes.Number).Name ||
+                    valueType == typeof(DataTypes.PageSeparator).Name ||
+                    valueType == typeof(DataTypes.Recurrence).Name ||
+                    valueType == typeof(DataTypes.Text).Name ||
+                    valueType == typeof(DataTypes.ThreadIndex).Name ||
+                    valueType == typeof(DataTypes.Threading).Name ||
+                    valueType == typeof(DataTypes.URL).Name ||
+                    valueType == typeof(DataTypes.User).Name ||
+                    valueType == typeof(DataTypes.WorkflowEventType).Name ||
+                    valueType == typeof(DataTypes.WorkflowStatus).Name
+                    )
+                {
+                    var type = typeof (DataTypes).Assembly.GetType(string.Format("CamlexNET.DataTypes.{0}", valueType));
+                    new GenericStringBasedValueOperand(type, value);
+                }
                 else return false;
             }
             catch (InvalidValueForOperandTypeException) { return false; }
