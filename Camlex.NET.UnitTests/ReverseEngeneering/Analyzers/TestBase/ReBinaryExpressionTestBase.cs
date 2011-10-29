@@ -106,11 +106,227 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers.TestBase
             new SupportedValueType
             {
                 SupportedType = typeof(DataTypes.Text),
-                ExamplesOfCorrectValue = new List<string> { string.Empty, "text" },
+                ExamplesOfCorrectValue = new List<string> { string.Empty, "foo" },
                 ExamplesOfIncorrectValue = new List<string>(),
                 ComparisonOperationsSupport = true,
                 TextualOperationsSupport = true
             }
+            /*new SupportedValueType
+            {
+                SupportedType = typeof(DataTypes.AllDayEvent),
+                ExamplesOfCorrectValue = new List<string> { string.Empty, "foo" },
+                ExamplesOfIncorrectValue = new List<string>(),
+                ComparisonOperationsSupport = false,
+                TextualOperationsSupport = true
+            },
+            new SupportedValueType
+            {
+                SupportedType = typeof(DataTypes.Attachments),
+                ExamplesOfCorrectValue = new List<string> { string.Empty, "foo" },
+                ExamplesOfIncorrectValue = new List<string>(),
+                ComparisonOperationsSupport = false,
+                TextualOperationsSupport = true
+            },
+            new SupportedValueType
+            {
+                SupportedType = typeof(DataTypes.Calculated),
+                ExamplesOfCorrectValue = new List<string> { string.Empty, "foo" },
+                ExamplesOfIncorrectValue = new List<string>(),
+                ComparisonOperationsSupport = false,
+                TextualOperationsSupport = true
+            },
+            new SupportedValueType
+            {
+                SupportedType = typeof(DataTypes.Choice),
+                ExamplesOfCorrectValue = new List<string> { string.Empty, "foo" },
+                ExamplesOfIncorrectValue = new List<string>(),
+                ComparisonOperationsSupport = false,
+                TextualOperationsSupport = true
+            },
+            new SupportedValueType
+            {
+                SupportedType = typeof(DataTypes.Computed),
+                ExamplesOfCorrectValue = new List<string> { string.Empty, "foo" },
+                ExamplesOfIncorrectValue = new List<string>(),
+                ComparisonOperationsSupport = false,
+                TextualOperationsSupport = true
+            },
+            new SupportedValueType
+            {
+                SupportedType = typeof(DataTypes.ContentTypeId),
+                ExamplesOfCorrectValue = new List<string> { string.Empty, "foo" },
+                ExamplesOfIncorrectValue = new List<string>(),
+                ComparisonOperationsSupport = false,
+                TextualOperationsSupport = true
+            },
+            new SupportedValueType
+            {
+                SupportedType = typeof(DataTypes.Counter),
+                ExamplesOfCorrectValue = new List<string> { string.Empty, "foo" },
+                ExamplesOfIncorrectValue = new List<string>(),
+                ComparisonOperationsSupport = false,
+                TextualOperationsSupport = true
+            },
+            new SupportedValueType
+            {
+                SupportedType = typeof(DataTypes.CrossProjectLink),
+                ExamplesOfCorrectValue = new List<string> { string.Empty, "foo" },
+                ExamplesOfIncorrectValue = new List<string>(),
+                ComparisonOperationsSupport = false,
+                TextualOperationsSupport = true
+            },
+            new SupportedValueType
+            {
+                SupportedType = typeof(DataTypes.Currency),
+                ExamplesOfCorrectValue = new List<string> { string.Empty, "foo" },
+                ExamplesOfIncorrectValue = new List<string>(),
+                ComparisonOperationsSupport = false,
+                TextualOperationsSupport = true
+            },
+            new SupportedValueType
+            {
+                SupportedType = typeof(DataTypes.Error),
+                ExamplesOfCorrectValue = new List<string> { string.Empty, "foo" },
+                ExamplesOfIncorrectValue = new List<string>(),
+                ComparisonOperationsSupport = false,
+                TextualOperationsSupport = true
+            },
+            new SupportedValueType
+            {
+                SupportedType = typeof(DataTypes.File),
+                ExamplesOfCorrectValue = new List<string> { string.Empty, "foo" },
+                ExamplesOfIncorrectValue = new List<string>(),
+                ComparisonOperationsSupport = false,
+                TextualOperationsSupport = true
+            },
+            new SupportedValueType
+            {
+                SupportedType = typeof(DataTypes.GridChoice),
+                ExamplesOfCorrectValue = new List<string> { string.Empty, "foo" },
+                ExamplesOfIncorrectValue = new List<string>(),
+                ComparisonOperationsSupport = false,
+                TextualOperationsSupport = true
+            },
+            new SupportedValueType
+            {
+                SupportedType = typeof(DataTypes.Invalid),
+                ExamplesOfCorrectValue = new List<string> { string.Empty, "foo" },
+                ExamplesOfIncorrectValue = new List<string>(),
+                ComparisonOperationsSupport = false,
+                TextualOperationsSupport = true
+            },
+            new SupportedValueType
+            {
+                SupportedType = typeof(DataTypes.MaxItems),
+                ExamplesOfCorrectValue = new List<string> { string.Empty, "foo" },
+                ExamplesOfIncorrectValue = new List<string>(),
+                ComparisonOperationsSupport = false,
+                TextualOperationsSupport = true
+            },
+            new SupportedValueType
+            {
+                SupportedType = typeof(DataTypes.ModStat),
+                ExamplesOfCorrectValue = new List<string> { string.Empty, "foo" },
+                ExamplesOfIncorrectValue = new List<string>(),
+                ComparisonOperationsSupport = false,
+                TextualOperationsSupport = true
+            },
+            new SupportedValueType
+            {
+                SupportedType = typeof(DataTypes.MultiChoice),
+                ExamplesOfCorrectValue = new List<string> { string.Empty, "foo" },
+                ExamplesOfIncorrectValue = new List<string>(),
+                ComparisonOperationsSupport = false,
+                TextualOperationsSupport = true
+            },
+            new SupportedValueType
+            {
+                SupportedType = typeof(DataTypes.Note),
+                ExamplesOfCorrectValue = new List<string> { string.Empty, "foo" },
+                ExamplesOfIncorrectValue = new List<string>(),
+                ComparisonOperationsSupport = true,
+                TextualOperationsSupport = true
+            },
+            new SupportedValueType
+            {
+                SupportedType = typeof(DataTypes.Number),
+                ExamplesOfCorrectValue = new List<string> { string.Empty, "foo" },
+                ExamplesOfIncorrectValue = new List<string>(),
+                ComparisonOperationsSupport = true,
+                TextualOperationsSupport = true
+            },
+            new SupportedValueType
+            {
+                SupportedType = typeof(DataTypes.PageSeparator),
+                ExamplesOfCorrectValue = new List<string> { string.Empty, "foo" },
+                ExamplesOfIncorrectValue = new List<string>(),
+                ComparisonOperationsSupport = false,
+                TextualOperationsSupport = true
+            },
+            new SupportedValueType
+            {
+                SupportedType = typeof(DataTypes.Recurrence),
+                ExamplesOfCorrectValue = new List<string> { string.Empty, "foo" },
+                ExamplesOfIncorrectValue = new List<string>(),
+                ComparisonOperationsSupport = false,
+                TextualOperationsSupport = true
+            },
+            new SupportedValueType
+            {
+                SupportedType = typeof(DataTypes.Text),
+                ExamplesOfCorrectValue = new List<string> { string.Empty, "foo" },
+                ExamplesOfIncorrectValue = new List<string>(),
+                ComparisonOperationsSupport = true,
+                TextualOperationsSupport = true
+            },
+            new SupportedValueType
+            {
+                SupportedType = typeof(DataTypes.ThreadIndex),
+                ExamplesOfCorrectValue = new List<string> { string.Empty, "foo" },
+                ExamplesOfIncorrectValue = new List<string>(),
+                ComparisonOperationsSupport = false,
+                TextualOperationsSupport = true
+            },
+            new SupportedValueType
+            {
+                SupportedType = typeof(DataTypes.Threading),
+                ExamplesOfCorrectValue = new List<string> { string.Empty, "foo" },
+                ExamplesOfIncorrectValue = new List<string>(),
+                ComparisonOperationsSupport = false,
+                TextualOperationsSupport = true
+            },
+            new SupportedValueType
+            {
+                SupportedType = typeof(DataTypes.URL),
+                ExamplesOfCorrectValue = new List<string> { string.Empty, "foo" },
+                ExamplesOfIncorrectValue = new List<string>(),
+                ComparisonOperationsSupport = false,
+                TextualOperationsSupport = true
+            },
+            new SupportedValueType
+            {
+                SupportedType = typeof(DataTypes.User),
+                ExamplesOfCorrectValue = new List<string> { string.Empty, "foo" },
+                ExamplesOfIncorrectValue = new List<string>(),
+                ComparisonOperationsSupport = false,
+                TextualOperationsSupport = true
+            },
+            new SupportedValueType
+            {
+                SupportedType = typeof(DataTypes.WorkflowEventType),
+                ExamplesOfCorrectValue = new List<string> { string.Empty, "foo" },
+                ExamplesOfIncorrectValue = new List<string>(),
+                ComparisonOperationsSupport = false,
+                TextualOperationsSupport = true
+            },
+            new SupportedValueType
+            {
+                SupportedType = typeof(DataTypes.WorkflowStatus),
+                ExamplesOfCorrectValue = new List<string> { string.Empty, "foo" },
+                ExamplesOfIncorrectValue = new List<string>(),
+                ComparisonOperationsSupport = false,
+                TextualOperationsSupport = true
+            }*/
         };
 
         #endregion
@@ -310,6 +526,15 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers.TestBase
 
                         var b = MockRepository.GenerateStub<IReOperandBuilder>();
                         b.Stub(c => c.CreateFieldRefOperand(null)).Return(new FieldRefOperand("Title")).IgnoreArguments();
+                        if (operationName == Tags.Geq || operationName == Tags.Gt ||
+                            operationName == Tags.Leq || operationName == Tags.Lt)
+                        {
+                            b.Stub(c => c.IsOperationComparison(null)).Return(true).IgnoreArguments();
+                        }
+                        else
+                        {
+                            b.Stub(c => c.IsOperationComparison(null)).Return(false).IgnoreArguments();
+                        }
 
                         var valueOperand = default(IOperand);
                         if (operationType == OperationType.Equality)
