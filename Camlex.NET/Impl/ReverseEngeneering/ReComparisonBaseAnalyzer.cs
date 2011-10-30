@@ -38,7 +38,7 @@ namespace CamlexNET.Impl.ReverseEngeneering
         {
         }
 
-        protected override bool doesOperationSupportValueType(string valueType, string value, bool isLookupId)
+        protected override bool isValueValid(string valueType, string value, bool isLookupId)
         {
             var isComparison = operandBuilder.IsOperationComparison(el);
             if (!isComparison)
@@ -46,17 +46,21 @@ namespace CamlexNET.Impl.ReverseEngeneering
                 return false;
             }
             // comparision is valid only for types which inherit BaseFieldTypeWithOperators
-            if (valueType != typeof(DataTypes.Currency).Name &&
+            if (valueType != typeof(DataTypes.Calculated).Name &&
+                valueType != typeof(DataTypes.Computed).Name &&
+                valueType != typeof(DataTypes.Counter).Name &&
+                valueType != typeof(DataTypes.Currency).Name &&
                 valueType != typeof(DataTypes.DateTime).Name &&
                 valueType != typeof(DataTypes.Integer).Name &&
                 valueType != typeof(DataTypes.LookupId).Name &&
-                valueType != typeof(DataTypes.Number).Name &&
                 valueType != typeof(DataTypes.Note).Name &&
-                valueType != typeof(DataTypes.Text).Name)
+                valueType != typeof(DataTypes.Number).Name &&
+                valueType != typeof(DataTypes.Text).Name &&
+                valueType != typeof(DataTypes.ThreadIndex).Name)
             {
                 return false;
             }
-            return base.doesOperationSupportValueType(valueType, value, isLookupId);
+            return base.isValueValid(valueType, value, isLookupId);
         }
     }
 }
