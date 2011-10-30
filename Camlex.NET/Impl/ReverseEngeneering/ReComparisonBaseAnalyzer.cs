@@ -38,7 +38,7 @@ namespace CamlexNET.Impl.ReverseEngeneering
         {
         }
 
-        protected override bool doesOperationSupportValueType(string valueType, string value)
+        protected override bool doesOperationSupportValueType(string valueType, string value, bool isLookupId)
         {
             var isComparison = operandBuilder.IsOperationComparison(el);
             if (!isComparison)
@@ -56,7 +56,7 @@ namespace CamlexNET.Impl.ReverseEngeneering
             {
                 return false;
             }
-            return base.doesOperationSupportValueType(valueType, value);
+            return base.doesOperationSupportValueType(valueType, value, isLookupId);
         }
     }
 }

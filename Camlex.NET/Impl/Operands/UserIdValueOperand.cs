@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Xml.Linq;
 
@@ -24,6 +25,11 @@ namespace CamlexNET.Impl.Operands
             return
                 new XElement(Tags.Value, new XAttribute(Attributes.Type, typeof(DataTypes.User).Name),
                     new XText(this.Value));
+        }
+
+        public override Expression ToExpression()
+        {
+            return Expression.Constant(this.Value);
         }
     }
 }

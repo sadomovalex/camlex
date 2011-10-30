@@ -73,13 +73,18 @@ namespace CamlexNET.Impl.ReverseEngeneering
                 .Where(a => a.Name == Attributes.Type).FirstOrDefault();
             if (typeAttribute == null) return false;
 
+            // whether there is LookupId attribute in FieldRef tag
+            var fieldRefElement = el.Elements(Tags.FieldRef).First();
+            var isLookupId = fieldRefElement.Attributes()
+                .Any(a => a.Name == Attributes.LookupId);
+
             // check whether we support this value type
             if (typeAttribute.Value != typeof(DataTypes.Text).Name &&
                 string.IsNullOrEmpty(valueElement.Value)) return false;
-            return doesOperationSupportValueType(typeAttribute.Value, valueElement.Value);
+            return doesOperationSupportValueType(typeAttribute.Value, valueElement.Value, isLookupId);
         }
 
-        protected virtual bool doesOperationSupportValueType(string valueType, string value)
+        protected virtual bool doesOperationSupportValueType(string valueType, string value, bool isLookupId)
         {
             try
             {
@@ -88,6 +93,10 @@ namespace CamlexNET.Impl.ReverseEngeneering
                 else if (valueType == typeof(DataTypes.Guid).Name) new GuidValueOperand(value);
                 else if (valueType == typeof(DataTypes.Integer).Name) new IntegerValueOperand(value);
                 else if (valueType == typeof(DataTypes.Lookup).Name) new LookupValueValueOperand(value);
+                else if (valueType == typeof(DataTypes.User).Name)
+                {
+                    if (isLookupId) new UserIdValueOperand(value);
+                }
                 // string based types
                 else if (valueType == typeof(DataTypes.AllDayEvent).Name ||
                     valueType == typeof(DataTypes.Attachments).Name ||
@@ -113,7 +122,6 @@ namespace CamlexNET.Impl.ReverseEngeneering
                     valueType == typeof(DataTypes.ThreadIndex).Name ||
                     valueType == typeof(DataTypes.Threading).Name ||
                     valueType == typeof(DataTypes.URL).Name ||
-                    valueType == typeof(DataTypes.User).Name ||
                     valueType == typeof(DataTypes.WorkflowEventType).Name ||
                     valueType == typeof(DataTypes.WorkflowStatus).Name
                     )

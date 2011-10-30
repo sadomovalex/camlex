@@ -46,14 +46,14 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Analyzers
             return true;
         }
 
-        protected override bool doesOperationSupportValueType(string valueType, string value)
+        protected override bool doesOperationSupportValueType(string valueType, string value, bool isLookupId)
         {
-            if (valueType != typeof(DataTypes.Text).Name &&
+            if (valueType != typeof(DataTypes.Text).Name &&               
                 valueType != typeof(DataTypes.Note).Name)
             {
                 return false;
             }
-            return base.doesOperationSupportValueType(valueType, value);
+            return base.doesOperationSupportValueType(valueType, value, isLookupId);
         }
 
         public override IOperation GetOperation()
