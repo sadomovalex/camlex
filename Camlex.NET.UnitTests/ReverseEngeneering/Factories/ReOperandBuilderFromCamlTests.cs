@@ -188,14 +188,19 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Factories
 
             var valueOperand = b.CreateValueOperand(XmlHelper.Get("<Operation><Value Type=\"Lookup\">1</Value></Operation>"), false);
             Assert.IsInstanceOf<LookupValueValueOperand>(valueOperand);
-            Assert.That(valueOperand.ToCaml().ToString(),
-                Is.EqualTo("<Value Type=\"Lookup\">1</Value>"));
+            Assert.That(valueOperand.ToCaml().ToString(), Is.EqualTo("<Value Type=\"Lookup\">1</Value>"));
 
-            valueOperand = b.CreateValueOperand(XmlHelper.Get(
-                "<Operation><Value Type=\"Lookup\">1</Value><FieldRef Name=\"Status\" LookupId=\"True\" /></Operation>"), false);
+            valueOperand = b.CreateValueOperand(XmlHelper.Get("<Operation><FieldRef Name=\"Status\" LookupId=\"True\" /><Value Type=\"Lookup\">1</Value></Operation>"), false);
             Assert.IsInstanceOf<LookupIdValueOperand>(valueOperand);
-            Assert.That(valueOperand.ToCaml().ToString(),
-                Is.EqualTo("<Value Type=\"Lookup\">1</Value>"));
+            Assert.That(valueOperand.ToCaml().ToString(), Is.EqualTo("<Value Type=\"Lookup\">1</Value>"));
+
+            var userOperand = b.CreateValueOperand(XmlHelper.Get("<Operation><Value Type=\"User\">test</Value></Operation>"), false);
+            Assert.IsInstanceOf<GenericStringBasedValueOperand>(userOperand);
+            Assert.That(userOperand.ToCaml().ToString(), Is.EqualTo("<Value Type=\"User\">test</Value>"));
+
+            userOperand = b.CreateValueOperand(XmlHelper.Get("<Operation><FieldRef Name=\"Status\" LookupId=\"True\" /><Value Type=\"User\">1</Value></Operation>"), false);
+            Assert.IsInstanceOf<UserIdValueOperand>(userOperand);
+            Assert.That(userOperand.ToCaml().ToString(), Is.EqualTo("<Value Type=\"User\">1</Value>"));
 
             Assert.That(b.CreateValueOperand(XmlHelper.Get("<Operation><Value Type=\"Note\">foo</Value></Operation>"), false).ToCaml().ToString(),
                 Is.EqualTo("<Value Type=\"Note\">foo</Value>"));
