@@ -24,11 +24,11 @@
 // fitness for a particular purpose and non-infringement.
 // -----------------------------------------------------------------------------
 #endregion
+
 using System;
 using System.Xml.Linq;
 using CamlexNET.Impl.Operations.Eq;
 using CamlexNET.Impl.ReverseEngeneering.Caml.Analyzers;
-using CamlexNET.Impl.ReverseEngeneering.Caml.Factories;
 using CamlexNET.Interfaces.ReverseEngeneering;
 using CamlexNET.UnitTests.ReverseEngeneering.Analyzers.TestBase;
 using NUnit.Framework;
@@ -113,21 +113,6 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers
         public void test_WHEN_expression_is_valid_THEN_operation_is_returned()
         {
             BASE_test_WHEN_expression_is_valid_THEN_operation_is_returned(ANALYZER_CONSTRUCTOR, OPERATION_NAME, OperationType.Equality, OPERATION_SYMBOL);
-        }
-
-        [Test]
-        public void Ttt()
-        {
-            var xml =
-                "<Eq>" +
-                "    <FieldRef Name=\"foo\" />" +
-                "    <Value Type=\"User\">Foo Bar</Value>" +
-                "</Eq>";
-
-            var operandBuilder = new ReOperandBuilderFromCaml();
-            var analyzer = new ReEqAnalyzer(XmlHelper.Get(xml), operandBuilder);
-            var operation = (EqOperation)analyzer.GetOperation();
-            var result = operation.ToExpression().ToString();
         }
     }
 }
