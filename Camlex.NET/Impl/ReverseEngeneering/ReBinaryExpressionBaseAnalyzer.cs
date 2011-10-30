@@ -31,8 +31,6 @@ using System.Xml.Linq;
 using CamlexNET.Impl.Operands;
 using CamlexNET.Interfaces;
 using CamlexNET.Interfaces.ReverseEngeneering;
-using Microsoft.SharePoint;
-using Microsoft.SharePoint.Workflow;
 
 namespace CamlexNET.Impl.ReverseEngeneering
 {
@@ -104,53 +102,76 @@ namespace CamlexNET.Impl.ReverseEngeneering
 
         protected virtual bool isValueValid(string valueType, string value, bool isLookupId)
         {
+            // note: currently we decided to not do checks that values in string based value operands
+            // in order to have compatibility with direct camlex (c# -> caml) where we don't do them.
+            // Also we don't want to make calls to the Sharepoint classes in order to have possiblity
+            // to cimpile code for client OM
             try
             {
-                if (valueType == typeof(DataTypes.AllDayEvent).Name) new BooleanValueOperand(value);
-                else if (valueType == typeof(DataTypes.Attachments).Name) new BooleanValueOperand(value);
+                //if (valueType == typeof(DataTypes.AllDayEvent).Name) new BooleanValueOperand(value);
+                if (valueType == typeof(DataTypes.AllDayEvent).Name) {}
+                //else if (valueType == typeof(DataTypes.Attachments).Name) new BooleanValueOperand(value);
+                else if (valueType == typeof(DataTypes.Attachments).Name) {}
                 else if (valueType == typeof(DataTypes.Boolean).Name) new BooleanValueOperand(value);
                 else if (valueType == typeof(DataTypes.Calculated).Name) { }
                 else if (valueType == typeof(DataTypes.Choice).Name) { }
                 else if (valueType == typeof(DataTypes.Computed).Name) { }
-                else if (valueType == typeof(DataTypes.ContentTypeId).Name) new SPContentTypeId(value);
-                else if (valueType == typeof(DataTypes.Counter).Name) new IntegerValueOperand(value);
-                else if (valueType == typeof(DataTypes.CrossProjectLink).Name) new BooleanValueOperand(value);
-                else if (valueType == typeof(DataTypes.Currency).Name) new IntegerValueOperand(value);
-                else if (valueType == typeof(DataTypes.DateTime).Name) new DateTimeValueOperand(value, false);
-                else if (valueType == typeof(DataTypes.Error).Name) return false; // NOT SUPPORTED
+                //else if (valueType == typeof(DataTypes.ContentTypeId).Name) new SPContentTypeId(value);
+                else if (valueType == typeof(DataTypes.ContentTypeId).Name) {}
+                //else if (valueType == typeof(DataTypes.Counter).Name) new IntegerValueOperand(value);
+                else if (valueType == typeof(DataTypes.Counter).Name) {}
+                //else if (valueType == typeof(DataTypes.CrossProjectLink).Name) new BooleanValueOperand(value);
+                else if (valueType == typeof(DataTypes.CrossProjectLink).Name) {}
+                //else if (valueType == typeof(DataTypes.Currency).Name) new IntegerValueOperand(value);
+                else if (valueType == typeof(DataTypes.Currency).Name) {}
+                //else if (valueType == typeof(DataTypes.DateTime).Name) new DateTimeValueOperand(value, false);
+                else if (valueType == typeof(DataTypes.DateTime).Name) {}
+                //else if (valueType == typeof(DataTypes.Error).Name) return false; // NOT SUPPORTED
+                else if (valueType == typeof(DataTypes.Error).Name) {}
                 else if (valueType == typeof(DataTypes.File).Name) { }
                 else if (valueType == typeof(DataTypes.GridChoice).Name) { }
                 else if (valueType == typeof(DataTypes.Guid).Name) new GuidValueOperand(value);
                 else if (valueType == typeof(DataTypes.Integer).Name) new IntegerValueOperand(value);
-                else if (valueType == typeof(DataTypes.Invalid).Name) return false; // NOT SUPPORTED
+                //else if (valueType == typeof(DataTypes.Invalid).Name) return false; // NOT SUPPORTED
+                else if (valueType == typeof(DataTypes.Invalid).Name) {}
                 else if (valueType == typeof(DataTypes.LookupId).Name) new LookupIdValueOperand(value);
                 else if (valueType == typeof(DataTypes.LookupValue).Name) new LookupValueValueOperand(value);
-                else if (valueType == typeof(DataTypes.MaxItems).Name) new IntegerValueOperand(value);
-                else if (valueType == typeof(DataTypes.ModStat).Name)
-                {
-                    if (!IsEnumValueValid(typeof(SPModerationStatusType), value)) return false;
-                }
+                //else if (valueType == typeof(DataTypes.MaxItems).Name) new IntegerValueOperand(value);
+                else if (valueType == typeof(DataTypes.MaxItems).Name) {}
+//                else if (valueType == typeof(DataTypes.ModStat).Name)
+//                {
+//                    if (!IsEnumValueValid(typeof(SPModerationStatusType), value)) return false;
+//                }
+                else if (valueType == typeof(DataTypes.ModStat).Name) {}
                 else if (valueType == typeof(DataTypes.MultiChoice).Name) { }
                 else if (valueType == typeof(DataTypes.Note).Name) { }
-                else if (valueType == typeof(DataTypes.Number).Name) new IntegerValueOperand(value);
-                else if (valueType == typeof(DataTypes.PageSeparator).Name) return false; // NOT SUPPORTED
-                else if (valueType == typeof(DataTypes.Recurrence).Name) new BooleanValueOperand(value);
+                //else if (valueType == typeof(DataTypes.Number).Name) new IntegerValueOperand(value);
+                else if (valueType == typeof(DataTypes.Number).Name) {}
+                //else if (valueType == typeof(DataTypes.PageSeparator).Name) return false; // NOT SUPPORTED
+                else if (valueType == typeof(DataTypes.PageSeparator).Name) {}
+                //else if (valueType == typeof(DataTypes.Recurrence).Name) new BooleanValueOperand(value);
+                else if (valueType == typeof(DataTypes.Recurrence).Name) {}
                 else if (valueType == typeof(DataTypes.Text).Name) { }
-                else if (valueType == typeof(DataTypes.ThreadIndex).Name) new IntegerValueOperand(value);
-                else if (valueType == typeof(DataTypes.Threading).Name) new BooleanValueOperand(value);
+                //else if (valueType == typeof(DataTypes.ThreadIndex).Name) new IntegerValueOperand(value);
+                else if (valueType == typeof(DataTypes.ThreadIndex).Name) {}
+                //else if (valueType == typeof(DataTypes.Threading).Name) new BooleanValueOperand(value);
+                else if (valueType == typeof(DataTypes.Threading).Name) {}
                 else if (valueType == typeof(DataTypes.URL).Name) { }
-                else if (valueType == typeof(DataTypes.User).Name)
-                {
-                    if (isLookupId) new UserIdValueOperand(value);
-                }
-                else if (valueType == typeof(DataTypes.WorkflowEventType).Name)
-                {
-                    if (!IsEnumValueValid(typeof(SPWorkflowHistoryEventType), value)) return false;
-                }
-                else if (valueType == typeof(DataTypes.WorkflowStatus).Name)
-                {
-                    if (!IsEnumValueValid(typeof(SPWorkflowStatus), value)) return false;
-                }
+//                else if (valueType == typeof(DataTypes.User).Name)
+//                {
+//                    if (isLookupId) new UserIdValueOperand(value);
+//                }
+                else if (valueType == typeof(DataTypes.User).Name) {}
+//                else if (valueType == typeof(DataTypes.WorkflowEventType).Name)
+//                {
+//                    if (!IsEnumValueValid(typeof(SPWorkflowHistoryEventType), value)) return false;
+//                }
+                else if (valueType == typeof(DataTypes.WorkflowEventType).Name) {}
+//                else if (valueType == typeof(DataTypes.WorkflowStatus).Name)
+//                {
+//                    if (!IsEnumValueValid(typeof(SPWorkflowStatus), value)) return false;
+//                }
+                else if (valueType == typeof(DataTypes.WorkflowStatus).Name) {}
                 else return false;
            }
             catch (InvalidValueForOperandTypeException) { return false; }
