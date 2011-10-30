@@ -123,7 +123,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
 
             var l = new ReLinkerFromCaml(null, null, XmlHelper.Get(groupBy), null);
             var expr = l.Link(null, null, (Expression<Func<SPListItem, object>>)(x => x["field1"]), null);
-            Assert.That(expr.ToString(), Is.EqualTo("Query().GroupBy(x => x.get_Item(\"field1\"), Convert(True))"));
+            Assert.That(expr.ToString(), Is.EqualTo("Query().GroupBy(x => x.get_Item(\"field1\"), True)"));
         }
 
         [Test]
@@ -136,7 +136,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
 
             var l = new ReLinkerFromCaml(null, null, XmlHelper.Get(groupBy), null);
             var expr = l.Link(null, null, (Expression<Func<SPListItem, object>>)(x => x["field1"]), null);
-            Assert.That(expr.ToString(), Is.EqualTo("Query().GroupBy(x => x.get_Item(\"field1\"), Convert(1))"));
+            Assert.That(expr.ToString(), Is.EqualTo("Query().GroupBy(x => x.get_Item(\"field1\"), 1)"));
         }
 
         [Test]
@@ -149,7 +149,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
 
             var l = new ReLinkerFromCaml(null, null, XmlHelper.Get(groupBy), null);
             var expr = l.Link(null, null, (Expression<Func<SPListItem, object>>)(x => x["field1"]), null);
-            Assert.That(expr.ToString(), Is.EqualTo("Query().GroupBy(x => x.get_Item(\"field1\"), Convert(True), Convert(1))"));
+            Assert.That(expr.ToString(), Is.EqualTo("Query().GroupBy(x => x.get_Item(\"field1\"), True, 1)"));
         }
 
         [Test]
@@ -163,7 +163,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
 
             var l = new ReLinkerFromCaml(null, null, XmlHelper.Get(groupBy), null);
             var expr = l.Link(null, null, (Expression<Func<SPListItem, object[]>>)(x => new[] { x["field1"], x["field2"] }), null);
-            Assert.That(expr.ToString(), Is.EqualTo("Query().GroupBy(x => new [] {x.get_Item(\"field1\"), x.get_Item(\"field2\")}, Convert(null), Convert(null))"));
+            Assert.That(expr.ToString(), Is.EqualTo("Query().GroupBy(x => new [] {x.get_Item(\"field1\"), x.get_Item(\"field2\")}, null, null)"));
         }
 
         [Test]
@@ -177,7 +177,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
 
             var l = new ReLinkerFromCaml(null, null, XmlHelper.Get(groupBy), null);
             var expr = l.Link(null, null, (Expression<Func<SPListItem, object[]>>)(x => new[] { x["field1"], x["field2"] }), null);
-            Assert.That(expr.ToString(), Is.EqualTo("Query().GroupBy(x => new [] {x.get_Item(\"field1\"), x.get_Item(\"field2\")}, Convert(True), Convert(null))"));
+            Assert.That(expr.ToString(), Is.EqualTo("Query().GroupBy(x => new [] {x.get_Item(\"field1\"), x.get_Item(\"field2\")}, True, null)"));
         }
 
         [Test]
@@ -191,7 +191,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
 
             var l = new ReLinkerFromCaml(null, null, XmlHelper.Get(groupBy), null);
             var expr = l.Link(null, null, (Expression<Func<SPListItem, object[]>>)(x => new[] { x["field1"], x["field2"] }), null);
-            Assert.That(expr.ToString(), Is.EqualTo("Query().GroupBy(x => new [] {x.get_Item(\"field1\"), x.get_Item(\"field2\")}, Convert(null), Convert(1))"));
+            Assert.That(expr.ToString(), Is.EqualTo("Query().GroupBy(x => new [] {x.get_Item(\"field1\"), x.get_Item(\"field2\")}, null, 1)"));
         }
 
         [Test]
@@ -205,7 +205,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
 
             var l = new ReLinkerFromCaml(null, null, XmlHelper.Get(groupBy), null);
             var expr = l.Link(null, null, (Expression<Func<SPListItem, object[]>>)(x => new[] { x["field1"], x["field2"] }), null);
-            Assert.That(expr.ToString(), Is.EqualTo("Query().GroupBy(x => new [] {x.get_Item(\"field1\"), x.get_Item(\"field2\")}, Convert(True), Convert(1))"));
+            Assert.That(expr.ToString(), Is.EqualTo("Query().GroupBy(x => new [] {x.get_Item(\"field1\"), x.get_Item(\"field2\")}, True, 1)"));
         }
 
         [Test]

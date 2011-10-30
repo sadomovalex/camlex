@@ -32,7 +32,7 @@ using CamlexNET.Interfaces.ReverseEngeneering;
 
 namespace CamlexNET.Impl.ReverseEngeneering.Caml.Analyzers
 {
-    internal class ReBeginsWithAnalyzer : ReComparisonBaseAnalyzer
+    internal class ReBeginsWithAnalyzer : ReBinaryExpressionBaseAnalyzer
     {
         public ReBeginsWithAnalyzer(XElement el, IReOperandBuilder operandBuilder) :
             base(el, operandBuilder)
@@ -48,7 +48,11 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Analyzers
 
         protected override bool doesOperationSupportValueType(string valueType, string value, bool isLookupId)
         {
-            if (valueType != typeof(DataTypes.Text).Name) return false;
+            if (valueType != typeof(DataTypes.Text).Name &&               
+                valueType != typeof(DataTypes.Note).Name)
+            {
+                return false;
+            }
             return base.doesOperationSupportValueType(valueType, value, isLookupId);
         }
 

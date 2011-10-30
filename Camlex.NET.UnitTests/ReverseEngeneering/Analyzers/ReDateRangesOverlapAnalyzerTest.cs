@@ -75,7 +75,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers.TestBase
         {
             var xml = string.Format(
                 "<DateRangesOverlap>" +
-                "    <Value Type=\"DateTime\">Now</Value>" +
+                "    <Value Type=\"DateTime\"><Now/></Value>" +
                 "</DateRangesOverlap>");
 
             var analyzer = new ReDateRangesOverlapAnalyzer(XmlHelper.Get(xml), null);
@@ -89,7 +89,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers.TestBase
                 "<DateRangesOverlap>" +
                 "    <FieldRef Name=\"StartField\" />" +
                 "    <FieldRef Name=\"StopField\" />" +
-                "    <Value Type=\"DateTime\">Now</Value>" +
+                "    <Value Type=\"DateTime\"><Now/></Value>" +
                 "</DateRangesOverlap>");
 
             var analyzer = new ReDateRangesOverlapAnalyzer(XmlHelper.Get(xml), null);
@@ -104,7 +104,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers.TestBase
                 "    <FieldRef Name=\"StartField\" />" +
                 "    <FieldRef Name=\"StopField\" />" +
                 "    <FieldRef Name=\"RecurrenceField\" />" +
-                "    <Value Type=\"DateTime\">Now</Value>" +
+                "    <Value Type=\"DateTime\"><Now/></Value>" +
                 "</DateRangesOverlap>");
 
             var analyzer = new ReDateRangesOverlapAnalyzer(XmlHelper.Get(xml), new ReOperandBuilderFromCaml());
@@ -119,7 +119,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers.TestBase
                 "    <FieldRef />" +
                 "    <FieldRef Name=\"StopField\" />" +
                 "    <FieldRef Name=\"RecurrenceField\" />" +
-                "    <Value Type=\"DateTime\">Now</Value>" +
+                "    <Value Type=\"DateTime\"><Now/></Value>" +
                 "</DateRangesOverlap>");
 
             var analyzer = new ReDateRangesOverlapAnalyzer(XmlHelper.Get(xml), new ReOperandBuilderFromCaml());
@@ -134,7 +134,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers.TestBase
                 "    <FieldRef Name=\"StartField\" />" +
                 "    <FieldRef Name=\"StopField\" />" +
                 "    <FieldRef Name=\"RecurrenceField\" />" +
-                "    <Value>Now</Value>" +
+                "    <Value><Now/></Value>" +
                 "</DateRangesOverlap>");
 
             var analyzer = new ReDateRangesOverlapAnalyzer(XmlHelper.Get(xml), new ReOperandBuilderFromCaml());
@@ -172,7 +172,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers.TestBase
                 "    <FieldRef Name=\"Title\" />" +
                 "    <FieldRef Name=\"Title\" />" +
                 "    <FieldRef Name=\"Title\" />" +
-                "    <Value Type=\"DateTime\">Now</Value>" +
+                "    <Value Type=\"DateTime\"><Now/></Value>" +
                 "</DateRangesOverlap>");
 
             var b = MockRepository.GenerateStub<IReOperandBuilder>();
@@ -184,7 +184,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers.TestBase
             Assert.IsInstanceOf<DateRangesOverlapOperation>(operation);
             var operationT = (DateRangesOverlapOperation)operation;
             Assert.That(operationT.ToExpression().ToString(), Is.EqualTo(
-                "DateRangesOverlap(x.get_Item(\"Title\"), x.get_Item(\"Title\"), x.get_Item(\"Title\"), Convert(Convert(\"Now\")))"));
+                "DateRangesOverlap(x.get_Item(\"Title\"), x.get_Item(\"Title\"), x.get_Item(\"Title\"), Convert(Convert(Camlex.Now)))"));
         }
     }
 }

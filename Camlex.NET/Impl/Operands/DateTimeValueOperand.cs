@@ -131,8 +131,8 @@ namespace CamlexNET.Impl.Operands
             }
             else
             {
-                string val = getValueByMode(this.Mode);
-                var expr = Expression.Convert(Expression.Convert(Expression.Constant(val), typeof(BaseFieldType)),
+                var val = this.getExpressionByMode(this.Mode);
+                var expr = Expression.Convert(Expression.Convert(val, typeof(BaseFieldType)),
                                           typeof(DataTypes.DateTime));
                 if (this.IncludeTimeValue)
                 {
@@ -147,25 +147,31 @@ namespace CamlexNET.Impl.Operands
             }
         }
 
-        private string getValueByMode(DateTimeValueMode mode)
+        private Expression getExpressionByMode(DateTimeValueMode mode)
         {
             switch (mode)
             {
                 case DateTimeValueMode.Native:
-                    return this.getStringFromDateTime(this.Value);
+                    return Expression.Constant(this.Value);
                 case DateTimeValueMode.Now:
-                    return Camlex.Now;
+                    return this.getExpression(Camlex.Now);
                 case DateTimeValueMode.Today:
-                    return Camlex.Today;
+                    return this.getExpression(Camlex.Today);
                 case DateTimeValueMode.Week:
-                    return Camlex.Week;
+                    return this.getExpression(Camlex.Week);
                 case DateTimeValueMode.Month:
-                    return Camlex.Month;
+                    return this.getExpression(Camlex.Month);
                 case DateTimeValueMode.Year:
-                    return Camlex.Year;
+                    return this.getExpression(Camlex.Year);
                 default:
                     throw new DateTimeOperandModeNotSupportedException(mode);
             }
+        }
+
+        private Expression getExpression(string name)
+        {
+            var mi = typeof (Camlex).GetMember(name)[0];
+            return Expression.MakeMemberAccess(null, mi);
         }
     }
 }

@@ -47,11 +47,26 @@ namespace CamlexNET.Impl.ReverseEngeneering
 
         public override bool IsValid()
         {
-            if (!base.IsValid()) return false;
-            if (el.Attributes().Count() > 0) return false;
-            if (el.Elements().Count() != 2) return false;
-            if (!hasValidSubElement(el.Elements().First())) return false;
-            if (!hasValidSubElement(el.Elements().Skip(1).First())) return false;
+            if (!base.IsValid())
+            {
+                return false;
+            }
+            if (el.Attributes().Count() > 0)
+            {
+                return false;
+            }
+            if (el.Elements().Count() != 2)
+            {
+                return false;
+            }
+            if (!hasValidSubElement(el.Elements().First()))
+            {
+                return false;
+            }
+            if (!hasValidSubElement(el.Elements().Skip(1).First()))
+            {
+                return false;
+            }
             return true;
         }
 

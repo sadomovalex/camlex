@@ -41,9 +41,21 @@ namespace CamlexNET.Impl.ReverseEngeneering
         protected override bool doesOperationSupportValueType(string valueType, string value, bool isLookupId)
         {
             var isComparison = operandBuilder.IsOperationComparison(el);
-            if (valueType == typeof(DataTypes.Boolean).Name && isComparison) return false;
-            if (valueType == typeof(DataTypes.Guid).Name && isComparison) return false;
-            if (valueType == typeof(DataTypes.User).Name && isComparison) return false;
+            if (!isComparison)
+            {
+                return false;
+            }
+            // comparision is valid only for types which inherit BaseFieldTypeWithOperators
+            if (valueType != typeof(DataTypes.Currency).Name &&
+                valueType != typeof(DataTypes.DateTime).Name &&
+                valueType != typeof(DataTypes.Integer).Name &&
+                valueType != typeof(DataTypes.LookupId).Name &&
+                valueType != typeof(DataTypes.Number).Name &&
+                valueType != typeof(DataTypes.Note).Name &&
+                valueType != typeof(DataTypes.Text).Name)
+            {
+                return false;
+            }
             return base.doesOperationSupportValueType(valueType, value, isLookupId);
         }
     }

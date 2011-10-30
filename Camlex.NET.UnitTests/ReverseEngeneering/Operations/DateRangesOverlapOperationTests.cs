@@ -63,7 +63,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Operations
 
             var expr = op.ToExpression();
             Assert.That(expr.ToString(),
-                Is.EqualTo("DateRangesOverlap(x.get_Item(\"StartField\"), x.get_Item(\"StopField\"), x.get_Item(\"RecurrenceID\"), Convert(Convert(\"Now\")))"));
+                Is.EqualTo("DateRangesOverlap(x.get_Item(\"StartField\"), x.get_Item(\"StopField\"), x.get_Item(\"RecurrenceID\"), Convert(Convert(Camlex.Now)))"));
         }
     }
 }
