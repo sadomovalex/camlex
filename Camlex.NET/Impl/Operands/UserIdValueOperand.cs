@@ -27,9 +27,9 @@ namespace CamlexNET.Impl.Operands
                     new XText(this.Value));
         }
 
-        public override Expression ToExpression()
-        {
-            return Expression.Constant(this.Value);
-        }
+//        public override Expression ToExpression()
+//        {
+//            return Expression.Constant(this.Value);
+//        }
     }
 }

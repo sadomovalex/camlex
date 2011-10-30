@@ -43,14 +43,26 @@ namespace CamlexNET.Impl.ReverseEngeneering
 
         public override bool IsValid()
         {
-            if (!base.IsValid()) return false;
-            if (el.Attributes().Count() > 0) return false;
+            if (!base.IsValid())
+            {
+                return false;
+            }
+            if (el.Attributes().Count() > 0)
+            {
+                return false;
+            }
 
             // check presence of FieldRef tag with ID or Name attribute
-            if (!this.hasValidFieldRefElement()) return false;
+            if (!this.hasValidFieldRefElement())
+            {
+                return false;
+            }
 
             // check presence of Value tag with Type attribute
-            if (!hasValidValueElement()) return false;
+            if (!this.hasValidValueElement())
+            {
+                return false;
+            }
 
             return true;
         }
@@ -74,19 +86,25 @@ namespace CamlexNET.Impl.ReverseEngeneering
             if (typeAttribute == null) return false;
 
             // whether there is LookupId attribute in FieldRef tag
-            var fieldRefElement = el.Elements(Tags.FieldRef).First();
-            var isLookupId = fieldRefElement.Attributes()
-                .Any(a => a.Name == Attributes.LookupId);
+//            var fieldRefElement = el.Elements(Tags.FieldRef).First();
+//            var isLookupId = fieldRefElement.Attributes()
+//                .Any(a => a.Name == Attributes.LookupId);
+
+            bool isIntegerForUserId = typeAttribute.Value == typeof (DataTypes.Integer).Name &&
+                                      valueElement.Elements().Count() == 1 &&
+                                      valueElement.Elements().Any(e => e.Name == ReflectionHelper.UserID);
 
             // value can't be empty for certain types
-            if (string.IsNullOrEmpty(valueElement.Value) &&
-                !IsEmptyValueAcceptable(typeAttribute.Value)) return false;
+            if (!isIntegerForUserId && string.IsNullOrEmpty(valueElement.Value) && !this.isEmptyValueAcceptable(typeAttribute.Value))
+            {
+                return false;
+            }
 
             // check whether we support this value type and whether the value is correct
-            return isValueValid(typeAttribute.Value, valueElement.Value, isLookupId);
+            return isValueValid(typeAttribute.Value, valueElement.Value, isIntegerForUserId);
         }
 
-        private static bool IsEmptyValueAcceptable(string valueType)
+        private bool isEmptyValueAcceptable(string valueType)
         {
             if (valueType == typeof(DataTypes.Calculated).Name) return true;
             if (valueType == typeof(DataTypes.Choice).Name) return true;
@@ -100,7 +118,7 @@ namespace CamlexNET.Impl.ReverseEngeneering
             return false;
         }
 
-        protected virtual bool isValueValid(string valueType, string value, bool isLookupId)
+        protected virtual bool isValueValid(string valueType, string value, bool isIntegerForUserId)
         {
             // note: currently we decided to not do checks that values in string based value operands
             // in order to have compatibility with direct camlex (c# -> caml) where we don't do them.
@@ -131,7 +149,14 @@ namespace CamlexNET.Impl.ReverseEngeneering
                 else if (valueType == typeof(DataTypes.File).Name) { }
                 else if (valueType == typeof(DataTypes.GridChoice).Name) { }
                 else if (valueType == typeof(DataTypes.Guid).Name) new GuidValueOperand(value);
-                else if (valueType == typeof(DataTypes.Integer).Name) new IntegerValueOperand(value);
+                else if (valueType == typeof(DataTypes.Integer).Name)
+                {
+                    // DataTypes.Integer also can be used for <UserID />. See http://sadomovalex.blogspot.com/2011/08/camlexnet-24-is-released.html
+                    if (!isIntegerForUserId)
+                    {
+                        new IntegerValueOperand(value);
+                    }
+                }
                 //else if (valueType == typeof(DataTypes.Invalid).Name) return false; // NOT SUPPORTED
                 else if (valueType == typeof(DataTypes.Invalid).Name) {}
                 else if (valueType == typeof(DataTypes.LookupId).Name) new LookupIdValueOperand(value);
@@ -181,9 +206,11 @@ namespace CamlexNET.Impl.ReverseEngeneering
         protected IOperation getOperation<T>(Func<IOperand, IOperand, T> constructor)
             where T : IOperation
         {
-            if (!IsValid())
+            if (!this.IsValid())
+            {
                 throw new CamlAnalysisException(string.Format(
-                    "Can't create {0} from the following xml: {1}", typeof(T).Name, el));
+                    "Can't create {0} from the following xml: {1}", typeof (T).Name, el));
+            }
 
             var fieldRefElement = el.Elements(Tags.FieldRef).First();
             var fieldRefOperand = operandBuilder.CreateFieldRefOperand(fieldRefElement);
@@ -191,14 +218,14 @@ namespace CamlexNET.Impl.ReverseEngeneering
             return constructor(fieldRefOperand, valueOperand);
         }
 
-        private static bool IsEnumValueValid(Type enumType, string value)
-        {
-            int result;
-            if (int.TryParse(value, out result))
-            {
-                return Enum.GetValues(enumType).Cast<int>().Any(x => x == result);
-            }
-            return Enum.GetNames(enumType).Any(x => string.Compare(x, value, true) == 0);
-        }
+//        private static bool IsEnumValueValid(Type enumType, string value)
+//        {
+//            int result;
+//            if (int.TryParse(value, out result))
+//            {
+//                return Enum.GetValues(enumType).Cast<int>().Any(x => x == result);
+//            }
+//            return Enum.GetNames(enumType).Any(x => string.Compare(x, value, true) == 0);
+//        }
     }
 }

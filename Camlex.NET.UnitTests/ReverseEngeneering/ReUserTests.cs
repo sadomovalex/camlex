@@ -63,9 +63,24 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
             var operandBuilder = new ReOperandBuilderFromCaml();
             var analyzer = new ReEqAnalyzer(XmlHelper.Get(xml), operandBuilder);
             var operation = (EqOperation)analyzer.GetOperation();
-            var result = operation.ToExpression().ToString();
             Assert.That(operation.ToExpression().ToString(), Is.EqualTo(
-                "(Convert(x.get_Item(\"foo\")) = \"123\")"));
+                "(x.get_Item(\"foo\") = Convert(Convert(\"123\")))"));
+        }
+
+        [Test]
+        public void test_WHEN_user_id_tag_is_specified_THEN_expression_is_valid()
+        {
+            var xml =
+                "<Eq>" +
+                "    <FieldRef Name=\"foo\"/>" +
+                "    <Value Type=\"Integer\"><UserID /></Value>" +
+                "</Eq>";
+
+            var operandBuilder = new ReOperandBuilderFromCaml();
+            var analyzer = new ReEqAnalyzer(XmlHelper.Get(xml), operandBuilder);
+            var operation = (EqOperation)analyzer.GetOperation();
+            Assert.That(operation.ToExpression().ToString(), Is.EqualTo(
+                "(x.get_Item(\"foo\") = Convert(Convert(Camlex.UserID)))"));
         }
     }
 }
