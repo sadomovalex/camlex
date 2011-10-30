@@ -183,10 +183,42 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Factories
                 value = valueElement.Descendants().First().Name.ToString();
             }
 
+            var convertedType = this.convertToNativeIfPossible(type);
+
             // currently only string-based value operand will be returned
             // todo: add support of native operands here (see OperandBuilder.CreateValueOperand() for details)
             return OperandBuilder.CreateValueOperand(
-                type, value, includeTimeValue, true, isComparision);
+                convertedType, value, includeTimeValue, true, isComparision);
+        }
+
+        private Type convertToNativeIfPossible(Type type)
+        {
+            if (type == null)
+            {
+                throw new ArgumentNullException("type");
+            }
+            if (type == typeof(DataTypes.Text))
+            {
+                return typeof(string);
+            }
+            if (type == typeof(DataTypes.Integer))
+            {
+                return typeof (int);
+            }
+            if (type == typeof(DataTypes.Boolean))
+            {
+                return typeof(bool);
+            }
+            if (type == typeof(DataTypes.DateTime))
+            {
+                return typeof(DateTime);
+            }
+            if (type == typeof(DataTypes.Guid))
+            {
+                return typeof(Guid);
+            }
+            // for rest of types use string based types
+            return type;
         }
     }
 }
