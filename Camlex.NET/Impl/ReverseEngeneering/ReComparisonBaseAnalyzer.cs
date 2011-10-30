@@ -40,8 +40,7 @@ namespace CamlexNET.Impl.ReverseEngeneering
 
         protected override bool isValueValid(string valueType, string value, bool isLookupId)
         {
-            var isComparison = operandBuilder.IsOperationComparison(el);
-            if (!isComparison)
+            if (!this.isOperationComparison(this.el))
             {
                 return false;
             }

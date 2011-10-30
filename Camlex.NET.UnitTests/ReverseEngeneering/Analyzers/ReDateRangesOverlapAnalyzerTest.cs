@@ -177,7 +177,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers.TestBase
 
             var b = MockRepository.GenerateStub<IReOperandBuilder>();
             b.Stub(c => c.CreateFieldRefOperand(null)).Return(new FieldRefOperand("Title")).IgnoreArguments();
-            b.Stub(c => c.CreateValueOperand(null)).Return(new DateTimeValueOperand("Now", false)).IgnoreArguments();
+            b.Stub(c => c.CreateValueOperand(null, false)).Return(new DateTimeValueOperand("Now", false)).IgnoreArguments();
 
             var analyzer = new ReDateRangesOverlapAnalyzer(XmlHelper.Get(xml), b);
             var operation = analyzer.GetOperation();

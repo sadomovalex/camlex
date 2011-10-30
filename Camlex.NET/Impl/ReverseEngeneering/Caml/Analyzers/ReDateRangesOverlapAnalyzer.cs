@@ -130,7 +130,7 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Analyzers
             var stopFieldRefOperand = operandBuilder.CreateFieldRefOperand(stopFieldRefElement);
             var recurrenceFieldRefOperand = operandBuilder.CreateFieldRefOperand(recurrenceFieldRefElement);
 
-            var valueOperand = operandBuilder.CreateValueOperand(el);
+            var valueOperand = operandBuilder.CreateValueOperand(el, false);
 
             return new DateRangesOverlapOperation(null, 
                 startFieldRefOperand, stopFieldRefOperand, recurrenceFieldRefOperand, valueOperand);

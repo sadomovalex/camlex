@@ -205,7 +205,7 @@ namespace CamlexNET.Impl.Factories
             return CreateValueOperand(type, value, includeTimeValue, false, false);
         }
 
-        internal static IOperand CreateValueOperand(Type type, object value, bool includeTimeValue, bool parseExactDateTime, bool stringBasedValueOperandRequired)
+        internal static IOperand CreateValueOperand(Type type, object value, bool includeTimeValue, bool parseExactDateTime, bool isComparisionOperation)
         {
             // it is important to have check on NullValueOperand on 1st place
             if (value == null)
@@ -213,13 +213,19 @@ namespace CamlexNET.Impl.Factories
                 return new NullValueOperand();
             }
             // if cast to DataTypes.* class is required
-            if (stringBasedValueOperandRequired)
+            if (isComparisionOperation)
             {
                 if (type.IsSubclassOf(typeof(BaseFieldTypeWithOperators)))
                 {
                     return new GenericStringBasedValueOperand(type, (string) value);
                 }
-                throw new NonSupportedOperandTypeException(type);
+                // native operands are also supported. Several native operands are compirable
+                if (type != typeof(DateTime) &&
+                    type != typeof(int) &&
+                    type != typeof(string))
+                {
+                    throw new NonSupportedOperandTypeException(type);
+                }
             }
             // string operand can be native or string based
             if (type == typeof(string) || type == typeof(DataTypes.Text))

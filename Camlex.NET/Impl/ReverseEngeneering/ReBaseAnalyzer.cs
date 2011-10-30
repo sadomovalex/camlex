@@ -53,5 +53,12 @@ namespace CamlexNET.Impl.ReverseEngeneering
             return (this.el != null);
         }
         public abstract IOperation GetOperation();
+
+        protected bool isOperationComparison(XElement operationElement)
+        {
+            var operationName = operationElement.Name.LocalName;
+            return (string.Compare(operationName, Tags.Geq, true) == 0 || string.Compare(operationName, Tags.Gt, true) == 0 ||
+                    string.Compare(operationName, Tags.Lt, true) == 0 || string.Compare(operationName, Tags.Leq, true) == 0);
+        }
     }
 }
