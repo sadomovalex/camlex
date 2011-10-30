@@ -73,13 +73,18 @@ namespace CamlexNET.Impl.ReverseEngeneering
                 .Where(a => a.Name == Attributes.Type).FirstOrDefault();
             if (typeAttribute == null) return false;
 
+            // whether there is LookupId attribute in FieldRef tag
+            var fieldRefElement = el.Elements(Tags.FieldRef).First();
+            var isLookupId = fieldRefElement.Attributes()
+                .Any(a => a.Name == Attributes.LookupId);
+
             // check whether we support this value type
             if (typeAttribute.Value != typeof(DataTypes.Text).Name &&
                 string.IsNullOrEmpty(valueElement.Value)) return false;
-            return doesOperationSupportValueType(typeAttribute.Value, valueElement.Value);
+            return doesOperationSupportValueType(typeAttribute.Value, valueElement.Value, isLookupId);
         }
 
-        protected virtual bool doesOperationSupportValueType(string valueType, string value)
+        protected virtual bool doesOperationSupportValueType(string valueType, string value, bool isLookupId)
         {
             try
             {
@@ -89,6 +94,10 @@ namespace CamlexNET.Impl.ReverseEngeneering
                 else if (valueType == typeof(DataTypes.Integer).Name) new IntegerValueOperand(value);
                 else if (valueType == typeof(DataTypes.Lookup).Name) new LookupValueValueOperand(value);
                 else if (valueType == typeof(DataTypes.Text).Name) { }
+                else if (valueType == typeof(DataTypes.User).Name)
+                {
+                    if (isLookupId) new UserIdValueOperand(value);
+                }
                 else return false;
             }
             catch (InvalidValueForOperandTypeException) { return false; }

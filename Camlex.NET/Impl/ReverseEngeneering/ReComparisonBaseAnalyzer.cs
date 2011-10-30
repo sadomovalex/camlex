@@ -38,12 +38,13 @@ namespace CamlexNET.Impl.ReverseEngeneering
         {
         }
 
-        protected override bool doesOperationSupportValueType(string valueType, string value)
+        protected override bool doesOperationSupportValueType(string valueType, string value, bool isLookupId)
         {
             var isComparison = operandBuilder.IsOperationComparison(el);
             if (valueType == typeof(DataTypes.Boolean).Name && isComparison) return false;
             if (valueType == typeof(DataTypes.Guid).Name && isComparison) return false;
-            return base.doesOperationSupportValueType(valueType, value);
+            if (valueType == typeof(DataTypes.User).Name && isComparison) return false;
+            return base.doesOperationSupportValueType(valueType, value, isLookupId);
         }
     }
 }

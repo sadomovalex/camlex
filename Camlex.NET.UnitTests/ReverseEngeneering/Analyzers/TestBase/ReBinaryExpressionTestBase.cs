@@ -61,6 +61,8 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers.TestBase
             public bool TextualOperationsSupport { get; set; }
         }
 
+        const string LookupId = "LookupId=\"TRUE\"";
+
         List<SupportedValueType> supportedTypesWithExamples = new List<SupportedValueType>
         {
             new SupportedValueType
@@ -110,6 +112,14 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers.TestBase
                 ExamplesOfIncorrectValue = new List<string>(),
                 ComparisonOperationsSupport = true,
                 TextualOperationsSupport = true
+            },
+            new SupportedValueType
+            {
+                SupportedType = typeof(DataTypes.User),
+                ExamplesOfCorrectValue = new List<string> { "username", LookupId + "123" },
+                ExamplesOfIncorrectValue = new List<string> { LookupId + "username" },
+                ComparisonOperationsSupport = false,
+                TextualOperationsSupport = false
             }
         };
 
@@ -213,16 +223,16 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers.TestBase
                     if (foundItem == null ||
                         (operationType == OperationType.Comparison && !foundItem.ComparisonOperationsSupport) ||
                         (operationType == OperationType.Textual && !foundItem.TextualOperationsSupport)) return;
-
                     foundItem.ExamplesOfCorrectValue.ForEach(value =>
                     {
+                        var lookupId = value.StartsWith(LookupId) ? LookupId : string.Empty;
+                        value = value.Replace(LookupId, string.Empty);
                         var xml = string.Format(
                             "<{0}>" +
-                            "    <FieldRef Name=\"Title\" />" +
-                            "    <Value Type=\"{1}\">{2}</Value>" +
+                            "    <FieldRef Name=\"Title\" {1} />" +
+                            "    <Value Type=\"{2}\">{3}</Value>" +
                             "</{0}>",
-                            operationName, foundItem.SupportedType.Name, value);
-
+                            operationName, lookupId, foundItem.SupportedType.Name, value);
                         var analyzer = constructor(XmlHelper.Get(xml), new ReOperandBuilderFromCaml());
                         Assert.IsTrue(analyzer.IsValid());
                     });
@@ -267,13 +277,14 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers.TestBase
 
                     foundItem.ExamplesOfIncorrectValue.ForEach(value =>
                     {
+                        var lookupId = value.StartsWith(LookupId) ? LookupId : string.Empty;
+                        value = value.Replace(LookupId, string.Empty);
                         var xml = string.Format(
                             "<{0}>" +
-                            "    <FieldRef Name=\"Title\" />" +
-                            "    <Value Type=\"{1}\">{2}</Value>" +
+                            "    <FieldRef Name=\"Title\" {1} />" +
+                            "    <Value Type=\"{2}\">{3}</Value>" +
                             "</{0}>",
-                            operationName, foundItem.SupportedType.Name, value);
-
+                            operationName, lookupId, foundItem.SupportedType.Name, value);
                         var analyzer = constructor(XmlHelper.Get(xml), new ReOperandBuilderFromCaml());
                         Assert.IsFalse(analyzer.IsValid());
                     });
@@ -301,12 +312,14 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers.TestBase
 
                     foundItem.ExamplesOfCorrectValue.ForEach(value =>
                     {
+                        var lookupId = value.StartsWith(LookupId) ? LookupId : string.Empty;
+                        value = value.Replace(LookupId, string.Empty);
                         var xml = string.Format(
                             "<{0}>" +
-                            "    <FieldRef Name=\"Title\" />" +
-                            "    <Value Type=\"{1}\">{2}</Value>" +
+                            "    <FieldRef Name=\"Title\" {1} />" +
+                            "    <Value Type=\"{2}\">{3}</Value>" +
                             "</{0}>",
-                            operationName, foundItem.SupportedType.Name, value);
+                            operationName, lookupId, foundItem.SupportedType.Name, value);
 
                         var b = MockRepository.GenerateStub<IReOperandBuilder>();
                         b.Stub(c => c.CreateFieldRefOperand(null)).Return(new FieldRefOperand("Title")).IgnoreArguments();
