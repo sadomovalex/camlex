@@ -100,7 +100,12 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Factories
             return new FieldRefOperandWithOrdering(fieldRefOperand, orderDirection);
         }
 
-        public IOperand CreateValueOperand(XElement operationElement)
+//        public IOperand CreateValueOperand(XElement operationElement)
+//        {
+//            return this.CreateValueOperand(operationElement, false);
+//        }
+
+        public IOperand CreateValueOperand(XElement operationElement, bool isComparision)
         {
             if (operationElement == null)
             {
@@ -134,7 +139,7 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Factories
             {
                 throw new CamlAnalysisException(
                     string.Format(
-                        "Can't create value operand: Type attribute '{0}' is incorrect type name. It should have CAML-compatible type name", typeAttr.Value));                
+                        "Can't create value operand: Type attribute '{0}' is incorrect type name. It should have CAML-compatible type name", typeAttr.Value));
             }
 
             // DataTypes.Lookup is internal. Users should use LookupValue or LookupId. But in order to determine what exact type
@@ -142,7 +147,7 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Factories
             // operand contains it)
             if (type == typeof(DataTypes.Lookup))
             {
-                type = typeof (DataTypes.LookupValue);
+                type = typeof(DataTypes.LookupValue);
                 var fieldRefElement = operationElement.Elements(Tags.FieldRef).FirstOrDefault();
                 if (fieldRefElement != null)
                 {
@@ -152,7 +157,7 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Factories
                         bool isLookupId = false;
                         if (bool.TryParse(lookupIdAttr.Value, out isLookupId) && isLookupId)
                         {
-                            type = typeof (DataTypes.LookupId);
+                            type = typeof(DataTypes.LookupId);
                         }
                     }
                 }
@@ -181,14 +186,7 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Factories
             // currently only string-based value operand will be returned
             // todo: add support of native operands here (see OperandBuilder.CreateValueOperand() for details)
             return OperandBuilder.CreateValueOperand(
-                type, value, includeTimeValue, true, IsOperationComparison(operationElement));
-        }
-
-        public bool IsOperationComparison(XElement operationElement)
-        {
-            var operationName = operationElement.Name.LocalName;
-            return (string.Compare(operationName, Tags.Geq, true) == 0 || string.Compare(operationName, Tags.Gt, true) == 0 ||
-                    string.Compare(operationName, Tags.Lt, true) == 0 || string.Compare(operationName, Tags.Leq, true) == 0);
+                type, value, includeTimeValue, true, isComparision);
         }
     }
 }

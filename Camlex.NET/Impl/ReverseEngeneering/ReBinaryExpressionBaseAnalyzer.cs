@@ -136,7 +136,7 @@ namespace CamlexNET.Impl.ReverseEngeneering
 
             var fieldRefElement = el.Elements(Tags.FieldRef).First();
             var fieldRefOperand = operandBuilder.CreateFieldRefOperand(fieldRefElement);
-            var valueOperand = operandBuilder.CreateValueOperand(el);
+            var valueOperand = operandBuilder.CreateValueOperand(el, this.isOperationComparison(el));
             return constructor(fieldRefOperand, valueOperand);
         }
     }
