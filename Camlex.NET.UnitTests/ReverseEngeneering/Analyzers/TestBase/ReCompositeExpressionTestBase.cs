@@ -160,7 +160,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers.TestBase
 
             var reOperandBuilder = MockRepository.GenerateStub<IReOperandBuilder>();
             reOperandBuilder.Stub(c => c.CreateFieldRefOperand(null)).Return(new FieldRefOperand("Title")).IgnoreArguments();
-            reOperandBuilder.Stub(c => c.CreateValueOperand(null)).Return(new TextValueOperand("testValue")).IgnoreArguments();
+            reOperandBuilder.Stub(c => c.CreateValueOperand(null, false)).Return(new TextValueOperand("testValue")).IgnoreArguments();
 
             var reAnalyzerFactory = new ReAnalyzerFromCamlFactory(reOperandBuilder);
             var analyzer = constructor(XmlHelper.Get(xml), reOperandBuilder, reAnalyzerFactory);

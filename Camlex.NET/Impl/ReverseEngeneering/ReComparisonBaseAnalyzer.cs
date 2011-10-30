@@ -40,8 +40,7 @@ namespace CamlexNET.Impl.ReverseEngeneering
 
         protected override bool doesOperationSupportValueType(string valueType, string value)
         {
-            var isComparison = operandBuilder.IsOperationComparison(el);
-            if (!isComparison)
+            if (!this.isOperationComparison(this.el))
             {
                 return false;
             }

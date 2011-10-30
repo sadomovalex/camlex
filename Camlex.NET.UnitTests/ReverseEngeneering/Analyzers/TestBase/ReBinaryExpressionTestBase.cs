@@ -526,15 +526,15 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers.TestBase
 
                         var b = MockRepository.GenerateStub<IReOperandBuilder>();
                         b.Stub(c => c.CreateFieldRefOperand(null)).Return(new FieldRefOperand("Title")).IgnoreArguments();
-                        if (operationName == Tags.Geq || operationName == Tags.Gt ||
-                            operationName == Tags.Leq || operationName == Tags.Lt)
-                        {
-                            b.Stub(c => c.IsOperationComparison(null)).Return(true).IgnoreArguments();
-                        }
-                        else
-                        {
-                            b.Stub(c => c.IsOperationComparison(null)).Return(false).IgnoreArguments();
-                        }
+//                        if (operationName == Tags.Geq || operationName == Tags.Gt ||
+//                            operationName == Tags.Leq || operationName == Tags.Lt)
+//                        {
+//                            b.Stub(c => c.IsOperationComparison(null)).Return(true).IgnoreArguments();
+//                        }
+//                        else
+//                        {
+//                            b.Stub(c => c.IsOperationComparison(null)).Return(false).IgnoreArguments();
+//                        }
 
                         var valueOperand = default(IOperand);
                         if (operationType == OperationType.Equality)
@@ -544,7 +544,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers.TestBase
                         if (operationType == OperationType.Textual)
                             valueOperand = new TextValueOperand(value);
 
-                        b.Stub(c => c.CreateValueOperand(null)).Return(valueOperand).IgnoreArguments();
+                        b.Stub(c => c.CreateValueOperand(null, false)).Return(valueOperand).IgnoreArguments();
                         var analyzer = constructor(XmlHelper.Get(xml), b);
                         var operation = analyzer.GetOperation();
                         Assert.IsInstanceOf<TOperation>(operation);
