@@ -210,5 +210,15 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Factories
             var b = new ReOperandBuilderFromCaml();
             b.CreateValueOperand(XmlHelper.Get(xml), true);
         }
+
+        [Test]
+        public void test_THAT_compirable_native_operands_ARE_created_sucessfully()
+        {
+            var b = new ReOperandBuilderFromCaml();
+            // no exceptions should occur
+            b.CreateValueOperand(XmlHelper.Get("<Operation><Value Type=\"Text\">foo</Value></Operation>"), true);
+            b.CreateValueOperand(XmlHelper.Get("<Operation><Value Type=\"Integer\">1</Value></Operation>"), true);
+            b.CreateValueOperand(XmlHelper.Get("<Operation><Value Type=\"DateTime\">" + DateTime.Now.ToString("s") + "</Value></Operation>"), true);
+        }
     }
 }
