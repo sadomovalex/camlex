@@ -56,11 +56,11 @@ namespace CamlexNET
         public class AllDayEvent : BaseFieldType { }
         public class Attachments : BaseFieldType { }
         public class Boolean : BaseFieldType { }
-        public class Calculated : BaseFieldType { }
+        public class Calculated : BaseFieldTypeWithOperators { }
         public class Choice : BaseFieldType { }
-        public class Computed : BaseFieldType { }
+        public class Computed : BaseFieldTypeWithOperators { }
         public class ContentTypeId : BaseFieldType { }
-        public class Counter : BaseFieldType { }
+        public class Counter : BaseFieldTypeWithOperators { }
         public class CrossProjectLink : BaseFieldType { }
         public class Currency : BaseFieldTypeWithOperators { }
         public class DateTime : BaseFieldTypeWithOperators
@@ -99,7 +99,7 @@ namespace CamlexNET
         public class PageSeparator : BaseFieldType { }
         public class Recurrence : BaseFieldType { }
         public class Text : StringBasedFieldType { }
-        public class ThreadIndex : BaseFieldType { }
+        public class ThreadIndex : BaseFieldTypeWithOperators { }
         public class Threading : BaseFieldType { }
         public class URL : BaseFieldType { }
         public class User : BaseFieldType { }

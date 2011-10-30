@@ -36,6 +36,8 @@ using CamlexNET.Impl.ReverseEngeneering;
 using CamlexNET.Impl.ReverseEngeneering.Caml.Factories;
 using CamlexNET.Interfaces;
 using CamlexNET.Interfaces.ReverseEngeneering;
+using Microsoft.SharePoint;
+using Microsoft.SharePoint.Workflow;
 using NUnit.Framework;
 using Rhino.Mocks;
 
@@ -67,83 +69,35 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers.TestBase
         {
             new SupportedValueType
             {
-                SupportedType = typeof(DataTypes.Boolean),
-                ExamplesOfCorrectValue = new List<string> { bool.TrueString, 1.ToString() },
-                ExamplesOfIncorrectValue = new List<string> { string.Empty, DateTime.Now.ToString(), Camlex.Now, Guid.NewGuid().ToString(), 12345.ToString(), "string" },
-                ComparisonOperationsSupport = false,
-                TextualOperationsSupport = false
-            },
-            new SupportedValueType
-            {
-                SupportedType = typeof(DataTypes.DateTime),
-                ExamplesOfCorrectValue = new List<string> { DateTime.Now.ToString(), Camlex.Now },
-                ExamplesOfIncorrectValue = new List<string> { string.Empty, bool.TrueString, Guid.NewGuid().ToString(), 12345.ToString(), "string" },
-                ComparisonOperationsSupport = true,
-                TextualOperationsSupport = false
-            },
-            new SupportedValueType
-            {
-                SupportedType = typeof(DataTypes.Guid),
-                ExamplesOfCorrectValue = new List<string> { Guid.NewGuid().ToString() },
-                ExamplesOfIncorrectValue = new List<string> { string.Empty, bool.TrueString, DateTime.Now.ToString(), Camlex.Now, 12345.ToString(), "string" },
-                ComparisonOperationsSupport = false,
-                TextualOperationsSupport = false
-            },
-            new SupportedValueType
-            {
-                SupportedType = typeof(DataTypes.Integer),
-                ExamplesOfCorrectValue = new List<string> { 12345.ToString() },
-                ExamplesOfIncorrectValue = new List<string> { string.Empty, bool.TrueString, DateTime.Now.ToString(), Camlex.Now, Guid.NewGuid().ToString(), "string" },
-                ComparisonOperationsSupport = true,
-                TextualOperationsSupport = false
-            },
-            new SupportedValueType
-            {
-                SupportedType = typeof(DataTypes.Lookup),
-                ExamplesOfCorrectValue = new List<string> { "lookup" },
-                ExamplesOfIncorrectValue = new List<string> { string.Empty },
-                ComparisonOperationsSupport = true,
-                TextualOperationsSupport = false
-            },
-            new SupportedValueType
-            {
-                SupportedType = typeof(DataTypes.Text),
-                ExamplesOfCorrectValue = new List<string> { string.Empty, "foo" },
-                ExamplesOfIncorrectValue = new List<string>(),
-                ComparisonOperationsSupport = true,
-                TextualOperationsSupport = true
-            },
-            new SupportedValueType
-            {
-                SupportedType = typeof(DataTypes.User),
-                ExamplesOfCorrectValue = new List<string> { "username", LookupId + "123" },
-                ExamplesOfIncorrectValue = new List<string> { LookupId + "username" },
-                ComparisonOperationsSupport = false,
-                TextualOperationsSupport = false
-            }
-            /*new SupportedValueType
-            {
                 SupportedType = typeof(DataTypes.AllDayEvent),
-                ExamplesOfCorrectValue = new List<string> { string.Empty, "foo" },
-                ExamplesOfIncorrectValue = new List<string>(),
+                ExamplesOfCorrectValue = new List<string> { bool.TrueString, 1.ToString() },
+                ExamplesOfIncorrectValue = new List<string> { string.Empty, DateTime.Now.ToString(), Camlex.Now, Guid.NewGuid().ToString(), 12345.ToString(), "foo" },
                 ComparisonOperationsSupport = false,
-                TextualOperationsSupport = true
+                TextualOperationsSupport = false
             },
             new SupportedValueType
             {
                 SupportedType = typeof(DataTypes.Attachments),
-                ExamplesOfCorrectValue = new List<string> { string.Empty, "foo" },
-                ExamplesOfIncorrectValue = new List<string>(),
+                ExamplesOfCorrectValue = new List<string> { bool.TrueString, 1.ToString() },
+                ExamplesOfIncorrectValue = new List<string> { string.Empty, DateTime.Now.ToString(), Camlex.Now, Guid.NewGuid().ToString(), 12345.ToString(), "foo" },
                 ComparisonOperationsSupport = false,
-                TextualOperationsSupport = true
+                TextualOperationsSupport = false
+            },
+            new SupportedValueType
+            {
+                SupportedType = typeof(DataTypes.Boolean),
+                ExamplesOfCorrectValue = new List<string> { bool.TrueString, 1.ToString() },
+                ExamplesOfIncorrectValue = new List<string> { string.Empty, DateTime.Now.ToString(), Camlex.Now, Guid.NewGuid().ToString(), 12345.ToString(), "foo" },
+                ComparisonOperationsSupport = false,
+                TextualOperationsSupport = false
             },
             new SupportedValueType
             {
                 SupportedType = typeof(DataTypes.Calculated),
                 ExamplesOfCorrectValue = new List<string> { string.Empty, "foo" },
                 ExamplesOfIncorrectValue = new List<string>(),
-                ComparisonOperationsSupport = false,
-                TextualOperationsSupport = true
+                ComparisonOperationsSupport = true,
+                TextualOperationsSupport = false
             },
             new SupportedValueType
             {
@@ -151,63 +105,76 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers.TestBase
                 ExamplesOfCorrectValue = new List<string> { string.Empty, "foo" },
                 ExamplesOfIncorrectValue = new List<string>(),
                 ComparisonOperationsSupport = false,
-                TextualOperationsSupport = true
+                TextualOperationsSupport = false
             },
             new SupportedValueType
             {
                 SupportedType = typeof(DataTypes.Computed),
                 ExamplesOfCorrectValue = new List<string> { string.Empty, "foo" },
                 ExamplesOfIncorrectValue = new List<string>(),
-                ComparisonOperationsSupport = false,
-                TextualOperationsSupport = true
+                ComparisonOperationsSupport = true,
+                TextualOperationsSupport = false
             },
             new SupportedValueType
             {
                 SupportedType = typeof(DataTypes.ContentTypeId),
-                ExamplesOfCorrectValue = new List<string> { string.Empty, "foo" },
-                ExamplesOfIncorrectValue = new List<string>(),
+                ExamplesOfCorrectValue = new List<string>
+                {
+                    "0x01", "0x0101", "0x010109", "0x01010901",
+                    "0x0101090100E9371DE6354F4A1AA05C317D3CD80911",
+                    "0x0101090100E9371DE6354F4A1AA05C317D3CD8091100C533E1DCE2264668ACC403BD8456E517"
+                },
+                ExamplesOfIncorrectValue = new List<string> { string.Empty, "foo" },
                 ComparisonOperationsSupport = false,
-                TextualOperationsSupport = true
+                TextualOperationsSupport = false
             },
             new SupportedValueType
             {
                 SupportedType = typeof(DataTypes.Counter),
-                ExamplesOfCorrectValue = new List<string> { string.Empty, "foo" },
-                ExamplesOfIncorrectValue = new List<string>(),
-                ComparisonOperationsSupport = false,
-                TextualOperationsSupport = true
+                ExamplesOfCorrectValue = new List<string> { 12345.ToString() },
+                ExamplesOfIncorrectValue = new List<string> { string.Empty, bool.TrueString, DateTime.Now.ToString(), Camlex.Now, Guid.NewGuid().ToString(), "foo" },
+                ComparisonOperationsSupport = true,
+                TextualOperationsSupport = false
             },
             new SupportedValueType
             {
                 SupportedType = typeof(DataTypes.CrossProjectLink),
-                ExamplesOfCorrectValue = new List<string> { string.Empty, "foo" },
-                ExamplesOfIncorrectValue = new List<string>(),
+                ExamplesOfCorrectValue = new List<string> { bool.TrueString, 1.ToString() },
+                ExamplesOfIncorrectValue = new List<string> { string.Empty, DateTime.Now.ToString(), Camlex.Now, Guid.NewGuid().ToString(), 12345.ToString(), "foo" },
                 ComparisonOperationsSupport = false,
-                TextualOperationsSupport = true
+                TextualOperationsSupport = false
             },
             new SupportedValueType
             {
                 SupportedType = typeof(DataTypes.Currency),
-                ExamplesOfCorrectValue = new List<string> { string.Empty, "foo" },
-                ExamplesOfIncorrectValue = new List<string>(),
-                ComparisonOperationsSupport = false,
-                TextualOperationsSupport = true
+                ExamplesOfCorrectValue = new List<string> { 12345.ToString() },
+                ExamplesOfIncorrectValue = new List<string> { string.Empty, bool.TrueString, DateTime.Now.ToString(), Camlex.Now, Guid.NewGuid().ToString(), "foo" },
+                ComparisonOperationsSupport = true,
+                TextualOperationsSupport = false
+            },
+            new SupportedValueType
+            {
+                SupportedType = typeof(DataTypes.DateTime),
+                ExamplesOfCorrectValue = new List<string> { DateTime.Now.ToString(), Camlex.Now },
+                ExamplesOfIncorrectValue = new List<string> { string.Empty, bool.TrueString, Guid.NewGuid().ToString(), 12345.ToString(), "foo" },
+                ComparisonOperationsSupport = true,
+                TextualOperationsSupport = false
             },
             new SupportedValueType
             {
                 SupportedType = typeof(DataTypes.Error),
-                ExamplesOfCorrectValue = new List<string> { string.Empty, "foo" },
-                ExamplesOfIncorrectValue = new List<string>(),
+                ExamplesOfCorrectValue = new List<string>(),
+                ExamplesOfIncorrectValue = new List<string> { string.Empty, "foo" },
                 ComparisonOperationsSupport = false,
-                TextualOperationsSupport = true
+                TextualOperationsSupport = false
             },
             new SupportedValueType
             {
                 SupportedType = typeof(DataTypes.File),
-                ExamplesOfCorrectValue = new List<string> { string.Empty, "foo" },
-                ExamplesOfIncorrectValue = new List<string>(),
+                ExamplesOfCorrectValue = new List<string> { "foo" },
+                ExamplesOfIncorrectValue = new List<string> { string.Empty },
                 ComparisonOperationsSupport = false,
-                TextualOperationsSupport = true
+                TextualOperationsSupport = false
             },
             new SupportedValueType
             {
@@ -215,31 +182,63 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers.TestBase
                 ExamplesOfCorrectValue = new List<string> { string.Empty, "foo" },
                 ExamplesOfIncorrectValue = new List<string>(),
                 ComparisonOperationsSupport = false,
-                TextualOperationsSupport = true
+                TextualOperationsSupport = false
+            },
+            new SupportedValueType
+            {
+                SupportedType = typeof(DataTypes.Guid),
+                ExamplesOfCorrectValue = new List<string> { Guid.NewGuid().ToString() },
+                ExamplesOfIncorrectValue = new List<string> { string.Empty, bool.TrueString, DateTime.Now.ToString(), Camlex.Now, 12345.ToString(), "foo" },
+                ComparisonOperationsSupport = false,
+                TextualOperationsSupport = false
+            },
+            new SupportedValueType
+            {
+                SupportedType = typeof(DataTypes.Integer),
+                ExamplesOfCorrectValue = new List<string> { 12345.ToString() },
+                ExamplesOfIncorrectValue = new List<string> { string.Empty, bool.TrueString, DateTime.Now.ToString(), Camlex.Now, Guid.NewGuid().ToString(), "foo" },
+                ComparisonOperationsSupport = true,
+                TextualOperationsSupport = false
             },
             new SupportedValueType
             {
                 SupportedType = typeof(DataTypes.Invalid),
+                ExamplesOfCorrectValue = new List<string>(),
+                ExamplesOfIncorrectValue = new List<string> { string.Empty, "foo" },
+                ComparisonOperationsSupport = false,
+                TextualOperationsSupport = false
+            },
+            new SupportedValueType
+            {
+                SupportedType = typeof(DataTypes.LookupId),
+                ExamplesOfCorrectValue = new List<string> { 12345.ToString() },
+                ExamplesOfIncorrectValue = new List<string> { string.Empty, bool.TrueString, DateTime.Now.ToString(), Camlex.Now, Guid.NewGuid().ToString(), "foo" },
+                ComparisonOperationsSupport = true,
+                TextualOperationsSupport = false
+            },
+            new SupportedValueType
+            {
+                SupportedType = typeof(DataTypes.LookupValue),
                 ExamplesOfCorrectValue = new List<string> { string.Empty, "foo" },
                 ExamplesOfIncorrectValue = new List<string>(),
                 ComparisonOperationsSupport = false,
-                TextualOperationsSupport = true
+                TextualOperationsSupport = false
             },
             new SupportedValueType
             {
                 SupportedType = typeof(DataTypes.MaxItems),
-                ExamplesOfCorrectValue = new List<string> { string.Empty, "foo" },
-                ExamplesOfIncorrectValue = new List<string>(),
+                ExamplesOfCorrectValue = new List<string> { 12345.ToString() },
+                ExamplesOfIncorrectValue = new List<string> { string.Empty, bool.TrueString, DateTime.Now.ToString(), Camlex.Now, Guid.NewGuid().ToString(), "foo" },
                 ComparisonOperationsSupport = false,
-                TextualOperationsSupport = true
+                TextualOperationsSupport = false
             },
             new SupportedValueType
             {
                 SupportedType = typeof(DataTypes.ModStat),
-                ExamplesOfCorrectValue = new List<string> { string.Empty, "foo" },
-                ExamplesOfIncorrectValue = new List<string>(),
+                ExamplesOfCorrectValue = new List<string> { SPModerationStatusType.Approved.ToString(), ((int)SPModerationStatusType.Denied).ToString() },
+                ExamplesOfIncorrectValue = new List<string> { string.Empty, "foo" },
                 ComparisonOperationsSupport = false,
-                TextualOperationsSupport = true
+                TextualOperationsSupport = false
             },
             new SupportedValueType
             {
@@ -247,7 +246,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers.TestBase
                 ExamplesOfCorrectValue = new List<string> { string.Empty, "foo" },
                 ExamplesOfIncorrectValue = new List<string>(),
                 ComparisonOperationsSupport = false,
-                TextualOperationsSupport = true
+                TextualOperationsSupport = false
             },
             new SupportedValueType
             {
@@ -260,26 +259,26 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers.TestBase
             new SupportedValueType
             {
                 SupportedType = typeof(DataTypes.Number),
-                ExamplesOfCorrectValue = new List<string> { string.Empty, "foo" },
-                ExamplesOfIncorrectValue = new List<string>(),
+                ExamplesOfCorrectValue = new List<string> { 12345.ToString() },
+                ExamplesOfIncorrectValue = new List<string> { string.Empty, bool.TrueString, DateTime.Now.ToString(), Camlex.Now, Guid.NewGuid().ToString(), "foo" },
                 ComparisonOperationsSupport = true,
-                TextualOperationsSupport = true
+                TextualOperationsSupport = false
             },
             new SupportedValueType
             {
                 SupportedType = typeof(DataTypes.PageSeparator),
-                ExamplesOfCorrectValue = new List<string> { string.Empty, "foo" },
-                ExamplesOfIncorrectValue = new List<string>(),
+                ExamplesOfCorrectValue = new List<string>(),
+                ExamplesOfIncorrectValue = new List<string> { string.Empty, "foo" },
                 ComparisonOperationsSupport = false,
-                TextualOperationsSupport = true
+                TextualOperationsSupport = false
             },
             new SupportedValueType
             {
                 SupportedType = typeof(DataTypes.Recurrence),
-                ExamplesOfCorrectValue = new List<string> { string.Empty, "foo" },
-                ExamplesOfIncorrectValue = new List<string>(),
+                ExamplesOfCorrectValue = new List<string> { bool.TrueString, 1.ToString() },
+                ExamplesOfIncorrectValue = new List<string> { string.Empty, DateTime.Now.ToString(), Camlex.Now, Guid.NewGuid().ToString(), 12345.ToString(), "foo" },
                 ComparisonOperationsSupport = false,
-                TextualOperationsSupport = true
+                TextualOperationsSupport = false
             },
             new SupportedValueType
             {
@@ -292,18 +291,26 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers.TestBase
             new SupportedValueType
             {
                 SupportedType = typeof(DataTypes.ThreadIndex),
-                ExamplesOfCorrectValue = new List<string> { string.Empty, "foo" },
-                ExamplesOfIncorrectValue = new List<string>(),
-                ComparisonOperationsSupport = false,
-                TextualOperationsSupport = true
+                ExamplesOfCorrectValue = new List<string> { 12345.ToString() },
+                ExamplesOfIncorrectValue = new List<string> { string.Empty, bool.TrueString, DateTime.Now.ToString(), Camlex.Now, Guid.NewGuid().ToString(), "foo" },
+                ComparisonOperationsSupport = true,
+                TextualOperationsSupport = false
             },
             new SupportedValueType
             {
                 SupportedType = typeof(DataTypes.Threading),
-                ExamplesOfCorrectValue = new List<string> { string.Empty, "foo" },
-                ExamplesOfIncorrectValue = new List<string>(),
+                ExamplesOfCorrectValue = new List<string> { bool.TrueString, 1.ToString() },
+                ExamplesOfIncorrectValue = new List<string> { string.Empty, DateTime.Now.ToString(), Camlex.Now, Guid.NewGuid().ToString(), 12345.ToString(), "foo" },
                 ComparisonOperationsSupport = false,
-                TextualOperationsSupport = true
+                TextualOperationsSupport = false
+            },
+            new SupportedValueType
+            {
+                SupportedType = typeof(DataTypes.User),
+                ExamplesOfCorrectValue = new List<string> { "username", LookupId + "123" },
+                ExamplesOfIncorrectValue = new List<string> { LookupId + "username" },
+                ComparisonOperationsSupport = false,
+                TextualOperationsSupport = false
             },
             new SupportedValueType
             {
@@ -311,32 +318,25 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers.TestBase
                 ExamplesOfCorrectValue = new List<string> { string.Empty, "foo" },
                 ExamplesOfIncorrectValue = new List<string>(),
                 ComparisonOperationsSupport = false,
-                TextualOperationsSupport = true
+                TextualOperationsSupport = false
             },
-            new SupportedValueType
-            {
-                SupportedType = typeof(DataTypes.User),
-                ExamplesOfCorrectValue = new List<string> { string.Empty, "foo" },
-                ExamplesOfIncorrectValue = new List<string>(),
-                ComparisonOperationsSupport = false,
-                TextualOperationsSupport = true
-            },
+
             new SupportedValueType
             {
                 SupportedType = typeof(DataTypes.WorkflowEventType),
-                ExamplesOfCorrectValue = new List<string> { string.Empty, "foo" },
-                ExamplesOfIncorrectValue = new List<string>(),
+                ExamplesOfCorrectValue = new List<string> { SPWorkflowHistoryEventType.TaskCompleted.ToString(), ((int)SPWorkflowHistoryEventType.TaskModified).ToString() },
+                ExamplesOfIncorrectValue = new List<string> { string.Empty, "foo" },
                 ComparisonOperationsSupport = false,
-                TextualOperationsSupport = true
+                TextualOperationsSupport = false
             },
             new SupportedValueType
             {
                 SupportedType = typeof(DataTypes.WorkflowStatus),
-                ExamplesOfCorrectValue = new List<string> { string.Empty, "foo" },
-                ExamplesOfIncorrectValue = new List<string>(),
+                ExamplesOfCorrectValue = new List<string> { SPWorkflowStatus.InProgress.ToString(), ((int)SPWorkflowStatus.Completed).ToString() },
+                ExamplesOfIncorrectValue = new List<string> { string.Empty, "foo" },
                 ComparisonOperationsSupport = false,
-                TextualOperationsSupport = true
-            }*/
+                TextualOperationsSupport = false
+            }
         };
 
         #endregion
