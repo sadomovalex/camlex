@@ -705,7 +705,7 @@ namespace CamlexNET.UnitTests
 
         [Test]
         [ExpectedException(typeof(InvalidOperationException))]
-        public void test_THAT_expression_with_nested_argument_IS_translated_sucessfully()
+        public void test_WHEN_expression_with_nested_argument_THEN_exception_is_thrown()
         {
             string caml = Camlex.Query().Where(x => (string) x[(string) x["Title"]] == "foo").ToString();
         }
