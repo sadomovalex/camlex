@@ -200,5 +200,15 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Factories
             Assert.That(b.CreateValueOperand(XmlHelper.Get("<Operation><Value Type=\"Note\">foo</Value></Operation>"), false).ToCaml().ToString(),
                 Is.EqualTo("<Value Type=\"Note\">foo</Value>"));
         }
+
+        [Test]
+        [ExpectedException(typeof(NonSupportedOperandTypeException))]
+        public void test_WHEN_comparision_operation_but_type_is_not_compirable_THEN_exception_is_thrown_for_create_value_operand()
+        {
+            var xml = "<Operation><Value Type=\"Boolean\">True</Value></Operation>";
+
+            var b = new ReOperandBuilderFromCaml();
+            b.CreateValueOperand(XmlHelper.Get(xml), true);
+        }
     }
 }
