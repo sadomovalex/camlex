@@ -145,9 +145,27 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Factories
             // DataTypes.Lookup is internal. Users should use LookupValue or LookupId. But in order to determine what exact type
             // should be used - we also need to analyze FieldRef operand because it contains LookupId="True" attribute (i.e. not Value
             // operand contains it)
+            if (type == typeof(DataTypes.Lookup))
+            {
+                type = typeof(DataTypes.LookupValue);
+                var fieldRefElement = operationElement.Elements(Tags.FieldRef).FirstOrDefault();
+                if (fieldRefElement != null)
+                {
+                    var lookupIdAttr = fieldRefElement.Attributes().FirstOrDefault(a => a.Name == Attributes.LookupId);
+                    if (lookupIdAttr != null)
+                    {
+                        bool isLookupId = false;
+                        if (bool.TryParse(lookupIdAttr.Value, out isLookupId) && isLookupId)
+                        {
+                            type = typeof(DataTypes.LookupId);
+                        }
+                    }
+                }
+            }
+
             // The same about User and UserId. In direct-way translation, the developer should use either User or User ID,
             // but in referese-way translation, it should be determioned by LookupID="True" attribute
-            if (type == typeof(DataTypes.Lookup) || type == typeof(DataTypes.User))
+            if (type == typeof(DataTypes.User))
             {
                 var fieldRefElement = operationElement.Elements(Tags.FieldRef).FirstOrDefault();
                 if (fieldRefElement != null)
@@ -155,16 +173,10 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Factories
                     var lookupIdAttr = fieldRefElement.Attributes().FirstOrDefault(a => a.Name == Attributes.LookupId);
                     if (lookupIdAttr != null)
                     {
-                        bool isLookupId;
+                        bool isLookupId = false;
                         if (bool.TryParse(lookupIdAttr.Value, out isLookupId) && isLookupId)
                         {
-                            if (type == typeof(DataTypes.Lookup)) type = typeof(DataTypes.LookupId);
-                            if (type == typeof(DataTypes.User)) type = typeof(DataTypes.UserId);
-                        }
-                        else
-                        {
-                            if (type == typeof(DataTypes.Lookup)) type = typeof(DataTypes.LookupValue);
-                            if (type == typeof(DataTypes.User)) type = typeof(DataTypes.User);
+                            type = typeof(DataTypes.UserId);
                         }
                     }
                 }
