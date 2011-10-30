@@ -182,6 +182,13 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Factories
                 }
             }
 
+            bool isIntegerForUserId = false;
+            if (type == typeof(DataTypes.Integer))
+            {
+                // DataTypes.Integer also can be used for <UserID />. See http://sadomovalex.blogspot.com/2011/08/camlexnet-24-is-released.html
+                isIntegerForUserId =  valueElement.Elements().Count() == 1 && valueElement.Elements().Any(e => e.Name == ReflectionHelper.UserID);
+            }
+
             bool includeTimeValue = false;
             var includeTimeValueAttr = valueElement.Attributes().FirstOrDefault(a => a.Name == Attributes.IncludeTimeValue);
             if (includeTimeValueAttr != null)
@@ -207,7 +214,7 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Factories
             // currently only string-based value operand will be returned
             // todo: add support of native operands here (see OperandBuilder.CreateValueOperand() for details)
             return OperandBuilder.CreateValueOperand(
-                convertedType, value, includeTimeValue, true, isComparision);
+                convertedType, value, includeTimeValue, true, isComparision, isIntegerForUserId);
         }
 
         private Type convertToNativeIfPossible(Type type)

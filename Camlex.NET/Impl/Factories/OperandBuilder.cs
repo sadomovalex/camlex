@@ -150,18 +150,6 @@ namespace CamlexNET.Impl.Factories
             // retrieve internal native expression from string based syntax
             var internalExpression = ((UnaryExpression)((UnaryExpression)newExpr).Operand).Operand;
 
-            // Camlex.UserID.ToString() should not be evaluated. This is marker method
-            if (newExpr.Type.FullName == typeof(DataTypes.Integer).FullName)
-            {
-                if (internalExpression is MemberExpression &&
-                    ((MemberExpression)internalExpression).Member.DeclaringType.FullName ==
-                    typeof (Camlex).FullName &&
-                    ((MemberExpression)internalExpression).Member.Name == ReflectionHelper.UserID)
-                {
-                    return new UserIdConstValueOperand();
-                }
-            }
-
             // use conversion type as operand type (subclass of BaseFieldType should be used here)
             // because conversion operand has always string type for string based syntax
             return this.CreateValueOperandForNativeSyntax(internalExpression, newExpr.Type, expr);
@@ -201,11 +189,13 @@ namespace CamlexNET.Impl.Factories
 
         private IOperand createValueOperand(Type type, object value, Expression expr)
         {
-            var includeTimeValue = ExpressionsHelper.IncludeTimeValue(expr);
-            return CreateValueOperand(type, value, includeTimeValue, false, false);
+            bool includeTimeValue = ExpressionsHelper.IncludeTimeValue(expr);
+            bool isIntegerForUserId = ExpressionsHelper.IsIntegerForUserId(expr);
+            return CreateValueOperand(type, value, includeTimeValue, false, false, isIntegerForUserId);
         }
 
-        internal static IOperand CreateValueOperand(Type type, object value, bool includeTimeValue, bool parseExactDateTime, bool isComparisionOperation)
+        internal static IOperand CreateValueOperand(Type type, object value, bool includeTimeValue, bool parseExactDateTime, bool isComparisionOperation,
+            bool isIntegerForUserId)
         {
             // it is important to have check on NullValueOperand on 1st place
             if (value == null)
@@ -235,6 +225,12 @@ namespace CamlexNET.Impl.Factories
             // integer operand can be native or string based
             if (type == typeof(int) || type == typeof(DataTypes.Integer))
             {
+                // DataTypes.Integer also can be used for <UserID />. See http://sadomovalex.blogspot.com/2011/08/camlexnet-24-is-released.html
+                if (isIntegerForUserId)
+                {
+                    return new UserIdConstValueOperand();
+                }
+
                 if (value.GetType() == typeof(int))
                 {
                     return new IntegerValueOperand((int) value);

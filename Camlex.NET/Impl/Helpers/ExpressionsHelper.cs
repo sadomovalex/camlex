@@ -149,5 +149,28 @@ namespace CamlexNET.Impl.Helpers
 
             throw new NonSupportedExpressionException(expression); // it should not happen - either Object or Arguments  is not NULL
         }
+
+        public static bool IsIntegerForUserId(Expression expr)
+        {
+            if (expr.Type.FullName == typeof(DataTypes.Integer).FullName)
+            {
+                if (expr is UnaryExpression && expr.NodeType == ExpressionType.Convert)
+                {
+                    expr = ((UnaryExpression) expr).Operand;
+                    if (expr is UnaryExpression && expr.NodeType == ExpressionType.Convert)
+                    {
+                        expr = ((UnaryExpression)expr).Operand;
+                        if (expr is MemberExpression &&
+                            ((MemberExpression) expr).Member.DeclaringType.FullName ==
+                            typeof (Camlex).FullName &&
+                            ((MemberExpression) expr).Member.Name == ReflectionHelper.UserID)
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
+        }
     }
 }
