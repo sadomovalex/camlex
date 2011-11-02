@@ -60,7 +60,8 @@ namespace CamlexNET.Impl.Operands
 
         public override Expression ToExpression()
         {
-            return Expression.Constant(this.Value);
+            var guidConstructor = typeof(Guid).GetConstructor(new[] { typeof(string) });
+            return Expression.New(guidConstructor, Expression.Constant(this.Value.ToString()));
         }
     }
 }
