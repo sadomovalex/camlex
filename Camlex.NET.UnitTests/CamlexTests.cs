@@ -894,17 +894,17 @@ namespace CamlexNET.UnitTests
         public void test_THAT_expression_IS_translated_sucessfully_with_query_tag()
         {
             string caml = Camlex.Query()
-                .Where(x => (string)x["Title"] == "testValue").ToString(true);
+                .Where(x => (string)x["Title"] == "testValue").ToString();
 
             string expected =
-                "<Query>" +
+                //"<Query>" +
                 "   <Where>" +
                 "       <Eq>" +
                 "           <FieldRef Name=\"Title\" />" +
                 "           <Value Type=\"Text\">testValue</Value>" +
                 "       </Eq>" +
-                "   </Where>" +
-                "</Query>";
+                "   </Where>";
+                //"</Query>";
 
             Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
         }
@@ -915,17 +915,17 @@ namespace CamlexNET.UnitTests
             var guid = new Guid("4feaf1f3-5b04-4d93-b0fc-4e48d0c60eed");
 
             string caml = Camlex.Query()
-                .Where(x => (string)x[guid] == "val").ToString(true);
+                .Where(x => (string)x[guid] == "val").ToString();
 
             string expected =
-                "<Query>" +
+                //"<Query>" +
                 "   <Where>" +
                 "       <Eq>" +
                 "           <FieldRef ID=\"4feaf1f3-5b04-4d93-b0fc-4e48d0c60eed\" />" +
                 "           <Value Type=\"Text\">val</Value>" +
                 "       </Eq>" +
-                "   </Where>" +
-                "</Query>";
+                "   </Where>";
+                //"</Query>";
 
             Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
         }
