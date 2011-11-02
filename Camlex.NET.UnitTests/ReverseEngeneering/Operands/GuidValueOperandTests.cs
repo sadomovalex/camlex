@@ -43,7 +43,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Operands
             var guid = new Guid("{4feaf1f3-5b04-4d93-b0fc-4e48d0c60eed}");
             var op = new GuidValueOperand(guid);
             var expr = op.ToExpression();
-            Assert.That(expr.ToString(), Is.EqualTo("4feaf1f3-5b04-4d93-b0fc-4e48d0c60eed").Using(new CaseInsensetiveComparer()));
+            Assert.That(expr.ToString(), Is.EqualTo("new Guid(\"4feaf1f3-5b04-4d93-b0fc-4e48d0c60eed\")").Using(new CaseInsensetiveComparer()));
         }
     }
 }
