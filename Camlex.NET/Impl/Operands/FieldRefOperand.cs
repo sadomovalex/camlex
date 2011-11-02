@@ -139,10 +139,11 @@ namespace CamlexNET.Impl.Operands
             if (this.id != null)
             {
                 var mi = typeof(SPListItem).GetProperty(ReflectionHelper.Item, typeof(object), new[] { typeof(Guid) }, null).GetGetMethod();
+                var guidConstructor = typeof (Guid).GetConstructor(new[] { typeof(string) });
                 return
                     Expression.Call(
                         Expression.Parameter(typeof(SPListItem), ReflectionHelper.CommonParameterName),
-                        mi, new[] { Expression.Constant(this.id.Value) });
+                        mi, new[] { Expression.New(guidConstructor, Expression.Constant(this.id.Value.ToString())) });
             }
             else if (!string.IsNullOrEmpty(this.fieldName))
             {
