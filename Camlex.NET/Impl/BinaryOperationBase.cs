@@ -69,6 +69,11 @@ namespace CamlexNET.Impl
                 var valueOperandType = ((ConstantExpression) valueOperandExpr).Value.GetType();
                 return Expression.Convert(fieldRefOperandExpr, valueOperandType);
             }
+            else if (valueOperandExpr is NewExpression)
+            {
+                var valueOperandType = valueOperandExpr.Type;
+                return Expression.Convert(fieldRefOperandExpr, valueOperandType);
+            }
             else if (valueOperandExpr is MethodCallExpression)
             {
                 // special case for DateTimeValueOperand - we should cast left value to the DateTime only if rvalue is native
