@@ -32,7 +32,10 @@ using System.Text;
 using System.Xml.Linq;
 using CamlexNET.Impl;
 using CamlexNET.Impl.Factories;
+using CamlexNET.Impl.ReverseEngeneering;
+using CamlexNET.Impl.ReverseEngeneering.Caml.Factories;
 using CamlexNET.Interfaces;
+using CamlexNET.Interfaces.ReverseEngeneering;
 using Microsoft.SharePoint;
 
 namespace CamlexNET
@@ -41,18 +44,18 @@ namespace CamlexNET
     {
         #region DatetTime
 
-        /// <summary>Equivalent of DateTime.Now for string-based syntax</summary>
+        // Equivalent of DateTime.Now for string-based syntax
         public const string Now = "Now";
-        /// <summary>Equivalent of DateTime.Today for string-based syntax</summary>
+        // Equivalent of DateTime.Today for string-based syntax
         public const string Today = "Today";
-        /// <summary>Used only in DateRangeOverlar in string-based syntax</summary>
+        // Used only in DateRangeOverlar in string-based syntax
         public const string Week = "Week";
-        /// <summary>Used only in DateRangeOverlar in string-based syntax</summary>
+        // Used only in DateRangeOverlar in string-based syntax
         public const string Month = "Month";
-        /// <summary>Used only in DateRangeOverlar in string-based syntax</summary>
+        // Used only in DateRangeOverlar in string-based syntax
         public const string Year = "Year";
 
-        /// <summary>Function taking parameters needed for CAML's DateRangesOverlap function</summary>
+        // Function taking parameters needed for CAML's DateRangesOverlap function
         /// <param name="startField">Field containing start value of recurrent event</param>
         /// <param name="stopField">Field containing stop value of recurrent event</param>
         /// <param name="recurrenceField">Field containing recurrnec ID of recurrent event</param>
@@ -60,7 +63,7 @@ namespace CamlexNET
         /// <returns>Flag indicating whether date/time is inside ranfe</returns>
         public static bool DateRangesOverlap(object startField, object stopField, object recurrenceField, DateTime dateTime) { return false; }
 
-        /// <summary>Function taking parameters needed for CAML's DateRangesOverlap function</summary>
+        // Function taking parameters needed for CAML's DateRangesOverlap function
         /// <param name="startField">Field containing start value of recurrent event</param>
         /// <param name="stopField">Field containing stop value of recurrent event</param>
         /// <param name="recurrenceField">Field containing recurrnec ID of recurrent event</param>
@@ -72,7 +75,7 @@ namespace CamlexNET
 
         #region OrderBy functionality
 
-        /// <summary>Marker class representing ASC order direction for "OrderBy" functionality</summary>
+        // Marker class representing ASC order direction for "OrderBy" functionality
         public class OrderDirection
         {
             public static OrderDirection Default { get { return new None(); } }
@@ -87,11 +90,11 @@ namespace CamlexNET
                 return this.GetType() == Default.GetType();
             }
         }
-        /// <summary>Marker class representing absence of order direction for "OrderBy" functionality</summary>
+        // Marker class representing absence of order direction for "OrderBy" functionality
         public class None : OrderDirection { public override string ToString() { return string.Empty; } }
-        /// <summary>Marker class representing ASC order direction for "OrderBy" functionality</summary>
+        // Marker class representing ASC order direction for "OrderBy" functionality
         public class Asc : OrderDirection { public override string ToString() { return true.ToString(); } }
-        /// <summary>Marker class representing DESC order direction for "OrderBy" functionality</summary>
+        // Marker class representing DESC order direction for "OrderBy" functionality
         public class Desc : OrderDirection { public override string ToString() { return false.ToString(); } }
 
         #endregion
@@ -101,6 +104,8 @@ namespace CamlexNET
         #endregion
 
         private static ITranslatorFactory translatorFactory;
+        private static IReTranslatorFactory retranslatorFactory;
+        private static IReLinkerFactory relinkerFactory;
 
         static Camlex()
         {
@@ -109,11 +114,22 @@ namespace CamlexNET
             var operationResultBuilder = new OperationResultBuilder();
             var analyzerFactory = new AnalyzerFactory(operandBuilder, operationResultBuilder);
             translatorFactory = new TranslatorFactory(analyzerFactory);
+
+            // re
+            var reoperandBuilder = new ReOperandBuilderFromCaml();
+            var reanalyzerFactory = new ReAnalyzerFromCamlFactory(reoperandBuilder);
+            retranslatorFactory = new ReTranslatorFromCamlFactory(reanalyzerFactory);
+            relinkerFactory = new ReLinkerFromCamlFactory();
         }
 
         public static IQueryEx Query()
         {
             return new Query(translatorFactory);
+        }
+
+        public static IReQuery QueryFromString(string input)
+        {
+            return new ReQuery(retranslatorFactory, relinkerFactory, input);
         }
     }
 }

@@ -25,6 +25,7 @@
 // -----------------------------------------------------------------------------
 #endregion
 using System;
+using System.Linq.Expressions;
 using System.Xml.Linq;
 using CamlexNET.Interfaces;
 
@@ -55,6 +56,12 @@ namespace CamlexNET.Impl.Operands
             return
                 new XElement(Tags.Value, new XAttribute(Attributes.Type, this.TypeName),
                     new XText(this.Value.ToString()));
+        }
+
+        public override Expression ToExpression()
+        {
+            var guidConstructor = typeof(Guid).GetConstructor(new[] { typeof(string) });
+            return Expression.New(guidConstructor, Expression.Constant(this.Value.ToString()));
         }
     }
 }

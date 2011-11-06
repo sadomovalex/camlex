@@ -67,7 +67,6 @@ namespace CamlexNET.UnitTests.Operands
         [Test]
         public void test_THAT_datetime_value_of_now_IS_rendered_to_caml_properly()
         {
-            var dateTime = DateTime.Now;
             var operand = new DateTimeValueOperand(Camlex.Now, false);
             var caml = operand.ToCaml().ToString();
             Assert.That(caml, Is.EqualTo("<Value Type=\"DateTime\"><Now /></Value>").Using(new CamlComparer()));
@@ -76,7 +75,6 @@ namespace CamlexNET.UnitTests.Operands
         [Test]
         public void test_THAT_datetime_value_of_today_IS_rendered_to_caml_properly()
         {
-            var dateTime = DateTime.Now;
             var operand = new DateTimeValueOperand(Camlex.Today, false);
             var caml = operand.ToCaml().ToString();
             Assert.That(caml, Is.EqualTo("<Value Type=\"DateTime\"><Today /></Value>").Using(new CamlComparer()));
@@ -85,7 +83,6 @@ namespace CamlexNET.UnitTests.Operands
         [Test]
         public void test_THAT_datetime_value_of_week_IS_rendered_to_caml_properly()
         {
-            var dateTime = DateTime.Now;
             var operand = new DateTimeValueOperand(Camlex.Week, false);
             var caml = operand.ToCaml().ToString();
             Assert.That(caml, Is.EqualTo("<Value Type=\"DateTime\"><Week /></Value>").Using(new CamlComparer()));
@@ -94,7 +91,6 @@ namespace CamlexNET.UnitTests.Operands
         [Test]
         public void test_THAT_datetime_value_of_month_IS_rendered_to_caml_properly()
         {
-            var dateTime = DateTime.Now;
             var operand = new DateTimeValueOperand(Camlex.Month, false);
             var caml = operand.ToCaml().ToString();
             Assert.That(caml, Is.EqualTo("<Value Type=\"DateTime\"><Month /></Value>").Using(new CamlComparer()));
@@ -103,7 +99,6 @@ namespace CamlexNET.UnitTests.Operands
         [Test]
         public void test_THAT_datetime_value_of_year_IS_rendered_to_caml_properly()
         {
-            var dateTime = DateTime.Now;
             var operand = new DateTimeValueOperand(Camlex.Year, false);
             var caml = operand.ToCaml().ToString();
             Assert.That(caml, Is.EqualTo("<Value Type=\"DateTime\"><Year /></Value>").Using(new CamlComparer()));

@@ -24,9 +24,14 @@
 // fitness for a particular purpose and non-infringement.
 // -----------------------------------------------------------------------------
 #endregion
+
+using System;
+using System.Linq;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Xml.Linq;
 using CamlexNET.Impl.Factories;
+using CamlexNET.Impl.Operands;
 using CamlexNET.Interfaces;
 
 namespace CamlexNET.Impl.Operations.Array
@@ -34,6 +39,11 @@ namespace CamlexNET.Impl.Operations.Array
     internal class ArrayOperation : OperationBase
     {
         private readonly IOperand[] fieldRefOperands;
+
+        public int OperandsCount
+        {
+            get { return this.fieldRefOperands == null ? 0 : this.fieldRefOperands.Length; }
+        }
 
         public ArrayOperation(IOperationResultBuilder operationResultBuilder,
             params IOperand[] fieldRefOperands) :
@@ -47,6 +57,30 @@ namespace CamlexNET.Impl.Operations.Array
             var results = new List<XElement>();
             System.Array.ForEach(this.fieldRefOperands, x => results.Add(x.ToCaml()));
             return this.operationResultBuilder.CreateResult(results.ToArray());
+        }
+
+        public override Expression ToExpression()
+        {
+            if (this.fieldRefOperands == null)
+            {
+                throw new NullReferenceException("fieldRefOperands");
+            }
+            if (this.fieldRefOperands.Any(x => x == null))
+            {
+                throw new NullReferenceException("fieldRefOperand");
+            }
+            if (this.fieldRefOperands.Any(x => !(x is FieldRefOperand || x is FieldRefOperandWithOrdering)))
+            {
+                throw new ArrayOperationShouldContainOnlyFieldRefOperandsException();
+            }
+
+            // if there is only 1 field ref operand - return single expression (not array)
+            if (this.fieldRefOperands.Count() == 1)
+            {
+                return this.fieldRefOperands.First().ToExpression();
+            }
+
+            return Expression.NewArrayInit(typeof(object), this.fieldRefOperands.Select(o => o.ToExpression()));
         }
     }
 }

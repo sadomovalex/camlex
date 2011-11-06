@@ -61,7 +61,6 @@ namespace CamlexNET.Impl.Helpers
             // {
             //     throw new DifferentArgumentsNamesExceptions();
             // }
-            // todo: check that all expressions are valid
 
             Expression result;
             if (expressions.Count() == 1)
@@ -73,9 +72,8 @@ namespace CamlexNET.Impl.Helpers
                 result = joinExpressions(expressions, type);
             }
 
-            // todo: determined parameter name
             var lambda = Expression.Lambda<Func<SPListItem, bool>>(result,
-                Expression.Parameter(typeof(SPListItem), "x"));
+                Expression.Parameter(typeof(SPListItem), ReflectionHelper.CommonParameterName));
             return lambda;
         }
 
@@ -150,6 +148,29 @@ namespace CamlexNET.Impl.Helpers
             if (methodCall.Arguments.Count == 1) return methodCall.Arguments[0];
 
             throw new NonSupportedExpressionException(expression); // it should not happen - either Object or Arguments  is not NULL
+        }
+
+        public static bool IsIntegerForUserId(Expression expr)
+        {
+            if (expr.Type.FullName == typeof(DataTypes.Integer).FullName)
+            {
+                if (expr is UnaryExpression && expr.NodeType == ExpressionType.Convert)
+                {
+                    expr = ((UnaryExpression) expr).Operand;
+                    if (expr is UnaryExpression && expr.NodeType == ExpressionType.Convert)
+                    {
+                        expr = ((UnaryExpression)expr).Operand;
+                        if (expr is MemberExpression &&
+                            ((MemberExpression) expr).Member.DeclaringType.FullName ==
+                            typeof (Camlex).FullName &&
+                            ((MemberExpression) expr).Member.Name == ReflectionHelper.UserID)
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
         }
     }
 }

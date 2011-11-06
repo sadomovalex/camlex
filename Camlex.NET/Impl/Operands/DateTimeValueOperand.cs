@@ -26,7 +26,10 @@
 #endregion
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
 using System.Text;
 using System.Xml.Linq;
 
@@ -49,6 +52,11 @@ namespace CamlexNET.Impl.Operands
         }
 
         public DateTimeValueOperand(string value, bool includeTimeValue) :
+            this(value, includeTimeValue, false)
+        {
+        }
+
+        public DateTimeValueOperand(string value, bool includeTimeValue, bool parseExact) :
             base(typeof(DataTypes.DateTime), DateTime.MinValue)
         {
             IncludeTimeValue = includeTimeValue;
@@ -58,15 +66,33 @@ namespace CamlexNET.Impl.Operands
             else if (value == Camlex.Week) Mode = DateTimeValueMode.Week;
             else if (value == Camlex.Month) Mode = DateTimeValueMode.Month;
             else if (value == Camlex.Year) Mode = DateTimeValueMode.Year;
-            else if (DateTime.TryParse(value, out this.value)) Mode = DateTimeValueMode.Native;
+            else if (!parseExact && DateTime.TryParse(value, out this.value))
+            {
+                Mode = DateTimeValueMode.Native;
+            }
+            // from re value come in sortable format ("s"), so we need to use ParseExact instead of Parse
+            else if (parseExact)
+            {
+                if (!string.IsNullOrEmpty(value) && value.EndsWith("Z"))
+                {
+                    value = value.Substring(0, value.Length - 1);
+                }
+
+                if (DateTime.TryParseExact(value, "s", null, DateTimeStyles.None, out this.value))
+                {
+                    Mode = DateTimeValueMode.Native;
+                }
+                else throw new InvalidValueForOperandTypeException(value, Type);
+            }
             else throw new InvalidValueForOperandTypeException(value, Type);
         }
+
 
         public override XElement ToCaml()
         {
             object dateTime;
             if (Mode == DateTimeValueMode.Native)
-                dateTime = new XText(Value.ToString("s") + "Z");
+                dateTime = new XText(this.getStringFromDateTime(this.Value));
             else dateTime = new XElement(Mode.ToString());
             
             if (IncludeTimeValue)
@@ -79,6 +105,73 @@ namespace CamlexNET.Impl.Operands
             return new XElement(Tags.Value,
                                 new XAttribute(Attributes.Type, TypeName),
                                 dateTime);
+        }
+
+        private string getStringFromDateTime(DateTime dt)
+        {
+            return (dt.ToString("s") + "Z");
+        }
+
+        public override Expression ToExpression()
+        {
+            if (this.Mode == DateTimeValueMode.Native)
+            {
+                var expr = Expression.Constant(this.Value);
+                if (this.IncludeTimeValue)
+                {
+                    var mi =
+                        ReflectionHelper.GetExtensionMethods(typeof(Camlex).Assembly, typeof(DateTime)).FirstOrDefault(
+                            m => m.Name == ReflectionHelper.IncludeTimeValue);
+                    return Expression.Call(mi, expr);
+                }
+                else
+                {
+                    return expr;
+                }
+            }
+            else
+            {
+                var val = this.getExpressionByMode(this.Mode);
+                var expr = Expression.Convert(Expression.Convert(val, typeof(BaseFieldType)),
+                                          typeof(DataTypes.DateTime));
+                if (this.IncludeTimeValue)
+                {
+                    var mi =
+                        typeof(DataTypes.DateTime).GetMethod(ReflectionHelper.IncludeTimeValue);
+                    return Expression.Call(expr, mi);
+                }
+                else
+                {
+                    return expr;
+                }
+            }
+        }
+
+        private Expression getExpressionByMode(DateTimeValueMode mode)
+        {
+            switch (mode)
+            {
+                case DateTimeValueMode.Native:
+                    return Expression.Constant(this.Value);
+                case DateTimeValueMode.Now:
+                    return this.getExpression(Camlex.Now);
+                case DateTimeValueMode.Today:
+                    return this.getExpression(Camlex.Today);
+                case DateTimeValueMode.Week:
+                    return this.getExpression(Camlex.Week);
+                case DateTimeValueMode.Month:
+                    return this.getExpression(Camlex.Month);
+                case DateTimeValueMode.Year:
+                    return this.getExpression(Camlex.Year);
+                default:
+                    throw new DateTimeOperandModeNotSupportedException(mode);
+            }
+        }
+
+        private Expression getExpression(string name)
+        {
+            var mi = typeof (Camlex).GetMember(name)[0];
+            return Expression.MakeMemberAccess(null, mi);
         }
     }
 }
