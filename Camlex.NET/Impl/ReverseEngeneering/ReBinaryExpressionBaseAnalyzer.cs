@@ -159,8 +159,9 @@ namespace CamlexNET.Impl.ReverseEngeneering
                 }
                 //else if (valueType == typeof(DataTypes.Invalid).Name) return false; // NOT SUPPORTED
                 else if (valueType == typeof(DataTypes.Invalid).Name) {}
-                else if (valueType == typeof(DataTypes.LookupId).Name) new LookupIdValueOperand(value);
-                else if (valueType == typeof(DataTypes.LookupValue).Name) new LookupValueValueOperand(value);
+//                else if (valueType == typeof(DataTypes.LookupId).Name) new LookupIdValueOperand(value);
+//                else if (valueType == typeof(DataTypes.LookupValue).Name) new LookupValueValueOperand(value);
+                else if (valueType == typeof(DataTypes.Lookup).Name) {}
                 //else if (valueType == typeof(DataTypes.MaxItems).Name) new IntegerValueOperand(value);
                 else if (valueType == typeof(DataTypes.MaxItems).Name) {}
 //                else if (valueType == typeof(DataTypes.ModStat).Name)
