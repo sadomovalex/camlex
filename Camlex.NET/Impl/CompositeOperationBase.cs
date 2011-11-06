@@ -27,6 +27,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Xml.Linq;
 using CamlexNET.Interfaces;
@@ -44,6 +45,24 @@ namespace CamlexNET.Impl
         {
             this.leftOperation = leftOperation;
             this.rightOperation = rightOperation;
+        }
+
+        protected virtual Expression getLeftOperationExpression()
+        {
+            if (this.leftOperation == null)
+            {
+                throw new NullReferenceException("leftOperation");
+            }
+            return this.leftOperation.ToExpression();
+        }
+
+        protected virtual Expression getRightOperationExpression()
+        {
+            if (this.rightOperation == null)
+            {
+                throw new NullReferenceException("rightOperation");
+            }
+            return this.rightOperation.ToExpression();
         }
     }
 }

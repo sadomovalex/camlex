@@ -24,7 +24,12 @@
 // fitness for a particular purpose and non-infringement.
 // -----------------------------------------------------------------------------
 #endregion
+
+using System;
+using System.Linq.Expressions;
+using System.Reflection;
 using System.Xml.Linq;
+using CamlexNET.Impl.Operands;
 using CamlexNET.Interfaces;
 
 namespace CamlexNET.Impl.Operations.DateRangesOverlap
@@ -54,6 +59,53 @@ namespace CamlexNET.Impl.Operations.DateRangesOverlap
                              recurrenceFieldRefOperand.ToCaml(),
                              dateTimeOperand.ToCaml());
             return operationResultBuilder.CreateResult(result);
+        }
+
+        public override Expression ToExpression()
+        {
+            if (this.startFieldRefOperand == null)
+            {
+                throw new NullReferenceException("startFieldRefOperand");
+            }
+            if (this.stopFieldRefOperand == null)
+            {
+                throw new NullReferenceException("stopFieldRefOperand");
+            }
+            if (this.recurrenceFieldRefOperand == null)
+            {
+                throw new NullReferenceException("recurrenceFieldRefOperand");
+            }
+            if (this.dateTimeOperand == null)
+            {
+                throw new NullReferenceException("dateTimeOperand");
+            }
+            if (!(this.dateTimeOperand is DateTimeValueOperand))
+            {
+                throw new DateTimeValueOperandExpectedException();
+            }
+
+            var dt = this.dateTimeOperand as DateTimeValueOperand;
+
+            MethodInfo mi = null;
+
+            if (dt.Mode == DateTimeValueOperand.DateTimeValueMode.Native)
+            {
+                mi = typeof (Camlex).GetMethod(ReflectionHelper.DateRangesOverlap,
+                                               new[]
+                                                   {
+                                                       typeof (object), typeof (object), typeof (object), typeof (DateTime)
+                                                   });
+            }
+            else
+            {
+                mi = typeof(Camlex).GetMethod(ReflectionHelper.DateRangesOverlap,
+                                               new[]
+                                                   {
+                                                       typeof (object), typeof (object), typeof (object), typeof (DataTypes.DateTime)
+                                                   });
+            }
+            return Expression.Call(mi, this.startFieldRefOperand.ToExpression(), this.stopFieldRefOperand.ToExpression(),
+                                   this.recurrenceFieldRefOperand.ToExpression(), this.dateTimeOperand.ToExpression());
         }
     }
 }
