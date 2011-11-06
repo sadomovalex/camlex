@@ -208,22 +208,22 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers.TestBase
                 ComparisonOperationsSupport = false,
                 TextualOperationsSupport = false
             },
-            new SupportedValueType
-            {
-                SupportedType = typeof(DataTypes.LookupId),
-                ExamplesOfCorrectValue = new List<string> { 12345.ToString() },
-                ExamplesOfIncorrectValue = new List<string> { string.Empty, bool.TrueString, DateTime.Now.ToString(), Camlex.Now, Guid.NewGuid().ToString(), "foo" },
-                ComparisonOperationsSupport = true,
-                TextualOperationsSupport = false
-            },
-            new SupportedValueType
-            {
-                SupportedType = typeof(DataTypes.LookupValue),
-                ExamplesOfCorrectValue = new List<string> { string.Empty, "foo" },
-                ExamplesOfIncorrectValue = new List<string>(),
-                ComparisonOperationsSupport = false,
-                TextualOperationsSupport = false
-            },
+//            new SupportedValueType
+//            {
+//                SupportedType = typeof(DataTypes.LookupId),
+//                ExamplesOfCorrectValue = new List<string> { 12345.ToString() },
+//                ExamplesOfIncorrectValue = new List<string> { string.Empty, bool.TrueString, DateTime.Now.ToString(), Camlex.Now, Guid.NewGuid().ToString(), "foo" },
+//                ComparisonOperationsSupport = true,
+//                TextualOperationsSupport = false
+//            },
+//            new SupportedValueType
+//            {
+//                SupportedType = typeof(DataTypes.LookupValue),
+//                ExamplesOfCorrectValue = new List<string> { string.Empty, "foo" },
+//                ExamplesOfIncorrectValue = new List<string>(),
+//                ComparisonOperationsSupport = false,
+//                TextualOperationsSupport = false
+//            },
             new SupportedValueType
             {
                 SupportedType = typeof(DataTypes.MaxItems),
