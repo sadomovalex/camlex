@@ -73,7 +73,9 @@ namespace CamlexNET.Impl.Factories
 
         private IOperand createFieldRefOperandFromConstantExpression(ConstantExpression expr, IOperand valueOperand)
         {
-            var val = expr.Value as string;
+            // it is possible to create constant expression also of Guid type. See Query.ViewFields(IEnumerable<Guid> ids)
+            //var val = expr.Value as string;
+            var val = expr.Value != null ? expr.Value.ToString() : null;
             return this.createFieldRefOperandByNameOrId(val, valueOperand);
         }
 
