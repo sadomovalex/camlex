@@ -161,6 +161,48 @@ namespace CamlexNET.Impl
             return viewFields.ToString();
         }
 
+        public string ViewFields(IEnumerable<string> titles)
+        {
+            return this.ViewFields(titles, false);
+        }
+
+        public string ViewFields(IEnumerable<string> titles, bool includeViewFieldsTag)
+        {
+            if (titles == null || titles.Any(t => t == null))
+            {
+                throw new ArgumentNullException();
+            }
+
+            return this.ViewFields(this.createExpressionFromArray(titles), includeViewFieldsTag);
+        }
+
+        private Expression<Func<SPListItem, object[]>> createExpressionFromArray<T>(IEnumerable<T> items)
+        {
+            return Expression.Lambda<Func<SPListItem, object[]>>(
+                Expression.NewArrayInit(
+                    typeof(object),
+                    (IEnumerable<Expression>)items.Select(
+                        t => Expression.Call(Expression.Parameter(typeof(SPListItem), ReflectionHelper.CommonParameterName),
+                                             typeof(SPListItem).GetMethod(ReflectionHelper.IndexerMethodName, new[] { typeof(T) }),
+                                             new[] { Expression.Constant(t) })).ToArray()),
+                Expression.Parameter(typeof(SPListItem), ReflectionHelper.CommonParameterName));
+        }
+
+        public string ViewFields(IEnumerable<Guid> ids)
+        {
+            return this.ViewFields(ids, false);
+        }
+
+        public string ViewFields(IEnumerable<Guid> ids, bool includeViewFieldsTag)
+        {
+            if (ids == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            return this.ViewFields(this.createExpressionFromArray(ids), includeViewFieldsTag);
+        }
+
         public IQuery GroupBy(Expression<Func<SPListItem, object>> expr, int? groupLimit)
         {
             var lambda = Expression.Lambda<Func<SPListItem, object[]>>(
