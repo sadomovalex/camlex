@@ -32,6 +32,7 @@ using System.Text;
 using System.Xml.Linq;
 using CamlexNET.Impl.Helpers;
 using CamlexNET.Interfaces;
+using CamlexNET.Interfaces.ReverseEngeneering;
 using Microsoft.SharePoint;
 
 namespace CamlexNET.Impl
@@ -39,13 +40,15 @@ namespace CamlexNET.Impl
     internal class Query : IQueryEx
     {
         private readonly ITranslatorFactory translatorFactory;
+        private readonly IReTranslatorFactory reTranslatorFactory;
         private XElement where;
         private XElement orderBy;
         private XElement groupBy;
 
-        public Query(ITranslatorFactory translatorFactory)
+        public Query(ITranslatorFactory translatorFactory, IReTranslatorFactory reTranslatorFactory)
         {
             this.translatorFactory = translatorFactory;
+            this.reTranslatorFactory = reTranslatorFactory;
         }
 
         public IQuery Where(Expression<Func<SPListItem, bool>> expr)
@@ -59,6 +62,30 @@ namespace CamlexNET.Impl
         {
             var combinedExpression = ExpressionsHelper.CombineAnd(expressions);
             return this.Where(combinedExpression);
+        }
+
+        public IQuery WhereAll(string existingQuery, Expression<Func<SPListItem, bool>> expression)
+        {
+            return this.WhereAll(existingQuery, new List<Expression<Func<SPListItem, bool>>>(new[] { expression }));
+        }
+
+        public IQuery WhereAll(string existingQuery, IEnumerable<Expression<Func<SPListItem, bool>>> expressions)
+        {
+            if (!string.IsNullOrEmpty(existingQuery) && !existingQuery.StartsWith(string.Format("<{0}>", Tags.Query)))
+            {
+                // re expects Query tag
+                existingQuery = string.Format("<{0}>{1}</{0}>", Tags.Query, existingQuery);
+            }
+
+            var translator = this.reTranslatorFactory.Create(existingQuery);
+            var where = translator.TranslateWhere() as Expression<Func<SPListItem, bool>>;
+            if (where == null)
+            {
+                throw new Exception("Existing string query can not be translated to expression");
+            }
+            var exprs = new List<Expression<Func<SPListItem, bool>>>(expressions);
+            exprs.Add(where);
+            return this.WhereAll(exprs);
         }
 
         public IQuery WhereAny(IEnumerable<Expression<Func<SPListItem, bool>>> expressions)

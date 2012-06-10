@@ -38,6 +38,8 @@ namespace CamlexNET.Interfaces
     {
         IQuery Where(Expression<Func<SPListItem, bool>> expr);
         IQuery WhereAll(IEnumerable<Expression<Func<SPListItem, bool>>> expressions);
+        IQuery WhereAll(string existingQuery, Expression<Func<SPListItem, bool>> expression);
+        IQuery WhereAll(string existingQuery, IEnumerable<Expression<Func<SPListItem, bool>>> expressions);
         IQuery WhereAny(IEnumerable<Expression<Func<SPListItem, bool>>> expressions);
         IQuery OrderBy(Expression<Func<SPListItem, object>> expr);
         IQuery OrderBy(Expression<Func<SPListItem, object[]>> expr);
