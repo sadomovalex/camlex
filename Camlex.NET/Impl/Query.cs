@@ -214,8 +214,7 @@ namespace CamlexNET.Impl
 
         public IQuery GroupBy(Expression<Func<SPListItem, object>> expr)
         {
-            var lambda = Expression.Lambda<Func<SPListItem, object[]>>(
-                Expression.NewArrayInit(typeof(object), expr.Body), expr.Parameters);
+            var lambda = this.createArrayExpression(expr);
             return GroupBy(lambda, null, null);
         }
 
@@ -228,15 +227,13 @@ namespace CamlexNET.Impl
 
         public IQuery GroupBy(Expression<Func<SPListItem, object>> expr, bool? collapse, int? groupLimit)
         {
-            var lambda = Expression.Lambda<Func<SPListItem, object[]>>(
-                Expression.NewArrayInit(typeof(object), expr.Body), expr.Parameters);
+            var lambda = this.createArrayExpression(expr);
             return GroupBy(lambda, collapse, groupLimit);
         }
 
         public IQuery GroupBy(Expression<Func<SPListItem, object>> expr, bool? collapse)
         {
-            var lambda = Expression.Lambda<Func<SPListItem, object[]>>(
-                Expression.NewArrayInit(typeof(object), expr.Body), expr.Parameters);
+            var lambda = this.createArrayExpression(expr);
             return GroupBy(lambda, collapse, null);
         }
 
@@ -247,8 +244,7 @@ namespace CamlexNET.Impl
 
         public string ViewFields(Expression<Func<SPListItem, object>> expr, bool includeViewFieldsTag)
         {
-            var lambda = Expression.Lambda<Func<SPListItem, object[]>>(
-                Expression.NewArrayInit(typeof(object), expr.Body), expr.Parameters);
+            var lambda = this.createArrayExpression(expr);
             return ViewFields(lambda, includeViewFieldsTag);
         }
 
@@ -318,8 +314,7 @@ namespace CamlexNET.Impl
 
         public IQuery GroupBy(Expression<Func<SPListItem, object>> expr, int? groupLimit)
         {
-            var lambda = Expression.Lambda<Func<SPListItem, object[]>>(
-                Expression.NewArrayInit(typeof(object), expr.Body), expr.Parameters);
+            var lambda = this.createArrayExpression(expr);
             return GroupBy(lambda, null, groupLimit);
         }
 
