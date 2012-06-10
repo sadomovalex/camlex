@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using CamlexNET.UnitTests.Helpers;
+using Microsoft.SharePoint;
 using NUnit.Framework;
 
 namespace CamlexNET.UnitTests.ReverseEngeneering
@@ -205,7 +207,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
         }
 
         [Test]
-        public void test_THAT_single_order_by_IS_mixed_sucessfully()
+        public void test_THAT_single_order_by_IS_mixed_with_single_orderby_sucessfully()
         {
             string existingQuery =
                 "  <OrderBy>" +
@@ -219,6 +221,71 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
                 "</OrderBy>";
 
             var query = Camlex.Query().OrderBy(existingQuery, x => x["Title"]).ToString();
+            Assert.That(query, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        [Test]
+        public void test_THAT_single_order_by_IS_mixed_with_several_orderby_sucessfully()
+        {
+            string existingQuery =
+                "  <OrderBy>" +
+                "    <FieldRef Name=\"Modified\" Ascending=\"False\" />" +
+                "  </OrderBy>";
+
+            string expected =
+                "<OrderBy>" +
+                "  <FieldRef Name=\"Modified\" Ascending=\"False\" />" +
+                "  <FieldRef Name=\"Title\" />" +
+                "  <FieldRef Name=\"State\" Ascending=\"True\" />" +
+                "</OrderBy>";
+
+            var query = Camlex.Query().OrderBy(existingQuery, x => new[]{x["Title"], x["State"] as Camlex.Asc}).ToString();
+            Assert.That(query, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        [Test]
+        public void test_THAT_several_order_by_IS_mixed_with_several_orderby_sucessfully()
+        {
+            string existingQuery =
+                "  <OrderBy>" +
+                "    <FieldRef Name=\"Modified\" Ascending=\"False\" />" +
+                "    <FieldRef Name=\"ModifiedBy\" />" +
+                "  </OrderBy>";
+
+            string expected =
+                "<OrderBy>" +
+                "  <FieldRef Name=\"Modified\" Ascending=\"False\" />" +
+                "  <FieldRef Name=\"ModifiedBy\" />" +
+                "  <FieldRef Name=\"Title\" />" +
+                "  <FieldRef Name=\"State\" Ascending=\"True\" />" +
+                "</OrderBy>";
+
+            var query = Camlex.Query().OrderBy(existingQuery, x => new[] { x["Title"], x["State"] as Camlex.Asc }).ToString();
+            Assert.That(query, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        [Test]
+        public void test_THAT_order_by_collection_IS_mixed_with_several_orderby_sucessfully()
+        {
+            string existingQuery =
+                "  <OrderBy>" +
+                "    <FieldRef Name=\"Modified\" Ascending=\"False\" />" +
+                "    <FieldRef Name=\"ModifiedBy\" />" +
+                "  </OrderBy>";
+
+            string expected =
+                "<OrderBy>" +
+                "  <FieldRef Name=\"Modified\" Ascending=\"False\" />" +
+                "  <FieldRef Name=\"ModifiedBy\" />" +
+                "  <FieldRef Name=\"Title\" />" +
+                "  <FieldRef Name=\"State\" Ascending=\"True\" />" +
+                "</OrderBy>";
+
+            var exprs = new List<Expression<Func<SPListItem, object>>>();
+            exprs.Add(x => x["Title"]);
+            exprs.Add(x => x["State"] as Camlex.Asc);
+
+            var query = Camlex.Query().OrderBy(existingQuery, exprs).ToString();
             Assert.That(query, Is.EqualTo(expected).Using(new CamlComparer()));
         }
     }
