@@ -124,7 +124,7 @@ namespace CamlexNET
 
         public static IQueryEx Query()
         {
-            return new Query(translatorFactory);
+            return new Query(translatorFactory, retranslatorFactory);
         }
 
         public static IReQuery QueryFromString(string input)
