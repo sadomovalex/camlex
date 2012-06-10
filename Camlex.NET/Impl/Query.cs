@@ -64,34 +64,58 @@ namespace CamlexNET.Impl
             return this.Where(combinedExpression);
         }
 
-        public IQuery WhereAll(string existingQuery, Expression<Func<SPListItem, bool>> expression)
+        public IQuery WhereAll(string existingWhere, Expression<Func<SPListItem, bool>> expression)
         {
-            return this.WhereAll(existingQuery, new List<Expression<Func<SPListItem, bool>>>(new[] { expression }));
+            return this.WhereAll(existingWhere, new List<Expression<Func<SPListItem, bool>>>(new[] { expression }));
         }
 
-        public IQuery WhereAll(string existingQuery, IEnumerable<Expression<Func<SPListItem, bool>>> expressions)
+        public IQuery WhereAll(string existingWhere, IEnumerable<Expression<Func<SPListItem, bool>>> expressions)
         {
-            var where = this.getWhereExpressionFromString(existingQuery);
+            var where = this.getWhereExpressionFromString(existingWhere);
             var exprs = new List<Expression<Func<SPListItem, bool>>>(expressions);
             exprs.Add(where);
             return this.WhereAll(exprs);
         }
 
-        private Expression<Func<SPListItem, bool>> getWhereExpressionFromString(string existingQuery)
+        private Expression<Func<SPListItem, bool>> getWhereExpressionFromString(string existingWhere)
         {
-            if (!string.IsNullOrEmpty(existingQuery) && !existingQuery.StartsWith(string.Format("<{0}>", Tags.Query)))
-            {
-                // re expects Query tag
-                existingQuery = string.Format("<{0}>{1}</{0}>", Tags.Query, existingQuery);
-            }
+            existingWhere = this.ensureParentQueryTag(existingWhere);
 
-            var translator = this.reTranslatorFactory.Create(existingQuery);
-            var where = translator.TranslateWhere() as Expression<Func<SPListItem, bool>>;
-            if (where == null)
+            var translator = this.reTranslatorFactory.Create(existingWhere);
+            var expr = translator.TranslateWhere() as Expression<Func<SPListItem, bool>>;
+            if (expr == null)
             {
                 throw new IncorrectCamlException(Tags.Where);
             }
-            return where;
+            return expr;
+        }
+
+        private string ensureParentQueryTag(string xml)
+        {
+            if (!string.IsNullOrEmpty(xml) && !xml.StartsWith(string.Format("<{0}>", Tags.Query)))
+            {
+                // re expects Query tag
+                xml = string.Format("<{0}>{1}</{0}>", Tags.Query, xml);
+            }
+            return xml;
+        }
+
+        private Expression<Func<SPListItem, object[]>> getOrderByExpressionFromString(string existingOrderBy)
+        {
+            existingOrderBy = this.ensureParentQueryTag(existingOrderBy);
+
+            var translator = this.reTranslatorFactory.Create(existingOrderBy);
+            var expr = translator.TranslateOrderBy() as Expression<Func<SPListItem, object[]>>;
+            if (expr == null)
+            {
+                var singleExpr = translator.TranslateOrderBy() as Expression<Func<SPListItem, object>>;
+                if (singleExpr == null)
+                {
+                    throw new IncorrectCamlException(Tags.OrderBy);
+                }
+                expr = this.createArrayExpression(singleExpr);
+            }
+            return expr;
         }
 
         public IQuery WhereAny(IEnumerable<Expression<Func<SPListItem, bool>>> expressions)
@@ -100,23 +124,22 @@ namespace CamlexNET.Impl
             return this.Where(combinedExpression);
         }
 
-        public IQuery WhereAny(string existingQuery, Expression<Func<SPListItem, bool>> expression)
+        public IQuery WhereAny(string existingWhere, Expression<Func<SPListItem, bool>> expression)
         {
-            return this.WhereAny(existingQuery, new List<Expression<Func<SPListItem, bool>>>(new[] { expression }));
+            return this.WhereAny(existingWhere, new List<Expression<Func<SPListItem, bool>>>(new[] { expression }));
         }
 
-        public IQuery WhereAny(string existingQuery, IEnumerable<Expression<Func<SPListItem, bool>>> expressions)
+        public IQuery WhereAny(string existingWhere, IEnumerable<Expression<Func<SPListItem, bool>>> expressions)
         {
-            var where = this.getWhereExpressionFromString(existingQuery);
+            var whereExpr = this.getWhereExpressionFromString(existingWhere);
             var exprs = new List<Expression<Func<SPListItem, bool>>>(expressions);
-            exprs.Add(where);
+            exprs.Add(whereExpr);
             return this.WhereAny(exprs);
         }
 
         public IQuery OrderBy(Expression<Func<SPListItem, object>> expr)
         {
-            var lambda = Expression.Lambda<Func<SPListItem, object[]>>(
-                Expression.NewArrayInit(typeof(object), expr.Body), expr.Parameters);
+            var lambda = createArrayExpression(expr);
             return OrderBy(lambda);
         }
 
@@ -134,15 +157,59 @@ namespace CamlexNET.Impl
                 throw new EmptyExpressionsListException();
             }
 
+            var lambda = createArrayExpression(expressions);
+            return OrderBy(lambda);
+        }
+
+        public IQuery OrderBy(string existingOrderBy, Expression<Func<SPListItem, object>> expr)
+        {
+            var newExpr = this.createArrayExpression(expr);
+            return this.OrderBy(existingOrderBy, newExpr);
+        }
+
+        public IQuery OrderBy(string existingOrderBy, Expression<Func<SPListItem, object[]>> expr)
+        {
+            var existingExpr = this.getOrderByExpressionFromString(existingOrderBy);
+            var exprs = new List<Expression<Func<SPListItem, object[]>>>(new[] { existingExpr, expr });
+            var resultExpr = this.createArrayExpression(exprs);
+            return OrderBy(resultExpr);
+        }
+
+        public IQuery OrderBy(string existingOrderBy, IEnumerable<Expression<Func<SPListItem, object>>> expressions)
+        {
+            var newExpr = this.createArrayExpression(expressions);
+            return this.OrderBy(existingOrderBy, newExpr);
+        }
+
+        private Expression<Func<SPListItem, object[]>> createArrayExpression(IEnumerable<Expression<Func<SPListItem, object>>> expressions)
+        {
             var expr = expressions.FirstOrDefault();
             if (expr == null)
             {
                 throw new EmptyExpressionsListException();
             }
 
-            var lambda = Expression.Lambda<Func<SPListItem, object[]>>(
+            return Expression.Lambda<Func<SPListItem, object[]>>(
                 Expression.NewArrayInit(typeof(object), expressions.Select(e => e.Body)), expr.Parameters);
-            return OrderBy(lambda);
+        }
+
+        private Expression<Func<SPListItem, object[]>> createArrayExpression(IEnumerable<Expression<Func<SPListItem, object[]>>> expressions)
+        {
+            var expr = expressions.FirstOrDefault();
+            if (expr == null)
+            {
+                throw new EmptyExpressionsListException();
+            }
+
+            var list = expressions.SelectMany(e => ((NewArrayExpression)e.Body).Expressions);
+
+            return Expression.Lambda<Func<SPListItem, object[]>>(
+                Expression.NewArrayInit(typeof(object), list), expr.Parameters);
+        }
+
+        private Expression<Func<SPListItem, object[]>> createArrayExpression(Expression<Func<SPListItem, object>> expr)
+        {
+            return Expression.Lambda<Func<SPListItem, object[]>>(Expression.NewArrayInit(typeof(object), expr.Body), expr.Parameters);
         }
 
         public IQuery GroupBy(Expression<Func<SPListItem, object>> expr)

@@ -203,5 +203,23 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
                 "</Query>";
             var query = Camlex.Query().WhereAll(existingQuery, x => (string) x["Title"] == "foo").ToString();
         }
+
+        [Test]
+        public void test_THAT_single_order_by_IS_mixed_sucessfully()
+        {
+            string existingQuery =
+                "  <OrderBy>" +
+                "    <FieldRef Name=\"Modified\" Ascending=\"False\" />" +
+                "  </OrderBy>";
+
+            string expected =
+                "<OrderBy>" +
+                "  <FieldRef Name=\"Modified\" Ascending=\"False\" />" +
+                "  <FieldRef Name=\"Title\" />" +
+                "</OrderBy>";
+
+            var query = Camlex.Query().OrderBy(existingQuery, x => x["Title"]).ToString();
+            Assert.That(query, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
     }
 }
