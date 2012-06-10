@@ -207,7 +207,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
         }
 
         [Test]
-        public void test_THAT_single_order_by_IS_mixed_with_single_orderby_sucessfully()
+        public void test_THAT_single_order_by_IS_mixed_with_single_order_by_sucessfully()
         {
             string existingQuery =
                 "  <OrderBy>" +
@@ -225,7 +225,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
         }
 
         [Test]
-        public void test_THAT_single_order_by_IS_mixed_with_several_orderby_sucessfully()
+        public void test_THAT_single_order_by_IS_mixed_with_several_order_by_sucessfully()
         {
             string existingQuery =
                 "  <OrderBy>" +
@@ -244,7 +244,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
         }
 
         [Test]
-        public void test_THAT_several_order_by_IS_mixed_with_several_orderby_sucessfully()
+        public void test_THAT_several_order_by_IS_mixed_with_several_order_by_sucessfully()
         {
             string existingQuery =
                 "  <OrderBy>" +
@@ -265,7 +265,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
         }
 
         [Test]
-        public void test_THAT_order_by_collection_IS_mixed_with_several_orderby_sucessfully()
+        public void test_THAT_order_by_collection_IS_mixed_with_several_order_by_sucessfully()
         {
             string existingQuery =
                 "  <OrderBy>" +
@@ -287,6 +287,117 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
 
             var query = Camlex.Query().OrderBy(existingQuery, exprs).ToString();
             Assert.That(query, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        [Test]
+        [ExpectedException(typeof(IncorrectCamlException))]
+        public void test_WHEN_order_by_is_not_provided_THEN_exception_is_thrown()
+        {
+            string existingQuery =
+                "   <Where>" +
+                "       <Eq>" +
+                "           <FieldRef Name=\"Title\" />" +
+                "           <Value Type=\"Text\">testValue</Value>" +
+                "       </Eq>" +
+                "   </Where>";
+            var query = Camlex.Query().OrderBy(existingQuery, x => x["Title"]).ToString();
+        }
+
+        [Test]
+        public void test_THAT_single_group_by_IS_mixed_with_single_group_by_sucessfully()
+        {
+            string existingQuery =
+                "  <GroupBy>" +
+                "    <FieldRef Name=\"Modified\" />" +
+                "  </GroupBy>";
+
+            string expected =
+                "<GroupBy>" +
+                "  <FieldRef Name=\"Modified\" />" +
+                "  <FieldRef Name=\"Title\" />" +
+                "</GroupBy>";
+
+            var query = Camlex.Query().GroupBy(existingQuery, x => x["Title"]).ToString();
+            Assert.That(query, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        [Test]
+        public void test_THAT_single_group_by_IS_mixed_with_several_group_by_sucessfully()
+        {
+            string existingQuery =
+                "  <GroupBy>" +
+                "    <FieldRef Name=\"Modified\" />" +
+                "  </GroupBy>";
+
+            string expected =
+                "<GroupBy>" +
+                "  <FieldRef Name=\"Modified\" />" +
+                "  <FieldRef Name=\"Title\" />" +
+                "  <FieldRef Name=\"State\" />" +
+                "</GroupBy>";
+
+            var query = Camlex.Query().GroupBy(existingQuery, x => new[] { x["Title"], x["State"] }).ToString();
+            Assert.That(query, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        [Test]
+        public void test_THAT_several_group_by_IS_mixed_with_several_group_by_sucessfully()
+        {
+            string existingQuery =
+                "  <GroupBy>" +
+                "    <FieldRef Name=\"Modified\" />" +
+                "    <FieldRef Name=\"ModifiedBy\" />" +
+                "  </GroupBy>";
+
+            string expected =
+                "<GroupBy Collapse=\"True\" GroupLimit=\"10\">" +
+                "  <FieldRef Name=\"Modified\" />" +
+                "  <FieldRef Name=\"ModifiedBy\" />" +
+                "  <FieldRef Name=\"Title\" />" +
+                "  <FieldRef Name=\"State\" />" +
+                "</GroupBy>";
+
+            var query = Camlex.Query().GroupBy(existingQuery, x => new[] { x["Title"], x["State"] }, true, 10).ToString();
+            Assert.That(query, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+//        [Test]
+//        public void test_THAT_group_by_collection_IS_mixed_with_several_group_by_sucessfully()
+//        {
+//            string existingQuery =
+//                "  <GroupBy>" +
+//                "    <FieldRef Name=\"Modified\" Ascending=\"False\" />" +
+//                "    <FieldRef Name=\"ModifiedBy\" />" +
+//                "  </GroupBy>";
+//
+//            string expected =
+//                "<GroupBy>" +
+//                "  <FieldRef Name=\"Modified\" Ascending=\"False\" />" +
+//                "  <FieldRef Name=\"ModifiedBy\" />" +
+//                "  <FieldRef Name=\"Title\" />" +
+//                "  <FieldRef Name=\"State\" Ascending=\"True\" />" +
+//                "</GroupBy>";
+//
+//            var exprs = new List<Expression<Func<SPListItem, object>>>();
+//            exprs.Add(x => x["Title"]);
+//            exprs.Add(x => x["State"] as Camlex.Asc);
+//
+//            var query = Camlex.Query().GroupBy(existingQuery, exprs).ToString();
+//            Assert.That(query, Is.EqualTo(expected).Using(new CamlComparer()));
+//        }
+
+        [Test]
+        [ExpectedException(typeof(IncorrectCamlException))]
+        public void test_WHEN_group_by_is_not_provided_THEN_exception_is_thrown()
+        {
+            string existingQuery =
+                "   <Where>" +
+                "       <Eq>" +
+                "           <FieldRef Name=\"Title\" />" +
+                "           <Value Type=\"Text\">testValue</Value>" +
+                "       </Eq>" +
+                "   </Where>";
+            var query = Camlex.Query().GroupBy(existingQuery, x => x["Title"]).ToString();
         }
     }
 }

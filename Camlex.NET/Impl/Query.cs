@@ -105,15 +105,35 @@ namespace CamlexNET.Impl
             existingOrderBy = this.ensureParentQueryTag(existingOrderBy);
 
             var translator = this.reTranslatorFactory.Create(existingOrderBy);
-            var expr = translator.TranslateOrderBy() as Expression<Func<SPListItem, object[]>>;
+            var orderByExpr = translator.TranslateOrderBy();
+            var expr = orderByExpr as Expression<Func<SPListItem, object[]>>;
             if (expr == null)
             {
-                var singleExpr = translator.TranslateOrderBy() as Expression<Func<SPListItem, object>>;
+                var singleExpr = orderByExpr as Expression<Func<SPListItem, object>>;
                 if (singleExpr == null)
                 {
                     throw new IncorrectCamlException(Tags.OrderBy);
                 }
                 expr = this.createArrayExpression(singleExpr);
+            }
+            return expr;
+        }
+
+        private Expression<Func<SPListItem, object[]>> getGroupByExpressionFromString(string existingGroupBy)
+        {
+            existingGroupBy = this.ensureParentQueryTag(existingGroupBy);
+
+            var translator = this.reTranslatorFactory.Create(existingGroupBy);
+            var orderByExpr = translator.TranslateGroupBy();
+            var expr = orderByExpr as Expression<Func<SPListItem, object[]>>;
+            if (expr == null)
+            {
+                var singleExpr = orderByExpr as Expression<Func<SPListItem, object>>;
+                if (singleExpr == null)
+                {
+                    throw new IncorrectCamlException(Tags.GroupBy);
+                }
+                expr = this.ensureArrayExpression(singleExpr);
             }
             return expr;
         }
@@ -207,6 +227,20 @@ namespace CamlexNET.Impl
                 Expression.NewArrayInit(typeof(object), list), expr.Parameters);
         }
 
+        private Expression<Func<SPListItem, object[]>> ensureArrayExpression(Expression<Func<SPListItem, object>> expr)
+        {
+            Expression<Func<SPListItem, object[]>> lambda = null;
+            if (expr.Body.Type != typeof(object[]))
+            {
+                lambda = this.createArrayExpression(expr);
+            }
+            else
+            {
+                lambda = Expression.Lambda<Func<SPListItem, object[]>>(Expression.NewArrayInit(typeof(object), ((NewArrayExpression)expr.Body).Expressions), expr.Parameters);
+            }
+            return lambda;
+        }
+
         private Expression<Func<SPListItem, object[]>> createArrayExpression(Expression<Func<SPListItem, object>> expr)
         {
             return Expression.Lambda<Func<SPListItem, object[]>>(Expression.NewArrayInit(typeof(object), expr.Body), expr.Parameters);
@@ -235,6 +269,49 @@ namespace CamlexNET.Impl
         {
             var lambda = this.createArrayExpression(expr);
             return GroupBy(lambda, collapse, null);
+        }
+
+        public IQuery GroupBy(Expression<Func<SPListItem, object>> expr, int? groupLimit)
+        {
+            var lambda = this.createArrayExpression(expr);
+            return GroupBy(lambda, null, groupLimit);
+        }
+
+        public IQuery GroupBy(string existingGroupBy, Expression<Func<SPListItem, object>> expr)
+        {
+            var lambda = this.ensureArrayExpression(expr);
+            return GroupBy(existingGroupBy, lambda, null, null);
+        }
+
+        public IQuery GroupBy(string existingGroupBy, Expression<Func<SPListItem, object[]>> expr, bool? collapse, int? groupLimit)
+        {
+            var existingExpr = this.getGroupByExpressionFromString(existingGroupBy);
+            var exprs = new List<Expression<Func<SPListItem, object[]>>>(new[] { existingExpr, expr });
+            var resultExpr = this.createArrayExpression(exprs);
+            return this.GroupBy(resultExpr, collapse, groupLimit);
+        }
+
+        public IQuery GroupBy(string existingGroupBy, Expression<Func<SPListItem, object>> expr, bool? collapse, int? groupLimit)
+        {
+            var lambda = this.ensureArrayExpression(expr);
+            return GroupBy(existingGroupBy, lambda, collapse, groupLimit);
+        }
+
+        public IQuery GroupBy(string existingGroupBy, Expression<Func<SPListItem, object>> expr, bool? collapse)
+        {
+            var lambda = this.ensureArrayExpression(expr);
+            return GroupBy(existingGroupBy, lambda, collapse, null);
+        }
+
+        public IQuery GroupBy(string existingGroupBy, Expression<Func<SPListItem, object>> expr, int? groupLimit)
+        {
+            var lambda = ((Expression)expr) as Expression<Func<SPListItem, object[]>>;
+            if (lambda == null)
+            {
+                lambda = this.createArrayExpression(expr);
+            }
+
+            return GroupBy(existingGroupBy, lambda, null, groupLimit);
         }
 
         public string ViewFields(Expression<Func<SPListItem, object>> expr)
@@ -310,12 +387,6 @@ namespace CamlexNET.Impl
             }
 
             return this.ViewFields(this.createExpressionFromArray(ids), includeViewFieldsTag);
-        }
-
-        public IQuery GroupBy(Expression<Func<SPListItem, object>> expr, int? groupLimit)
-        {
-            var lambda = this.createArrayExpression(expr);
-            return GroupBy(lambda, null, groupLimit);
         }
 
         public XElement[] ToCaml(bool includeQueryTag)
