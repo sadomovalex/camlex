@@ -41,6 +41,8 @@ namespace CamlexNET.Interfaces
         IQuery WhereAll(string existingQuery, Expression<Func<SPListItem, bool>> expression);
         IQuery WhereAll(string existingQuery, IEnumerable<Expression<Func<SPListItem, bool>>> expressions);
         IQuery WhereAny(IEnumerable<Expression<Func<SPListItem, bool>>> expressions);
+        IQuery WhereAny(string existingQuery, Expression<Func<SPListItem, bool>> expression);
+        IQuery WhereAny(string existingQuery, IEnumerable<Expression<Func<SPListItem, bool>>> expressions);
         IQuery OrderBy(Expression<Func<SPListItem, object>> expr);
         IQuery OrderBy(Expression<Func<SPListItem, object[]>> expr);
         IQuery OrderBy(IEnumerable<Expression<Func<SPListItem, object>>> expressions);
