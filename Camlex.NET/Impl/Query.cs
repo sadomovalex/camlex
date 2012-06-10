@@ -71,6 +71,14 @@ namespace CamlexNET.Impl
 
         public IQuery WhereAll(string existingQuery, IEnumerable<Expression<Func<SPListItem, bool>>> expressions)
         {
+            var where = this.getExpressionFromString(existingQuery);
+            var exprs = new List<Expression<Func<SPListItem, bool>>>(expressions);
+            exprs.Add(where);
+            return this.WhereAll(exprs);
+        }
+
+        private Expression<Func<SPListItem, bool>> getExpressionFromString(string existingQuery)
+        {
             if (!string.IsNullOrEmpty(existingQuery) && !existingQuery.StartsWith(string.Format("<{0}>", Tags.Query)))
             {
                 // re expects Query tag
@@ -83,15 +91,26 @@ namespace CamlexNET.Impl
             {
                 throw new Exception("Existing string query can not be translated to expression");
             }
-            var exprs = new List<Expression<Func<SPListItem, bool>>>(expressions);
-            exprs.Add(where);
-            return this.WhereAll(exprs);
+            return where;
         }
 
         public IQuery WhereAny(IEnumerable<Expression<Func<SPListItem, bool>>> expressions)
         {
             var combinedExpression = ExpressionsHelper.CombineOr(expressions);
             return this.Where(combinedExpression);
+        }
+
+        public IQuery WhereAny(string existingQuery, Expression<Func<SPListItem, bool>> expression)
+        {
+            return this.WhereAny(existingQuery, new List<Expression<Func<SPListItem, bool>>>(new[] { expression }));
+        }
+
+        public IQuery WhereAny(string existingQuery, IEnumerable<Expression<Func<SPListItem, bool>>> expressions)
+        {
+            var where = this.getExpressionFromString(existingQuery);
+            var exprs = new List<Expression<Func<SPListItem, bool>>>(expressions);
+            exprs.Add(where);
+            return this.WhereAny(exprs);
         }
 
         public IQuery OrderBy(Expression<Func<SPListItem, object>> expr)
