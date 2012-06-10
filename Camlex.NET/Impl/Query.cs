@@ -71,13 +71,13 @@ namespace CamlexNET.Impl
 
         public IQuery WhereAll(string existingQuery, IEnumerable<Expression<Func<SPListItem, bool>>> expressions)
         {
-            var where = this.getExpressionFromString(existingQuery);
+            var where = this.getWhereExpressionFromString(existingQuery);
             var exprs = new List<Expression<Func<SPListItem, bool>>>(expressions);
             exprs.Add(where);
             return this.WhereAll(exprs);
         }
 
-        private Expression<Func<SPListItem, bool>> getExpressionFromString(string existingQuery)
+        private Expression<Func<SPListItem, bool>> getWhereExpressionFromString(string existingQuery)
         {
             if (!string.IsNullOrEmpty(existingQuery) && !existingQuery.StartsWith(string.Format("<{0}>", Tags.Query)))
             {
@@ -89,7 +89,7 @@ namespace CamlexNET.Impl
             var where = translator.TranslateWhere() as Expression<Func<SPListItem, bool>>;
             if (where == null)
             {
-                throw new Exception("Existing string query can not be translated to expression");
+                throw new IncorrectCamlException(Tags.Where);
             }
             return where;
         }
@@ -107,7 +107,7 @@ namespace CamlexNET.Impl
 
         public IQuery WhereAny(string existingQuery, IEnumerable<Expression<Func<SPListItem, bool>>> expressions)
         {
-            var where = this.getExpressionFromString(existingQuery);
+            var where = this.getWhereExpressionFromString(existingQuery);
             var exprs = new List<Expression<Func<SPListItem, bool>>>(expressions);
             exprs.Add(where);
             return this.WhereAny(exprs);
