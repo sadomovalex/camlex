@@ -29,11 +29,19 @@ using System.Linq.Expressions;
 
 namespace CamlexNET.Interfaces.ReverseEngeneering
 {
+    internal struct GroupByParams
+    {
+        public bool HasGroupLimit;
+        public bool HasCollapse;
+        public bool Collapse;
+        public int GroupLimit;
+    }
+
     internal interface IReTranslator
     {
         LambdaExpression TranslateWhere();
         LambdaExpression TranslateOrderBy();
-        LambdaExpression TranslateGroupBy();
+        LambdaExpression TranslateGroupBy(out GroupByParams groupByParams);
         LambdaExpression TranslateViewFields();
     }
 }

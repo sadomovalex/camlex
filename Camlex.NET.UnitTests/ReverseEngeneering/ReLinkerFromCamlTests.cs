@@ -32,6 +32,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Xml.Linq;
 using CamlexNET.Impl.ReverseEngeneering.Caml;
+using CamlexNET.Interfaces.ReverseEngeneering;
 using Microsoft.SharePoint;
 using NUnit.Framework;
 
@@ -44,7 +45,8 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
         public void test_WHEN_where_is_specified_THEN_expressions_are_linked_correctly()
         {
             var l = new ReLinkerFromCaml(null, null, null, null);
-            var expr = l.Link((Expression<Func<SPListItem, bool>>)(x => (int) x["foo"] == 1), null, null, null);
+            var g = new GroupByParams();
+            var expr = l.Link((Expression<Func<SPListItem, bool>>)(x => (int) x["foo"] == 1), null, null, null, g);
             Assert.That(expr.ToString(), Is.EqualTo("Query().Where(x => (Convert(x.get_Item(\"foo\")) = 1))"));
         }
 
@@ -57,7 +59,8 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
                 "  </OrderBy>";
 
             var l = new ReLinkerFromCaml(null, XmlHelper.Get(orderBy), null, null);
-            var expr = l.Link(null, (Expression<Func<SPListItem, object>>)(x => x["Title"] as Camlex.Asc), null, null);
+            var g = new GroupByParams();
+            var expr = l.Link(null, (Expression<Func<SPListItem, object>>)(x => x["Title"] as Camlex.Asc), null, null, g);
             Assert.That(expr.ToString(), Is.EqualTo("Query().OrderBy(x => (x.get_Item(\"Title\") As Asc))"));
         }
 
@@ -69,7 +72,8 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
                 "  </OrderBy>";
 
             var l = new ReLinkerFromCaml(null, XmlHelper.Get(orderBy), null, null);
-            var expr = l.Link(null, (Expression<Func<SPListItem, object>>)(x => x["Title"] as Camlex.Asc), null, null);
+            var g = new GroupByParams();
+            var expr = l.Link(null, (Expression<Func<SPListItem, object>>)(x => x["Title"] as Camlex.Asc), null, null, g);
             Assert.That(expr.ToString(), Is.EqualTo("Query()"));
         }
 
@@ -83,7 +87,8 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
                 "  </OrderBy>";
 
             var l = new ReLinkerFromCaml(null, XmlHelper.Get(orderBy), null, null);
-            var expr = l.Link(null, (Expression<Func<SPListItem, object[]>>)(x => new[] { x["Title"], x["Date"] as Camlex.Desc}), null, null);
+            var g = new GroupByParams();
+            var expr = l.Link(null, (Expression<Func<SPListItem, object[]>>)(x => new[] { x["Title"], x["Date"] as Camlex.Desc}), null, null, g);
             Assert.That(expr.ToString(), Is.EqualTo("Query().OrderBy(x => new [] {x.get_Item(\"Title\"), (x.get_Item(\"Date\") As Desc)})"));
         }
 
@@ -96,7 +101,8 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
                 "  </OrderBy>";
 
             var l = new ReLinkerFromCaml(null, XmlHelper.Get(orderBy), null, null);
-            var expr = l.Link((Expression<Func<SPListItem, bool>>)(x => (int)x["foo"] == 1), (Expression<Func<SPListItem, object>>)(x => x["Title"] as Camlex.Asc), null, null);
+            var g = new GroupByParams();
+            var expr = l.Link((Expression<Func<SPListItem, bool>>)(x => (int)x["foo"] == 1), (Expression<Func<SPListItem, object>>)(x => x["Title"] as Camlex.Asc), null, null, g);
             Assert.That(expr.ToString(), Is.EqualTo("Query().Where(x => (Convert(x.get_Item(\"foo\")) = 1)).OrderBy(x => (x.get_Item(\"Title\") As Asc))"));
         }
 
@@ -109,7 +115,8 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
                 "  </GroupBy>";
 
             var l = new ReLinkerFromCaml(null, null, XmlHelper.Get(groupBy), null);
-            var expr = l.Link(null, null, (Expression<Func<SPListItem, object>>)(x => x["field1"]), null);
+            var g = new GroupByParams();
+            var expr = l.Link(null, null, (Expression<Func<SPListItem, object>>)(x => x["field1"]), null, g);
             Assert.That(expr.ToString(), Is.EqualTo("Query().GroupBy(x => x.get_Item(\"field1\"))"));
         }
 
@@ -122,7 +129,8 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
                 "  </GroupBy>";
 
             var l = new ReLinkerFromCaml(null, null, XmlHelper.Get(groupBy), null);
-            var expr = l.Link(null, null, (Expression<Func<SPListItem, object>>)(x => x["field1"]), null);
+            var g = new GroupByParams { HasCollapse = true, Collapse = true};
+            var expr = l.Link(null, null, (Expression<Func<SPListItem, object>>)(x => x["field1"]), null, g);
             Assert.That(expr.ToString(), Is.EqualTo("Query().GroupBy(x => x.get_Item(\"field1\"), True)"));
         }
 
@@ -135,7 +143,8 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
                 "  </GroupBy>";
 
             var l = new ReLinkerFromCaml(null, null, XmlHelper.Get(groupBy), null);
-            var expr = l.Link(null, null, (Expression<Func<SPListItem, object>>)(x => x["field1"]), null);
+            var g = new GroupByParams {HasGroupLimit = true, GroupLimit = 1 }; ;
+            var expr = l.Link(null, null, (Expression<Func<SPListItem, object>>)(x => x["field1"]), null, g);
             Assert.That(expr.ToString(), Is.EqualTo("Query().GroupBy(x => x.get_Item(\"field1\"), 1)"));
         }
 
@@ -148,7 +157,8 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
                 "  </GroupBy>";
 
             var l = new ReLinkerFromCaml(null, null, XmlHelper.Get(groupBy), null);
-            var expr = l.Link(null, null, (Expression<Func<SPListItem, object>>)(x => x["field1"]), null);
+            var g = new GroupByParams{HasCollapse = true, Collapse = true, HasGroupLimit = true, GroupLimit = 1};
+            var expr = l.Link(null, null, (Expression<Func<SPListItem, object>>)(x => x["field1"]), null, g);
             Assert.That(expr.ToString(), Is.EqualTo("Query().GroupBy(x => x.get_Item(\"field1\"), True, 1)"));
         }
 
@@ -162,7 +172,8 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
                 "  </GroupBy>";
 
             var l = new ReLinkerFromCaml(null, null, XmlHelper.Get(groupBy), null);
-            var expr = l.Link(null, null, (Expression<Func<SPListItem, object[]>>)(x => new[] { x["field1"], x["field2"] }), null);
+            var g = new GroupByParams();
+            var expr = l.Link(null, null, (Expression<Func<SPListItem, object[]>>)(x => new[] { x["field1"], x["field2"] }), null, g);
             Assert.That(expr.ToString(), Is.EqualTo("Query().GroupBy(x => new [] {x.get_Item(\"field1\"), x.get_Item(\"field2\")}, null, null)"));
         }
 
@@ -176,7 +187,8 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
                 "  </GroupBy>";
 
             var l = new ReLinkerFromCaml(null, null, XmlHelper.Get(groupBy), null);
-            var expr = l.Link(null, null, (Expression<Func<SPListItem, object[]>>)(x => new[] { x["field1"], x["field2"] }), null);
+            var g = new GroupByParams { HasCollapse = true, Collapse = true};
+            var expr = l.Link(null, null, (Expression<Func<SPListItem, object[]>>)(x => new[] { x["field1"], x["field2"] }), null, g);
             Assert.That(expr.ToString(), Is.EqualTo("Query().GroupBy(x => new [] {x.get_Item(\"field1\"), x.get_Item(\"field2\")}, True, null)"));
         }
 
@@ -190,7 +202,8 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
                 "  </GroupBy>";
 
             var l = new ReLinkerFromCaml(null, null, XmlHelper.Get(groupBy), null);
-            var expr = l.Link(null, null, (Expression<Func<SPListItem, object[]>>)(x => new[] { x["field1"], x["field2"] }), null);
+            var g = new GroupByParams {HasGroupLimit = true, GroupLimit = 1 };
+            var expr = l.Link(null, null, (Expression<Func<SPListItem, object[]>>)(x => new[] { x["field1"], x["field2"] }), null, g);
             Assert.That(expr.ToString(), Is.EqualTo("Query().GroupBy(x => new [] {x.get_Item(\"field1\"), x.get_Item(\"field2\")}, null, 1)"));
         }
 
@@ -204,7 +217,8 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
                 "  </GroupBy>";
 
             var l = new ReLinkerFromCaml(null, null, XmlHelper.Get(groupBy), null);
-            var expr = l.Link(null, null, (Expression<Func<SPListItem, object[]>>)(x => new[] { x["field1"], x["field2"] }), null);
+            var g = new GroupByParams { HasCollapse = true, Collapse = true, HasGroupLimit = true, GroupLimit = 1 };
+            var expr = l.Link(null, null, (Expression<Func<SPListItem, object[]>>)(x => new[] { x["field1"], x["field2"] }), null, g);
             Assert.That(expr.ToString(), Is.EqualTo("Query().GroupBy(x => new [] {x.get_Item(\"field1\"), x.get_Item(\"field2\")}, True, 1)"));
         }
 
@@ -217,7 +231,8 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
                 "</ViewFields>";
 
             var l = new ReLinkerFromCaml(null, null, null, XmlHelper.Get(viewFields));
-            var expr = l.Link(null, null, null, (Expression<Func<SPListItem, object>>)(x => x["field1"]));
+            var g = new GroupByParams();
+            var expr = l.Link(null, null, null, (Expression<Func<SPListItem, object>>)(x => x["field1"]), g);
             Assert.That(expr.ToString(), Is.EqualTo("Query().ViewFields(x => x.get_Item(\"field1\"), True)"));
         }
 
@@ -231,7 +246,8 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
                 "</ViewFields>";
 
             var l = new ReLinkerFromCaml(null, null, null, XmlHelper.Get(viewFields));
-            var expr = l.Link(null, null, null, (Expression<Func<SPListItem, object[]>>)(x => new[] { x["field1"], x["field2"] }));
+            var g = new GroupByParams();
+            var expr = l.Link(null, null, null, (Expression<Func<SPListItem, object[]>>)(x => new[] { x["field1"], x["field2"] }), g);
             Assert.That(expr.ToString(), Is.EqualTo("Query().ViewFields(x => new [] {x.get_Item(\"field1\"), x.get_Item(\"field2\")}, True)"));
         }
 
@@ -240,7 +256,8 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
         public void test_WHEN_fluent_part_and_view_fields_are_specified_THEN_exception_is_thrown()
         {
             var l = new ReLinkerFromCaml(null, null, null, null);
-            l.Link((Expression<Func<SPListItem, bool>>)(x => (int)x["foo"] == 1), null, null, (Expression<Func<SPListItem, object[]>>)(x => new[] { x["field1"], x["field2"] }));
+            var g = new GroupByParams();
+            l.Link((Expression<Func<SPListItem, bool>>)(x => (int)x["foo"] == 1), null, null, (Expression<Func<SPListItem, object[]>>)(x => new[] { x["field1"], x["field2"] }), g);
         }
     }
 }

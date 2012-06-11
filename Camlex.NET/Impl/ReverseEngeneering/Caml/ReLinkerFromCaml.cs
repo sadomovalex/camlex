@@ -63,7 +63,8 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml
             this.orderBy = orderBy;
         }
 
-        public Expression Link(LambdaExpression where, LambdaExpression orderBy, LambdaExpression groupBy, LambdaExpression viewFields)
+        public Expression Link(LambdaExpression where, LambdaExpression orderBy, LambdaExpression groupBy,
+            LambdaExpression viewFields, GroupByParams groupByParams)
         {
             // list of fluent calls
             var listFluent = new List<KeyValuePair<string, LambdaExpression>>();
@@ -96,7 +97,7 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml
                 var kv = list[i];
                 if (kv.Value != null)
                 {
-                    var mi = this.getMethodInfo(kv.Key);
+                    var mi = this.getMethodInfo(kv.Key, groupByParams);
                     if (mi != null && mi.MethodInfo != null)
                     {
                         var args = new List<Expression>();
@@ -114,7 +115,7 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml
             return expr;
         }
 
-        private MethodInfoWithParams getMethodInfo(string methodName)
+        private MethodInfoWithParams getMethodInfo(string methodName, GroupByParams groupByParams)
         {
             if (methodName == ReflectionHelper.WhereMethodName)
             {
@@ -127,7 +128,7 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml
             }
             if (methodName == ReflectionHelper.GroupByMethodName)
             {
-                return this.getGroupByMethodInfo();
+                return this.getGroupByMethodInfo(groupByParams);
             }
             if (methodName == ReflectionHelper.ViewFieldsMethodName)
             {
@@ -159,7 +160,7 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml
             return new MethodInfoWithParams(mi, p);
         }
 
-        private MethodInfoWithParams getGroupByMethodInfo()
+        private MethodInfoWithParams getGroupByMethodInfo(GroupByParams groupByParams)
         {
             var count = this.groupBy.Descendants(Tags.FieldRef).Count();
             if (count == 0)
@@ -167,29 +168,9 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml
                 return null;
             }
 
-            bool hasCollapse = this.groupBy.Attributes(Attributes.Collapse).Count() > 0;
-            bool hasGroupLimit = this.groupBy.Attributes(Attributes.GroupLimit).Count() > 0;
-
-            bool collapse = false;
-            int groupLimit = 0;
-
-            if (hasCollapse)
-            {
-                if (!bool.TryParse((string) groupBy.Attribute(Attributes.Collapse), out collapse))
-                {
-                    throw new CantParseBooleanAttributeException(Attributes.Collapse);
-                }
-            }
-            if (hasGroupLimit)
-            {
-                if (!int.TryParse((string) groupBy.Attribute(Attributes.GroupLimit), out groupLimit))
-                {
-                    throw new CantParseIntegerAttributeException(Attributes.GroupLimit);
-                }
-            }
-
-            var p = this.getGroupByParams(count, hasGroupLimit, hasCollapse, groupLimit, collapse);
-            var mi =  this.getGroupByMethodInfo(count, hasCollapse, hasGroupLimit);
+            var p = this.getGroupByParams(count, groupByParams.HasGroupLimit, groupByParams.HasCollapse,
+                groupByParams.GroupLimit, groupByParams.Collapse);
+            var mi = this.getGroupByMethodInfo(count, groupByParams.HasCollapse, groupByParams.HasGroupLimit);
             return new MethodInfoWithParams(mi, p);
         }
 

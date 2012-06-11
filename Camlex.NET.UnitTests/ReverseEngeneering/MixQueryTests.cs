@@ -350,14 +350,35 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
                 "  </GroupBy>";
 
             string expected =
-                "<GroupBy Collapse=\"True\" GroupLimit=\"10\">" +
+                "<GroupBy>" +
                 "  <FieldRef Name=\"Modified\" />" +
                 "  <FieldRef Name=\"ModifiedBy\" />" +
                 "  <FieldRef Name=\"Title\" />" +
                 "  <FieldRef Name=\"State\" />" +
                 "</GroupBy>";
 
-            var query = Camlex.Query().GroupBy(existingQuery, x => new[] { x["Title"], x["State"] }, true, 10).ToString();
+            var query = Camlex.Query().GroupBy(existingQuery, x => new[] { x["Title"], x["State"] }).ToString();
+            Assert.That(query, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        [Test]
+        public void test_THAT_existing_group_by_HAS_more_priority()
+        {
+            string existingQuery =
+                "  <GroupBy Collapse=\"False\" GroupLimit=\"20\">" +
+                "    <FieldRef Name=\"Modified\" />" +
+                "    <FieldRef Name=\"ModifiedBy\" />" +
+                "  </GroupBy>";
+
+            string expected =
+                "<GroupBy Collapse=\"False\" GroupLimit=\"20\">" +
+                "  <FieldRef Name=\"Modified\" />" +
+                "  <FieldRef Name=\"ModifiedBy\" />" +
+                "  <FieldRef Name=\"Title\" />" +
+                "  <FieldRef Name=\"State\" />" +
+                "</GroupBy>";
+
+            var query = Camlex.Query().GroupBy(existingQuery, x => new[] { x["Title"], x["State"] }).ToString();
             Assert.That(query, Is.EqualTo(expected).Using(new CamlComparer()));
         }
 

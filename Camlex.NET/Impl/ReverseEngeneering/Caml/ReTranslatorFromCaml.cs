@@ -25,6 +25,7 @@
 // -----------------------------------------------------------------------------
 #endregion
 using System;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Xml.Linq;
 using CamlexNET.Impl.Operations.Array;
@@ -127,8 +128,34 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml
             return this.translateArrayOperation(this.analyzerForOrderBy, Tags.OrderBy);
         }
 
-        public LambdaExpression TranslateGroupBy()
+        public LambdaExpression TranslateGroupBy(out GroupByParams groupByParams)
         {
+            groupByParams = new GroupByParams();
+            if (this.GroupBy != null)
+            {
+                groupByParams.HasCollapse = this.GroupBy.Attributes(Attributes.Collapse).Count() > 0;
+                groupByParams.HasGroupLimit = this.GroupBy.Attributes(Attributes.GroupLimit).Count() > 0;
+
+                groupByParams.Collapse = false;
+                groupByParams.GroupLimit = 0;
+
+                if (groupByParams.HasCollapse)
+                {
+                    if (!bool.TryParse((string) this.GroupBy.Attribute(Attributes.Collapse), out groupByParams.Collapse))
+                    {
+                        throw new CantParseBooleanAttributeException(Attributes.Collapse);
+                    }
+                }
+                if (groupByParams.HasGroupLimit)
+                {
+                    if (
+                        !int.TryParse((string) this.GroupBy.Attribute(Attributes.GroupLimit),
+                                      out groupByParams.GroupLimit))
+                    {
+                        throw new CantParseIntegerAttributeException(Attributes.GroupLimit);
+                    }
+                }
+            }
             return this.translateArrayOperation(this.analyzerForGroupBy, Tags.GroupBy);
         }
 
