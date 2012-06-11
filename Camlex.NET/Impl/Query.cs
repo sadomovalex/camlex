@@ -119,12 +119,16 @@ namespace CamlexNET.Impl
             return expr;
         }
 
-        private Expression<Func<SPListItem, object[]>> getGroupByExpressionFromString(string existingGroupBy)
+        private Expression<Func<SPListItem, object[]>> getGroupByExpressionFromString(string existingGroupBy, out bool? collapse, out int? groupLimit)
         {
             existingGroupBy = this.ensureParentQueryTag(existingGroupBy);
 
             var translator = this.reTranslatorFactory.Create(existingGroupBy);
-            var orderByExpr = translator.TranslateGroupBy();
+            GroupByParams groupByParams;
+            var orderByExpr = translator.TranslateGroupBy(out groupByParams);
+            collapse = groupByParams.HasCollapse ? (bool?)groupByParams.Collapse : null;
+            groupLimit = groupByParams.HasGroupLimit ? (int?) groupByParams.GroupLimit : null;
+
             var expr = orderByExpr as Expression<Func<SPListItem, object[]>>;
             if (expr == null)
             {
@@ -280,38 +284,17 @@ namespace CamlexNET.Impl
         public IQuery GroupBy(string existingGroupBy, Expression<Func<SPListItem, object>> expr)
         {
             var lambda = this.ensureArrayExpression(expr);
-            return GroupBy(existingGroupBy, lambda, null, null);
+            return GroupBy(existingGroupBy, lambda);
         }
 
-        public IQuery GroupBy(string existingGroupBy, Expression<Func<SPListItem, object[]>> expr, bool? collapse, int? groupLimit)
+        public IQuery GroupBy(string existingGroupBy, Expression<Func<SPListItem, object[]>> expr)
         {
-            var existingExpr = this.getGroupByExpressionFromString(existingGroupBy);
+            bool? existingCollapse;
+            int? existingGroupLimit;
+            var existingExpr = this.getGroupByExpressionFromString(existingGroupBy, out existingCollapse, out existingGroupLimit);
             var exprs = new List<Expression<Func<SPListItem, object[]>>>(new[] { existingExpr, expr });
             var resultExpr = this.createArrayExpression(exprs);
-            return this.GroupBy(resultExpr, collapse, groupLimit);
-        }
-
-        public IQuery GroupBy(string existingGroupBy, Expression<Func<SPListItem, object>> expr, bool? collapse, int? groupLimit)
-        {
-            var lambda = this.ensureArrayExpression(expr);
-            return GroupBy(existingGroupBy, lambda, collapse, groupLimit);
-        }
-
-        public IQuery GroupBy(string existingGroupBy, Expression<Func<SPListItem, object>> expr, bool? collapse)
-        {
-            var lambda = this.ensureArrayExpression(expr);
-            return GroupBy(existingGroupBy, lambda, collapse, null);
-        }
-
-        public IQuery GroupBy(string existingGroupBy, Expression<Func<SPListItem, object>> expr, int? groupLimit)
-        {
-            var lambda = ((Expression)expr) as Expression<Func<SPListItem, object[]>>;
-            if (lambda == null)
-            {
-                lambda = this.createArrayExpression(expr);
-            }
-
-            return GroupBy(existingGroupBy, lambda, null, groupLimit);
+            return this.GroupBy(resultExpr, existingCollapse, existingGroupLimit);
         }
 
         public string ViewFields(Expression<Func<SPListItem, object>> expr)

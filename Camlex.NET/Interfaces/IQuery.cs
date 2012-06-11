@@ -55,10 +55,7 @@ namespace CamlexNET.Interfaces
         IQuery GroupBy(Expression<Func<SPListItem, object>> expr, int? groupLimit);
         IQuery GroupBy(Expression<Func<SPListItem, object>> expr, bool? collapse);
         IQuery GroupBy(string existingGroupBy, Expression<Func<SPListItem, object>> expr);
-        IQuery GroupBy(string existingGroupBy, Expression<Func<SPListItem, object[]>> expr, bool? collapse, int? groupLimit);
-        IQuery GroupBy(string existingGroupBy, Expression<Func<SPListItem, object>> expr, bool? collapse, int? groupLimit);
-        IQuery GroupBy(string existingGroupBy, Expression<Func<SPListItem, object>> expr, int? groupLimit);
-        IQuery GroupBy(string existingGroupBy, Expression<Func<SPListItem, object>> expr, bool? collapse);
+        IQuery GroupBy(string existingGroupBy, Expression<Func<SPListItem, object[]>> expr);
         XElement[] ToCaml(bool includeQueryTag);
         string ToString();
         string ToString(bool includeQueryTag);
