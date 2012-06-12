@@ -420,5 +420,92 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
                 "   </Where>";
             var query = Camlex.Query().GroupBy(existingQuery, x => x["Title"]).ToString();
         }
+
+
+
+
+
+
+
+        [Test]
+        public void test_THAT_single_view_fields_IS_mixed_with_single_view_fields_sucessfully()
+        {
+            string existingQuery =
+                "    <FieldRef Name=\"Modified\" />";
+
+            string expected =
+                "  <FieldRef Name=\"Modified\" />" +
+                "  <FieldRef Name=\"Title\" />";
+
+            var query = Camlex.Query().ViewFields(existingQuery, x => x["Title"]).ToString();
+            Assert.That(query, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        [Test]
+        public void test_THAT_single_view_fields_IS_mixed_with_several_view_fields_sucessfully()
+        {
+            string existingQuery =
+                "    <FieldRef Name=\"Modified\" />";
+
+            string expected =
+                "  <FieldRef Name=\"Modified\" />" +
+                "  <FieldRef Name=\"Title\" />" +
+                "  <FieldRef Name=\"State\" />";
+
+            var query = Camlex.Query().ViewFields(existingQuery, x => new[] { x["Title"], x["State"] }).ToString();
+            Assert.That(query, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        [Test]
+        public void test_THAT_several_view_fields_IS_mixed_with_several_view_fields_sucessfully()
+        {
+            string existingQuery =
+                "    <FieldRef Name=\"Modified\" />" +
+                "    <FieldRef Name=\"ModifiedBy\" />";
+
+            string expected =
+                "  <FieldRef Name=\"Modified\" />" +
+                "  <FieldRef Name=\"ModifiedBy\" />" +
+                "  <FieldRef Name=\"Title\" />" +
+                "  <FieldRef Name=\"State\" />";
+
+            var query = Camlex.Query().ViewFields(existingQuery, x => new[] { x["Title"], x["State"] }).ToString();
+            Assert.That(query, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        [Test]
+        public void test_THAT_view_fields_collection_IS_mixed_with_several_view_fields_sucessfully()
+        {
+            string existingQuery =
+                "    <FieldRef Name=\"Modified\" />" +
+                "    <FieldRef Name=\"ModifiedBy\" />";
+
+            string expected =
+                "  <FieldRef Name=\"Modified\" />" +
+                "  <FieldRef Name=\"ModifiedBy\" />" +
+                "  <FieldRef Name=\"Title\" />" +
+                "  <FieldRef Name=\"State\" />";
+
+            var exprs = new List<string>();
+            exprs.Add("Title");
+            exprs.Add("State");
+
+            var query = Camlex.Query().ViewFields(existingQuery, exprs).ToString();
+            Assert.That(query, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        [Test]
+        [ExpectedException(typeof(IncorrectCamlException))]
+        public void test_WHEN_view_fields_is_not_provided_THEN_exception_is_thrown()
+        {
+            string existingQuery =
+                "   <Where>" +
+                "       <Eq>" +
+                "           <FieldRef Name=\"Title\" />" +
+                "           <Value Type=\"Text\">testValue</Value>" +
+                "       </Eq>" +
+                "   </Where>";
+            var query = Camlex.Query().ViewFields(existingQuery, x => x["Title"]).ToString();
+        }
     }
 }
