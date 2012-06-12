@@ -5,6 +5,7 @@ using System.Text;
 using CamlexNET.Impl.ReverseEngeneering.Caml;
 using CamlexNET.Impl.ReverseEngeneering.Caml.Analyzers;
 using CamlexNET.Impl.ReverseEngeneering.Caml.Factories;
+using CamlexNET.Interfaces.ReverseEngeneering;
 using NUnit.Framework;
 
 namespace CamlexNET.UnitTests.ReverseEngeneering
@@ -51,8 +52,11 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
 
             var b = new ReOperandBuilderFromCaml();
             var t = new ReTranslatorFromCaml(null, null, new ReArrayAnalyzer(XmlHelper.Get(xml), b), null);
-            var expr = t.TranslateGroupBy();
+            var g = new GroupByParams();
+            var expr = t.TranslateGroupBy(out g);
             Assert.That(expr.ToString(), Is.EqualTo("x => x.get_Item(\"field1\")"));
+            Assert.IsFalse(g.HasCollapse);
+            Assert.IsFalse(g.HasGroupLimit);
         }
 
         [Test]
