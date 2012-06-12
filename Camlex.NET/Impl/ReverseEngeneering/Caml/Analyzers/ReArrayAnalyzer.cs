@@ -47,12 +47,12 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Analyzers
             {
                 return false;
             }
-            if (this.el.Descendants(Tags.FieldRef).Count() == 0)
+            if (this.el.Elements(Tags.FieldRef).Count() == 0)
             {
                 return false;
             }
 
-            var elements = this.el.Descendants().Where(e => e.Name == Tags.FieldRef &&
+            var elements = this.el.Elements().Where(e => e.Name == Tags.FieldRef &&
                                              (e.Attributes().Any(
                                                  a => a.Name == Attributes.ID || a.Name == Attributes.Name)));
 
@@ -73,7 +73,7 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Analyzers
         private IOperand[] getFieldRefOperands(XElement el)
         {
             var operands = new List<IOperand>();
-            el.Descendants(Tags.FieldRef).ToList().ForEach(
+            el.Elements(Tags.FieldRef).ToList().ForEach(
                 e =>
                     {
                         IOperand operand = null;

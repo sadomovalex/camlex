@@ -39,9 +39,20 @@ namespace CamlexNET.Interfaces
         string ViewFields(Expression<Func<SPListItem, object>> expr, bool includeViewFieldsTag);
         string ViewFields(Expression<Func<SPListItem, object[]>> expr);
         string ViewFields(Expression<Func<SPListItem, object[]>> expr, bool includeViewFieldsTag);
+
+        string ViewFields(string existingViewFields, Expression<Func<SPListItem, object>> expr);
+        string ViewFields(string existingViewFields, Expression<Func<SPListItem, object>> expr, bool includeViewFieldsTag);
+        string ViewFields(string existingViewFields, Expression<Func<SPListItem, object[]>> expr);
+        string ViewFields(string existingViewFields, Expression<Func<SPListItem, object[]>> expr, bool includeViewFieldsTag);
+
         string ViewFields(IEnumerable<string> titles);
         string ViewFields(IEnumerable<string> titles, bool includeViewFieldsTag);
         string ViewFields(IEnumerable<Guid> ids);
         string ViewFields(IEnumerable<Guid> ids, bool includeViewFieldsTag);
+
+        string ViewFields(string existingViewFields, IEnumerable<string> titles);
+        string ViewFields(string existingViewFields, IEnumerable<string> titles, bool includeViewFieldsTag);
+        string ViewFields(string existingViewFields, IEnumerable<Guid> ids);
+        string ViewFields(string existingViewFields, IEnumerable<Guid> ids, bool includeViewFieldsTag);
     }
 }

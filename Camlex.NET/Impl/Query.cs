@@ -79,7 +79,7 @@ namespace CamlexNET.Impl
 
         private Expression<Func<SPListItem, bool>> getWhereExpressionFromString(string existingWhere)
         {
-            existingWhere = this.ensureParentQueryTag(existingWhere);
+            existingWhere = this.ensureParentTag(existingWhere, Tags.Query);
 
             var translator = this.reTranslatorFactory.Create(existingWhere);
             var expr = translator.TranslateWhere() as Expression<Func<SPListItem, bool>>;
@@ -90,19 +90,19 @@ namespace CamlexNET.Impl
             return expr;
         }
 
-        private string ensureParentQueryTag(string xml)
+        private string ensureParentTag(string xml, string tag)
         {
-            if (!string.IsNullOrEmpty(xml) && !xml.StartsWith(string.Format("<{0}>", Tags.Query)))
+            if (!string.IsNullOrEmpty(xml) && !xml.StartsWith(string.Format("<{0}>", tag)))
             {
                 // re expects Query tag
-                xml = string.Format("<{0}>{1}</{0}>", Tags.Query, xml);
+                xml = string.Format("<{0}>{1}</{0}>", tag, xml);
             }
             return xml;
         }
 
         private Expression<Func<SPListItem, object[]>> getOrderByExpressionFromString(string existingOrderBy)
         {
-            existingOrderBy = this.ensureParentQueryTag(existingOrderBy);
+            existingOrderBy = this.ensureParentTag(existingOrderBy, Tags.Query);
 
             var translator = this.reTranslatorFactory.Create(existingOrderBy);
             var orderByExpr = translator.TranslateOrderBy();
@@ -121,7 +121,7 @@ namespace CamlexNET.Impl
 
         private Expression<Func<SPListItem, object[]>> getGroupByExpressionFromString(string existingGroupBy, out bool? collapse, out int? groupLimit)
         {
-            existingGroupBy = this.ensureParentQueryTag(existingGroupBy);
+            existingGroupBy = this.ensureParentTag(existingGroupBy, Tags.Query);
 
             var translator = this.reTranslatorFactory.Create(existingGroupBy);
             GroupByParams groupByParams;
@@ -136,6 +136,27 @@ namespace CamlexNET.Impl
                 if (singleExpr == null)
                 {
                     throw new IncorrectCamlException(Tags.GroupBy);
+                }
+                expr = this.ensureArrayExpression(singleExpr);
+            }
+            return expr;
+        }
+
+        private Expression<Func<SPListItem, object[]>> getViewFieldsExpressionFromString(string existingViewFields)
+        {
+            existingViewFields = this.ensureParentTag(existingViewFields, Tags.ViewFields);
+            existingViewFields = this.ensureParentTag(existingViewFields, Tags.Query);
+
+            var translator = this.reTranslatorFactory.Create(existingViewFields);
+            var viewFieldsExpr = translator.TranslateViewFields();
+
+            var expr = viewFieldsExpr as Expression<Func<SPListItem, object[]>>;
+            if (expr == null)
+            {
+                var singleExpr = viewFieldsExpr as Expression<Func<SPListItem, object>>;
+                if (singleExpr == null)
+                {
+                    throw new IncorrectCamlException(Tags.ViewFields);
                 }
                 expr = this.ensureArrayExpression(singleExpr);
             }
@@ -330,6 +351,30 @@ namespace CamlexNET.Impl
             return viewFields.ToString();
         }
 
+        public string ViewFields(string existingViewFields, Expression<Func<SPListItem, object>> expr)
+        {
+            return ViewFields(existingViewFields, expr, false);
+        }
+
+        public string ViewFields(string existingViewFields, Expression<Func<SPListItem, object>> expr, bool includeViewFieldsTag)
+        {
+            var lambda = this.createArrayExpression(expr);
+            return ViewFields(existingViewFields, lambda, includeViewFieldsTag);
+        }
+
+        public string ViewFields(string existingViewFields, Expression<Func<SPListItem, object[]>> expr)
+        {
+            return ViewFields(existingViewFields, expr, false);
+        }
+
+        public string ViewFields(string existingViewFields, Expression<Func<SPListItem, object[]>> expr, bool includeViewFieldsTag)
+        {
+            var existingExpr = this.getViewFieldsExpressionFromString(existingViewFields);
+            var exprs = new List<Expression<Func<SPListItem, object[]>>>(new[] { existingExpr, expr });
+            var resultExpr = this.createArrayExpression(exprs);
+            return this.ViewFields(resultExpr, includeViewFieldsTag);
+        }
+
         public string ViewFields(IEnumerable<string> titles)
         {
             return this.ViewFields(titles, false);
@@ -345,18 +390,6 @@ namespace CamlexNET.Impl
             return this.ViewFields(this.createExpressionFromArray(titles), includeViewFieldsTag);
         }
 
-        private Expression<Func<SPListItem, object[]>> createExpressionFromArray<T>(IEnumerable<T> items)
-        {
-            return Expression.Lambda<Func<SPListItem, object[]>>(
-                Expression.NewArrayInit(
-                    typeof(object),
-                    (IEnumerable<Expression>)items.Select(
-                        t => Expression.Call(Expression.Parameter(typeof(SPListItem), ReflectionHelper.CommonParameterName),
-                                             typeof(SPListItem).GetMethod(ReflectionHelper.IndexerMethodName, new[] { typeof(T) }),
-                                             new[] { Expression.Constant(t) })).ToArray()),
-                Expression.Parameter(typeof(SPListItem), ReflectionHelper.CommonParameterName));
-        }
-
         public string ViewFields(IEnumerable<Guid> ids)
         {
             return this.ViewFields(ids, false);
@@ -370,6 +403,47 @@ namespace CamlexNET.Impl
             }
 
             return this.ViewFields(this.createExpressionFromArray(ids), includeViewFieldsTag);
+        }
+
+        public string ViewFields(string existingViewFields, IEnumerable<string> titles)
+        {
+            return this.ViewFields(existingViewFields, titles, false);
+        }
+
+        public string ViewFields(string existingViewFields, IEnumerable<string> titles, bool includeViewFieldsTag)
+        {
+            if (titles == null || titles.Any(t => t == null))
+            {
+                throw new ArgumentNullException();
+            }
+
+            return this.ViewFields(existingViewFields, this.createExpressionFromArray(titles), includeViewFieldsTag);
+        }
+
+        public string ViewFields(string existingViewFields, IEnumerable<Guid> ids)
+        {
+            return this.ViewFields(existingViewFields, ids, false);
+        }
+
+        public string ViewFields(string existingViewFields, IEnumerable<Guid> ids, bool includeViewFieldsTag)
+        {
+            if (ids == null)
+            {
+                throw new ArgumentNullException();
+            }
+            return this.ViewFields(existingViewFields, this.createExpressionFromArray(ids), includeViewFieldsTag);
+        }
+
+        private Expression<Func<SPListItem, object[]>> createExpressionFromArray<T>(IEnumerable<T> items)
+        {
+            return Expression.Lambda<Func<SPListItem, object[]>>(
+                Expression.NewArrayInit(
+                    typeof(object),
+                    (IEnumerable<Expression>)items.Select(
+                        t => Expression.Call(Expression.Parameter(typeof(SPListItem), ReflectionHelper.CommonParameterName),
+                                             typeof(SPListItem).GetMethod(ReflectionHelper.IndexerMethodName, new[] { typeof(T) }),
+                                             new[] { Expression.Constant(t) })).ToArray()),
+                Expression.Parameter(typeof(SPListItem), ReflectionHelper.CommonParameterName));
         }
 
         public XElement[] ToCaml(bool includeQueryTag)
