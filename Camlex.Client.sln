@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Camlex.NET", "Camlex.NET\Camlex.NET.csproj", "{99FC65CD-823C-47AA-9D68-0BB9F31CDC72}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Camlex.Client", "Camlex.Client\Camlex.Client.csproj", "{99FC65CD-823C-47AA-9D68-0BB9F31CDC72}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Camlex.NET.UnitTests", "Camlex.NET.UnitTests\Camlex.NET.UnitTests.csproj", "{298ACD3C-082D-406B-B4BB-8B8CAD5B18A6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Camlex.Client.UnitTests", "Camlex.Client.UnitTests\Camlex.Client.UnitTests.csproj", "{298ACD3C-082D-406B-B4BB-8B8CAD5B18A6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,7 +24,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(SubversionScc) = preSolution
-		Svn-Managed = True
-		Manager = AnkhSVN - Subversion Support for Visual Studio
+		        Svn-Managed = True
+		        Manager = AnkhSVN - Subversion Support for Visual Studio
 	EndGlobalSection
 EndGlobal
