@@ -1,6 +1,6 @@
-﻿#region Copyright(c) Alexey Sadomov, Vladimir Timashkov. All Rights Reserved.
+﻿#region Copyright(c) Alexey Sadomov, Vladimir Timashkov, Stef Heyenrath. All Rights Reserved.
 // -----------------------------------------------------------------------------
-// Copyright(c) 2010 Alexey Sadomov, Vladimir Timashkov. All Rights Reserved.
+// Copyright(c) 2010 Alexey Sadomov, Vladimir Timashkov, Stef Heyenrath. All Rights Reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
@@ -24,34 +24,31 @@
 // fitness for a particular purpose and non-infringement.
 // -----------------------------------------------------------------------------
 #endregion
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using CamlexNET.Impl.Operands;
 using CamlexNET.UnitTests.Helpers;
 using NUnit.Framework;
 
 namespace CamlexNET.UnitTests.ReverseEngeneering.Operands
 {
-    [TestFixture]
-    public class FieldRefOperandTests
-    {
-        [Test]
-        public void test_THAT_field_ref_operand_with_guid_IS_converted_to_expression_correctly()
-        {
-            var id = new Guid("{7742D3F8-A2B7-430F-BDEB-B2DDBF853901}");
-            var op = new FieldRefOperand(id);
-            var expr = op.ToExpression();
-            Assert.That(expr.ToString(), Is.EqualTo("x.get_Item(new Guid(\"7742d3f8-a2b7-430f-bdeb-b2ddbf853901\"))").Using(new CaseInsensetiveComparer()));
-        }
+	[TestFixture]
+	public class FieldRefOperandTests
+	{
+		// GUID Not support in Client Object Model
+		//[Test]
+		//public void test_THAT_field_ref_operand_with_guid_IS_converted_to_expression_correctly()
+		//{
+		//    var id = new Guid("{7742D3F8-A2B7-430F-BDEB-B2DDBF853901}");
+		//    var op = new FieldRefOperand(id);
+		//    var expr = op.ToExpression();
+		//    Assert.That(expr.ToString(), Is.EqualTo("x.get_Item(new Guid(\"7742d3f8-a2b7-430f-bdeb-b2ddbf853901\"))").Using(new CaseInsensetiveComparer()));
+		//}
 
-        [Test]
-        public void test_THAT_field_ref_operand_with_filed_name_IS_converted_to_expression_correctly()
-        {
-            var op = new FieldRefOperand("Title");
-            var expr = op.ToExpression();
-            Assert.That(expr.ToString(), Is.EqualTo("x.get_Item(\"Title\")").Using(new CaseInsensetiveComparer()));
-        }
-    }
+		[Test]
+		public void test_THAT_field_ref_operand_with_filed_name_IS_converted_to_expression_correctly()
+		{
+			var op = new FieldRefOperand("Title");
+			var expr = op.ToExpression();
+			Assert.That(expr.ToString(), Is.EqualTo("x.get_Item(\"Title\")").Using(new CaseInsensetiveComparer()));
+		}
+	}
 }

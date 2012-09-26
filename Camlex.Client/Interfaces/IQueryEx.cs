@@ -1,6 +1,6 @@
-﻿#region Copyright(c) Alexey Sadomov, Vladimir Timashkov. All Rights Reserved.
+﻿#region Copyright(c) Alexey Sadomov, Vladimir Timashkov, Stef Heyenrath. All Rights Reserved.
 // -----------------------------------------------------------------------------
-// Copyright(c) 2010 Alexey Sadomov, Vladimir Timashkov. All Rights Reserved.
+// Copyright(c) 2010 Alexey Sadomov, Vladimir Timashkov, Stef Heyenrath. All Rights Reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
@@ -26,33 +26,31 @@
 #endregion
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using Microsoft.SharePoint;
+using Microsoft.SharePoint.Client;
 
 namespace CamlexNET.Interfaces
 {
-    public interface IQueryEx : IQuery
-    {
-        string ViewFields(Expression<Func<SPListItem, object>> expr);
-        string ViewFields(Expression<Func<SPListItem, object>> expr, bool includeViewFieldsTag);
-        string ViewFields(Expression<Func<SPListItem, object[]>> expr);
-        string ViewFields(Expression<Func<SPListItem, object[]>> expr, bool includeViewFieldsTag);
+	public interface IQueryEx : IQuery
+	{
+		string ViewFields(Expression<Func<ListItem, object>> expr);
+		string ViewFields(Expression<Func<ListItem, object>> expr, bool includeViewFieldsTag);
+		string ViewFields(Expression<Func<ListItem, object[]>> expr);
+		string ViewFields(Expression<Func<ListItem, object[]>> expr, bool includeViewFieldsTag);
 
-        string ViewFields(string existingViewFields, Expression<Func<SPListItem, object>> expr);
-        string ViewFields(string existingViewFields, Expression<Func<SPListItem, object>> expr, bool includeViewFieldsTag);
-        string ViewFields(string existingViewFields, Expression<Func<SPListItem, object[]>> expr);
-        string ViewFields(string existingViewFields, Expression<Func<SPListItem, object[]>> expr, bool includeViewFieldsTag);
+		string ViewFields(string existingViewFields, Expression<Func<ListItem, object>> expr);
+		string ViewFields(string existingViewFields, Expression<Func<ListItem, object>> expr, bool includeViewFieldsTag);
+		string ViewFields(string existingViewFields, Expression<Func<ListItem, object[]>> expr);
+		string ViewFields(string existingViewFields, Expression<Func<ListItem, object[]>> expr, bool includeViewFieldsTag);
 
-        string ViewFields(IEnumerable<string> titles);
-        string ViewFields(IEnumerable<string> titles, bool includeViewFieldsTag);
-        string ViewFields(IEnumerable<Guid> ids);
-        string ViewFields(IEnumerable<Guid> ids, bool includeViewFieldsTag);
+		string ViewFields(IEnumerable<string> titles);
+		string ViewFields(IEnumerable<string> titles, bool includeViewFieldsTag);
+		string ViewFields(IEnumerable<Guid> ids);
+		string ViewFields(IEnumerable<Guid> ids, bool includeViewFieldsTag);
 
-        string ViewFields(string existingViewFields, IEnumerable<string> titles);
-        string ViewFields(string existingViewFields, IEnumerable<string> titles, bool includeViewFieldsTag);
-        string ViewFields(string existingViewFields, IEnumerable<Guid> ids);
-        string ViewFields(string existingViewFields, IEnumerable<Guid> ids, bool includeViewFieldsTag);
-    }
+		string ViewFields(string existingViewFields, IEnumerable<string> titles);
+		string ViewFields(string existingViewFields, IEnumerable<string> titles, bool includeViewFieldsTag);
+		string ViewFields(string existingViewFields, IEnumerable<Guid> ids);
+		string ViewFields(string existingViewFields, IEnumerable<Guid> ids, bool includeViewFieldsTag);
+	}
 }

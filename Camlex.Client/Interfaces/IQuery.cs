@@ -1,6 +1,6 @@
-﻿#region Copyright(c) Alexey Sadomov, Vladimir Timashkov. All Rights Reserved.
+﻿#region Copyright(c) Alexey Sadomov, Vladimir Timashkov, Stef Heyenrath. All Rights Reserved.
 // -----------------------------------------------------------------------------
-// Copyright(c) 2010 Alexey Sadomov, Vladimir Timashkov. All Rights Reserved.
+// Copyright(c) 2010 Alexey Sadomov, Vladimir Timashkov, Stef Heyenrath. All Rights Reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
@@ -26,38 +26,35 @@
 #endregion
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Xml.Linq;
-using Microsoft.SharePoint;
+using Microsoft.SharePoint.Client;
 
 namespace CamlexNET.Interfaces
 {
-    public interface IQuery
-    {
-        IQuery Where(Expression<Func<SPListItem, bool>> expr);
-        IQuery WhereAll(IEnumerable<Expression<Func<SPListItem, bool>>> expressions);
-        IQuery WhereAll(string existingWhere, Expression<Func<SPListItem, bool>> expression);
-        IQuery WhereAll(string existingWhere, IEnumerable<Expression<Func<SPListItem, bool>>> expressions);
-        IQuery WhereAny(IEnumerable<Expression<Func<SPListItem, bool>>> expressions);
-        IQuery WhereAny(string existingWhere, Expression<Func<SPListItem, bool>> expression);
-        IQuery WhereAny(string existingWhere, IEnumerable<Expression<Func<SPListItem, bool>>> expressions);
-        IQuery OrderBy(Expression<Func<SPListItem, object>> expr);
-        IQuery OrderBy(Expression<Func<SPListItem, object[]>> expr);
-        IQuery OrderBy(IEnumerable<Expression<Func<SPListItem, object>>> expressions);
-        IQuery OrderBy(string existingOrderBy, Expression<Func<SPListItem, object>> expr);
-        IQuery OrderBy(string existingOrderBy, Expression<Func<SPListItem, object[]>> expr);
-        IQuery OrderBy(string existingOrderBy, IEnumerable<Expression<Func<SPListItem, object>>> expressions);
-        IQuery GroupBy(Expression<Func<SPListItem, object>> expr);
-        IQuery GroupBy(Expression<Func<SPListItem, object[]>> expr, bool? collapse, int? groupLimit);
-        IQuery GroupBy(Expression<Func<SPListItem, object>> expr, bool? collapse, int? groupLimit);
-        IQuery GroupBy(Expression<Func<SPListItem, object>> expr, int? groupLimit);
-        IQuery GroupBy(Expression<Func<SPListItem, object>> expr, bool? collapse);
-        IQuery GroupBy(string existingGroupBy, Expression<Func<SPListItem, object>> expr);
-        IQuery GroupBy(string existingGroupBy, Expression<Func<SPListItem, object[]>> expr);
-        XElement[] ToCaml(bool includeQueryTag);
-        string ToString();
-        string ToString(bool includeQueryTag);
-    }
+	public interface IQuery
+	{
+		IQuery Where(Expression<Func<ListItem, bool>> expr);
+		IQuery WhereAll(IEnumerable<Expression<Func<ListItem, bool>>> expressions);
+		IQuery WhereAll(string existingWhere, Expression<Func<ListItem, bool>> expression);
+		IQuery WhereAll(string existingWhere, IEnumerable<Expression<Func<ListItem, bool>>> expressions);
+		IQuery WhereAny(IEnumerable<Expression<Func<ListItem, bool>>> expressions);
+		IQuery WhereAny(string existingWhere, Expression<Func<ListItem, bool>> expression);
+		IQuery WhereAny(string existingWhere, IEnumerable<Expression<Func<ListItem, bool>>> expressions);
+		IQuery OrderBy(Expression<Func<ListItem, object>> expr);
+		IQuery OrderBy(Expression<Func<ListItem, object[]>> expr);
+		IQuery OrderBy(IEnumerable<Expression<Func<ListItem, object>>> expressions);
+		IQuery OrderBy(string existingOrderBy, Expression<Func<ListItem, object>> expr);
+		IQuery OrderBy(string existingOrderBy, Expression<Func<ListItem, object[]>> expr);
+		IQuery OrderBy(string existingOrderBy, IEnumerable<Expression<Func<ListItem, object>>> expressions);
+		IQuery GroupBy(Expression<Func<ListItem, object>> expr);
+		IQuery GroupBy(Expression<Func<ListItem, object[]>> expr, bool? collapse, int? groupLimit);
+		IQuery GroupBy(Expression<Func<ListItem, object>> expr, bool? collapse, int? groupLimit);
+		IQuery GroupBy(Expression<Func<ListItem, object>> expr, int? groupLimit);
+		IQuery GroupBy(Expression<Func<ListItem, object>> expr, bool? collapse);
+		IQuery GroupBy(string existingGroupBy, Expression<Func<ListItem, object>> expr);
+		IQuery GroupBy(string existingGroupBy, Expression<Func<ListItem, object[]>> expr);
+		string ToString();
+		string ToString(bool includeViewTag);
+		CamlQuery ToCamlQuery();
+	}
 }

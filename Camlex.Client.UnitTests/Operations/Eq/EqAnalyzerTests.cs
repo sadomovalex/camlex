@@ -1,6 +1,6 @@
-﻿#region Copyright(c) Alexey Sadomov, Vladimir Timashkov. All Rights Reserved.
+﻿#region Copyright(c) Alexey Sadomov, Vladimir Timashkov, Stef Heyenrath. All Rights Reserved.
 // -----------------------------------------------------------------------------
-// Copyright(c) 2010 Alexey Sadomov, Vladimir Timashkov. All Rights Reserved.
+// Copyright(c) 2010 Alexey Sadomov, Vladimir Timashkov, Stef Heyenrath. All Rights Reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
@@ -28,86 +28,86 @@ using System;
 using System.Linq.Expressions;
 using CamlexNET.Impl.Operations.Eq;
 using CamlexNET.Interfaces;
-using Microsoft.SharePoint;
+using Microsoft.SharePoint.Client;
 using NUnit.Framework;
 using Rhino.Mocks;
 
 namespace CamlexNET.UnitTests.Operations.Eq
 {
-    [TestFixture]
-    public class EqAnalyzerTests
-    {
-        [Test]
-        public void test_THAT_eq_expression_IS_valid()
-        {
-            var analyzer = new EqAnalyzer(null, null);
-            Expression<Func<SPListItem, bool>> expr = x => (string) x["Title"] == "testValue";
-            Assert.That(analyzer.IsValid(expr), Is.True);
-        }
+	[TestFixture]
+	public class EqAnalyzerTests
+	{
+		[Test]
+		public void test_THAT_eq_expression_IS_valid()
+		{
+			var analyzer = new EqAnalyzer(null, null);
+			Expression<Func<ListItem, bool>> expr = x => (string)x["Title"] == "testValue";
+			Assert.That(analyzer.IsValid(expr), Is.True);
+		}
 
-        [Test]
-        public void test_THAT_string_based_eq_expression_IS_valid()
-        {
-            var analyzer = new EqAnalyzer(null, null);
-            Expression<Func<SPListItem, bool>> expr = x => x["Title"] == (DataTypes.Text)"testValue";
-            Assert.That(analyzer.IsValid(expr), Is.True);
-        }
+		[Test]
+		public void test_THAT_string_based_eq_expression_IS_valid()
+		{
+			var analyzer = new EqAnalyzer(null, null);
+			Expression<Func<ListItem, bool>> expr = x => x["Title"] == (DataTypes.Text)"testValue";
+			Assert.That(analyzer.IsValid(expr), Is.True);
+		}
 
-        [Test]
-        public void test_THAT_string_based_eq_expression_IS_not_valid()
-        {
-            var analyzer = new EqAnalyzer(null, null);
-            Expression<Func<SPListItem, bool>> expr = x => x["Title"] == (DataTypes.Text)new BaseFieldType();
-            Assert.That(analyzer.IsValid(expr), Is.False);
-        }
+		[Test]
+		public void test_THAT_string_based_eq_expression_IS_not_valid()
+		{
+			var analyzer = new EqAnalyzer(null, null);
+			Expression<Func<ListItem, bool>> expr = x => x["Title"] == (DataTypes.Text)new BaseFieldType();
+			Assert.That(analyzer.IsValid(expr), Is.False);
+		}
 
-        [Test]
-        public void test_THAT_string_based_eq_expression_with_variable_IS_not_valid()
-        {
-            var analyzer = new EqAnalyzer(null, null);
-            var foo = new DataTypes.Text();
-            Expression<Func<SPListItem, bool>> expr = x => x["Title"] == foo;
-            Assert.That(analyzer.IsValid(expr), Is.False);
-        }
+		[Test]
+		public void test_THAT_string_based_eq_expression_with_variable_IS_not_valid()
+		{
+			var analyzer = new EqAnalyzer(null, null);
+			var foo = new DataTypes.Text();
+			Expression<Func<ListItem, bool>> expr = x => x["Title"] == foo;
+			Assert.That(analyzer.IsValid(expr), Is.False);
+		}
 
-        [Test]
-        public void test_THAT_eq_expression_IS_determined_properly()
-        {
-            // arrange
-            Expression<Func<SPListItem, bool>> expr = x => (string)x["Title"] == "testValue";
+		[Test]
+		public void test_THAT_eq_expression_IS_determined_properly()
+		{
+			// arrange
+			Expression<Func<ListItem, bool>> expr = x => (string)x["Title"] == "testValue";
 
-            var operandBuilder = MockRepository.GenerateStub<IOperandBuilder>();
-            operandBuilder.Stub(b => b.CreateFieldRefOperand(expr.Body, null)).Return(null);
-            operandBuilder.Stub(b => b.CreateValueOperandForNativeSyntax(expr.Body)).Return(null);
+			var operandBuilder = MockRepository.GenerateStub<IOperandBuilder>();
+			operandBuilder.Stub(b => b.CreateFieldRefOperand(expr.Body, null)).Return(null);
+			operandBuilder.Stub(b => b.CreateValueOperandForNativeSyntax(expr.Body)).Return(null);
 
-            var analyzer = new EqAnalyzer(null, operandBuilder);
+			var analyzer = new EqAnalyzer(null, operandBuilder);
 
-            // act
-            var operation = analyzer.GetOperation(expr);
+			// act
+			var operation = analyzer.GetOperation(expr);
 
-            //assert
-            Assert.That(operation, Is.InstanceOf<EqOperation>());
-        }
+			//assert
+			Assert.That(operation, Is.InstanceOf<EqOperation>());
+		}
 
-        [Test]
-        public void test_THAT_string_based_eq_expression_IS_determined_properly()
-        {
-            // arrange
-            Expression<Func<SPListItem, bool>> expr = x => x["Title"] == (DataTypes.Text)"testValue";
+		[Test]
+		public void test_THAT_string_based_eq_expression_IS_determined_properly()
+		{
+			// arrange
+			Expression<Func<ListItem, bool>> expr = x => x["Title"] == (DataTypes.Text)"testValue";
 
-            var operandBuilder = MockRepository.GenerateStub<IOperandBuilder>();
-            operandBuilder.Stub(b => b.CreateFieldRefOperand(expr.Body, null)).Return(null);
-            operandBuilder.Stub(b => b.CreateValueOperandForNativeSyntax(expr.Body)).Return(null);
+			var operandBuilder = MockRepository.GenerateStub<IOperandBuilder>();
+			operandBuilder.Stub(b => b.CreateFieldRefOperand(expr.Body, null)).Return(null);
+			operandBuilder.Stub(b => b.CreateValueOperandForNativeSyntax(expr.Body)).Return(null);
 
-            var analyzer = new EqAnalyzer(null, operandBuilder);
+			var analyzer = new EqAnalyzer(null, operandBuilder);
 
-            // act
-            var operation = analyzer.GetOperation(expr);
+			// act
+			var operation = analyzer.GetOperation(expr);
 
-            //assert
-            Assert.That(operation, Is.InstanceOf<EqOperation>());
-        }
-    }
+			//assert
+			Assert.That(operation, Is.InstanceOf<EqOperation>());
+		}
+	}
 }
 
 

@@ -1,6 +1,6 @@
-﻿#region Copyright(c) Alexey Sadomov, Vladimir Timashkov. All Rights Reserved.
+﻿#region Copyright(c) Alexey Sadomov, Vladimir Timashkov, Stef Heyenrath. All Rights Reserved.
 // -----------------------------------------------------------------------------
-// Copyright(c) 2010 Alexey Sadomov, Vladimir Timashkov. All Rights Reserved.
+// Copyright(c) 2010 Alexey Sadomov, Vladimir Timashkov, Stef Heyenrath. All Rights Reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
@@ -29,253 +29,249 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Text;
 using System.Xml.Linq;
 using CamlexNET.Interfaces;
 using CamlexNET.Interfaces.ReverseEngeneering;
-using Microsoft.SharePoint;
+using Microsoft.SharePoint.Client;
 
 namespace CamlexNET.Impl.ReverseEngeneering.Caml
 {
-    internal class ReLinkerFromCaml : IReLinker
-    {
-        private XElement where;
-        private XElement orderBy;
-        private XElement groupBy;
-        private XElement viewFields;
+	internal class ReLinkerFromCaml : IReLinker
+	{
+		private readonly XElement where;
+		private readonly XElement orderBy;
+		private readonly XElement groupBy;
+		private readonly XElement viewFields;
 
-        private class MethodInfoWithParams
-        {
-            public MethodInfo MethodInfo { get; set; }
-            public List<Expression> Params { get; set; }
-            public MethodInfoWithParams(MethodInfo mi, List<Expression> p)
-            {
-                this.MethodInfo = mi;
-                this.Params = p;
-            }
-        }
+		private class MethodInfoWithParams
+		{
+			public MethodInfo MethodInfo { get; private set; }
+			public List<Expression> Params { get; private set; }
+			public MethodInfoWithParams(MethodInfo mi, List<Expression> p)
+			{
+				this.MethodInfo = mi;
+				this.Params = p;
+			}
+		}
 
-        public ReLinkerFromCaml(XElement where, XElement orderBy, XElement groupBy, XElement viewFields)
-        {
-            this.where = where;
-            this.viewFields = viewFields;
-            this.groupBy = groupBy;
-            this.orderBy = orderBy;
-        }
+		public ReLinkerFromCaml(XElement where, XElement orderBy, XElement groupBy, XElement viewFields)
+		{
+			this.where = where;
+			this.viewFields = viewFields;
+			this.groupBy = groupBy;
+			this.orderBy = orderBy;
+		}
 
-        public Expression Link(LambdaExpression where, LambdaExpression orderBy, LambdaExpression groupBy,
-            LambdaExpression viewFields, GroupByParams groupByParams)
-        {
-            // list of fluent calls
-            var listFluent = new List<KeyValuePair<string, LambdaExpression>>();
-            listFluent.Add(new KeyValuePair<string, LambdaExpression>(ReflectionHelper.WhereMethodName, where));
-            listFluent.Add(new KeyValuePair<string, LambdaExpression>(ReflectionHelper.OrderByMethodName, orderBy));
-            listFluent.Add(new KeyValuePair<string, LambdaExpression>(ReflectionHelper.GroupByMethodName, groupBy));
+		public Expression Link(LambdaExpression where, LambdaExpression orderBy, LambdaExpression groupBy,
+			LambdaExpression viewFields, GroupByParams groupByParams)
+		{
+			// list of fluent calls
+			var listFluent = new List<KeyValuePair<string, LambdaExpression>>
+			{
+				new KeyValuePair<string, LambdaExpression>(ReflectionHelper.WhereMethodName, where),
+				new KeyValuePair<string, LambdaExpression>(ReflectionHelper.OrderByMethodName, orderBy),
+				new KeyValuePair<string, LambdaExpression>(ReflectionHelper.GroupByMethodName, groupBy)
+			};
 
-            // view fields is not fluent
-            var listViewFields = new List<KeyValuePair<string, LambdaExpression>>();
-            listViewFields.Add(new KeyValuePair<string, LambdaExpression>(ReflectionHelper.ViewFieldsMethodName, viewFields));
+			// view fields is not fluent
+			var listViewFields = new List<KeyValuePair<string, LambdaExpression>>
+			{
+				new KeyValuePair<string, LambdaExpression>(ReflectionHelper.ViewFieldsMethodName, viewFields)
+			};
 
-            if (listFluent.Any(kv => kv.Value != null) && listViewFields.Any(kv => kv.Value != null))
-            {
-                throw new OnlyOnePartOfQueryShouldBeNotNullException();
-            }
+			if (listFluent.Any(kv => kv.Value != null) && listViewFields.Any(kv => kv.Value != null))
+			{
+				throw new OnlyOnePartOfQueryShouldBeNotNullException();
+			}
 
-            var list = listFluent.Any(kv => kv.Value != null) ? listFluent : listViewFields;
-            if (list.All(kv => kv.Value == null))
-            {
-                throw new AtLeastOneCamlPartShouldNotBeEmptyException();
-            }
+			var list = listFluent.Any(kv => kv.Value != null) ? listFluent : listViewFields;
+			if (list.All(kv => kv.Value == null))
+			{
+				throw new AtLeastOneCamlPartShouldNotBeEmptyException();
+			}
 
+			var queryMi = ReflectionHelper.GetMethodInfo(typeof(Camlex), ReflectionHelper.QueryMethodName);
+			var queryCall = Expression.Call(queryMi);
 
-            var queryMi = ReflectionHelper.GetMethodInfo(typeof (Camlex), ReflectionHelper.QueryMethodName);
-            var queryCall = Expression.Call(queryMi);
+			var expr = queryCall;
+			for (int i = 0; i < list.Count; i++)
+			{
+				var kv = list[i];
+				if (kv.Value != null)
+				{
+					var mi = this.getMethodInfo(kv.Key, groupByParams);
+					if (mi != null && mi.MethodInfo != null)
+					{
+						var args = new List<Expression>
+						{
+							kv.Value // 1st param is always lambda expression
+						};
 
-            var expr = queryCall;
-            for (int i = 0; i < list.Count; i++)
-            {
-                var kv = list[i];
-                if (kv.Value != null)
-                {
-                    var mi = this.getMethodInfo(kv.Key, groupByParams);
-                    if (mi != null && mi.MethodInfo != null)
-                    {
-                        var args = new List<Expression>();
-                        // 1st param is always lambda expression
-                        args.Add(kv.Value);
-                        if (mi.Params != null && mi.Params.Count > 0)
-                        {
-                            mi.Params.ForEach(p => args.Add(p));
-                        }
-                        // as we use fluent interfaces we just pass on next step value which we got from prev step
-                        expr = Expression.Call(expr, mi.MethodInfo, args);
-                    }
-                }
-            }
-            return expr;
-        }
+						if (mi.Params != null && mi.Params.Count > 0)
+						{
+							mi.Params.ForEach(args.Add);
+						}
+						// as we use fluent interfaces we just pass on next step value which we got from prev step
+						expr = Expression.Call(expr, mi.MethodInfo, args);
+					}
+				}
+			}
+			return expr;
+		}
 
-        private MethodInfoWithParams getMethodInfo(string methodName, GroupByParams groupByParams)
-        {
-            if (methodName == ReflectionHelper.WhereMethodName)
-            {
-                var mi = ReflectionHelper.GetMethodInfo(typeof (IQuery), methodName);
-                return new MethodInfoWithParams(mi, null);
-            }
-            if (methodName == ReflectionHelper.OrderByMethodName)
-            {
-                return this.getOrderByMethodInfo();
-            }
-            if (methodName == ReflectionHelper.GroupByMethodName)
-            {
-                return this.getGroupByMethodInfo(groupByParams);
-            }
-            if (methodName == ReflectionHelper.ViewFieldsMethodName)
-            {
-                return this.getViewFieldsMethodInfo();
-            }
-            return null;
-        }
+		private MethodInfoWithParams getMethodInfo(string methodName, GroupByParams groupByParams)
+		{
+			if (methodName == ReflectionHelper.WhereMethodName)
+			{
+				var mi = ReflectionHelper.GetMethodInfo(typeof(IQuery), methodName);
+				return new MethodInfoWithParams(mi, null);
+			}
+			if (methodName == ReflectionHelper.OrderByMethodName)
+			{
+				return this.getOrderByMethodInfo();
+			}
+			if (methodName == ReflectionHelper.GroupByMethodName)
+			{
+				return this.getGroupByMethodInfo(groupByParams);
+			}
+			if (methodName == ReflectionHelper.ViewFieldsMethodName)
+			{
+				return this.getViewFieldsMethodInfo();
+			}
+			return null;
+		}
 
-        private MethodInfoWithParams getViewFieldsMethodInfo()
-        {
-            var count = this.viewFields.Descendants(Tags.FieldRef).Count();
-            if (count == 0)
-            {
-                return null;
-            }
-            MethodInfo mi = null;
-            if (count == 1)
-            {
-                mi = typeof(IQueryEx).GetMethod(ReflectionHelper.ViewFieldsMethodName,
-                                                new[] { typeof(Expression<Func<SPListItem, object>>), typeof(bool) });
-            }
-            else
-            {
-                mi = typeof(IQueryEx).GetMethod(ReflectionHelper.ViewFieldsMethodName,
-                                                new[] { typeof(Expression<Func<SPListItem, object[]>>), typeof(bool) });
-            }
-            var p = new List<Expression>();
-            p.Add(Expression.Constant(true));
-            return new MethodInfoWithParams(mi, p);
-        }
+		private MethodInfoWithParams getViewFieldsMethodInfo()
+		{
+			var count = this.viewFields.Descendants(Tags.FieldRef).Count();
+			if (count == 0)
+			{
+				return null;
+			}
 
-        private MethodInfoWithParams getGroupByMethodInfo(GroupByParams groupByParams)
-        {
-            var count = this.groupBy.Descendants(Tags.FieldRef).Count();
-            if (count == 0)
-            {
-                return null;
-            }
+			var type = count == 1 ? typeof(Expression<Func<ListItem, object>>) : typeof(Expression<Func<ListItem, object[]>>);
+			var methodInfo = typeof(IQueryEx).GetMethod(ReflectionHelper.ViewFieldsMethodName, new[] { type, typeof(bool) });
 
-            var p = this.getGroupByParams(count, groupByParams.HasGroupLimit, groupByParams.HasCollapse,
-                groupByParams.GroupLimit, groupByParams.Collapse);
-            var mi = this.getGroupByMethodInfo(count, groupByParams.HasCollapse, groupByParams.HasGroupLimit);
-            return new MethodInfoWithParams(mi, p);
-        }
+			var p = new List<Expression>(new[] { Expression.Constant(true) });
+			return new MethodInfoWithParams(methodInfo, p);
+		}
 
-        private MethodInfo getGroupByMethodInfo(int count, bool hasCollapse, bool hasGroupLimit)
-        {
-            MethodInfo mi;
-            if (count == 1)
-            {
-                if (hasCollapse && hasGroupLimit)
-                {
-                    mi = typeof (IQuery).GetMethod(ReflectionHelper.GroupByMethodName,
-                                                   new[]
-                                                       {
-                                                           typeof (Expression<Func<SPListItem, object>>), typeof (bool?), typeof (int?)
-                                                       });
-                }
-                else if (hasCollapse && !hasGroupLimit)
-                {
-                    mi = typeof (IQuery).GetMethod(ReflectionHelper.GroupByMethodName,
-                                                   new[] {typeof (Expression<Func<SPListItem, object>>), typeof (bool?)});
-                }
-                else if (!hasCollapse && hasGroupLimit)
-                {
-                    mi = typeof (IQuery).GetMethod(ReflectionHelper.GroupByMethodName,
-                                                   new[] {typeof (Expression<Func<SPListItem, object>>), typeof (int?)});
-                }
-                else
-                {
-                    mi = typeof (IQuery).GetMethod(ReflectionHelper.GroupByMethodName,
-                                                   new[] {typeof (Expression<Func<SPListItem, object>>)});
-                }
-            }
-            else
-            {
-                mi = typeof (IQuery).GetMethod(ReflectionHelper.GroupByMethodName,
-                                               new[]
-                                                   {
-                                                       typeof (Expression<Func<SPListItem, object[]>>), typeof (bool?), typeof (int?)
-                                                   });
-            }
-            return mi;
-        }
+		private MethodInfoWithParams getGroupByMethodInfo(GroupByParams groupByParams)
+		{
+			var count = this.groupBy.Descendants(Tags.FieldRef).Count();
+			if (count == 0)
+			{
+				return null;
+			}
 
-        private List<Expression> getGroupByParams(int count, bool hasGroupLimit, bool hasCollapse, int groupLimit, bool collapse)
-        {
-            List<Expression> p = null;
-            if (hasCollapse && hasGroupLimit)
-            {
-                p = new List<Expression>();
-                p.Add(Expression.Constant(collapse, typeof(bool?)));
-                p.Add(Expression.Constant(groupLimit, typeof(int?)));
-            }
-            else if (hasCollapse && !hasGroupLimit)
-            {
-                p = new List<Expression>();
-                p.Add(Expression.Constant(collapse, typeof(bool?)));
-                // there is only 1 method which receives several field refs: GroupBy(Expression<Func<SPListItem, object[]>> expr, bool? collapse, int? groupLimit).
-                // For this method we need always provide 2 arguments);
-                if (count > 1)
-                {
-                    p.Add(Expression.Constant(null, typeof(int?)));
-                }
-            }
-            else if (!hasCollapse && hasGroupLimit)
-            {
-                // there is only 1 method which receives several field refs: GroupBy(Expression<Func<SPListItem, object[]>> expr, bool? collapse, int? groupLimit).
-                // For this method we need always provide 2 arguments
-                p = new List<Expression>();
-                if (count > 1)
-                {
-                    p.Add(Expression.Constant(null, typeof(bool?)));
-                }
+			var p = this.getGroupByParams(count, groupByParams.HasGroupLimit, groupByParams.HasCollapse,
+				groupByParams.GroupLimit, groupByParams.Collapse);
+			var mi = this.getGroupByMethodInfo(count, groupByParams.HasCollapse, groupByParams.HasGroupLimit);
+			return new MethodInfoWithParams(mi, p);
+		}
 
-                p.Add(Expression.Constant(groupLimit, typeof(int?)));
-            }
-            else if (count > 1)
-            {
-                // there is only 1 method which receives several field refs: GroupBy(Expression<Func<SPListItem, object[]>> expr, bool? collapse, int? groupLimit).
-                // For this method we need always provide 2 arguments
-                p = new List<Expression>();
-                p.Add(Expression.Constant(null, typeof(bool?)));
-                p.Add(Expression.Constant(null, typeof(int?)));
-            }
-            return p;
-        }
+		private MethodInfo getGroupByMethodInfo(int count, bool hasCollapse, bool hasGroupLimit)
+		{
+			MethodInfo mi;
+			if (count == 1)
+			{
+				if (hasCollapse && hasGroupLimit)
+				{
+					mi = typeof(IQuery).GetMethod(ReflectionHelper.GroupByMethodName,
+												   new[]
+													   {
+														   typeof (Expression<Func<ListItem, object>>), typeof (bool?), typeof (int?)
+													   });
+				}
+				else if (hasCollapse && !hasGroupLimit)
+				{
+					mi = typeof(IQuery).GetMethod(ReflectionHelper.GroupByMethodName,
+												   new[] { typeof(Expression<Func<ListItem, object>>), typeof(bool?) });
+				}
+				else if (!hasCollapse && hasGroupLimit)
+				{
+					mi = typeof(IQuery).GetMethod(ReflectionHelper.GroupByMethodName,
+												   new[] { typeof(Expression<Func<ListItem, object>>), typeof(int?) });
+				}
+				else
+				{
+					mi = typeof(IQuery).GetMethod(ReflectionHelper.GroupByMethodName,
+												   new[] { typeof(Expression<Func<ListItem, object>>) });
+				}
+			}
+			else
+			{
+				mi = typeof(IQuery).GetMethod(ReflectionHelper.GroupByMethodName,
+											   new[]
+												   {
+													   typeof (Expression<Func<ListItem, object[]>>), typeof (bool?), typeof (int?)
+												   });
+			}
+			return mi;
+		}
 
-        private MethodInfoWithParams getOrderByMethodInfo()
-        {
-            var count = this.orderBy.Descendants(Tags.FieldRef).Count();
-            MethodInfo mi = null;
-            if (count == 0)
-            {
-                return null;
-            }
-            if (count == 1)
-            {
-                mi = typeof(IQuery).GetMethod(ReflectionHelper.OrderByMethodName,
-                                                new[] {typeof (Expression<Func<SPListItem, object>>)});
-            }
-            else
-            {
-                mi = typeof(IQuery).GetMethod(ReflectionHelper.OrderByMethodName,
-                                                new[] { typeof(Expression<Func<SPListItem, object[]>>) });
-            }
-            return new MethodInfoWithParams(mi, null);
-        }
-    }
+		private List<Expression> getGroupByParams(int count, bool hasGroupLimit, bool hasCollapse, int groupLimit, bool collapse)
+		{
+			List<Expression> p = null;
+			if (hasCollapse && hasGroupLimit)
+			{
+				p = new List<Expression>();
+				p.Add(Expression.Constant(collapse, typeof(bool?)));
+				p.Add(Expression.Constant(groupLimit, typeof(int?)));
+			}
+			else if (hasCollapse && !hasGroupLimit)
+			{
+				p = new List<Expression>();
+				p.Add(Expression.Constant(collapse, typeof(bool?)));
+				// there is only 1 method which receives several field refs: GroupBy(Expression<Func<ListItem, object[]>> expr, bool? collapse, int? groupLimit).
+				// For this method we need always provide 2 arguments);
+				if (count > 1)
+				{
+					p.Add(Expression.Constant(null, typeof(int?)));
+				}
+			}
+			else if (!hasCollapse && hasGroupLimit)
+			{
+				// there is only 1 method which receives several field refs: GroupBy(Expression<Func<ListItem, object[]>> expr, bool? collapse, int? groupLimit).
+				// For this method we need always provide 2 arguments
+				p = new List<Expression>();
+				if (count > 1)
+				{
+					p.Add(Expression.Constant(null, typeof(bool?)));
+				}
+
+				p.Add(Expression.Constant(groupLimit, typeof(int?)));
+			}
+			else if (count > 1)
+			{
+				// there is only 1 method which receives several field refs: GroupBy(Expression<Func<ListItem, object[]>> expr, bool? collapse, int? groupLimit).
+				// For this method we need always provide 2 arguments
+				p = new List<Expression>();
+				p.Add(Expression.Constant(null, typeof(bool?)));
+				p.Add(Expression.Constant(null, typeof(int?)));
+			}
+			return p;
+		}
+
+		private MethodInfoWithParams getOrderByMethodInfo()
+		{
+			var count = this.orderBy.Descendants(Tags.FieldRef).Count();
+			MethodInfo mi = null;
+			if (count == 0)
+			{
+				return null;
+			}
+			if (count == 1)
+			{
+				mi = typeof(IQuery).GetMethod(ReflectionHelper.OrderByMethodName,
+												new[] { typeof(Expression<Func<ListItem, object>>) });
+			}
+			else
+			{
+				mi = typeof(IQuery).GetMethod(ReflectionHelper.OrderByMethodName,
+												new[] { typeof(Expression<Func<ListItem, object[]>>) });
+			}
+			return new MethodInfoWithParams(mi, null);
+		}
+	}
 }

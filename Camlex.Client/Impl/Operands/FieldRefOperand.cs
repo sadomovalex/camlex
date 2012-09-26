@@ -1,6 +1,6 @@
-﻿#region Copyright(c) Alexey Sadomov, Vladimir Timashkov. All Rights Reserved.
+﻿#region Copyright(c) Alexey Sadomov, Vladimir Timashkov, Stef Heyenrath. All Rights Reserved.
 // -----------------------------------------------------------------------------
-// Copyright(c) 2010 Alexey Sadomov, Vladimir Timashkov. All Rights Reserved.
+// Copyright(c) 2010 Alexey Sadomov, Vladimir Timashkov, Stef Heyenrath. All Rights Reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
@@ -24,141 +24,137 @@
 // fitness for a particular purpose and non-infringement.
 // -----------------------------------------------------------------------------
 #endregion
-
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Reflection;
 using System.Xml.Linq;
 using CamlexNET.Interfaces;
-using Microsoft.SharePoint;
+using Microsoft.SharePoint.Client;
 
 namespace CamlexNET.Impl.Operands
 {
-    internal class FieldRefOperand : IOperand
-    {
-        protected string fieldName;
-        protected Guid? id;
-        private List<KeyValuePair<string, string>> attributes;
+	internal class FieldRefOperand : IOperand
+	{
+		protected string fieldName;
+		protected Guid? id;
+		private readonly List<KeyValuePair<string, string>> attributes;
 
-        public string FieldName
-        {
-            get
-            {
-                return this.fieldName;
-            }
-        }
+		public string FieldName
+		{
+			get
+			{
+				return this.fieldName;
+			}
+		}
 
-        public Guid? FieldId
-        {
-            get
-            {
-                return this.id;
-            }
-        }
+		public Guid? FieldId
+		{
+			get
+			{
+				return this.id;
+			}
+		}
 
-        public List<KeyValuePair<string, string>> Attributes
-        {
-            get
-            {
-                return this.attributes;
-            }
-        }
+		public List<KeyValuePair<string, string>> Attributes
+		{
+			get
+			{
+				return this.attributes;
+			}
+		}
 
-        protected FieldRefOperand(List<KeyValuePair<string, string>> attributes)
-        {
-            this.attributes = attributes;
-        }
+		protected FieldRefOperand(List<KeyValuePair<string, string>> attributes)
+		{
+			this.attributes = attributes;
+		}
 
-        public FieldRefOperand(string fieldName)
-        {
-            this.initialize(fieldName);
-        }
+		public FieldRefOperand(string fieldName)
+		{
+			this.initialize(fieldName);
+		}
 
-        public FieldRefOperand(string fieldName, List<KeyValuePair<string, string>> attributes) :
-            this (attributes)
-        {
-            this.initialize(fieldName);
-        }
+		public FieldRefOperand(string fieldName, List<KeyValuePair<string, string>> attributes) :
+			this(attributes)
+		{
+			this.initialize(fieldName);
+		}
 
-        public FieldRefOperand(Guid id)
-        {
-            this.initialize(id);
-        }
+		public FieldRefOperand(Guid id)
+		{
+			this.initialize(id);
+		}
 
-        public FieldRefOperand(Guid id, List<KeyValuePair<string, string>> attributes) :
-            this(attributes)
-        {
-            this.initialize(id);
-        }
+		public FieldRefOperand(Guid id, List<KeyValuePair<string, string>> attributes) :
+			this(attributes)
+		{
+			this.initialize(id);
+		}
 
-        protected void initialize(Guid id)
-        {
-            this.id = id;
-        }
+		protected void initialize(Guid id)
+		{
+			this.id = id;
+		}
 
-        protected void initialize(string fieldName)
-        {
-            this.fieldName = fieldName;
-        }
+		protected void initialize(string fieldName)
+		{
+			this.fieldName = fieldName;
+		}
 
-        public virtual XElement ToCaml()
-        {
-            XElement element;
-            if (this.id != null)
-            {
-                element = new XElement(Tags.FieldRef, new XAttribute(CamlexNET.Attributes.ID, this.id.Value));
-            }
-            else if (!string.IsNullOrEmpty(this.fieldName))
-            {
-                element = new XElement(Tags.FieldRef, new XAttribute(CamlexNET.Attributes.Name, this.fieldName));
-            }
-            else
-            {
-                throw new FieldRefOperandShouldContainNameOrIdException();
-            }
+		public virtual XElement ToCaml()
+		{
+			XElement element;
+			if (this.id != null)
+			{
+				element = new XElement(Tags.FieldRef, new XAttribute(CamlexNET.Attributes.ID, this.id.Value));
+			}
+			else if (!string.IsNullOrEmpty(this.fieldName))
+			{
+				element = new XElement(Tags.FieldRef, new XAttribute(CamlexNET.Attributes.Name, this.fieldName));
+			}
+			else
+			{
+				throw new FieldRefOperandShouldContainNameOrIdException();
+			}
 
-            if (this.attributes != null)
-            {
-                foreach (var attr in this.attributes)
-                {
-                    // should not specify id or name twice
-                    if (string.Compare(attr.Key, CamlexNET.Attributes.ID, true) == 0 ||
-                        string.Compare(attr.Key, CamlexNET.Attributes.Name, true) == 0)
-                    {
-                        continue;
-                    }
-                    element.Add(new XAttribute(attr.Key, attr.Value));
-                }
-            }
-            return element;
-        }
+			if (this.attributes != null)
+			{
+				foreach (var attr in this.attributes)
+				{
+					// should not specify id or name twice
+					if (string.Compare(attr.Key, CamlexNET.Attributes.ID, true) == 0 ||
+						string.Compare(attr.Key, CamlexNET.Attributes.Name, true) == 0)
+					{
+						continue;
+					}
+					element.Add(new XAttribute(attr.Key, attr.Value));
+				}
+			}
+			return element;
+		}
 
-        public virtual Expression ToExpression()
-        {
-            if (this.id != null)
-            {
-                var mi = typeof(SPListItem).GetProperty(ReflectionHelper.Item, typeof(object), new[] { typeof(Guid) }, null).GetGetMethod();
-                var guidConstructor = typeof (Guid).GetConstructor(new[] { typeof(string) });
-                return
-                    Expression.Call(
-                        Expression.Parameter(typeof(SPListItem), ReflectionHelper.CommonParameterName),
-                        mi, new[] { Expression.New(guidConstructor, Expression.Constant(this.id.Value.ToString())) });
-            }
-            else if (!string.IsNullOrEmpty(this.fieldName))
-            {
-                var mi = typeof(SPListItem).GetProperty(ReflectionHelper.Item, typeof(object), new[] { typeof(string) }, null).GetGetMethod();
-                return
-                    Expression.Call(
-                        Expression.Parameter(typeof(SPListItem), ReflectionHelper.CommonParameterName),
-                        mi, new[] { Expression.Constant(this.fieldName) });
-            }
-            else
-            {
-                throw new FieldRefOperandShouldContainNameOrIdException();
-            }
-        }
-    }
+		public virtual Expression ToExpression()
+		{
+			if (this.id != null)
+			{
+				var mi = typeof(ListItem).GetProperty(ReflectionHelper.Item, typeof(object), new[] { typeof(Guid) }, null).GetGetMethod();
+				var guidConstructor = typeof(Guid).GetConstructor(new[] { typeof(string) });
+				return
+					Expression.Call(
+						Expression.Parameter(typeof(ListItem), ReflectionHelper.CommonParameterName),
+						mi, new[] { Expression.New(guidConstructor, Expression.Constant(this.id.Value.ToString())) });
+			}
+			else if (!string.IsNullOrEmpty(this.fieldName))
+			{
+				var mi = typeof(ListItem).GetProperty(ReflectionHelper.Item, typeof(object), new[] { typeof(string) }, null).GetGetMethod();
+				return
+					Expression.Call(
+						Expression.Parameter(typeof(ListItem), ReflectionHelper.CommonParameterName),
+						mi, new[] { Expression.Constant(this.fieldName) });
+			}
+			else
+			{
+				throw new FieldRefOperandShouldContainNameOrIdException();
+			}
+		}
+	}
 }
-
-

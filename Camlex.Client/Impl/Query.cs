@@ -33,469 +33,498 @@ using System.Xml.Linq;
 using CamlexNET.Impl.Helpers;
 using CamlexNET.Interfaces;
 using CamlexNET.Interfaces.ReverseEngeneering;
-using Microsoft.SharePoint;
+using Microsoft.SharePoint.Client;
 
 namespace CamlexNET.Impl
 {
-    internal class Query : IQueryEx
-    {
-        private readonly ITranslatorFactory translatorFactory;
-        private readonly IReTranslatorFactory reTranslatorFactory;
-        private XElement where;
-        private XElement orderBy;
-        private XElement groupBy;
-
-        public Query(ITranslatorFactory translatorFactory, IReTranslatorFactory reTranslatorFactory)
-        {
-            this.translatorFactory = translatorFactory;
-            this.reTranslatorFactory = reTranslatorFactory;
-        }
-
-        public IQuery Where(Expression<Func<SPListItem, bool>> expr)
-        {
-            var translator = translatorFactory.Create(expr);
-            this.where = translator.TranslateWhere(expr);
-            return this;
-        }
-
-        public IQuery WhereAll(IEnumerable<Expression<Func<SPListItem, bool>>> expressions)
-        {
-            var combinedExpression = ExpressionsHelper.CombineAnd(expressions);
-            return this.Where(combinedExpression);
-        }
-
-        public IQuery WhereAll(string existingWhere, Expression<Func<SPListItem, bool>> expression)
-        {
-            return this.WhereAll(existingWhere, new List<Expression<Func<SPListItem, bool>>>(new[] { expression }));
-        }
-
-        public IQuery WhereAll(string existingWhere, IEnumerable<Expression<Func<SPListItem, bool>>> expressions)
-        {
-            var where = this.getWhereExpressionFromString(existingWhere);
-            var exprs = new List<Expression<Func<SPListItem, bool>>>(expressions);
-            exprs.Add(where);
-            return this.WhereAll(exprs);
-        }
-
-        private Expression<Func<SPListItem, bool>> getWhereExpressionFromString(string existingWhere)
-        {
-            existingWhere = this.ensureParentTag(existingWhere, Tags.Query);
-
-            var translator = this.reTranslatorFactory.Create(existingWhere);
-            var expr = translator.TranslateWhere() as Expression<Func<SPListItem, bool>>;
-            if (expr == null)
-            {
-                throw new IncorrectCamlException(Tags.Where);
-            }
-            return expr;
-        }
-
-        private string ensureParentTag(string xml, string tag)
-        {
-            if (!string.IsNullOrEmpty(xml) && !xml.StartsWith(string.Format("<{0}>", tag)))
-            {
-                // re expects Query tag
-                xml = string.Format("<{0}>{1}</{0}>", tag, xml);
-            }
-            return xml;
-        }
-
-        private Expression<Func<SPListItem, object[]>> getOrderByExpressionFromString(string existingOrderBy)
-        {
-            existingOrderBy = this.ensureParentTag(existingOrderBy, Tags.Query);
-
-            var translator = this.reTranslatorFactory.Create(existingOrderBy);
-            var orderByExpr = translator.TranslateOrderBy();
-            var expr = orderByExpr as Expression<Func<SPListItem, object[]>>;
-            if (expr == null)
-            {
-                var singleExpr = orderByExpr as Expression<Func<SPListItem, object>>;
-                if (singleExpr == null)
-                {
-                    throw new IncorrectCamlException(Tags.OrderBy);
-                }
-                expr = this.createArrayExpression(singleExpr);
-            }
-            return expr;
-        }
-
-        private Expression<Func<SPListItem, object[]>> getGroupByExpressionFromString(string existingGroupBy, out bool? collapse, out int? groupLimit)
-        {
-            existingGroupBy = this.ensureParentTag(existingGroupBy, Tags.Query);
-
-            var translator = this.reTranslatorFactory.Create(existingGroupBy);
-            GroupByParams groupByParams;
-            var orderByExpr = translator.TranslateGroupBy(out groupByParams);
-            collapse = groupByParams.HasCollapse ? (bool?)groupByParams.Collapse : null;
-            groupLimit = groupByParams.HasGroupLimit ? (int?) groupByParams.GroupLimit : null;
-
-            var expr = orderByExpr as Expression<Func<SPListItem, object[]>>;
-            if (expr == null)
-            {
-                var singleExpr = orderByExpr as Expression<Func<SPListItem, object>>;
-                if (singleExpr == null)
-                {
-                    throw new IncorrectCamlException(Tags.GroupBy);
-                }
-                expr = this.ensureArrayExpression(singleExpr);
-            }
-            return expr;
-        }
-
-        private Expression<Func<SPListItem, object[]>> getViewFieldsExpressionFromString(string existingViewFields)
-        {
-            existingViewFields = this.ensureParentTag(existingViewFields, Tags.ViewFields);
-            existingViewFields = this.ensureParentTag(existingViewFields, Tags.Query);
-
-            var translator = this.reTranslatorFactory.Create(existingViewFields);
-            var viewFieldsExpr = translator.TranslateViewFields();
-
-            var expr = viewFieldsExpr as Expression<Func<SPListItem, object[]>>;
-            if (expr == null)
-            {
-                var singleExpr = viewFieldsExpr as Expression<Func<SPListItem, object>>;
-                if (singleExpr == null)
-                {
-                    throw new IncorrectCamlException(Tags.ViewFields);
-                }
-                expr = this.ensureArrayExpression(singleExpr);
-            }
-            return expr;
-        }
-
-        public IQuery WhereAny(IEnumerable<Expression<Func<SPListItem, bool>>> expressions)
-        {
-            var combinedExpression = ExpressionsHelper.CombineOr(expressions);
-            return this.Where(combinedExpression);
-        }
-
-        public IQuery WhereAny(string existingWhere, Expression<Func<SPListItem, bool>> expression)
-        {
-            return this.WhereAny(existingWhere, new List<Expression<Func<SPListItem, bool>>>(new[] { expression }));
-        }
-
-        public IQuery WhereAny(string existingWhere, IEnumerable<Expression<Func<SPListItem, bool>>> expressions)
-        {
-            var whereExpr = this.getWhereExpressionFromString(existingWhere);
-            var exprs = new List<Expression<Func<SPListItem, bool>>>(expressions);
-            exprs.Add(whereExpr);
-            return this.WhereAny(exprs);
-        }
-
-        public IQuery OrderBy(Expression<Func<SPListItem, object>> expr)
-        {
-            var lambda = createArrayExpression(expr);
-            return OrderBy(lambda);
-        }
-
-        public IQuery OrderBy(Expression<Func<SPListItem, object[]>> expr)
-        {
-            var translator = translatorFactory.Create(expr);
-            this.orderBy = translator.TranslateOrderBy(expr);
-            return this;
-        }
-
-        public IQuery OrderBy(IEnumerable<Expression<Func<SPListItem, object>>> expressions)
-        {
-            if (expressions == null || !expressions.Any())
-            {
-                throw new EmptyExpressionsListException();
-            }
-
-            var lambda = createArrayExpression(expressions);
-            return OrderBy(lambda);
-        }
-
-        public IQuery OrderBy(string existingOrderBy, Expression<Func<SPListItem, object>> expr)
-        {
-            var newExpr = this.createArrayExpression(expr);
-            return this.OrderBy(existingOrderBy, newExpr);
-        }
-
-        public IQuery OrderBy(string existingOrderBy, Expression<Func<SPListItem, object[]>> expr)
-        {
-            var existingExpr = this.getOrderByExpressionFromString(existingOrderBy);
-            var exprs = new List<Expression<Func<SPListItem, object[]>>>(new[] { existingExpr, expr });
-            var resultExpr = this.createArrayExpression(exprs);
-            return OrderBy(resultExpr);
-        }
-
-        public IQuery OrderBy(string existingOrderBy, IEnumerable<Expression<Func<SPListItem, object>>> expressions)
-        {
-            var newExpr = this.createArrayExpression(expressions);
-            return this.OrderBy(existingOrderBy, newExpr);
-        }
-
-        private Expression<Func<SPListItem, object[]>> createArrayExpression(IEnumerable<Expression<Func<SPListItem, object>>> expressions)
-        {
-            var expr = expressions.FirstOrDefault();
-            if (expr == null)
-            {
-                throw new EmptyExpressionsListException();
-            }
-
-            return Expression.Lambda<Func<SPListItem, object[]>>(
-                Expression.NewArrayInit(typeof(object), expressions.Select(e => e.Body)), expr.Parameters);
-        }
-
-        private Expression<Func<SPListItem, object[]>> createArrayExpression(IEnumerable<Expression<Func<SPListItem, object[]>>> expressions)
-        {
-            var expr = expressions.FirstOrDefault();
-            if (expr == null)
-            {
-                throw new EmptyExpressionsListException();
-            }
-
-            var list = expressions.SelectMany(e => ((NewArrayExpression)e.Body).Expressions);
-
-            return Expression.Lambda<Func<SPListItem, object[]>>(
-                Expression.NewArrayInit(typeof(object), list), expr.Parameters);
-        }
-
-        private Expression<Func<SPListItem, object[]>> ensureArrayExpression(Expression<Func<SPListItem, object>> expr)
-        {
-            Expression<Func<SPListItem, object[]>> lambda = null;
-            if (expr.Body.Type != typeof(object[]))
-            {
-                lambda = this.createArrayExpression(expr);
-            }
-            else
-            {
-                lambda = Expression.Lambda<Func<SPListItem, object[]>>(Expression.NewArrayInit(typeof(object), ((NewArrayExpression)expr.Body).Expressions), expr.Parameters);
-            }
-            return lambda;
-        }
-
-        private Expression<Func<SPListItem, object[]>> createArrayExpression(Expression<Func<SPListItem, object>> expr)
-        {
-            return Expression.Lambda<Func<SPListItem, object[]>>(Expression.NewArrayInit(typeof(object), expr.Body), expr.Parameters);
-        }
-
-        public IQuery GroupBy(Expression<Func<SPListItem, object>> expr)
-        {
-            var lambda = this.createArrayExpression(expr);
-            return GroupBy(lambda, null, null);
-        }
-
-        public IQuery GroupBy(Expression<Func<SPListItem, object[]>> expr, bool? collapse, int? groupLimit)
-        {
-            var translator = translatorFactory.Create(expr);
-            this.groupBy = translator.TranslateGroupBy(expr, collapse, groupLimit);
-            return this;
-        }
-
-        public IQuery GroupBy(Expression<Func<SPListItem, object>> expr, bool? collapse, int? groupLimit)
-        {
-            var lambda = this.createArrayExpression(expr);
-            return GroupBy(lambda, collapse, groupLimit);
-        }
-
-        public IQuery GroupBy(Expression<Func<SPListItem, object>> expr, bool? collapse)
-        {
-            var lambda = this.createArrayExpression(expr);
-            return GroupBy(lambda, collapse, null);
-        }
-
-        public IQuery GroupBy(Expression<Func<SPListItem, object>> expr, int? groupLimit)
-        {
-            var lambda = this.createArrayExpression(expr);
-            return GroupBy(lambda, null, groupLimit);
-        }
-
-        public IQuery GroupBy(string existingGroupBy, Expression<Func<SPListItem, object>> expr)
-        {
-            var lambda = this.ensureArrayExpression(expr);
-            return GroupBy(existingGroupBy, lambda);
-        }
-
-        public IQuery GroupBy(string existingGroupBy, Expression<Func<SPListItem, object[]>> expr)
-        {
-            bool? existingCollapse;
-            int? existingGroupLimit;
-            var existingExpr = this.getGroupByExpressionFromString(existingGroupBy, out existingCollapse, out existingGroupLimit);
-            var exprs = new List<Expression<Func<SPListItem, object[]>>>(new[] { existingExpr, expr });
-            var resultExpr = this.createArrayExpression(exprs);
-            return this.GroupBy(resultExpr, existingCollapse, existingGroupLimit);
-        }
-
-        public string ViewFields(Expression<Func<SPListItem, object>> expr)
-        {
-            return ViewFields(expr, false);
-        }
-
-        public string ViewFields(Expression<Func<SPListItem, object>> expr, bool includeViewFieldsTag)
-        {
-            var lambda = this.createArrayExpression(expr);
-            return ViewFields(lambda, includeViewFieldsTag);
-        }
-
-        public string ViewFields(Expression<Func<SPListItem, object[]>> expr)
-        {
-            return ViewFields(expr, false);
-        }
-
-        public string ViewFields(Expression<Func<SPListItem, object[]>> expr, bool includeViewFieldsTag)
-        {
-            var translator = translatorFactory.Create(expr);
-            var viewFields = translator.TranslateViewFields(expr);
-
-            if (!includeViewFieldsTag)
-            {
-                var elements = viewFields.Elements();
-                if (elements == null || !elements.Any())
-                {
-                    return string.Empty;
-                }
-                return this.convertToString(elements.ToArray());
-            }
-            return viewFields.ToString();
-        }
-
-        public string ViewFields(string existingViewFields, Expression<Func<SPListItem, object>> expr)
-        {
-            return ViewFields(existingViewFields, expr, false);
-        }
-
-        public string ViewFields(string existingViewFields, Expression<Func<SPListItem, object>> expr, bool includeViewFieldsTag)
-        {
-            var lambda = this.createArrayExpression(expr);
-            return ViewFields(existingViewFields, lambda, includeViewFieldsTag);
-        }
-
-        public string ViewFields(string existingViewFields, Expression<Func<SPListItem, object[]>> expr)
-        {
-            return ViewFields(existingViewFields, expr, false);
-        }
-
-        public string ViewFields(string existingViewFields, Expression<Func<SPListItem, object[]>> expr, bool includeViewFieldsTag)
-        {
-            var existingExpr = this.getViewFieldsExpressionFromString(existingViewFields);
-            var exprs = new List<Expression<Func<SPListItem, object[]>>>(new[] { existingExpr, expr });
-            var resultExpr = this.createArrayExpression(exprs);
-            return this.ViewFields(resultExpr, includeViewFieldsTag);
-        }
-
-        public string ViewFields(IEnumerable<string> titles)
-        {
-            return this.ViewFields(titles, false);
-        }
-
-        public string ViewFields(IEnumerable<string> titles, bool includeViewFieldsTag)
-        {
-            if (titles == null || titles.Any(t => t == null))
-            {
-                throw new ArgumentNullException();
-            }
-
-            return this.ViewFields(this.createExpressionFromArray(titles), includeViewFieldsTag);
-        }
-
-        public string ViewFields(IEnumerable<Guid> ids)
-        {
-            return this.ViewFields(ids, false);
-        }
-
-        public string ViewFields(IEnumerable<Guid> ids, bool includeViewFieldsTag)
-        {
-            if (ids == null)
-            {
-                throw new ArgumentNullException();
-            }
-
-            return this.ViewFields(this.createExpressionFromArray(ids), includeViewFieldsTag);
-        }
-
-        public string ViewFields(string existingViewFields, IEnumerable<string> titles)
-        {
-            return this.ViewFields(existingViewFields, titles, false);
-        }
-
-        public string ViewFields(string existingViewFields, IEnumerable<string> titles, bool includeViewFieldsTag)
-        {
-            if (titles == null || titles.Any(t => t == null))
-            {
-                throw new ArgumentNullException();
-            }
-
-            return this.ViewFields(existingViewFields, this.createExpressionFromArray(titles), includeViewFieldsTag);
-        }
-
-        public string ViewFields(string existingViewFields, IEnumerable<Guid> ids)
-        {
-            return this.ViewFields(existingViewFields, ids, false);
-        }
-
-        public string ViewFields(string existingViewFields, IEnumerable<Guid> ids, bool includeViewFieldsTag)
-        {
-            if (ids == null)
-            {
-                throw new ArgumentNullException();
-            }
-            return this.ViewFields(existingViewFields, this.createExpressionFromArray(ids), includeViewFieldsTag);
-        }
-
-        private Expression<Func<SPListItem, object[]>> createExpressionFromArray<T>(IEnumerable<T> items)
-        {
-            return Expression.Lambda<Func<SPListItem, object[]>>(
-                Expression.NewArrayInit(
-                    typeof(object),
-                    (IEnumerable<Expression>)items.Select(
-                        t => Expression.Call(Expression.Parameter(typeof(SPListItem), ReflectionHelper.CommonParameterName),
-                                             typeof(SPListItem).GetMethod(ReflectionHelper.IndexerMethodName, new[] { typeof(T) }),
-                                             new[] { Expression.Constant(t) })).ToArray()),
-                Expression.Parameter(typeof(SPListItem), ReflectionHelper.CommonParameterName));
-        }
-
-        public XElement[] ToCaml(bool includeQueryTag)
-        {
-            if (includeQueryTag)
-            {
-                return new[]
-                           {
-                               new XElement(Tags.Query,
-                                            this.where, this.orderBy, this.groupBy)
-                           };
-            }
-            else
-            {
-                var elements = new List<XElement>();
-                if (this.where != null)
-                {
-                    elements.Add(this.where);
-                }
-                if (this.orderBy != null)
-                {
-                    elements.Add(this.orderBy);
-                }
-                if (this.groupBy != null)
-                {
-                    elements.Add(this.groupBy);
-                }
-                return elements.ToArray();
-            }
-        }
-
-        public override string ToString()
-        {
-            return this.ToString(false);
-        }
-
-        public string ToString(bool includeQueryTag)
-        {
-            var elements = this.ToCaml(includeQueryTag);
-            return convertToString(elements);
-        }
-
-        private string convertToString(XElement[] elements)
-        {
-            var sb = new StringBuilder();
-            Array.ForEach(elements, e => sb.Append(e.ToString()));
-            return sb.ToString();
-        }
-
-        public static implicit operator string(Query query)
-        {
-            return query.ToString();
-        }
-    }
+	internal class Query : IQueryEx
+	{
+		private readonly ITranslatorFactory translatorFactory;
+		private readonly IReTranslatorFactory reTranslatorFactory;
+		private XElement where;
+		private XElement orderBy;
+		private XElement groupBy;
+
+		public Query(ITranslatorFactory translatorFactory, IReTranslatorFactory reTranslatorFactory)
+		{
+			this.translatorFactory = translatorFactory;
+			this.reTranslatorFactory = reTranslatorFactory;
+		}
+
+		public IQuery Where(Expression<Func<ListItem, bool>> expr)
+		{
+			var translator = translatorFactory.Create(expr);
+			this.where = translator.TranslateWhere(expr);
+			return this;
+		}
+
+		public IQuery WhereAll(IEnumerable<Expression<Func<ListItem, bool>>> expressions)
+		{
+			var combinedExpression = ExpressionsHelper.CombineAnd(expressions);
+			return this.Where(combinedExpression);
+		}
+
+		public IQuery WhereAll(string existingWhere, Expression<Func<ListItem, bool>> expression)
+		{
+			return this.WhereAll(existingWhere, new List<Expression<Func<ListItem, bool>>>(new[] { expression }));
+		}
+
+		public IQuery WhereAll(string existingWhere, IEnumerable<Expression<Func<ListItem, bool>>> expressions)
+		{
+			var where = this.getWhereExpressionFromString(existingWhere);
+			var exprs = new List<Expression<Func<ListItem, bool>>>(expressions);
+			exprs.Add(where);
+			return this.WhereAll(exprs);
+		}
+
+		private Expression<Func<ListItem, bool>> getWhereExpressionFromString(string existingWhere)
+		{
+			existingWhere = this.ensureParentTag(existingWhere, Tags.Query);
+			existingWhere = this.ensureParentTag(existingWhere, Tags.View);
+
+			var translator = this.reTranslatorFactory.Create(existingWhere);
+			var expr = translator.TranslateWhere() as Expression<Func<ListItem, bool>>;
+			if (expr == null)
+			{
+				throw new IncorrectCamlException(Tags.Where);
+			}
+			return expr;
+		}
+
+		private string ensureParentTag(string xml, string tag)
+		{
+			if (!string.IsNullOrEmpty(xml) && !xml.StartsWith(string.Format("<{0}>", tag)))
+			{
+				// re expects Query tag
+				xml = string.Format("<{0}>{1}</{0}>", tag, xml);
+			}
+			return xml;
+		}
+
+		private Expression<Func<ListItem, object[]>> getOrderByExpressionFromString(string existingOrderBy)
+		{
+			existingOrderBy = this.ensureParentTag(existingOrderBy, Tags.Query);
+			existingOrderBy = this.ensureParentTag(existingOrderBy, Tags.View);
+
+			var translator = this.reTranslatorFactory.Create(existingOrderBy);
+			var orderByExpr = translator.TranslateOrderBy();
+			var expr = orderByExpr as Expression<Func<ListItem, object[]>>;
+			if (expr == null)
+			{
+				var singleExpr = orderByExpr as Expression<Func<ListItem, object>>;
+				if (singleExpr == null)
+				{
+					throw new IncorrectCamlException(Tags.OrderBy);
+				}
+				expr = this.createArrayExpression(singleExpr);
+			}
+			return expr;
+		}
+
+		private Expression<Func<ListItem, object[]>> getGroupByExpressionFromString(string existingGroupBy, out bool? collapse, out int? groupLimit)
+		{
+			existingGroupBy = this.ensureParentTag(existingGroupBy, Tags.Query);
+			existingGroupBy = this.ensureParentTag(existingGroupBy, Tags.View);
+
+			var translator = this.reTranslatorFactory.Create(existingGroupBy);
+			GroupByParams groupByParams;
+			var orderByExpr = translator.TranslateGroupBy(out groupByParams);
+			collapse = groupByParams.HasCollapse ? (bool?)groupByParams.Collapse : null;
+			groupLimit = groupByParams.HasGroupLimit ? (int?)groupByParams.GroupLimit : null;
+
+			var expr = orderByExpr as Expression<Func<ListItem, object[]>>;
+			if (expr == null)
+			{
+				var singleExpr = orderByExpr as Expression<Func<ListItem, object>>;
+				if (singleExpr == null)
+				{
+					throw new IncorrectCamlException(Tags.GroupBy);
+				}
+				expr = this.ensureArrayExpression(singleExpr);
+			}
+			return expr;
+		}
+
+		private Expression<Func<ListItem, object[]>> getViewFieldsExpressionFromString(string existingViewFields)
+		{
+			existingViewFields = this.ensureParentTag(existingViewFields, Tags.ViewFields);
+			existingViewFields = this.ensureParentTag(existingViewFields, Tags.Query);
+			existingViewFields = this.ensureParentTag(existingViewFields, Tags.View);
+
+			var translator = this.reTranslatorFactory.Create(existingViewFields);
+			var viewFieldsExpr = translator.TranslateViewFields();
+
+			var expr = viewFieldsExpr as Expression<Func<ListItem, object[]>>;
+			if (expr == null)
+			{
+				var singleExpr = viewFieldsExpr as Expression<Func<ListItem, object>>;
+				if (singleExpr == null)
+				{
+					throw new IncorrectCamlException(Tags.ViewFields);
+				}
+				expr = this.ensureArrayExpression(singleExpr);
+			}
+			return expr;
+		}
+
+		public IQuery WhereAny(IEnumerable<Expression<Func<ListItem, bool>>> expressions)
+		{
+			var combinedExpression = ExpressionsHelper.CombineOr(expressions);
+			return this.Where(combinedExpression);
+		}
+
+		public IQuery WhereAny(string existingWhere, Expression<Func<ListItem, bool>> expression)
+		{
+			return this.WhereAny(existingWhere, new List<Expression<Func<ListItem, bool>>>(new[] { expression }));
+		}
+
+		public IQuery WhereAny(string existingWhere, IEnumerable<Expression<Func<ListItem, bool>>> expressions)
+		{
+			var whereExpr = this.getWhereExpressionFromString(existingWhere);
+			var exprs = new List<Expression<Func<ListItem, bool>>>(expressions);
+			exprs.Add(whereExpr);
+			return this.WhereAny(exprs);
+		}
+
+		public IQuery OrderBy(Expression<Func<ListItem, object>> expr)
+		{
+			var lambda = createArrayExpression(expr);
+			return OrderBy(lambda);
+		}
+
+		public IQuery OrderBy(Expression<Func<ListItem, object[]>> expr)
+		{
+			var translator = translatorFactory.Create(expr);
+			this.orderBy = translator.TranslateOrderBy(expr);
+			return this;
+		}
+
+		public IQuery OrderBy(IEnumerable<Expression<Func<ListItem, object>>> expressions)
+		{
+			if (expressions == null || !expressions.Any())
+			{
+				throw new EmptyExpressionsListException();
+			}
+
+			var lambda = createArrayExpression(expressions);
+			return OrderBy(lambda);
+		}
+
+		public IQuery OrderBy(string existingOrderBy, Expression<Func<ListItem, object>> expr)
+		{
+			var newExpr = this.createArrayExpression(expr);
+			return this.OrderBy(existingOrderBy, newExpr);
+		}
+
+		public IQuery OrderBy(string existingOrderBy, Expression<Func<ListItem, object[]>> expr)
+		{
+			var existingExpr = this.getOrderByExpressionFromString(existingOrderBy);
+			var exprs = new List<Expression<Func<ListItem, object[]>>>(new[] { existingExpr, expr });
+			var resultExpr = this.createArrayExpression(exprs);
+			return OrderBy(resultExpr);
+		}
+
+		public IQuery OrderBy(string existingOrderBy, IEnumerable<Expression<Func<ListItem, object>>> expressions)
+		{
+			var newExpr = this.createArrayExpression(expressions);
+			return this.OrderBy(existingOrderBy, newExpr);
+		}
+
+		private Expression<Func<ListItem, object[]>> createArrayExpression(IEnumerable<Expression<Func<ListItem, object>>> expressions)
+		{
+			var expr = expressions.FirstOrDefault();
+			if (expr == null)
+			{
+				throw new EmptyExpressionsListException();
+			}
+
+			return Expression.Lambda<Func<ListItem, object[]>>(
+				Expression.NewArrayInit(typeof(object), expressions.Select(e => e.Body)), expr.Parameters);
+		}
+
+		private Expression<Func<ListItem, object[]>> createArrayExpression(IEnumerable<Expression<Func<ListItem, object[]>>> expressions)
+		{
+			var expr = expressions.FirstOrDefault();
+			if (expr == null)
+			{
+				throw new EmptyExpressionsListException();
+			}
+
+			var list = expressions.SelectMany(e => ((NewArrayExpression)e.Body).Expressions);
+
+			return Expression.Lambda<Func<ListItem, object[]>>(
+				Expression.NewArrayInit(typeof(object), list), expr.Parameters);
+		}
+
+		private Expression<Func<ListItem, object[]>> ensureArrayExpression(Expression<Func<ListItem, object>> expr)
+		{
+			Expression<Func<ListItem, object[]>> lambda = null;
+			if (expr.Body.Type != typeof(object[]))
+			{
+				lambda = this.createArrayExpression(expr);
+			}
+			else
+			{
+				lambda = Expression.Lambda<Func<ListItem, object[]>>(Expression.NewArrayInit(typeof(object), ((NewArrayExpression)expr.Body).Expressions), expr.Parameters);
+			}
+			return lambda;
+		}
+
+		private Expression<Func<ListItem, object[]>> createArrayExpression(Expression<Func<ListItem, object>> expr)
+		{
+			return Expression.Lambda<Func<ListItem, object[]>>(Expression.NewArrayInit(typeof(object), expr.Body), expr.Parameters);
+		}
+
+		public IQuery GroupBy(Expression<Func<ListItem, object>> expr)
+		{
+			var lambda = this.createArrayExpression(expr);
+			return GroupBy(lambda, null, null);
+		}
+
+		public IQuery GroupBy(Expression<Func<ListItem, object[]>> expr, bool? collapse, int? groupLimit)
+		{
+			var translator = translatorFactory.Create(expr);
+			this.groupBy = translator.TranslateGroupBy(expr, collapse, groupLimit);
+			return this;
+		}
+
+		public IQuery GroupBy(Expression<Func<ListItem, object>> expr, bool? collapse, int? groupLimit)
+		{
+			var lambda = this.createArrayExpression(expr);
+			return GroupBy(lambda, collapse, groupLimit);
+		}
+
+		public IQuery GroupBy(Expression<Func<ListItem, object>> expr, bool? collapse)
+		{
+			var lambda = this.createArrayExpression(expr);
+			return GroupBy(lambda, collapse, null);
+		}
+
+		public IQuery GroupBy(Expression<Func<ListItem, object>> expr, int? groupLimit)
+		{
+			var lambda = this.createArrayExpression(expr);
+			return GroupBy(lambda, null, groupLimit);
+		}
+
+		public IQuery GroupBy(string existingGroupBy, Expression<Func<ListItem, object>> expr)
+		{
+			var lambda = this.ensureArrayExpression(expr);
+			return GroupBy(existingGroupBy, lambda);
+		}
+
+		public IQuery GroupBy(string existingGroupBy, Expression<Func<ListItem, object[]>> expr)
+		{
+			bool? existingCollapse;
+			int? existingGroupLimit;
+			var existingExpr = this.getGroupByExpressionFromString(existingGroupBy, out existingCollapse, out existingGroupLimit);
+			var exprs = new List<Expression<Func<ListItem, object[]>>>(new[] { existingExpr, expr });
+			var resultExpr = this.createArrayExpression(exprs);
+			return this.GroupBy(resultExpr, existingCollapse, existingGroupLimit);
+		}
+
+		public string ViewFields(Expression<Func<ListItem, object>> expr)
+		{
+			return ViewFields(expr, false);
+		}
+
+		public string ViewFields(Expression<Func<ListItem, object>> expr, bool includeViewFieldsTag)
+		{
+			var lambda = this.createArrayExpression(expr);
+			return ViewFields(lambda, includeViewFieldsTag);
+		}
+
+		public string ViewFields(Expression<Func<ListItem, object[]>> expr)
+		{
+			return ViewFields(expr, false);
+		}
+
+		public string ViewFields(Expression<Func<ListItem, object[]>> expr, bool includeViewFieldsTag)
+		{
+			var translator = translatorFactory.Create(expr);
+			var viewFields = translator.TranslateViewFields(expr);
+
+			if (!includeViewFieldsTag)
+			{
+				var elements = viewFields.Elements();
+				if (elements == null || !elements.Any())
+				{
+					return string.Empty;
+				}
+				return this.convertToString(elements.ToArray());
+			}
+			return viewFields.ToString();
+		}
+
+		public string ViewFields(string existingViewFields, Expression<Func<ListItem, object>> expr)
+		{
+			return ViewFields(existingViewFields, expr, false);
+		}
+
+		public string ViewFields(string existingViewFields, Expression<Func<ListItem, object>> expr, bool includeViewFieldsTag)
+		{
+			var lambda = this.createArrayExpression(expr);
+			return ViewFields(existingViewFields, lambda, includeViewFieldsTag);
+		}
+
+		public string ViewFields(string existingViewFields, Expression<Func<ListItem, object[]>> expr)
+		{
+			return ViewFields(existingViewFields, expr, false);
+		}
+
+		public string ViewFields(string existingViewFields, Expression<Func<ListItem, object[]>> expr, bool includeViewFieldsTag)
+		{
+			var existingExpr = this.getViewFieldsExpressionFromString(existingViewFields);
+			var exprs = new List<Expression<Func<ListItem, object[]>>>(new[] { existingExpr, expr });
+			var resultExpr = this.createArrayExpression(exprs);
+			return this.ViewFields(resultExpr, includeViewFieldsTag);
+		}
+
+		public string ViewFields(IEnumerable<string> titles)
+		{
+			return this.ViewFields(titles, false);
+		}
+
+		public string ViewFields(IEnumerable<string> titles, bool includeViewFieldsTag)
+		{
+			if (titles == null || titles.Any(t => t == null))
+			{
+				throw new ArgumentNullException();
+			}
+
+			return this.ViewFields(this.createExpressionFromArray(titles), includeViewFieldsTag);
+		}
+
+		public string ViewFields(IEnumerable<Guid> ids)
+		{
+			return this.ViewFields(ids, false);
+		}
+
+		public string ViewFields(IEnumerable<Guid> ids, bool includeViewFieldsTag)
+		{
+			if (ids == null)
+			{
+				throw new ArgumentNullException();
+			}
+
+			return this.ViewFields(this.createExpressionFromArray(ids), includeViewFieldsTag);
+		}
+
+		public string ViewFields(string existingViewFields, IEnumerable<string> titles)
+		{
+			return this.ViewFields(existingViewFields, titles, false);
+		}
+
+		public string ViewFields(string existingViewFields, IEnumerable<string> titles, bool includeViewFieldsTag)
+		{
+			if (titles == null || titles.Any(t => t == null))
+			{
+				throw new ArgumentNullException();
+			}
+
+			return this.ViewFields(existingViewFields, this.createExpressionFromArray(titles), includeViewFieldsTag);
+		}
+
+		public string ViewFields(string existingViewFields, IEnumerable<Guid> ids)
+		{
+			return this.ViewFields(existingViewFields, ids, false);
+		}
+
+		public string ViewFields(string existingViewFields, IEnumerable<Guid> ids, bool includeViewFieldsTag)
+		{
+			if (ids == null)
+			{
+				throw new ArgumentNullException();
+			}
+
+			return this.ViewFields(existingViewFields, this.createExpressionFromArray(ids), includeViewFieldsTag);
+		}
+
+		private Expression<Func<ListItem, object[]>> createExpressionFromArray<T>(IEnumerable<T> items)
+		{
+			return Expression.Lambda<Func<ListItem, object[]>>(
+				Expression.NewArrayInit(
+					typeof(object),
+					(IEnumerable<Expression>)items.Select(
+						t => Expression.Call(Expression.Parameter(typeof(ListItem), ReflectionHelper.CommonParameterName),
+											 typeof(ListItem).GetMethod(ReflectionHelper.IndexerMethodName, new[] { typeof(T) }),
+											 new[] { Expression.Constant(t) })).ToArray()),
+				Expression.Parameter(typeof(ListItem), ReflectionHelper.CommonParameterName));
+		}
+
+		private XElement[] ToCaml(bool includeViewTag)
+		{
+			var elements = new List<XElement>();
+
+			// Return <View><Query> ... </Query></View>
+			if (includeViewTag)
+			{
+				var viewTag = new XElement(Tags.View);
+
+				// If there is a 'where', 'orderBy' or 'groupBy' defined, add a <Query> xml element to the main <View> element.
+				if (this.where != null || this.orderBy != null || this.groupBy != null)
+				{
+					viewTag.Add(new XElement(Tags.Query, this.where, this.orderBy, this.groupBy));
+				}
+
+				// If there is a rowLimit defined, add this to the main <View> element.
+				// if (this.rowLimit != null)
+				//{
+				//	viewTag.Add(this.rowLimit);
+				//}
+
+				elements.Add(viewTag);
+			}
+			else
+			{
+				// Return 'raw' elements
+				if (this.where != null)
+				{
+					elements.Add(this.where);
+				}
+				if (this.orderBy != null)
+				{
+					elements.Add(this.orderBy);
+				}
+				if (this.groupBy != null)
+				{
+					elements.Add(this.groupBy);
+				}
+				
+				//if (this.rowLimit != null)
+				//{
+				//	elements.Add(this.rowLimit);
+				//}
+			}
+
+			return elements.ToArray();
+		}
+
+		public CamlQuery ToCamlQuery()
+		{
+			return new CamlQuery { ViewXml = this.ToString(true) };
+		}
+
+		public override string ToString()
+		{
+			return this.ToString(false);
+		}
+
+		public string ToString(bool includeViewTag)
+		{
+			var elements = this.ToCaml(includeViewTag);
+			return convertToString(elements);
+		}
+
+		private string convertToString(XElement[] elements)
+		{
+			var sb = new StringBuilder();
+			Array.ForEach(elements, e => sb.Append(e.ToString()));
+			return sb.ToString();
+		}
+
+		public static implicit operator string(Query query)
+		{
+			return query.ToString();
+		}
+	}
 }

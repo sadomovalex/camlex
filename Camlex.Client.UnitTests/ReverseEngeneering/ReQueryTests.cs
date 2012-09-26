@@ -1,6 +1,6 @@
-﻿#region Copyright(c) Alexey Sadomov, Vladimir Timashkov. All Rights Reserved.
+﻿#region Copyright(c) Alexey Sadomov, Vladimir Timashkov, Stef Heyenrath. All Rights Reserved.
 // -----------------------------------------------------------------------------
-// Copyright(c) 2010 Alexey Sadomov, Vladimir Timashkov. All Rights Reserved.
+// Copyright(c) 2010 Alexey Sadomov, Vladimir Timashkov, Stef Heyenrath. All Rights Reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
@@ -24,64 +24,61 @@
 // fitness for a particular purpose and non-infringement.
 // -----------------------------------------------------------------------------
 #endregion
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using CamlexNET.Impl.ReverseEngeneering;
-using CamlexNET.Interfaces;
-using CamlexNET.Interfaces.ReverseEngeneering;
 using NUnit.Framework;
-using Rhino.Mocks;
 
 namespace CamlexNET.UnitTests.ReverseEngeneering
 {
-    [TestFixture]
-    public class ReQueryTests
-    {
-        [Test]
-        public void test_THAT_1_order_by_IS_translated_sucessfully()
-        {
-            string xml =
-                "<Query>" +
-                "  <OrderBy>" +
-                "    <FieldRef Name=\"Modified\" Ascending=\"False\" />" +
-                "  </OrderBy>" +
-                "</Query>";
+	[TestFixture]
+	public class ReQueryTests
+	{
+		[Test]
+		public void test_THAT_1_order_by_IS_translated_sucessfully()
+		{
+			const string xml =
+				"<View>" +
+				"    <Query>" +
+				"        <OrderBy>" +
+				"            <FieldRef Name=\"Modified\" Ascending=\"False\" />" +
+				"        </OrderBy>" +
+				"    </Query>" +
+				"</View>";
 
-            var expr = Camlex.QueryFromString(xml).ToExpression();
-            Assert.That(expr.ToString(), Is.EqualTo("Query().OrderBy(x => (x.get_Item(\"Modified\") As Desc))"));
-        }
+			var expr = Camlex.QueryFromString(xml).ToExpression();
+			Assert.That(expr.ToString(), Is.EqualTo("Query().OrderBy(x => (x.get_Item(\"Modified\") As Desc))"));
+		}
 
-        [Test]
-        public void test_THAT_2_order_by_ARE_translated_sucessfully()
-        {
-            string xml =
-                "<Query>" +
-                "  <OrderBy>" +
-                "    <FieldRef Name=\"Title\" />" +
-                "    <FieldRef Name=\"Modified\" Ascending=\"False\" />" +
-                "  </OrderBy>" +
-                "</Query>";
+		[Test]
+		public void test_THAT_2_order_by_ARE_translated_sucessfully()
+		{
+			const string xml =
+				"<View>" +
+				"	<Query>" +
+				"		<OrderBy>" +
+				"			<FieldRef Name=\"Title\" />" +
+				"			<FieldRef Name=\"Modified\" Ascending=\"False\" />" +
+				"		</OrderBy>" +
+				"	</Query>" +
+				"</View>";
 
-            var expr = Camlex.QueryFromString(xml).ToExpression();
-            Assert.That(expr.ToString(), Is.EqualTo("Query().OrderBy(x => new [] {x.get_Item(\"Title\"), (x.get_Item(\"Modified\") As Desc)})"));
-        }
+			var expr = Camlex.QueryFromString(xml).ToExpression();
+			Assert.That(expr.ToString(), Is.EqualTo("Query().OrderBy(x => new [] {x.get_Item(\"Title\"), (x.get_Item(\"Modified\") As Desc)})"));
+		}
 
-        [Test]
-        public void test_THAT_multiple_groupby_expression_IS_translated_sucessfully()
-        {
-            var xml =
-                "<Query>" +
-                "  <GroupBy Collapse=\"True\" GroupLimit=\"10\">" +
-                "    <FieldRef Name=\"field1\" />" +
-                "    <FieldRef Name=\"field2\" />" +
-                "  </GroupBy>" +
-                "</Query>";
+		[Test]
+		public void test_THAT_multiple_groupby_expression_IS_translated_sucessfully()
+		{
+			const string xml =
+				"<View>" +
+				"    <Query>" +
+				"        <GroupBy Collapse=\"True\" GroupLimit=\"10\">" +
+				"            <FieldRef Name=\"field1\" />" +
+				"			<FieldRef Name=\"field2\" />" +
+				"		</GroupBy>" +
+				"	</Query>" +
+				"</View>";
 
-            var expr = Camlex.QueryFromString(xml).ToExpression();
-            Assert.That(expr.ToString(), Is.EqualTo("Query().GroupBy(x => new [] {x.get_Item(\"field1\"), x.get_Item(\"field2\")}, True, 10)"));
-        }
-    }
+			var expr = Camlex.QueryFromString(xml).ToExpression();
+			Assert.That(expr.ToString(), Is.EqualTo("Query().GroupBy(x => new [] {x.get_Item(\"field1\"), x.get_Item(\"field2\")}, True, 10)"));
+		}
+	}
 }

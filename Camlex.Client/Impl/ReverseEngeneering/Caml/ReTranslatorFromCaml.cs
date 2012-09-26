@@ -1,6 +1,6 @@
-﻿#region Copyright(c) Alexey Sadomov, Vladimir Timashkov. All Rights Reserved.
+﻿#region Copyright(c) Alexey Sadomov, Vladimir Timashkov, Stef Heyenrath. All Rights Reserved.
 // -----------------------------------------------------------------------------
-// Copyright(c) 2010 Alexey Sadomov, Vladimir Timashkov. All Rights Reserved.
+// Copyright(c) 2010 Alexey Sadomov, Vladimir Timashkov, Stef Heyenrath. All Rights Reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
@@ -30,7 +30,7 @@ using System.Linq.Expressions;
 using System.Xml.Linq;
 using CamlexNET.Impl.Operations.Array;
 using CamlexNET.Interfaces.ReverseEngeneering;
-using Microsoft.SharePoint;
+using Microsoft.SharePoint.Client;
 
 namespace CamlexNET.Impl.ReverseEngeneering.Caml
 {
@@ -77,7 +77,7 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml
             }
             var operation = analyzer.GetOperation();
             var expr = operation.ToExpression();
-            return Expression.Lambda(expr, Expression.Parameter(typeof(SPListItem), ReflectionHelper.CommonParameterName));
+            return Expression.Lambda(expr, Expression.Parameter(typeof(ListItem), ReflectionHelper.CommonParameterName));
         }
 
         private LambdaExpression translateArrayOperation(IReAnalyzer analyzer, string tag)
@@ -108,18 +108,18 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml
 
             // this is important to specify the type of returning value explicitly in generic, becase otherwise
             // it will determine type by itself and it will be incorrect for ArrayOperation with orderings.
-            // I.e. it will be Func<SPListItem, Camlex+Desc>, instead of Func<SPListItem,object>. In turn
-            // it will cause exception in ReLinker, because parameter of type Func<SPListItem, Camlex+Desc>
-            // can not be passed to the method OrderBy(Expression<Func<SPListItem, object>> expr);
+            // I.e. it will be Func<ListItem, Camlex+Desc>, instead of Func<ListItem,object>. In turn
+            // it will cause exception in ReLinker, because parameter of type Func<ListItem, Camlex+Desc>
+            // can not be passed to the method OrderBy(Expression<Func<ListItem, object>> expr);
             if (operandsCount == 1)
             {
-                return Expression.Lambda<Func<SPListItem, object>>(expr,
-                                                           Expression.Parameter(typeof (SPListItem),
+                return Expression.Lambda<Func<ListItem, object>>(expr,
+                                                           Expression.Parameter(typeof (ListItem),
                                                                                 ReflectionHelper.CommonParameterName));
             }
 
-            return Expression.Lambda<Func<SPListItem, object[]>>(expr,
-                                                       Expression.Parameter(typeof(SPListItem),
+            return Expression.Lambda<Func<ListItem, object[]>>(expr,
+                                                       Expression.Parameter(typeof(ListItem),
                                                                             ReflectionHelper.CommonParameterName));
         }
 

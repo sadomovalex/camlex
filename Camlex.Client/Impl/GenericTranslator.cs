@@ -1,6 +1,6 @@
-﻿#region Copyright(c) Alexey Sadomov, Vladimir Timashkov. All Rights Reserved.
+﻿#region Copyright(c) Alexey Sadomov, Vladimir Timashkov, Stef Heyenrath. All Rights Reserved.
 // -----------------------------------------------------------------------------
-// Copyright(c) 2010 Alexey Sadomov, Vladimir Timashkov. All Rights Reserved.
+// Copyright(c) 2010 Alexey Sadomov, Vladimir Timashkov, Stef Heyenrath. All Rights Reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
@@ -25,89 +25,83 @@
 // -----------------------------------------------------------------------------
 #endregion
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using System.Xml.Linq;
 using CamlexNET.Impl.Operations.Results;
 using CamlexNET.Interfaces;
-using Microsoft.SharePoint;
+using Microsoft.SharePoint.Client;
 
 namespace CamlexNET.Impl
 {
-    internal class GenericTranslator : ITranslator
-    {
-        private readonly IAnalyzer analyzer;
+	internal class GenericTranslator : ITranslator
+	{
+		private readonly IAnalyzer analyzer;
 
-        public GenericTranslator(IAnalyzer analyzer)
-        {
-            this.analyzer = analyzer;
-        }
+		public GenericTranslator(IAnalyzer analyzer)
+		{
+			this.analyzer = analyzer;
+		}
 
-        public XElement TranslateWhere(LambdaExpression expr)
-        {
-            if (!this.analyzer.IsValid(expr))
-            {
-                throw new NonSupportedExpressionException(expr);
-            }
+		public XElement TranslateWhere(LambdaExpression expr)
+		{
+			if (!this.analyzer.IsValid(expr))
+			{
+				throw new NonSupportedExpressionException(expr);
+			}
 
-            var operation = this.analyzer.GetOperation(expr);
-            var operationCaml = operation.ToResult().Value;
+			var operation = this.analyzer.GetOperation(expr);
+			var operationCaml = operation.ToResult().Value;
 
-            var caml = new XElement(Tags.Where, operationCaml);
-            return caml;
-        }
+			return new XElement(Tags.Where, operationCaml);
+		}
 
-        public XElement TranslateOrderBy(LambdaExpression expr)
-        {
-            if (!this.analyzer.IsValid(expr))
-            {
-                throw new NonSupportedExpressionException(expr);
-            }
+		public XElement TranslateOrderBy(LambdaExpression expr)
+		{
+			if (!this.analyzer.IsValid(expr))
+			{
+				throw new NonSupportedExpressionException(expr);
+			}
 
-            var operation = this.analyzer.GetOperation(expr);
-            var result = (XElementArrayOperationResult)operation.ToResult();
+			var operation = this.analyzer.GetOperation(expr);
+			var result = (XElementArrayOperationResult)operation.ToResult();
 
-            var caml = new XElement(Tags.OrderBy, result.Value);
-            return caml;
-        }
+			return new XElement(Tags.OrderBy, result.Value);
+		}
 
-        public XElement TranslateGroupBy(LambdaExpression expr, bool? collapse, int? groupLimit)
-        {
-            if (!this.analyzer.IsValid(expr))
-            {
-                throw new NonSupportedExpressionException(expr);
-            }
+		public XElement TranslateGroupBy(LambdaExpression expr, bool? collapse, int? groupLimit)
+		{
+			if (!this.analyzer.IsValid(expr))
+			{
+				throw new NonSupportedExpressionException(expr);
+			}
 
-            var operation = this.analyzer.GetOperation(expr);
-            var result = (XElementArrayOperationResult)operation.ToResult();
+			var operation = this.analyzer.GetOperation(expr);
+			var result = (XElementArrayOperationResult)operation.ToResult();
 
-            var caml = new XElement(Tags.GroupBy, result.Value);
-            if (collapse != null)
-            {
-                caml.SetAttributeValue(Attributes.Collapse, collapse.Value.ToString());
-            }
-            if (groupLimit != null)
-            {
-                caml.SetAttributeValue(Attributes.GroupLimit, groupLimit.Value);
-            }
+			var caml = new XElement(Tags.GroupBy, result.Value);
+			if (collapse != null)
+			{
+				caml.SetAttributeValue(Attributes.Collapse, collapse.Value.ToString());
+			}
+			if (groupLimit != null)
+			{
+				caml.SetAttributeValue(Attributes.GroupLimit, groupLimit.Value);
+			}
 
-            return caml;
-        }
+			return caml;
+		}
 
-        public XElement TranslateViewFields(Expression<Func<SPListItem, object[]>> expr)
-        {
-            if (!this.analyzer.IsValid(expr))
-            {
-                throw new NonSupportedExpressionException(expr);
-            }
+		public XElement TranslateViewFields(Expression<Func<ListItem, object[]>> expr)
+		{
+			if (!this.analyzer.IsValid(expr))
+			{
+				throw new NonSupportedExpressionException(expr);
+			}
 
-            var operation = this.analyzer.GetOperation(expr);
-            var result = (XElementArrayOperationResult)operation.ToResult();
+			var operation = this.analyzer.GetOperation(expr);
+			var result = (XElementArrayOperationResult)operation.ToResult();
 
-            var caml = new XElement(Tags.ViewFields, result.Value);
-            return caml;
-        }
-    }
+			return new XElement(Tags.ViewFields, result.Value);
+		}
+	}
 }

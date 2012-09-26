@@ -1,6 +1,6 @@
-﻿#region Copyright(c) Alexey Sadomov, Vladimir Timashkov. All Rights Reserved.
+﻿#region Copyright(c) Alexey Sadomov, Vladimir Timashkov, Stef Heyenrath. All Rights Reserved.
 // -----------------------------------------------------------------------------
-// Copyright(c) 2010 Alexey Sadomov, Vladimir Timashkov. All Rights Reserved.
+// Copyright(c) 2010 Alexey Sadomov, Vladimir Timashkov, Stef Heyenrath. All Rights Reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
@@ -24,55 +24,97 @@
 // fitness for a particular purpose and non-infringement.
 // -----------------------------------------------------------------------------
 #endregion
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using NUnit.Framework;
 
 namespace CamlexNET.UnitTests.Helpers
 {
-    public class CamlComparer : IComparer<string>
-    {
-        public int Compare(string x, string y)
-        {
-            x = this.removeSpacesBetweenTags(x.Trim());
-            y = this.removeSpacesBetweenTags(y.Trim());
-            return string.Compare(x, y);
-        }
+	public class CamlComparer : IComparer<string>
+	{
+		/// <summary>
+		/// Compares two objects and returns a value indicating whether one is less than, equal to, or greater than the other
+		/// </summary>
+		/// <param name="x">The first object to compare.</param>
+		/// <param name="y">The second object to compare.</param>
+		/// <returns></returns>
+		public int Compare(string x, string y)
+		{
+			x = this.RemoveSpacesBetweenTags(x.Trim());
+			y = this.RemoveSpacesBetweenTags(y.Trim());
 
-        private string removeSpacesBetweenTags(string s)
-        {
-            var re = new Regex(">.+?<", RegexOptions.Singleline);
-            string result = re.Replace(s, m => string.Format(">{0}<", m.Value.Substring(1, m.Value.Length - 2).Trim(new [] {' ', '\n', '\r'})));
-            return result;
-        }
-    }
+			return string.Compare(x, y);
+		}
 
-    [TestFixture]
-    public class CamlComparerTests
-    {
-        [Test]
-        public void test_THAT_strings_ARE_equal1()
-        {
-            string s1 = "<eq>1</eq>";
-            string s2 =
-                @"<eq>
-                    1
-                </eq>";
-            Assert.That(new CamlComparer().Compare(s1, s2), Is.EqualTo(0));
-        }
+		/// <summary>
+		/// Removes the spaces, newlines, returns and tabs between tags.
+		/// </summary>
+		/// <param name="s">The string.</param>
+		/// <returns>formatted string</returns>
+		private string RemoveSpacesBetweenTags(string s)
+		{
+			var regEx = new Regex(">.+?<", RegexOptions.Singleline);
 
-        [Test]
-        public void test_THAT_strings_ARE_equal2()
-        {
-            string s1 = " <eq>1</eq>";
-            string s2 =
-                @"<eq>
-                    1
-                </eq> ";
-            Assert.That(new CamlComparer().Compare(s1, s2), Is.EqualTo(0));
-        }
-    }
+			return regEx.Replace(s, m => string.Format(">{0}<", m.Value.Substring(1, m.Value.Length - 2).Trim(new[] { ' ', '\n', '\r', '\t' })));
+		}
+	}
+
+	[TestFixture]
+	public class CamlComparerTests
+	{
+		[Test]
+		public void test_THAT_strings_ARE_equal1()
+		{
+			string s1 = "<eq>1</eq>";
+			string s2 =
+				@"<eq>
+					1
+				</eq>";
+			Assert.That(s1, Is.EqualTo(s2).Using(new CamlComparer()));
+		}
+
+		[Test]
+		public void test_THAT_strings_ARE_equal2()
+		{
+			string s1 = " <eq>1</eq> "; // spaces
+			string s2 =
+				@"<eq>
+					1
+				</eq> ";
+			Assert.That(s1, Is.EqualTo(s2).Using(new CamlComparer()));
+		}
+
+		[Test]
+		public void test_THAT_strings_ARE_equal3()
+		{
+			string s1 = "\t<eq>1</eq>\t"; // tabs
+			string s2 =
+				@"<eq>
+					1
+				</eq> ";
+			Assert.That(s1, Is.EqualTo(s2).Using(new CamlComparer()));
+		}
+
+		[Test]
+		public void test_THAT_strings_ARE_equal4()
+		{
+			string s1 = "\r\n<eq>1</eq>\r\n"; // newline and return
+			string s2 =
+				@"<eq>
+					1
+				</eq> ";
+			Assert.That(s1, Is.EqualTo(s2).Using(new CamlComparer()));
+		}
+
+		[Test]
+		public void test_THAT_strings_ARE_equal5()
+		{
+			string s1 = "\r\n\t <eq>1</eq>\r\n\t "; // mixed
+			string s2 =
+				@"<eq>
+					1
+				</eq> ";
+			Assert.That(s1, Is.EqualTo(s2).Using(new CamlComparer()));
+		}
+	}
 }
