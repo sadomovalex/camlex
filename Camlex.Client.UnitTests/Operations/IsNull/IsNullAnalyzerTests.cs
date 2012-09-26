@@ -1,6 +1,6 @@
-﻿#region Copyright(c) Alexey Sadomov, Vladimir Timashkov. All Rights Reserved.
+﻿#region Copyright(c) Alexey Sadomov, Vladimir Timashkov, Stef Heyenrath. All Rights Reserved.
 // -----------------------------------------------------------------------------
-// Copyright(c) 2010 Alexey Sadomov, Vladimir Timashkov. All Rights Reserved.
+// Copyright(c) 2010 Alexey Sadomov, Vladimir Timashkov, Stef Heyenrath. All Rights Reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
@@ -27,70 +27,69 @@
 using System;
 using System.Linq.Expressions;
 using CamlexNET.Impl.Operands;
-using CamlexNET.Impl.Operations.IsNotNull;
 using CamlexNET.Impl.Operations.IsNull;
 using CamlexNET.Interfaces;
-using Microsoft.SharePoint;
+using Microsoft.SharePoint.Client;
 using NUnit.Framework;
 using Rhino.Mocks;
 
 namespace CamlexNET.UnitTests.Operations.IsNull
 {
-    [TestFixture]
-    public class IsNullAnalyzerTests
-    {
-        [Test]
-        public void test_THAT_isnull_expression_IS_valid()
-        {
-            var operandBuilder = MockRepository.GenerateStub<IOperandBuilder>();
-            operandBuilder.Stub(b => b.CreateValueOperandForNativeSyntax(null)).Return(new NullValueOperand()).IgnoreArguments();
+	[TestFixture]
+	public class IsNullAnalyzerTests
+	{
+		[Test]
+		public void test_THAT_isnull_expression_IS_valid()
+		{
+			var operandBuilder = MockRepository.GenerateStub<IOperandBuilder>();
+			operandBuilder.Stub(b => b.CreateValueOperandForNativeSyntax(null)).Return(new NullValueOperand()).IgnoreArguments();
 
-            var analyzer = new IsNullAnalyzer(null, operandBuilder);
-            Expression<Func<SPListItem, bool>> expr = x => x["Count"] == null;
-            Assert.That(analyzer.IsValid(expr), Is.True);
-        }
+			var analyzer = new IsNullAnalyzer(null, operandBuilder);
+			Expression<Func<ListItem, bool>> expr = x => x["Count"] == null;
+			Assert.That(analyzer.IsValid(expr), Is.True);
+		}
 
-        [Test]
-        public void test_THAT_string_based_expression_IS_not_valid_isnull_expression()
-        {
-            var operandBuilder = MockRepository.GenerateStub<IOperandBuilder>();
-            operandBuilder.Stub(b => b.CreateValueOperandForNativeSyntax(null)).Return(new NullValueOperand()).IgnoreArguments();
+		[Test]
+		public void test_THAT_string_based_expression_IS_not_valid_isnull_expression()
+		{
+			var operandBuilder = MockRepository.GenerateStub<IOperandBuilder>();
+			operandBuilder.Stub(b => b.CreateValueOperandForNativeSyntax(null)).Return(new NullValueOperand()).IgnoreArguments();
 
-            var analyzer = new IsNullAnalyzer(null, operandBuilder);
-            Expression<Func<SPListItem, bool>> expr = x => x["Count"] == (DataTypes.Integer)"1";
-            Assert.That(analyzer.IsValid(expr), Is.False);
-        }
+			var analyzer = new IsNullAnalyzer(null, operandBuilder);
+			Expression<Func<ListItem, bool>> expr = x => x["Count"] == (DataTypes.Integer)"1";
+			Assert.That(analyzer.IsValid(expr), Is.False);
+		}
 
-        [Test]
-        public void test_THAT_string_based_null_expression_IS_valid_isnull_expression()
-        {
-            var operandBuilder = MockRepository.GenerateStub<IOperandBuilder>();
-            operandBuilder.Stub(b => b.CreateValueOperandForNativeSyntax(null)).Return(new NullValueOperand()).IgnoreArguments();
+		[Test]
+		public void test_THAT_string_based_null_expression_IS_valid_isnull_expression()
+		{
+			var operandBuilder = MockRepository.GenerateStub<IOperandBuilder>();
+			operandBuilder.Stub(b => b.CreateValueOperandForNativeSyntax(null)).Return(new NullValueOperand()).IgnoreArguments();
 
-            var analyzer = new IsNullAnalyzer(null, operandBuilder);
-            Expression<Func<SPListItem, bool>> expr = x => x["Count"] == (DataTypes.Integer)null;
-            Assert.That(analyzer.IsValid(expr), Is.True);
-        }
+			var analyzer = new IsNullAnalyzer(null, operandBuilder);
+			Expression<Func<ListItem, bool>> expr = x => x["Count"] == (DataTypes.Integer)null;
+			Assert.That(analyzer.IsValid(expr), Is.True);
+		}
 
-        [Test]
-        public void test_THAT_isnull_expression_IS_determined_properly()
-        {
-            // arrange
-            Expression<Func<SPListItem, bool>> expr = x => x["Count"] == null;
+		[Test]
+		public void test_THAT_isnull_expression_IS_determined_properly()
+		{
+			// arrange
+			Expression<Func<ListItem, bool>> expr = x => x["Count"] == null;
 
-            var operandBuilder = MockRepository.GenerateStub<IOperandBuilder>();
-            operandBuilder.Stub(b => b.CreateFieldRefOperand(expr.Body, null)).Return(null);
-            operandBuilder.Stub(b => b.CreateValueOperandForNativeSyntax(expr.Body)).Return(new NullValueOperand()).IgnoreArguments();
+			var operandBuilder = MockRepository.GenerateStub<IOperandBuilder>();
+			operandBuilder.Stub(b => b.CreateFieldRefOperand(expr.Body, null)).Return(null);
+			operandBuilder.Stub(b => b.CreateValueOperandForNativeSyntax(expr.Body)).Return(new NullValueOperand()).IgnoreArguments();
 
-            var analyzer = new IsNullAnalyzer(null, operandBuilder);
+			var analyzer = new IsNullAnalyzer(null, operandBuilder);
 
-            // act
-            var operation = analyzer.GetOperation(expr);
+			// act
+			var operation = analyzer.GetOperation(expr);
 
-            //assert
-            Assert.That(operation, Is.InstanceOf<IsNullOperation>());
-        }
-    }
+			//assert
+			Assert.That(operation, Is.InstanceOf<IsNullOperation>());
+		}
+	}
 }
 
 

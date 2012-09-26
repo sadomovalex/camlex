@@ -76,7 +76,7 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Factories
                 {
                     var doc = XDocument.Load(tr);
 
-                    if (doc.Elements().Count() != 1 || doc.Elements().First().Name != Tags.Query)
+                    if (doc.Elements().Count() != 1 || doc.Elements().First().Name != Tags.View)
                     {
                         throw new XmlNotWellFormedException();
                     }

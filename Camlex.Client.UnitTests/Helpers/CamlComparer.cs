@@ -24,21 +24,15 @@
 // fitness for a particular purpose and non-infringement.
 // -----------------------------------------------------------------------------
 #endregion
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using NUnit.Framework;
 
 namespace CamlexNET.UnitTests.Helpers
 {
-    public class CaseInsensetiveComparer : IComparer<string>
-    {
-        public int Compare(string x, string y)
-        {
-            return string.Compare(x, y, true);
-        }
-
-    }
+	public class CaseInsensetiveComparer : IComparer<string>
+	{
+		public int Compare(string x, string y)
+		{
+			return string.Compare(x, y, true);
+		}
+	}
 }

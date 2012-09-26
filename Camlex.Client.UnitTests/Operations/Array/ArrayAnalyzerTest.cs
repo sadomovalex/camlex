@@ -1,6 +1,6 @@
-﻿#region Copyright(c) Alexey Sadomov, Vladimir Timashkov. All Rights Reserved.
+﻿#region Copyright(c) Alexey Sadomov, Vladimir Timashkov, Stef Heyenrath. All Rights Reserved.
 // -----------------------------------------------------------------------------
-// Copyright(c) 2010 Alexey Sadomov, Vladimir Timashkov. All Rights Reserved.
+// Copyright(c) 2010 Alexey Sadomov, Vladimir Timashkov, Stef Heyenrath. All Rights Reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
@@ -25,52 +25,50 @@
 // -----------------------------------------------------------------------------
 #endregion
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using CamlexNET.Impl.Operations.Array;
 using CamlexNET.Interfaces;
-using Microsoft.SharePoint;
+using Microsoft.SharePoint.Client;
 using NUnit.Framework;
 using Rhino.Mocks;
 
 namespace CamlexNET.UnitTests.Array
 {
-    [TestFixture]
-    public class ArrayAnalyzerTest
-    {
-        [Test]
-        public void test_THAT_array_expression_IS_valid()
-        {
-            var analyzer = new ArrayAnalyzer(null, null);
-            Expression<Func<SPListItem, object[]>> expr = (x => new [] { x["field1"], x["field2"] as Camlex.Asc, x["field3"] as Camlex.Desc });
-            Assert.That(analyzer.IsValid(expr), Is.True);
-        }
+	[TestFixture]
+	public class ArrayAnalyzerTest
+	{
+		[Test]
+		public void test_THAT_array_expression_IS_valid()
+		{
+			var analyzer = new ArrayAnalyzer(null, null);
+			Expression<Func<ListItem, object[]>> expr = (x => new[] { x["field1"], x["field2"] as Camlex.Asc, x["field3"] as Camlex.Desc });
+			Assert.That(analyzer.IsValid(expr), Is.True);
+		}
 
-        [Test]
-        public void test_THAT_array_expression_IS_determined_properly()
-        {
-            // arrange
-            Expression<Func<SPListItem, object[]>> expr = (x => new[] { x["field1"], x["field2"] as Camlex.Asc, x["field3"] as Camlex.Desc });
+		[Test]
+		public void test_THAT_array_expression_IS_determined_properly()
+		{
+			// arrange
+			Expression<Func<ListItem, object[]>> expr = (x => new[] { x["field1"], x["field2"] as Camlex.Asc, x["field3"] as Camlex.Desc });
 
-            var operandBuilder = MockRepository.GenerateStub<IOperandBuilder>();
-            operandBuilder.Stub(b => b.CreateFieldRefOperandWithOrdering(null, null)).Return(null).IgnoreArguments();
-            var analyzer = new ArrayAnalyzer(null, operandBuilder);
+			var operandBuilder = MockRepository.GenerateStub<IOperandBuilder>();
+			operandBuilder.Stub(b => b.CreateFieldRefOperandWithOrdering(null, null)).Return(null).IgnoreArguments();
+			var analyzer = new ArrayAnalyzer(null, operandBuilder);
 
-            // act
-            var operation = analyzer.GetOperation(expr);
+			// act
+			var operation = analyzer.GetOperation(expr);
 
-            //assert
-            Assert.That(operation, Is.InstanceOf<ArrayOperation>());
-        }
+			//assert
+			Assert.That(operation, Is.InstanceOf<ArrayOperation>());
+		}
 
-        [Test]
-        public void test_THAT_array_expression_with_guids_IS_valid()
-        {
-            var analyzer = new ArrayAnalyzer(null, null);
-            Expression<Func<SPListItem, object[]>> expr = (x => new[] { x[SPBuiltInFieldId.ContentTypeId], x["field2"] as Camlex.Asc, x[SPBuiltInFieldId.Modified] as Camlex.Desc });
-            Assert.That(analyzer.IsValid(expr), Is.True);
-        }
-    }
+		// Not supported in Client Object Model
+		//[Test]
+		//public void test_THAT_array_expression_with_guids_IS_valid()
+		//{
+		//    var analyzer = new ArrayAnalyzer(null, null);
+		//    Expression<Func<ListItem, object[]>> expr = (x => new[] { x[SPBuiltInFieldId.ContentTypeId], x["field2"] as Camlex.Asc, x[SPBuiltInFieldId.Modified] as Camlex.Desc });
+		//    Assert.That(analyzer.IsValid(expr), Is.True);
+		//}
+	}
 }

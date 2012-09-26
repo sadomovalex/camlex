@@ -1,6 +1,6 @@
-﻿#region Copyright(c) Alexey Sadomov, Vladimir Timashkov. All Rights Reserved.
+﻿#region Copyright(c) Alexey Sadomov, Vladimir Timashkov, Stef Heyenrath. All Rights Reserved.
 // -----------------------------------------------------------------------------
-// Copyright(c) 2010 Alexey Sadomov, Vladimir Timashkov. All Rights Reserved.
+// Copyright(c) 2010 Alexey Sadomov, Vladimir Timashkov, Stef Heyenrath. All Rights Reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
@@ -24,68 +24,79 @@
 // fitness for a particular purpose and non-infringement.
 // -----------------------------------------------------------------------------
 #endregion
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using CamlexNET.Impl.Operands;
 using NUnit.Framework;
 
 namespace CamlexNET.UnitTests.Operands
 {
-    [TestFixture]
-    public class BooleanValueOperandTests
-    {
-        [Test]
-        public void test_THAT_boolean_value_IS_rendered_to_caml_properly()
-        {
-            var operand = new BooleanValueOperand(true);
-            string caml = operand.ToCaml().ToString();
-            Assert.That(caml, Is.EqualTo("<Value Type=\"Boolean\">1</Value>"));
-        }
+	[TestFixture]
+	public class BooleanValueOperandTests
+	{
+		[Test]
+		public void test_THAT_boolean_value_IS_rendered_to_caml_properly()
+		{
+			var operand = new BooleanValueOperand(true);
+			string caml = operand.ToCaml().ToString();
+			Assert.That(caml, Is.EqualTo("<Value Type=\"Boolean\">1</Value>"));
+		}
 
-        [Test]
-        public void test_THAT_boolean_value_IS_successfully_created_from_valid_string1()
-        {
-            var operand = new BooleanValueOperand("True");
-            Assert.That(operand.Value, Is.True);
-        }
+		[Test]
+		public void test_THAT_boolean_value_IS_successfully_created_from_valid_string1()
+		{
+			var operand = new BooleanValueOperand("True");
+			Assert.That(operand.Value, Is.True);
+		}
 
-        [Test]
-        public void test_THAT_boolean_value_IS_successfully_created_from_valid_string2()
-        {
-            var operand = new BooleanValueOperand("False");
-            Assert.That(operand.Value, Is.False);
-        }
+		[Test]
+		public void test_THAT_boolean_value_IS_successfully_created_from_valid_string2()
+		{
+			var operand = new BooleanValueOperand("False");
+			Assert.That(operand.Value, Is.False);
+		}
 
-        [Test]
-        public void test_THAT_boolean_value_IS_successfully_created_from_valid_string3()
-        {
-            var operand = new BooleanValueOperand("1");
-            Assert.That(operand.Value, Is.True);
-        }
+		[Test]
+		public void test_THAT_boolean_value_IS_successfully_created_from_valid_string3()
+		{
+			var operand = new BooleanValueOperand("1");
+			Assert.That(operand.Value, Is.True);
+		}
 
-        [Test]
-        public void test_THAT_boolean_value_IS_successfully_created_from_valid_string4()
-        {
-            var operand = new BooleanValueOperand("0");
-            Assert.That(operand.Value, Is.False);
-        }
+		[Test]
+		public void test_THAT_boolean_value_IS_successfully_created_from_valid_string4()
+		{
+			var operand = new BooleanValueOperand("0");
+			Assert.That(operand.Value, Is.False);
+		}
 
-        [Test]
-        [ExpectedException(typeof(InvalidValueForOperandTypeException))]
-        public void test_WHEN_string_is_not_valid_boolean_THEN_exception_is_thrown1()
-        {
-            var operand = new BooleanValueOperand("asd");
-            Assert.That(operand.Value, Is.False);
-        }
+		[Test]
+		public void test_THAT_boolean_value_IS_successfully_created_from_valid_string5()
+		{
+			var operand = new BooleanValueOperand(null);
+			Assert.That(operand.Value, Is.False);
+		}
 
-        [Test]
-        [ExpectedException(typeof(InvalidValueForOperandTypeException))]
-        public void test_WHEN_string_is_not_valid_boolean_THEN_exception_is_thrown2()
-        {
-            var operand = new BooleanValueOperand("2");
-            Assert.That(operand.Value, Is.False);
-        }
-    }
+		[Test]
+		[ExpectedException(typeof(InvalidValueForOperandTypeException))]
+		public void test_WHEN_string_is_not_valid_boolean_THEN_exception_is_thrown1()
+		{
+			var operand = new BooleanValueOperand("asd");
+			Assert.That(operand.Value, Is.False);
+		}
+
+		[Test]
+		[ExpectedException(typeof(InvalidValueForOperandTypeException))]
+		public void test_WHEN_string_is_not_valid_boolean_THEN_exception_is_thrown2()
+		{
+			var operand = new BooleanValueOperand("2");
+			Assert.That(operand.Value, Is.False);
+		}
+
+		[Test]
+		[ExpectedException(typeof(InvalidValueForOperandTypeException))]
+		public void test_WHEN_string_is_not_valid_boolean_THEN_exception_is_thrown3()
+		{
+			var operand = new BooleanValueOperand("");
+			Assert.That(operand.Value, Is.False);
+		}
+	}
 }

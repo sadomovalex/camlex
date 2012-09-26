@@ -1,6 +1,6 @@
-﻿#region Copyright(c) Alexey Sadomov, Vladimir Timashkov. All Rights Reserved.
+﻿#region Copyright(c) Alexey Sadomov, Vladimir Timashkov, Stef Heyenrath. All Rights Reserved.
 // -----------------------------------------------------------------------------
-// Copyright(c) 2010 Alexey Sadomov, Vladimir Timashkov. All Rights Reserved.
+// Copyright(c) 2010 Alexey Sadomov, Vladimir Timashkov, Stef Heyenrath. All Rights Reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
@@ -26,45 +26,44 @@
 #endregion
 using System;
 using System.Linq.Expressions;
-using CamlexNET.Impl.Operations.Geq;
 using CamlexNET.Impl.Operations.Gt;
 using CamlexNET.Interfaces;
-using Microsoft.SharePoint;
+using Microsoft.SharePoint.Client;
 using NUnit.Framework;
 using Rhino.Mocks;
 
 namespace CamlexNET.UnitTests.Operations.Gt
 {
-    [TestFixture]
-    public class GtAnalyzerTests
-    {
-        [Test]
-        public void test_THAT_gt_expression_IS_valid()
-        {
-            var analyzer = new GtAnalyzer(null, null);
-            Expression<Func<SPListItem, bool>> expr = x => (int) x["Count"] > 1;
-            Assert.That(analyzer.IsValid(expr), Is.True);
-        }
+	[TestFixture]
+	public class GtAnalyzerTests
+	{
+		[Test]
+		public void test_THAT_gt_expression_IS_valid()
+		{
+			var analyzer = new GtAnalyzer(null, null);
+			Expression<Func<ListItem, bool>> expr = x => (int)x["Count"] > 1;
+			Assert.That(analyzer.IsValid(expr), Is.True);
+		}
 
-        [Test]
-        public void test_THAT_gt_expression_IS_determined_properly()
-        {
-            // arrange
-            Expression<Func<SPListItem, bool>> expr = x => (int)x["Count"] > 1;
+		[Test]
+		public void test_THAT_gt_expression_IS_determined_properly()
+		{
+			// arrange
+			Expression<Func<ListItem, bool>> expr = x => (int)x["Count"] > 1;
 
-            var operandBuilder = MockRepository.GenerateStub<IOperandBuilder>();
-            operandBuilder.Stub(b => b.CreateFieldRefOperand(expr.Body, null)).Return(null);
-            operandBuilder.Stub(b => b.CreateValueOperandForNativeSyntax(expr.Body)).Return(null);
+			var operandBuilder = MockRepository.GenerateStub<IOperandBuilder>();
+			operandBuilder.Stub(b => b.CreateFieldRefOperand(expr.Body, null)).Return(null);
+			operandBuilder.Stub(b => b.CreateValueOperandForNativeSyntax(expr.Body)).Return(null);
 
-            var analyzer = new GtAnalyzer(null, operandBuilder);
+			var analyzer = new GtAnalyzer(null, operandBuilder);
 
-            // act
-            var operation = analyzer.GetOperation(expr);
+			// act
+			var operation = analyzer.GetOperation(expr);
 
-            //assert
-            Assert.That(operation, Is.InstanceOf<GtOperation>());
-        }
-    }
+			//assert
+			Assert.That(operation, Is.InstanceOf<GtOperation>());
+		}
+	}
 }
 
 

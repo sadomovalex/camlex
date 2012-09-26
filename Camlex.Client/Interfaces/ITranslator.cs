@@ -1,6 +1,6 @@
-﻿#region Copyright(c) Alexey Sadomov, Vladimir Timashkov. All Rights Reserved.
+﻿#region Copyright(c) Alexey Sadomov, Vladimir Timashkov, Stef Heyenrath. All Rights Reserved.
 // -----------------------------------------------------------------------------
-// Copyright(c) 2010 Alexey Sadomov, Vladimir Timashkov. All Rights Reserved.
+// Copyright(c) 2010 Alexey Sadomov, Vladimir Timashkov, Stef Heyenrath. All Rights Reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
@@ -25,20 +25,17 @@
 // -----------------------------------------------------------------------------
 #endregion
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using System.Xml.Linq;
-using Microsoft.SharePoint;
+using Microsoft.SharePoint.Client;
 
 namespace CamlexNET.Interfaces
 {
-    internal interface ITranslator
-    {
-        XElement TranslateWhere(LambdaExpression expr);
-        XElement TranslateOrderBy(LambdaExpression expr);
-        XElement TranslateGroupBy(LambdaExpression expr, bool? collapse, int? groupLimit);
-        XElement TranslateViewFields(Expression<Func<SPListItem, object[]>> expr);
-    }
+	internal interface ITranslator
+	{
+		XElement TranslateWhere(LambdaExpression expr);
+		XElement TranslateOrderBy(LambdaExpression expr);
+		XElement TranslateGroupBy(LambdaExpression expr, bool? collapse, int? groupLimit);
+		XElement TranslateViewFields(Expression<Func<ListItem, object[]>> expr);
+	}
 }
