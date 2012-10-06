@@ -230,15 +230,14 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers.TestBase
 				ComparisonOperationsSupport = false,
 				TextualOperationsSupport = false
 			},
-			// Not support in Client Object Model
-			//new SupportedValueType
-			//{
-			//    SupportedType = typeof(DataTypes.ModStat),
-			//    ExamplesOfCorrectValue = new List<string> { SPModerationStatusType.Approved.ToString(), ((int)SPModerationStatusType.Denied).ToString() },
-			//    ExamplesOfIncorrectValue = new List<string> { string.Empty, "foo" },
-			//    ComparisonOperationsSupport = false,
-			//    TextualOperationsSupport = false
-			//},
+			new SupportedValueType
+			{
+			    SupportedType = typeof(DataTypes.ModStat),
+			    ExamplesOfCorrectValue = new List<string> { "Approved", "1" },
+			    ExamplesOfIncorrectValue = new List<string> { string.Empty, "foo" },
+			    ComparisonOperationsSupport = false,
+			    TextualOperationsSupport = false
+			},
 			new SupportedValueType
 			{
 				SupportedType = typeof(DataTypes.MultiChoice),
@@ -319,24 +318,22 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers.TestBase
 				ComparisonOperationsSupport = false,
 				TextualOperationsSupport = false
 			},
-			// Not support in Client Object Model
-			//new SupportedValueType
-			//{
-			//    SupportedType = typeof(DataTypes.WorkflowEventType),
-			//    ExamplesOfCorrectValue = new List<string> { SPWorkflowHistoryEventType.TaskCompleted.ToString(), ((int)SPWorkflowHistoryEventType.TaskModified).ToString() },
-			//    ExamplesOfIncorrectValue = new List<string> { string.Empty, "foo" },
-			//    ComparisonOperationsSupport = false,
-			//    TextualOperationsSupport = false
-			//},
-			// Not support in Client Object Model
-			//new SupportedValueType
-			//{
-			//    SupportedType = typeof(DataTypes.WorkflowStatus),
-			//    ExamplesOfCorrectValue = new List<string> { SPWorkflowStatus.InProgress.ToString(), ((int)SPWorkflowStatus.Completed).ToString() },
-			//    ExamplesOfIncorrectValue = new List<string> { string.Empty, "foo" },
-			//    ComparisonOperationsSupport = false,
-			//    TextualOperationsSupport = false
-			//}
+			new SupportedValueType
+			{
+			    SupportedType = typeof(DataTypes.WorkflowEventType),
+			    ExamplesOfCorrectValue = new List<string> { "TaskCompleted", "7" },
+			    ExamplesOfIncorrectValue = new List<string> { string.Empty, "foo" },
+			    ComparisonOperationsSupport = false,
+			    TextualOperationsSupport = false
+			},
+			new SupportedValueType
+			{
+			    SupportedType = typeof(DataTypes.WorkflowStatus),
+			    ExamplesOfCorrectValue = new List<string> { "InProgress", "5" },
+			    ExamplesOfIncorrectValue = new List<string> { string.Empty, "foo" },
+			    ComparisonOperationsSupport = false,
+			    TextualOperationsSupport = false
+			}
 		};
 
 		#endregion
