@@ -27,6 +27,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Xml.Linq;
 using Microsoft.SharePoint.Client;
 
 namespace CamlexNET.Interfaces
@@ -53,6 +54,28 @@ namespace CamlexNET.Interfaces
 		IQuery GroupBy(Expression<Func<ListItem, object>> expr, bool? collapse);
 		IQuery GroupBy(string existingGroupBy, Expression<Func<ListItem, object>> expr);
 		IQuery GroupBy(string existingGroupBy, Expression<Func<ListItem, object[]>> expr);
+
+        IQuery ViewFields(Expression<Func<ListItem, object>> expr);
+//        IQuery ViewFields(Expression<Func<ListItem, object>> expr, bool includeViewFieldsTag);
+        IQuery ViewFields(Expression<Func<ListItem, object[]>> expr);
+//        IQuery ViewFields(Expression<Func<ListItem, object[]>> expr, bool includeViewFieldsTag);
+
+        IQuery ViewFields(string existingViewFields, Expression<Func<ListItem, object>> expr);
+//        IQuery ViewFields(string existingViewFields, Expression<Func<ListItem, object>> expr, bool includeViewFieldsTag);
+        IQuery ViewFields(string existingViewFields, Expression<Func<ListItem, object[]>> expr);
+//        IQuery ViewFields(string existingViewFields, Expression<Func<ListItem, object[]>> expr, bool includeViewFieldsTag);
+
+        IQuery ViewFields(IEnumerable<string> titles);
+//        IQuery ViewFields(IEnumerable<string> titles, bool includeViewFieldsTag);
+//        IQuery ViewFields(IEnumerable<Guid> ids);
+//        IQuery ViewFields(IEnumerable<Guid> ids, bool includeViewFieldsTag);
+
+        IQuery ViewFields(string existingViewFields, IEnumerable<string> titles);
+//        IQuery ViewFields(string existingViewFields, IEnumerable<string> titles, bool includeViewFieldsTag);
+//        IQuery ViewFields(string existingViewFields, IEnumerable<Guid> ids);
+//        IQuery ViewFields(string existingViewFields, IEnumerable<Guid> ids, bool includeViewFieldsTag);
+
+	    XElement[] ToCaml(bool includeViewTag);
 		string ToString();
 		string ToString(bool includeViewTag);
 		CamlQuery ToCamlQuery();

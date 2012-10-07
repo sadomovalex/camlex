@@ -122,7 +122,7 @@ namespace CamlexNET
             relinkerFactory = new ReLinkerFromCamlFactory();
         }
 
-        public static IQueryEx Query()
+        public static IQuery Query()
         {
             return new Query(translatorFactory, retranslatorFactory);
         }

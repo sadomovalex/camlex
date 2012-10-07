@@ -451,13 +451,33 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
 			const string existingQuery =
 				"    <FieldRef Name=\"Modified\" />";
 
-			const string expected =
-				"  <FieldRef Name=\"Modified\" />" +
-				"  <FieldRef Name=\"Title\" />";
+		    const string expected =
+		        "<ViewFields>" +
+		        "  <FieldRef Name=\"Modified\" />" +
+		        "  <FieldRef Name=\"Title\" />" +
+		        "</ViewFields>";
 
 			var query = Camlex.Query().ViewFields(existingQuery, x => x["Title"]).ToString();
 			Assert.That(query, Is.EqualTo(expected).Using(new CamlComparer()));
 		}
+
+        [Test]
+        public void test_THAT_single_view_fields_with_parent_tag_IS_mixed_with_single_view_fields_correctly()
+        {
+            const string existingQuery =
+                "<ViewFields>" +
+                "    <FieldRef Name=\"Modified\" />" +
+                "</ViewFields>";
+
+            const string expected =
+                "<ViewFields>" +
+                "  <FieldRef Name=\"Modified\" />" +
+                "  <FieldRef Name=\"Title\" />" +
+                "</ViewFields>";
+
+            var query = Camlex.Query().ViewFields(existingQuery, x => x["Title"]).ToString();
+            Assert.That(query, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
 
 		[Test]
 		public void test_THAT_single_view_fields_IS_mixed_with_several_view_fields_correctly()
@@ -465,10 +485,12 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
 			const string existingQuery =
 				"    <FieldRef Name=\"Modified\" />";
 
-			const string expected =
-				"  <FieldRef Name=\"Modified\" />" +
-				"  <FieldRef Name=\"Title\" />" +
-				"  <FieldRef Name=\"State\" />";
+		    const string expected =
+		        "<ViewFields>" +
+		        "  <FieldRef Name=\"Modified\" />" +
+		        "  <FieldRef Name=\"Title\" />" +
+		        "  <FieldRef Name=\"State\" />" +
+		        "</ViewFields>";
 
 			var query = Camlex.Query().ViewFields(existingQuery, x => new[] { x["Title"], x["State"] }).ToString();
 			Assert.That(query, Is.EqualTo(expected).Using(new CamlComparer()));
@@ -482,10 +504,12 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
 				"    <FieldRef Name=\"ModifiedBy\" />";
 
 			const string expected =
+                "<ViewFields>" +
 				"  <FieldRef Name=\"Modified\" />" +
 				"  <FieldRef Name=\"ModifiedBy\" />" +
 				"  <FieldRef Name=\"Title\" />" +
-				"  <FieldRef Name=\"State\" />";
+				"  <FieldRef Name=\"State\" />" +
+                "</ViewFields>";
 
 			var query = Camlex.Query().ViewFields(existingQuery, x => new[] { x["Title"], x["State"] }).ToString();
 			Assert.That(query, Is.EqualTo(expected).Using(new CamlComparer()));
@@ -506,7 +530,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
 				"  <FieldRef Name=\"State\" />" +
 				"</ViewFields>";
 
-			var query = Camlex.Query().ViewFields(existingQuery, x => new[] { x["Title"], x["State"] }, true).ToString();
+			var query = Camlex.Query().ViewFields(existingQuery, x => new[] { x["Title"], x["State"] }).ToString();
 			Assert.That(query, Is.EqualTo(expected).Using(new CamlComparer()));
 		}
 
@@ -517,11 +541,13 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
 				"    <FieldRef Name=\"Modified\" />" +
 				"    <FieldRef Name=\"ModifiedBy\" />";
 
-			const string expected =
-				"  <FieldRef Name=\"Modified\" />" +
-				"  <FieldRef Name=\"ModifiedBy\" />" +
-				"  <FieldRef Name=\"Title\" />" +
-				"  <FieldRef Name=\"State\" />";
+		    const string expected =
+		        "<ViewFields>" +
+		        "  <FieldRef Name=\"Modified\" />" +
+		        "  <FieldRef Name=\"ModifiedBy\" />" +
+		        "  <FieldRef Name=\"Title\" />" +
+		        "  <FieldRef Name=\"State\" />" +
+		        "</ViewFields>";
 
 			var exprs = new List<string>();
 			exprs.Add("Title");
@@ -550,7 +576,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
 			exprs.Add("Title");
 			exprs.Add("State");
 
-			var query = Camlex.Query().ViewFields(existingQuery, exprs, true).ToString();
+			var query = Camlex.Query().ViewFields(existingQuery, exprs).ToString();
 			Assert.That(query, Is.EqualTo(expected).Using(new CamlComparer()));
 		}
 

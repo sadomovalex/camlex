@@ -37,9 +37,9 @@ namespace CamlexNET.UnitTests
 		[Test]
 		public void test_THAT_viewfields_with_single_field_title_IS_translated_sucessfully()
 		{
-			string caml = Camlex.Query().ViewFields(x => x["Title"]);
+			string caml = Camlex.Query().ViewFields(x => x["Title"]).ToString();
 
-			const string expected = "<FieldRef Name=\"Title\" />";
+            const string expected = "<ViewFields><FieldRef Name=\"Title\" /></ViewFields>";
 
 			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
 		}
@@ -47,7 +47,7 @@ namespace CamlexNET.UnitTests
 		[Test]
 		public void test_THAT_viewfields_with_single_field_title_with_parent_tag_IS_translated_sucessfully()
 		{
-			string caml = Camlex.Query().ViewFields(x => x["Title"], true);
+			string caml = Camlex.Query().ViewFields(x => x["Title"]).ToString();
 
 			const string expected =
 				@"<ViewFields>" +
@@ -60,9 +60,9 @@ namespace CamlexNET.UnitTests
 		[Test]
 		public void test_THAT_viewfields_with_several_fields_IS_translated_sucessfully()
 		{
-			string caml = Camlex.Query().ViewFields(x => new[] { x["Title"], x["Status"] });
+			string caml = Camlex.Query().ViewFields(x => new[] { x["Title"], x["Status"] }).ToString();
 
-			const string expected = "<FieldRef Name=\"Title\" /><FieldRef Name=\"Status\" />";
+            const string expected = "<ViewFields><FieldRef Name=\"Title\" /><FieldRef Name=\"Status\" /></ViewFields>";
 
 			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
 		}
@@ -100,9 +100,9 @@ namespace CamlexNET.UnitTests
 		{
 			Func<string> f = () => "Title";
 
-			string caml = Camlex.Query().ViewFields(x => x[f()]);
+			string caml = Camlex.Query().ViewFields(x => x[f()]).ToString();
 
-			const string expected = "<FieldRef Name=\"Title\" />";
+            const string expected = "<ViewFields><FieldRef Name=\"Title\" /></ViewFields>";
 
 			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
 		}
@@ -112,24 +112,24 @@ namespace CamlexNET.UnitTests
 		{
 			var items = new[] { "Title", "FileRef" };
 
-			string caml = Camlex.Query().ViewFields(items);
+			string caml = Camlex.Query().ViewFields(items).ToString();
 
-			const string expected = "<FieldRef Name=\"Title\" /><FieldRef Name=\"FileRef\" />";
-
-			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
-		}
-
-		[Test]
-		public void test_THAT_dynamic_view_fields_with_fields_names_include_parent_tag_expression_IS_translated_sucessfully()
-		{
-			var items = new[] { "Title", "FileRef" };
-
-			string caml = Camlex.Query().ViewFields(items, true);
-
-			const string expected = "<ViewFields><FieldRef Name=\"Title\" /><FieldRef Name=\"FileRef\" /></ViewFields>";
+            const string expected = "<ViewFields><FieldRef Name=\"Title\" /><FieldRef Name=\"FileRef\" /></ViewFields>";
 
 			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
 		}
+
+//		[Test]
+//		public void test_THAT_dynamic_view_fields_with_fields_names_include_parent_tag_expression_IS_translated_sucessfully()
+//		{
+//			var items = new[] { "Title", "FileRef" };
+//
+//			string caml = Camlex.Query().ViewFields(items).ToString();
+//
+//			const string expected = "<ViewFields><FieldRef Name=\"Title\" /><FieldRef Name=\"FileRef\" /></ViewFields>";
+//
+//			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+//		}
 
 		// Not supported in Client Object Model
 		//[Test]
@@ -166,9 +166,9 @@ namespace CamlexNET.UnitTests
 			Func<string> f2 = () => "FileRef";
 			var items = new[] { f1(), f2() };
 
-			string caml = Camlex.Query().ViewFields(items);
+			string caml = Camlex.Query().ViewFields(items).ToString();
 
-			const string expected = "<FieldRef Name=\"Title\" /><FieldRef Name=\"FileRef\" />";
+            const string expected = "<ViewFields><FieldRef Name=\"Title\" /><FieldRef Name=\"FileRef\" /></ViewFields>";
 
 			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
 		}
@@ -204,11 +204,11 @@ namespace CamlexNET.UnitTests
 			Camlex.Query().ViewFields(items);
 		}
 
-		[Test]
-		[ExpectedException(typeof(ArgumentNullException))]
-		public void test_WHEN_array_of_ids_is_null_THEN_exception_is_thrown()
-		{
-			Camlex.Query().ViewFields((IEnumerable<Guid>)null);
-		}
+//		[Test]
+//		[ExpectedException(typeof(ArgumentNullException))]
+//		public void test_WHEN_array_of_ids_is_null_THEN_exception_is_thrown()
+//		{
+//			Camlex.Query().ViewFields((IEnumerable<Guid>)null);
+//		}
 	}
 }

@@ -37,13 +37,14 @@ using Microsoft.SharePoint.Client;
 
 namespace CamlexNET.Impl
 {
-	internal class Query : IQueryEx
+	internal class Query : IQuery
 	{
 		private readonly ITranslatorFactory translatorFactory;
 		private readonly IReTranslatorFactory reTranslatorFactory;
 		private XElement where;
 		private XElement orderBy;
 		private XElement groupBy;
+        private XElement viewFields;
 
 		public Query(ITranslatorFactory translatorFactory, IReTranslatorFactory reTranslatorFactory)
 		{
@@ -322,122 +323,122 @@ namespace CamlexNET.Impl
 			return this.GroupBy(resultExpr, existingCollapse, existingGroupLimit);
 		}
 
-		public string ViewFields(Expression<Func<ListItem, object>> expr)
-		{
-			return ViewFields(expr, false);
-		}
+//        public IQuery ViewFields(Expression<Func<ListItem, object>> expr)
+//		{
+//			return ViewFields(expr, false);
+//		}
 
-		public string ViewFields(Expression<Func<ListItem, object>> expr, bool includeViewFieldsTag)
+        public IQuery ViewFields(Expression<Func<ListItem, object>> expr)
 		{
 			var lambda = this.createArrayExpression(expr);
-			return ViewFields(lambda, includeViewFieldsTag);
+			return ViewFields(lambda);
 		}
 
-		public string ViewFields(Expression<Func<ListItem, object[]>> expr)
-		{
-			return ViewFields(expr, false);
-		}
+//        public IQuery ViewFields(Expression<Func<ListItem, object[]>> expr)
+//		{
+//			return ViewFields(expr, false);
+//		}
 
-		public string ViewFields(Expression<Func<ListItem, object[]>> expr, bool includeViewFieldsTag)
+        public IQuery ViewFields(Expression<Func<ListItem, object[]>> expr)
 		{
 			var translator = translatorFactory.Create(expr);
-			var viewFields = translator.TranslateViewFields(expr);
+			this.viewFields = translator.TranslateViewFields(expr);
 
-			if (!includeViewFieldsTag)
-			{
-				var elements = viewFields.Elements();
-				if (elements == null || !elements.Any())
-				{
-					return string.Empty;
-				}
-				return this.convertToString(elements.ToArray());
-			}
-			return viewFields.ToString();
+//			if (!includeViewFieldsTag)
+//			{
+//				var elements = viewFields.Elements();
+//				if (elements == null || !elements.Any())
+//				{
+//					return string.Empty;
+//				}
+//				return this.convertToString(elements.ToArray());
+//			}
+			return this;
 		}
 
-		public string ViewFields(string existingViewFields, Expression<Func<ListItem, object>> expr)
-		{
-			return ViewFields(existingViewFields, expr, false);
-		}
+//        public IQuery ViewFields(string existingViewFields, Expression<Func<ListItem, object>> expr)
+//		{
+//			return ViewFields(existingViewFields, expr, false);
+//		}
 
-		public string ViewFields(string existingViewFields, Expression<Func<ListItem, object>> expr, bool includeViewFieldsTag)
+        public IQuery ViewFields(string existingViewFields, Expression<Func<ListItem, object>> expr)
 		{
 			var lambda = this.createArrayExpression(expr);
-			return ViewFields(existingViewFields, lambda, includeViewFieldsTag);
+			return ViewFields(existingViewFields, lambda);
 		}
 
-		public string ViewFields(string existingViewFields, Expression<Func<ListItem, object[]>> expr)
-		{
-			return ViewFields(existingViewFields, expr, false);
-		}
+//        public IQuery ViewFields(string existingViewFields, Expression<Func<ListItem, object[]>> expr)
+//		{
+//			return ViewFields(existingViewFields, expr, false);
+//		}
 
-		public string ViewFields(string existingViewFields, Expression<Func<ListItem, object[]>> expr, bool includeViewFieldsTag)
+        public IQuery ViewFields(string existingViewFields, Expression<Func<ListItem, object[]>> expr)
 		{
 			var existingExpr = this.getViewFieldsExpressionFromString(existingViewFields);
 			var exprs = new List<Expression<Func<ListItem, object[]>>>(new[] { existingExpr, expr });
 			var resultExpr = this.createArrayExpression(exprs);
-			return this.ViewFields(resultExpr, includeViewFieldsTag);
+			return this.ViewFields(resultExpr);
 		}
 
-		public string ViewFields(IEnumerable<string> titles)
-		{
-			return this.ViewFields(titles, false);
-		}
+//        public IQuery ViewFields(IEnumerable<string> titles)
+//		{
+//			return this.ViewFields(titles, false);
+//		}
 
-		public string ViewFields(IEnumerable<string> titles, bool includeViewFieldsTag)
-		{
-			if (titles == null || titles.Any(t => t == null))
-			{
-				throw new ArgumentNullException();
-			}
-
-			return this.ViewFields(this.createExpressionFromArray(titles), includeViewFieldsTag);
-		}
-
-		public string ViewFields(IEnumerable<Guid> ids)
-		{
-			return this.ViewFields(ids, false);
-		}
-
-		public string ViewFields(IEnumerable<Guid> ids, bool includeViewFieldsTag)
-		{
-			if (ids == null)
-			{
-				throw new ArgumentNullException();
-			}
-
-			return this.ViewFields(this.createExpressionFromArray(ids), includeViewFieldsTag);
-		}
-
-		public string ViewFields(string existingViewFields, IEnumerable<string> titles)
-		{
-			return this.ViewFields(existingViewFields, titles, false);
-		}
-
-		public string ViewFields(string existingViewFields, IEnumerable<string> titles, bool includeViewFieldsTag)
+        public IQuery ViewFields(IEnumerable<string> titles)
 		{
 			if (titles == null || titles.Any(t => t == null))
 			{
 				throw new ArgumentNullException();
 			}
 
-			return this.ViewFields(existingViewFields, this.createExpressionFromArray(titles), includeViewFieldsTag);
+			return this.ViewFields(this.createExpressionFromArray(titles));
 		}
 
-		public string ViewFields(string existingViewFields, IEnumerable<Guid> ids)
-		{
-			return this.ViewFields(existingViewFields, ids, false);
-		}
+//        public IQuery ViewFields(IEnumerable<Guid> ids)
+//		{
+//			return this.ViewFields(ids, false);
+//		}
+//
+//        public IQuery ViewFields(IEnumerable<Guid> ids, bool includeViewFieldsTag)
+//		{
+//			if (ids == null)
+//			{
+//				throw new ArgumentNullException();
+//			}
+//
+//			return this.ViewFields(this.createExpressionFromArray(ids), includeViewFieldsTag);
+//		}
 
-		public string ViewFields(string existingViewFields, IEnumerable<Guid> ids, bool includeViewFieldsTag)
+//        public IQuery ViewFields(string existingViewFields, IEnumerable<string> titles)
+//		{
+//			return this.ViewFields(existingViewFields, titles, false);
+//		}
+
+        public IQuery ViewFields(string existingViewFields, IEnumerable<string> titles)
 		{
-			if (ids == null)
+			if (titles == null || titles.Any(t => t == null))
 			{
 				throw new ArgumentNullException();
 			}
 
-			return this.ViewFields(existingViewFields, this.createExpressionFromArray(ids), includeViewFieldsTag);
+			return this.ViewFields(existingViewFields, this.createExpressionFromArray(titles));
 		}
+
+//        public IQuery ViewFields(string existingViewFields, IEnumerable<Guid> ids)
+//		{
+//			return this.ViewFields(existingViewFields, ids, false);
+//		}
+//
+//        public IQuery ViewFields(string existingViewFields, IEnumerable<Guid> ids, bool includeViewFieldsTag)
+//		{
+//			if (ids == null)
+//			{
+//				throw new ArgumentNullException();
+//			}
+//
+//			return this.ViewFields(existingViewFields, this.createExpressionFromArray(ids), includeViewFieldsTag);
+//		}
 
 		private Expression<Func<ListItem, object[]>> createExpressionFromArray<T>(IEnumerable<T> items)
 		{
@@ -451,7 +452,7 @@ namespace CamlexNET.Impl
 				Expression.Parameter(typeof(ListItem), ReflectionHelper.CommonParameterName));
 		}
 
-		private XElement[] ToCaml(bool includeViewTag)
+		public XElement[] ToCaml(bool includeViewTag)
 		{
 			var elements = new List<XElement>();
 
@@ -461,9 +462,9 @@ namespace CamlexNET.Impl
 				var viewTag = new XElement(Tags.View);
 
 				// If there is a 'where', 'orderBy' or 'groupBy' defined, add a <Query> xml element to the main <View> element.
-				if (this.where != null || this.orderBy != null || this.groupBy != null)
+				if (this.where != null || this.orderBy != null || this.groupBy != null || this.viewFields != null)
 				{
-					viewTag.Add(new XElement(Tags.Query, this.where, this.orderBy, this.groupBy));
+					viewTag.Add(new XElement(Tags.Query, this.where, this.orderBy, this.groupBy, this.viewFields));
 				}
 
 				// If there is a rowLimit defined, add this to the main <View> element.
@@ -489,7 +490,10 @@ namespace CamlexNET.Impl
 				{
 					elements.Add(this.groupBy);
 				}
-				
+                if (this.viewFields != null)
+                {
+                    elements.Add(this.viewFields);
+                }
 				//if (this.rowLimit != null)
 				//{
 				//	elements.Add(this.rowLimit);
