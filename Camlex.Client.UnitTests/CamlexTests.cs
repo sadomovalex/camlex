@@ -569,6 +569,7 @@ namespace CamlexNET.UnitTests
 							x["Description"] != null)
 				.GroupBy(x => x["Title"], true)
 				.OrderBy(x => new[] { x["_Author"], x["AuthoringDate"], x["AssignedTo"] as Camlex.Asc })
+                .ViewFields(x => new[] { x["Foo"], x["Bar"] })
 				.ToString();
 
 			var expected =
@@ -590,7 +591,11 @@ namespace CamlexNET.UnitTests
 				"</OrderBy>" +
 				"<GroupBy Collapse=\"True\">" +
 				"    <FieldRef Name=\"Title\" />" +
-				"</GroupBy>";
+				"</GroupBy>" +
+                "<ViewFields>" +
+                "    <FieldRef Name=\"Foo\" />" +
+                "    <FieldRef Name=\"Bar\" />" +
+                "</ViewFields>";
 
 			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
 		}

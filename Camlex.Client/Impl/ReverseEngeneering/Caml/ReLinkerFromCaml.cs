@@ -70,22 +70,23 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml
 			{
 				new KeyValuePair<string, LambdaExpression>(ReflectionHelper.WhereMethodName, where),
 				new KeyValuePair<string, LambdaExpression>(ReflectionHelper.OrderByMethodName, orderBy),
-				new KeyValuePair<string, LambdaExpression>(ReflectionHelper.GroupByMethodName, groupBy)
+				new KeyValuePair<string, LambdaExpression>(ReflectionHelper.GroupByMethodName, groupBy),
+                new KeyValuePair<string, LambdaExpression>(ReflectionHelper.ViewFieldsMethodName, viewFields)
 			};
 
 			// view fields is not fluent
-			var listViewFields = new List<KeyValuePair<string, LambdaExpression>>
-			{
-				new KeyValuePair<string, LambdaExpression>(ReflectionHelper.ViewFieldsMethodName, viewFields)
-			};
+//			var listViewFields = new List<KeyValuePair<string, LambdaExpression>>
+//			{
+//				new KeyValuePair<string, LambdaExpression>(ReflectionHelper.ViewFieldsMethodName, viewFields)
+//			};
 
-			if (listFluent.Any(kv => kv.Value != null) && listViewFields.Any(kv => kv.Value != null))
-			{
-				throw new OnlyOnePartOfQueryShouldBeNotNullException();
-			}
+//			if (listFluent.Any(kv => kv.Value != null) && listViewFields.Any(kv => kv.Value != null))
+//			{
+//				throw new OnlyOnePartOfQueryShouldBeNotNullException();
+//			}
 
-			var list = listFluent.Any(kv => kv.Value != null) ? listFluent : listViewFields;
-			if (list.All(kv => kv.Value == null))
+			//var list = listFluent.Any(kv => kv.Value != null) ? listFluent : listViewFields;
+            if (listFluent.All(kv => kv.Value == null))
 			{
 				throw new AtLeastOneCamlPartShouldNotBeEmptyException();
 			}
@@ -94,9 +95,9 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml
 			var queryCall = Expression.Call(queryMi);
 
 			var expr = queryCall;
-			for (int i = 0; i < list.Count; i++)
+            for (int i = 0; i < listFluent.Count; i++)
 			{
-				var kv = list[i];
+                var kv = listFluent[i];
 				if (kv.Value != null)
 				{
 					var mi = this.getMethodInfo(kv.Key, groupByParams);
@@ -150,10 +151,10 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml
 			}
 
 			var type = count == 1 ? typeof(Expression<Func<ListItem, object>>) : typeof(Expression<Func<ListItem, object[]>>);
-			var methodInfo = typeof(IQueryEx).GetMethod(ReflectionHelper.ViewFieldsMethodName, new[] { type, typeof(bool) });
+			var methodInfo = typeof(IQuery).GetMethod(ReflectionHelper.ViewFieldsMethodName, new[] { type });
 
-			var p = new List<Expression>(new[] { Expression.Constant(true) });
-			return new MethodInfoWithParams(methodInfo, p);
+			//var p = new List<Expression>(new[] { Expression.Constant(true) });
+			return new MethodInfoWithParams(methodInfo, null);
 		}
 
 		private MethodInfoWithParams getGroupByMethodInfo(GroupByParams groupByParams)

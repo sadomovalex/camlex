@@ -80,5 +80,36 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
 			var expr = Camlex.QueryFromString(xml).ToExpression();
 			Assert.That(expr.ToString(), Is.EqualTo("Query().GroupBy(x => new [] {x.get_Item(\"field1\"), x.get_Item(\"field2\")}, True, 10)"));
 		}
+
+        [Test]
+        public void test_THAT_query_with_all_elements_IS_translated_sucessfully()
+        {
+            const string xml =
+                "<View>" +
+                "    <Query>" +
+				"       <Where>" +
+				"           <Eq>" +
+				"               <FieldRef Name=\"Title\" />" +
+				"               <Value Type=\"Text\">testValue</Value>" +
+				"           </Eq>" +
+				"       </Where>" +
+                "		<OrderBy>" +
+                "			<FieldRef Name=\"Title\" />" +
+                "			<FieldRef Name=\"Modified\" Ascending=\"False\" />" +
+                "		</OrderBy>" +
+                "        <GroupBy Collapse=\"True\" GroupLimit=\"10\">" +
+                "            <FieldRef Name=\"field1\" />" +
+                "			<FieldRef Name=\"field2\" />" +
+                "		</GroupBy>" +
+                "       <ViewFields>" +
+                "           <FieldRef Name=\"Modified\" />" +
+                "           <FieldRef Name=\"Title\" />" +
+                "       </ViewFields>" +
+                "	</Query>" +
+                "</View>";
+
+            var expr = Camlex.QueryFromString(xml).ToExpression();
+            Assert.That(expr.ToString(), Is.EqualTo("Query().Where(x => (Convert(x.get_Item(\"Title\")) = \"testValue\")).OrderBy(x => new [] {x.get_Item(\"Title\"), (x.get_Item(\"Modified\") As Desc)}).GroupBy(x => new [] {x.get_Item(\"field1\"), x.get_Item(\"field2\")}, True, 10).ViewFields(x => new [] {x.get_Item(\"Modified\"), x.get_Item(\"Title\")})"));
+        }
 	}
 }
