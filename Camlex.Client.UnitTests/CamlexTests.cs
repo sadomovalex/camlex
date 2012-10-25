@@ -38,7 +38,7 @@ namespace CamlexNET.UnitTests
 		{
 			var camlQuery = Camlex.Query()
 				.Where(x => (string)x["Title"] == "testValue")
-				//.Take(5)
+				.Take(5)
 				.ToCamlQuery();
 
 			const string expected =
@@ -51,7 +51,7 @@ namespace CamlexNET.UnitTests
 				"            </Eq>" +
 				"        </Where>" +
 				"    </Query>" +
-				//"    <RowLimit>5</RowLimit>" +
+				"    <RowLimit>5</RowLimit>" +
 				"</View>";
 
 			Assert.That(camlQuery.ViewXml, Is.EqualTo(expected).Using(new CamlComparer()));

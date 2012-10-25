@@ -44,6 +44,7 @@ namespace CamlexNET.Impl
 		private XElement where;
 		private XElement orderBy;
 		private XElement groupBy;
+		private XElement rowLimit;
         private XElement viewFields;
 
 		public Query(ITranslatorFactory translatorFactory, IReTranslatorFactory reTranslatorFactory)
@@ -323,6 +324,16 @@ namespace CamlexNET.Impl
 			return this.GroupBy(resultExpr, existingCollapse, existingGroupLimit);
 		}
 
+		public IQuery Take(int count)
+		{
+			if (count > -1)
+			{
+				this.rowLimit = new XElement(Tags.RowLimit, count);
+			}
+
+			return this;
+		}
+
 //        public IQuery ViewFields(Expression<Func<ListItem, object>> expr)
 //		{
 //			return ViewFields(expr, false);
@@ -468,10 +479,10 @@ namespace CamlexNET.Impl
 				}
 
 				// If there is a rowLimit defined, add this to the main <View> element.
-				// if (this.rowLimit != null)
-				//{
-				//	viewTag.Add(this.rowLimit);
-				//}
+				if (this.rowLimit != null)
+				{
+					viewTag.Add(this.rowLimit);
+				}
 
 				elements.Add(viewTag);
 			}
@@ -494,10 +505,10 @@ namespace CamlexNET.Impl
                 {
                     elements.Add(this.viewFields);
                 }
-				//if (this.rowLimit != null)
-				//{
-				//	elements.Add(this.rowLimit);
-				//}
+				if (this.rowLimit != null)
+				{
+					elements.Add(this.rowLimit);
+				}
 			}
 
 			return elements.ToArray();

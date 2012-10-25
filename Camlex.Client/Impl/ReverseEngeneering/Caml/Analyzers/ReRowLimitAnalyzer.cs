@@ -24,13 +24,88 @@
 // fitness for a particular purpose and non-infringement.
 // -----------------------------------------------------------------------------
 #endregion
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
+using System.Xml.Linq;
+using CamlexNET.Impl.Operands;
+using CamlexNET.Impl.Operations.Array;
+using CamlexNET.Impl.Operations.Eq;
+using CamlexNET.Interfaces;
+using CamlexNET.Interfaces.ReverseEngeneering;
 
-namespace CamlexNET.Interfaces.ReverseEngeneering
+namespace CamlexNET.Impl.ReverseEngeneering.Caml.Analyzers
 {
-    internal interface IReLinker
+    internal class ReRowLimitAnalyzer : ReBaseAnalyzer
     {
-        Expression Link(LambdaExpression where, LambdaExpression orderBy, LambdaExpression groupBy,
-			LambdaExpression viewFields, GroupByParams groupByParams, LambdaExpression rowLimit);
+		public ReRowLimitAnalyzer(XElement el, IReOperandBuilder operandBuilder) :
+            base(el, operandBuilder)
+        {
+        }
+
+        public override bool IsValid()
+        {
+			if (!base.IsValid())
+			{
+				return false;
+			}
+
+			if (el.Attributes().Any())
+			{
+				return false;
+			}
+
+			if (el.Elements().Any())
+			{
+				return false;
+			}
+
+            if (el.Name != Tags.RowLimit)
+            {
+	            return false;
+            }
+
+	        int rowLimit;
+			if (!int.TryParse(el.Value, out rowLimit))
+			{
+				return false;
+			}
+
+            return true;
+        }
+
+        public override IOperation GetOperation()
+        {
+			if (!this.IsValid())
+			{
+				throw new CamlAnalysisException(string.Format(
+					"Can't create {0} from the following xml: {1}", typeof(RowLimitOperand).Name, el));
+			}
+
+			var operand = new RowLimitOperand(el.Value);
+
+			return new TODOOperation(null, operand);
+        }
     }
+
+	internal class TODOOperation : OperationBase
+	{
+		private readonly IOperand operand;
+
+		public TODOOperation(IOperationResultBuilder operationResultBuilder, IOperand operand) : base(operationResultBuilder)
+        {
+            this.operand = operand;
+        }
+
+		public override IOperationResult ToResult()
+		{
+			return this.operationResultBuilder.CreateResult(operand.ToCaml());
+		}
+
+		public override Expression ToExpression()
+		{
+			return operand.ToExpression();
+		}
+	}
 }

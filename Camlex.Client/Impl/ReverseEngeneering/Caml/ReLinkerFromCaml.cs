@@ -41,6 +41,7 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml
 		private readonly XElement where;
 		private readonly XElement orderBy;
 		private readonly XElement groupBy;
+		private readonly XElement rowLimit;
 		private readonly XElement viewFields;
 
 		private class MethodInfoWithParams
@@ -54,16 +55,17 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml
 			}
 		}
 
-		public ReLinkerFromCaml(XElement where, XElement orderBy, XElement groupBy, XElement viewFields)
+		public ReLinkerFromCaml(XElement where, XElement orderBy, XElement groupBy, XElement viewFields, XElement rowLimit)
 		{
 			this.where = where;
 			this.viewFields = viewFields;
 			this.groupBy = groupBy;
 			this.orderBy = orderBy;
+			this.rowLimit = rowLimit;
 		}
 
 		public Expression Link(LambdaExpression where, LambdaExpression orderBy, LambdaExpression groupBy,
-			LambdaExpression viewFields, GroupByParams groupByParams)
+			LambdaExpression viewFields, GroupByParams groupByParams, LambdaExpression rowLimit = null)
 		{
 			// list of fluent calls
 			var listFluent = new List<KeyValuePair<string, LambdaExpression>>
@@ -71,7 +73,8 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml
 				new KeyValuePair<string, LambdaExpression>(ReflectionHelper.WhereMethodName, where),
 				new KeyValuePair<string, LambdaExpression>(ReflectionHelper.OrderByMethodName, orderBy),
 				new KeyValuePair<string, LambdaExpression>(ReflectionHelper.GroupByMethodName, groupBy),
-                new KeyValuePair<string, LambdaExpression>(ReflectionHelper.ViewFieldsMethodName, viewFields)
+                new KeyValuePair<string, LambdaExpression>(ReflectionHelper.ViewFieldsMethodName, viewFields),
+				new KeyValuePair<string, LambdaExpression>(ReflectionHelper.RowLimitMethodName, rowLimit)
 			};
 
 			// view fields is not fluent
@@ -134,6 +137,11 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml
 			if (methodName == ReflectionHelper.GroupByMethodName)
 			{
 				return this.getGroupByMethodInfo(groupByParams);
+			}
+			if (methodName == ReflectionHelper.RowLimitMethodName)
+			{
+				var mi = ReflectionHelper.GetMethodInfo(typeof(IQuery), methodName);
+				return new MethodInfoWithParams(mi, null);
 			}
 			if (methodName == ReflectionHelper.ViewFieldsMethodName)
 			{

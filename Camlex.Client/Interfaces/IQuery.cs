@@ -54,6 +54,7 @@ namespace CamlexNET.Interfaces
 		IQuery GroupBy(Expression<Func<ListItem, object>> expr, bool? collapse);
 		IQuery GroupBy(string existingGroupBy, Expression<Func<ListItem, object>> expr);
 		IQuery GroupBy(string existingGroupBy, Expression<Func<ListItem, object[]>> expr);
+		IQuery Take(int count);
 
         IQuery ViewFields(Expression<Func<ListItem, object>> expr);
 //        IQuery ViewFields(Expression<Func<ListItem, object>> expr, bool includeViewFieldsTag);

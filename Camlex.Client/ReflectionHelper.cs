@@ -1,6 +1,6 @@
-﻿#region Copyright(c) Alexey Sadomov, Vladimir Timashkov. All Rights Reserved.
+﻿#region Copyright(c) Alexey Sadomov, Vladimir Timashkov, Stef Heyenrath. All Rights Reserved.
 // -----------------------------------------------------------------------------
-// Copyright(c) 2010 Alexey Sadomov, Vladimir Timashkov. All Rights Reserved.
+// Copyright(c) 2010 Alexey Sadomov, Vladimir Timashkov, Stef Heyenrath. All Rights Reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
@@ -27,10 +27,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Text;
 
 namespace CamlexNET
 {
@@ -40,6 +38,7 @@ namespace CamlexNET
         public const string WhereMethodName = "Where";
         public const string OrderByMethodName = "OrderBy";
         public const string GroupByMethodName = "GroupBy";
+		public const string RowLimitMethodName = "Take";
         public const string ViewFieldsMethodName = "ViewFields";
         public const string IndexerMethodName = "get_Item";
         public const string StartsWithMethodName = "StartsWith";

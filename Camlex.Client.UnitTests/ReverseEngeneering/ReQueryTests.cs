@@ -106,6 +106,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
                 "           <FieldRef Name=\"Title\" />" +
                 "       </ViewFields>" +
                 "	</Query>" +
+				"	<RowLimit>10</RowLimit>" +
                 "</View>";
 
             var expr = Camlex.QueryFromString(xml).ToExpression();

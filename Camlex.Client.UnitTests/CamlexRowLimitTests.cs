@@ -1,6 +1,6 @@
-﻿#region Copyright(c) Alexey Sadomov, Vladimir Timashkov, Stef Heyenrath. All Rights Reserved.
+﻿#region Copyright(c) Stef Heyenrath. All Rights Reserved.
 // -----------------------------------------------------------------------------
-// Copyright(c) 2010 Alexey Sadomov, Vladimir Timashkov, Stef Heyenrath. All Rights Reserved.
+// Copyright(c) 2010 Stef Heyenrath. All Rights Reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
@@ -24,13 +24,42 @@
 // fitness for a particular purpose and non-infringement.
 // -----------------------------------------------------------------------------
 #endregion
-using System.Linq.Expressions;
+using CamlexNET.UnitTests.Helpers;
+using NUnit.Framework;
 
-namespace CamlexNET.Interfaces.ReverseEngeneering
+namespace CamlexNET.UnitTests
 {
-    internal interface IReLinker
-    {
-        Expression Link(LambdaExpression where, LambdaExpression orderBy, LambdaExpression groupBy,
-			LambdaExpression viewFields, GroupByParams groupByParams, LambdaExpression rowLimit);
-    }
+	[TestFixture]
+	public class CamlexRowLimitTests
+	{
+		[Test]
+		public void test_THAT_Take_with_zero_IS_translated_sucessfully()
+		{
+			string caml = Camlex.Query().Take(0).ToString();
+
+			const string expected = "<RowLimit>0</RowLimit>";
+
+			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+		}
+
+		[Test]
+		public void test_THAT_Take_with_negative_IS_translated_sucessfully()
+		{
+			string caml = Camlex.Query().Take(-1).ToString();
+
+			const string expected = "";
+
+			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+		}
+
+		[Test]
+		public void test_THAT_Take_with_positive_IS_translated_sucessfully()
+		{
+			string caml = Camlex.Query().Take(10).ToString();
+
+			const string expected = "<RowLimit>10</RowLimit>";
+
+			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+		}
+	}
 }
