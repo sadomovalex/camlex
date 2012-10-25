@@ -1,6 +1,6 @@
-﻿#region Copyright(c) Alexey Sadomov, Vladimir Timashkov. All Rights Reserved.
+﻿#region Copyright(c) Alexey Sadomov, Vladimir Timashkov, Stef Heyenrath. All Rights Reserved.
 // -----------------------------------------------------------------------------
-// Copyright(c) 2010 Alexey Sadomov, Vladimir Timashkov. All Rights Reserved.
+// Copyright(c) 2010 Alexey Sadomov, Vladimir Timashkov, Stef Heyenrath. All Rights Reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
@@ -24,7 +24,6 @@
 // fitness for a particular purpose and non-infringement.
 // -----------------------------------------------------------------------------
 #endregion
-
 using System;
 using System.Linq;
 using System.Xml.Linq;
@@ -53,6 +52,10 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Factories
             {
                 return this.getAnalyzerForWhere(el);
             }
+			if (el.Name == Tags.RowLimit)
+			{
+				return new ReRowLimitAnalyzer(el, operandBuilder);
+			}
             if (el.Name == Tags.OrderBy || el.Name == Tags.GroupBy ||
                 el.Name == Tags.ViewFields)
             {

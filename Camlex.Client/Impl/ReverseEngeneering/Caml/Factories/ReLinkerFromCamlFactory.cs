@@ -1,6 +1,6 @@
-﻿#region Copyright(c) Alexey Sadomov, Vladimir Timashkov. All Rights Reserved.
+﻿#region Copyright(c) Alexey Sadomov, Vladimir Timashkov, Stef Heyenrath. All Rights Reserved.
 // -----------------------------------------------------------------------------
-// Copyright(c) 2010 Alexey Sadomov, Vladimir Timashkov. All Rights Reserved.
+// Copyright(c) 2010 Alexey Sadomov, Vladimir Timashkov, Stef Heyenrath. All Rights Reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
@@ -25,30 +25,27 @@
 // -----------------------------------------------------------------------------
 #endregion
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml.Linq;
 using CamlexNET.Interfaces.ReverseEngeneering;
 
 namespace CamlexNET.Impl.ReverseEngeneering.Caml.Factories
 {
-    internal class ReLinkerFromCamlFactory : IReLinkerFactory
-    {
-        public IReLinker Create(IReTranslator translator)
-        {
-            if (translator == null)
-            {
-                throw new ArgumentNullException("translator");
-            }
+	internal class ReLinkerFromCamlFactory : IReLinkerFactory
+	{
+		public IReLinker Create(IReTranslator translator)
+		{
+			if (translator == null)
+			{
+				throw new ArgumentNullException("translator");
+			}
 
-            var translatorFromCaml = translator as ReTranslatorFromCaml;
-            if (translatorFromCaml == null)
-            {
-                throw new LinkerFromCamlRequiresTranslatorFromCamlException(translator.GetType());
-            }
-            return new ReLinkerFromCaml(translatorFromCaml.Where, translatorFromCaml.OrderBy,
-                translatorFromCaml.GroupBy, translatorFromCaml.ViewFields);
-        }
-    }
+			var translatorFromCaml = translator as ReTranslatorFromCaml;
+			if (translatorFromCaml == null)
+			{
+				throw new LinkerFromCamlRequiresTranslatorFromCamlException(translator.GetType());
+			}
+
+			return new ReLinkerFromCaml(translatorFromCaml.Where, translatorFromCaml.OrderBy,
+				translatorFromCaml.GroupBy, translatorFromCaml.ViewFields, translatorFromCaml.RowLimit);
+		}
+	}
 }

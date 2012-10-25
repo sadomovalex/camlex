@@ -1,6 +1,6 @@
-﻿#region Copyright(c) Alexey Sadomov, Vladimir Timashkov. All Rights Reserved.
+﻿#region Copyright(c) Alexey Sadomov, Vladimir Timashkov, Stef Heyenrath. All Rights Reserved.
 // -----------------------------------------------------------------------------
-// Copyright(c) 2010 Alexey Sadomov, Vladimir Timashkov. All Rights Reserved.
+// Copyright(c) 2010 Alexey Sadomov, Vladimir Timashkov, Stef Heyenrath. All Rights Reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
@@ -42,6 +42,7 @@ namespace CamlexNET.Interfaces.ReverseEngeneering
         LambdaExpression TranslateWhere();
         LambdaExpression TranslateOrderBy();
         LambdaExpression TranslateGroupBy(out GroupByParams groupByParams);
+		LambdaExpression TranslateRowLimit();
         LambdaExpression TranslateViewFields();
     }
 }

@@ -1,6 +1,6 @@
-﻿#region Copyright(c) Alexey Sadomov, Vladimir Timashkov. All Rights Reserved.
+﻿#region Copyright(c) Alexey Sadomov, Vladimir Timashkov, Stef Heyenrath. All Rights Reserved.
 // -----------------------------------------------------------------------------
-// Copyright(c) 2010 Alexey Sadomov, Vladimir Timashkov. All Rights Reserved.
+// Copyright(c) 2010 Alexey Sadomov, Vladimir Timashkov, Stef Heyenrath. All Rights Reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
@@ -48,13 +48,15 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Factories
             var orderBy = this.createForTag(input, Tags.OrderBy);
             var groupBy = this.createForTag(input, Tags.GroupBy);
             var viewFields = this.createForTag(input, Tags.ViewFields);
+			var rowLimit = this.createForTag(input, Tags.RowLimit);
 
             var analyzerForWhere = where != null ? this.analyzerFactory.Create(where) : null;
             var analyzerForOrderBy = orderBy != null ? this.analyzerFactory.Create(orderBy) : null;
             var analyzerForGroupBy = groupBy != null ? this.analyzerFactory.Create(groupBy) : null;
             var analyzerForViewFields = viewFields != null ? this.analyzerFactory.Create(viewFields) : null;
+			var analyzerForRowLimit = rowLimit != null ? this.analyzerFactory.Create(rowLimit) : null;
 
-            return new ReTranslatorFromCaml(analyzerForWhere, analyzerForOrderBy, analyzerForGroupBy, analyzerForViewFields);
+			return new ReTranslatorFromCaml(analyzerForWhere, analyzerForOrderBy, analyzerForGroupBy, analyzerForViewFields, analyzerForRowLimit);
         }
 
         private XElement createForTag(string input, string tag)

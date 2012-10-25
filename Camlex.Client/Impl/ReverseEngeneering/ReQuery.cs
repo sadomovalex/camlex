@@ -1,6 +1,6 @@
-﻿#region Copyright(c) Alexey Sadomov, Vladimir Timashkov. All Rights Reserved.
+﻿#region Copyright(c) Alexey Sadomov, Vladimir Timashkov, Stef Heyenrath. All Rights Reserved.
 // -----------------------------------------------------------------------------
-// Copyright(c) 2010 Alexey Sadomov, Vladimir Timashkov. All Rights Reserved.
+// Copyright(c) 2010 Alexey Sadomov, Vladimir Timashkov, Stef Heyenrath. All Rights Reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
@@ -24,20 +24,16 @@
 // fitness for a particular purpose and non-infringement.
 // -----------------------------------------------------------------------------
 #endregion
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using CamlexNET.Interfaces.ReverseEngeneering;
 
 namespace CamlexNET.Impl.ReverseEngeneering
 {
     internal class ReQuery : IReQuery
     {
-        private IReTranslatorFactory translatorFactory;
-        private IReLinkerFactory linkerFactory;
-        private string input;
+        private readonly IReTranslatorFactory translatorFactory;
+        private readonly IReLinkerFactory linkerFactory;
+        private readonly string input;
 
         public ReQuery(IReTranslatorFactory translatorFactory, IReLinkerFactory linkerFactory, string input)
         {
@@ -51,13 +47,13 @@ namespace CamlexNET.Impl.ReverseEngeneering
             var translator = this.translatorFactory.Create(input);
             var where = translator.TranslateWhere();
             var orderBy = translator.TranslateOrderBy();
+			var rowLimit = translator.TranslateRowLimit();
             GroupByParams groupByParams;
             var groupBy = translator.TranslateGroupBy(out groupByParams);
             var viewFields = translator.TranslateViewFields();
 
             var linker = this.linkerFactory.Create(translator);
-            return linker.Link(where, orderBy, groupBy, viewFields, groupByParams);
+            return linker.Link(where, orderBy, groupBy, viewFields, groupByParams, rowLimit);
         }
     }
-
 }

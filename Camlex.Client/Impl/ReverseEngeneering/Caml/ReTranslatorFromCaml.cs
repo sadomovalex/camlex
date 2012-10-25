@@ -39,25 +39,23 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml
         private readonly IReAnalyzer analyzerForWhere;
         private readonly IReAnalyzer analyzerForOrderBy;
         private readonly IReAnalyzer analyzerForGroupBy;
+		private readonly IReAnalyzer analyzerForRowLimit;
         private readonly IReAnalyzer analyzerForViewFields;
 
         public XElement Where { get { return this.getElement(this.analyzerForWhere); } }
         public XElement OrderBy { get { return this.getElement(this.analyzerForOrderBy); } }
         public XElement GroupBy { get { return this.getElement(this.analyzerForGroupBy); } }
+		public XElement RowLimit { get { return this.getElement(this.analyzerForRowLimit); } }
         public XElement ViewFields { get { return this.getElement(this.analyzerForViewFields); } }
 
-        private XElement getElement(IReAnalyzer analyzer)
-        {
-            return (analyzer == null ? null : analyzer.Element);
-        }
-
-        public ReTranslatorFromCaml(IReAnalyzer analyzerForWhere, IReAnalyzer analyzerForOrderBy,
-            IReAnalyzer analyzerForGroupBy, IReAnalyzer analyzerForViewFields)
+	    public ReTranslatorFromCaml(IReAnalyzer analyzerForWhere, IReAnalyzer analyzerForOrderBy,
+			IReAnalyzer analyzerForGroupBy, IReAnalyzer analyzerForViewFields, IReAnalyzer analyzerForRowLimit)
         {
             this.analyzerForWhere = analyzerForWhere;
             this.analyzerForOrderBy = analyzerForOrderBy;
             this.analyzerForGroupBy = analyzerForGroupBy;
             this.analyzerForViewFields = analyzerForViewFields;
+	        this.analyzerForRowLimit = analyzerForRowLimit;
         }
 
         public LambdaExpression TranslateWhere()
@@ -77,8 +75,30 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml
             }
             var operation = analyzer.GetOperation();
             var expr = operation.ToExpression();
-            return Expression.Lambda(expr, Expression.Parameter(typeof(ListItem), ReflectionHelper.CommonParameterName));
+            return Expression.Lambda(expr, Expression.Parameter(typeof(int), ReflectionHelper.RowLimitMethodName));
         }
+
+		public LambdaExpression TranslateRowLimit()
+		{
+			return this.translateRowLimit(this.analyzerForRowLimit, Tags.RowLimit);
+		}
+
+		private LambdaExpression translateRowLimit(IReAnalyzer analyzer, string tag)
+		{
+			if (analyzer == null)
+			{
+				return null;
+			}
+
+			if (!analyzer.IsValid())
+			{
+				throw new IncorrectCamlException(tag);
+			}
+
+			var operation = analyzer.GetOperation();
+			var expr = operation.ToExpression();
+			return Expression.Lambda(expr, Expression.Parameter(typeof(ListItem), ReflectionHelper.CommonParameterName));
+		}
 
         private LambdaExpression translateArrayOperation(IReAnalyzer analyzer, string tag)
         {
@@ -163,5 +183,10 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml
         {
             return this.translateArrayOperation(this.analyzerForViewFields, Tags.ViewFields);
         }
+
+		private XElement getElement(IReAnalyzer analyzer)
+		{
+			return (analyzer == null ? null : analyzer.Element);
+		}
     }
 }

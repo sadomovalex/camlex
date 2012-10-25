@@ -69,6 +69,7 @@
     <Compile Include="CamlexJoinsTest.cs" />
     <Compile Include="CamlexLookupTests.cs" />
     <Compile Include="CamlexOrderByTests.cs" />
+    <Compile Include="CamlexRowLimitTests.cs" />
     <Compile Include="CamlexTests.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -1,6 +1,6 @@
-﻿#region Copyright(c) Alexey Sadomov, Vladimir Timashkov, Stef Heyenrath. All Rights Reserved.
+﻿#region Copyright(c) Stef Heyenrath All Rights Reserved.
 // -----------------------------------------------------------------------------
-// Copyright(c) 2010 Alexey Sadomov, Vladimir Timashkov, Stef Heyenrath. All Rights Reserved.
+// Copyright(c) 2010 Stef Heyenrath. All Rights Reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
@@ -25,12 +25,28 @@
 // -----------------------------------------------------------------------------
 #endregion
 using System.Linq.Expressions;
+using System.Xml.Linq;
 
-namespace CamlexNET.Interfaces.ReverseEngeneering
+namespace CamlexNET.Impl.Operands
 {
-    internal interface IReLinker
-    {
-        Expression Link(LambdaExpression where, LambdaExpression orderBy, LambdaExpression groupBy,
-			LambdaExpression viewFields, GroupByParams groupByParams, LambdaExpression rowLimit);
-    }
+	internal class RowLimitOperand : IntegerValueOperand
+	{
+		public RowLimitOperand(int value) : base(value)
+		{
+		}
+
+		public RowLimitOperand(string value) : base(value)
+		{
+		}
+
+		public override XElement ToCaml()
+		{
+			return new XElement(Tags.RowLimit, value);
+		}
+
+		public override Expression ToExpression()
+		{
+			return Expression.Constant(value);
+		}
+	}
 }
