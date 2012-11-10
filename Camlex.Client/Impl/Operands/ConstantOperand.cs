@@ -1,6 +1,6 @@
-﻿#region Copyright(c) Alexey Sadomov, Vladimir Timashkov. All Rights Reserved.
+﻿#region Copyright(c) Stef Heyenrath All Rights Reserved.
 // -----------------------------------------------------------------------------
-// Copyright(c) 2010 Alexey Sadomov, Vladimir Timashkov. All Rights Reserved.
+// Copyright(c) 2010 Alexey Sadomov, Stef Heyenrath. All Rights Reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
@@ -24,26 +24,31 @@
 // fitness for a particular purpose and non-infringement.
 // -----------------------------------------------------------------------------
 #endregion
-
-using System;
 using System.Linq.Expressions;
+using System.Xml.Linq;
 using CamlexNET.Interfaces;
 
-namespace CamlexNET.Impl.Factories
+namespace CamlexNET.Impl.Operands
 {
-    internal class TranslatorFactory : ITranslatorFactory
-    {
-        private readonly IAnalyzerFactory analyzerFactory;
+	internal class ConstantOperand : IOperand
+	{
+	    private readonly object value;
+	    private readonly string tag;
 
-        public TranslatorFactory(IAnalyzerFactory analyzerFactory)
-        {
-            this.analyzerFactory = analyzerFactory;
-        }
+	    public ConstantOperand(object value, string tag)
+	    {
+	        this.value = value;
+	        this.tag = tag;
+	    }
 
-        public ITranslator Create(LambdaExpression expr)
-        {
-            var analyzer = this.analyzerFactory.Create(expr);
-            return new GenericTranslator(analyzer);
-        }
-    }
+	    public XElement ToCaml()
+		{
+			return new XElement(this.tag, value);
+		}
+
+		public Expression ToExpression()
+		{
+			return Expression.Constant(value);
+		}
+	}
 }

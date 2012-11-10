@@ -157,6 +157,11 @@ namespace CamlexNET.Impl.Factories
             return this.CreateValueOperandForNativeSyntax(internalExpression, newExpr.Type, expr);
         }
 
+        public IOperand CreateConstantOperand(object val, string tag)
+        {
+            return new ConstantOperand(val, tag);
+        }
+
         private IOperand createValueOperandFromNonConstantExpression(Expression expr, Type explicitOperandType, Expression sourceExpr)
         {
             object value = this.evaluateExpression(expr);

@@ -69,35 +69,35 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml
             {
                 return null;
             }
+
+            if (!analyzer.IsValid())
+            {
+                throw new IncorrectCamlException(tag);
+            }
+
+            var operation = analyzer.GetOperation();
+            var expr = operation.ToExpression();
+            return Expression.Lambda(expr, Expression.Parameter(typeof(ListItem), ReflectionHelper.CommonParameterName));
+        }
+
+		public Expression TranslateRowLimit()
+		{
+			return this.translateRowLimit(this.analyzerForRowLimit, Tags.RowLimit);
+		}
+
+		private Expression translateRowLimit(IReAnalyzer analyzer, string tag)
+		{
+            if (analyzer == null)
+            {
+                return null;
+            }
             if (!analyzer.IsValid())
             {
                 throw new IncorrectCamlException(tag);
             }
             var operation = analyzer.GetOperation();
             var expr = operation.ToExpression();
-            return Expression.Lambda(expr, Expression.Parameter(typeof(int), ReflectionHelper.RowLimitMethodName));
-        }
-
-		public LambdaExpression TranslateRowLimit()
-		{
-			return this.translateRowLimit(this.analyzerForRowLimit, Tags.RowLimit);
-		}
-
-		private LambdaExpression translateRowLimit(IReAnalyzer analyzer, string tag)
-		{
-			if (analyzer == null)
-			{
-				return null;
-			}
-
-			if (!analyzer.IsValid())
-			{
-				throw new IncorrectCamlException(tag);
-			}
-
-			var operation = analyzer.GetOperation();
-			var expr = operation.ToExpression();
-			return Expression.Lambda(expr, Expression.Parameter(typeof(ListItem), ReflectionHelper.CommonParameterName));
+		    return expr;
 		}
 
         private LambdaExpression translateArrayOperation(IReAnalyzer analyzer, string tag)

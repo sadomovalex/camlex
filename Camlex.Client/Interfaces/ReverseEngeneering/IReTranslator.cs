@@ -42,7 +42,7 @@ namespace CamlexNET.Interfaces.ReverseEngeneering
         LambdaExpression TranslateWhere();
         LambdaExpression TranslateOrderBy();
         LambdaExpression TranslateGroupBy(out GroupByParams groupByParams);
-		LambdaExpression TranslateRowLimit();
+		Expression TranslateRowLimit();
         LambdaExpression TranslateViewFields();
     }
 }

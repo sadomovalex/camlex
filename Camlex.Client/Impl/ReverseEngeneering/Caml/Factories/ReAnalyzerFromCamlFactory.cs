@@ -54,7 +54,7 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Factories
             }
 			if (el.Name == Tags.RowLimit)
 			{
-				return new ReRowLimitAnalyzer(el, operandBuilder);
+                return new ReConstantAnalyzer(el, operandBuilder, Tags.RowLimit, typeof(int));
 			}
             if (el.Name == Tags.OrderBy || el.Name == Tags.GroupBy ||
                 el.Name == Tags.ViewFields)

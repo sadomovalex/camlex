@@ -56,9 +56,9 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
 			const string xml = "<RowLimit>10</RowLimit>";
 
 			var b = new ReOperandBuilderFromCaml();
-			var t = new ReTranslatorFromCaml(null, null, null, null, new ReRowLimitAnalyzer(XmlHelper.Get(xml), b));
+            var t = new ReTranslatorFromCaml(null, null, null, null, new ReConstantAnalyzer(XmlHelper.Get(xml), b, Tags.RowLimit, typeof(int)));
 			var expr = t.TranslateRowLimit();
-			Assert.That(expr.ToString(), Is.EqualTo("x => 10"));
+			Assert.That(expr.ToString(), Is.EqualTo("10"));
 		}
 
 		[Test]

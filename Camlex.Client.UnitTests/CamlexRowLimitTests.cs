@@ -47,7 +47,7 @@ namespace CamlexNET.UnitTests
 		{
 			string caml = Camlex.Query().Take(-1).ToString();
 
-			const string expected = "";
+            const string expected = "<RowLimit>-1</RowLimit>";
 
 			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
 		}

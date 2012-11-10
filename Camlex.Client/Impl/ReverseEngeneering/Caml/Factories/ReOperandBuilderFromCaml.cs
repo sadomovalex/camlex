@@ -217,6 +217,15 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Factories
                 convertedType, value, includeTimeValue, true, isComparision, isIntegerForUserId);
         }
 
+        public IOperand CreateConstantOperand(XElement operationElement, Type type)
+        {
+            if (operationElement == null)
+            {
+                throw new ArgumentNullException("operationElement");
+            }
+            return new ConstantOperand(Convert.ChangeType(operationElement.Value, type), operationElement.Name.ToString());
+        }
+
         private Type convertToNativeIfPossible(Type type)
         {
             if (type == null)

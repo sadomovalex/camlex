@@ -110,7 +110,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
                 "</View>";
 
             var expr = Camlex.QueryFromString(xml).ToExpression();
-            Assert.That(expr.ToString(), Is.EqualTo("Query().Where(x => (Convert(x.get_Item(\"Title\")) = \"testValue\")).OrderBy(x => new [] {x.get_Item(\"Title\"), (x.get_Item(\"Modified\") As Desc)}).GroupBy(x => new [] {x.get_Item(\"field1\"), x.get_Item(\"field2\")}, True, 10).ViewFields(x => new [] {x.get_Item(\"Modified\"), x.get_Item(\"Title\")})"));
+            Assert.That(expr.ToString(), Is.EqualTo("Query().Where(x => (Convert(x.get_Item(\"Title\")) = \"testValue\")).OrderBy(x => new [] {x.get_Item(\"Title\"), (x.get_Item(\"Modified\") As Desc)}).GroupBy(x => new [] {x.get_Item(\"field1\"), x.get_Item(\"field2\")}, True, 10).ViewFields(x => new [] {x.get_Item(\"Modified\"), x.get_Item(\"Title\")}).Take(10)"));
         }
 	}
 }

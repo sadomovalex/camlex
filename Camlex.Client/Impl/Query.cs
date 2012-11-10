@@ -326,10 +326,14 @@ namespace CamlexNET.Impl
 
 		public IQuery Take(int count)
 		{
-			if (count > -1)
-			{
-				this.rowLimit = new XElement(Tags.RowLimit, count);
-			}
+//			if (count > -1)
+//			{
+//				this.rowLimit = new XElement(Tags.RowLimit, count);
+//			}
+		    int c = count;
+            Expression<Func<int>> expr = () => c;
+            var translator = translatorFactory.Create(expr);
+            this.rowLimit = translator.TranslateRowLimit(expr);
 
 			return this;
 		}

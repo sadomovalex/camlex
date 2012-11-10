@@ -25,25 +25,47 @@
 // -----------------------------------------------------------------------------
 #endregion
 
-using System;
 using System.Linq.Expressions;
+using CamlexNET.Impl.Operations.BeginsWith;
 using CamlexNET.Interfaces;
 
-namespace CamlexNET.Impl.Factories
+namespace CamlexNET.Impl.Operations.Constant
 {
-    internal class TranslatorFactory : ITranslatorFactory
+    internal class ConstantAnalyzer : BaseAnalyzer
     {
-        private readonly IAnalyzerFactory analyzerFactory;
+        private IOperandBuilder operandBuilder;
+        private string tag;
 
-        public TranslatorFactory(IAnalyzerFactory analyzerFactory)
+        public ConstantAnalyzer(IOperationResultBuilder operationResultBuilder, IOperandBuilder operandBuilder, string tag)
+            : base(operationResultBuilder)
         {
-            this.analyzerFactory = analyzerFactory;
+            this.operandBuilder = operandBuilder;
+            this.tag = tag;
         }
 
-        public ITranslator Create(LambdaExpression expr)
+        public override bool IsValid(LambdaExpression expr)
         {
-            var analyzer = this.analyzerFactory.Create(expr);
-            return new GenericTranslator(analyzer);
+            if (expr == null)
+            {
+                return false;
+            }
+            if (expr.Body.NodeType != ExpressionType.MemberAccess)
+            {
+                return false;
+            }
+            var body = expr.Body as MemberExpression;
+            return body.Expression.NodeType == ExpressionType.Constant;
+        }
+
+        public override IOperation GetOperation(LambdaExpression expr)
+        {
+            if (!IsValid(expr))
+            {
+                throw new NonSupportedExpressionException(expr);
+            }
+            var body = expr.Body as MemberExpression;
+            var operand = this.operandBuilder.CreateConstantOperand(Expression.Lambda(body).Compile().DynamicInvoke(), tag);
+            return new ConstantOperation(operationResultBuilder, operand);
         }
     }
 }

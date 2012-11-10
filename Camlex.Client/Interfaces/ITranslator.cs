@@ -37,5 +37,6 @@ namespace CamlexNET.Interfaces
 		XElement TranslateOrderBy(LambdaExpression expr);
 		XElement TranslateGroupBy(LambdaExpression expr, bool? collapse, int? groupLimit);
 		XElement TranslateViewFields(Expression<Func<ListItem, object[]>> expr);
+        XElement TranslateRowLimit(LambdaExpression expr);
 	}
 }
