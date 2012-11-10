@@ -1,6 +1,6 @@
-﻿#region Copyright(c) Stef Heyenrath All Rights Reserved.
+﻿#region Copyright(c) Alexey Sadomov, Vladimir Timashkov. All Rights Reserved.
 // -----------------------------------------------------------------------------
-// Copyright(c) 2010 Stef Heyenrath. All Rights Reserved.
+// Copyright(c) 2010 Alexey Sadomov, Vladimir Timashkov. All Rights Reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
@@ -24,29 +24,34 @@
 // fitness for a particular purpose and non-infringement.
 // -----------------------------------------------------------------------------
 #endregion
+
+using System;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Xml.Linq;
+using CamlexNET.Impl.Operands;
+using CamlexNET.Interfaces;
 
-namespace CamlexNET.Impl.Operands
+namespace CamlexNET.Impl.Operations.BeginsWith
 {
-	internal class RowLimitOperand : IntegerValueOperand
-	{
-		public RowLimitOperand(int value) : base(value)
-		{
-		}
+    internal class ConstantOperation : OperationBase
+    {
+        private readonly IOperand operand;
 
-		public RowLimitOperand(string value) : base(value)
-		{
-		}
+        public ConstantOperation(IOperationResultBuilder operationResultBuilder, IOperand operand)
+            : base(operationResultBuilder)
+        {
+            this.operand = operand;
+        }
 
-		public override XElement ToCaml()
-		{
-			return new XElement(Tags.RowLimit, value);
-		}
+        public override IOperationResult ToResult()
+        {
+            return this.operationResultBuilder.CreateResult(operand.ToCaml());
+        }
 
-		public override Expression ToExpression()
-		{
-			return Expression.Constant(value);
-		}
-	}
+        public override Expression ToExpression()
+        {
+            return operand.ToExpression();
+        }
+    }
 }

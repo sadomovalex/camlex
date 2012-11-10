@@ -31,17 +31,23 @@ using System.Linq.Expressions;
 using System.Xml.Linq;
 using CamlexNET.Impl.Operands;
 using CamlexNET.Impl.Operations.Array;
+using CamlexNET.Impl.Operations.BeginsWith;
 using CamlexNET.Impl.Operations.Eq;
 using CamlexNET.Interfaces;
 using CamlexNET.Interfaces.ReverseEngeneering;
 
 namespace CamlexNET.Impl.ReverseEngeneering.Caml.Analyzers
 {
-    internal class ReRowLimitAnalyzer : ReBaseAnalyzer
+    internal class ReConstantAnalyzer : ReBaseAnalyzer
     {
-		public ReRowLimitAnalyzer(XElement el, IReOperandBuilder operandBuilder) :
+        private string tag;
+        private Type type;
+
+        public ReConstantAnalyzer(XElement el, IReOperandBuilder operandBuilder, string tag, Type type) :
             base(el, operandBuilder)
         {
+            this.tag = tag;
+            this.type = type;
         }
 
         public override bool IsValid()
@@ -61,16 +67,24 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Analyzers
 				return false;
 			}
 
-            if (el.Name != Tags.RowLimit)
+            if (el.Name != this.tag)
             {
 	            return false;
             }
 
-	        int rowLimit;
-			if (!int.TryParse(el.Value, out rowLimit))
-			{
-				return false;
-			}
+//	        int rowLimit;
+//			if (!int.TryParse(el.Value, out rowLimit))
+//			{
+//				return false;
+//			}
+            try
+            {
+                Convert.ChangeType(el.Value, this.type);
+            }
+            catch
+            {
+                return false;
+            }
 
             return true;
         }
@@ -80,32 +94,11 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Analyzers
 			if (!this.IsValid())
 			{
 				throw new CamlAnalysisException(string.Format(
-					"Can't create {0} from the following xml: {1}", typeof(RowLimitOperand).Name, el));
+                    "Can't create {0} from the following xml: {1}", typeof(ConstantOperation).Name, el));
 			}
 
-			var operand = new RowLimitOperand(el.Value);
-
-			return new TODOOperation(null, operand);
+			var operand = this.operandBuilder.CreateConstantOperand(el, type);
+			return new ConstantOperation(null, operand);
         }
     }
-
-	internal class TODOOperation : OperationBase
-	{
-		private readonly IOperand operand;
-
-		public TODOOperation(IOperationResultBuilder operationResultBuilder, IOperand operand) : base(operationResultBuilder)
-        {
-            this.operand = operand;
-        }
-
-		public override IOperationResult ToResult()
-		{
-			return this.operationResultBuilder.CreateResult(operand.ToCaml());
-		}
-
-		public override Expression ToExpression()
-		{
-			return operand.ToExpression();
-		}
-	}
 }

@@ -65,16 +65,16 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml
 		}
 
 		public Expression Link(LambdaExpression where, LambdaExpression orderBy, LambdaExpression groupBy,
-			LambdaExpression viewFields, GroupByParams groupByParams, LambdaExpression rowLimit = null)
+			LambdaExpression viewFields, GroupByParams groupByParams, Expression rowLimit)
 		{
 			// list of fluent calls
-			var listFluent = new List<KeyValuePair<string, LambdaExpression>>
+			var listFluent = new List<KeyValuePair<string, Expression>>
 			{
-				new KeyValuePair<string, LambdaExpression>(ReflectionHelper.WhereMethodName, where),
-				new KeyValuePair<string, LambdaExpression>(ReflectionHelper.OrderByMethodName, orderBy),
-				new KeyValuePair<string, LambdaExpression>(ReflectionHelper.GroupByMethodName, groupBy),
-                new KeyValuePair<string, LambdaExpression>(ReflectionHelper.ViewFieldsMethodName, viewFields),
-				new KeyValuePair<string, LambdaExpression>(ReflectionHelper.RowLimitMethodName, rowLimit)
+				new KeyValuePair<string, Expression>(ReflectionHelper.WhereMethodName, where),
+				new KeyValuePair<string, Expression>(ReflectionHelper.OrderByMethodName, orderBy),
+				new KeyValuePair<string, Expression>(ReflectionHelper.GroupByMethodName, groupBy),
+                new KeyValuePair<string, Expression>(ReflectionHelper.ViewFieldsMethodName, viewFields),
+				new KeyValuePair<string, Expression>(ReflectionHelper.RowLimitMethodName, rowLimit)
 			};
 
 			// view fields is not fluent

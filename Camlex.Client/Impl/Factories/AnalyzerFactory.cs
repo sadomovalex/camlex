@@ -32,6 +32,7 @@ using System.Text;
 using CamlexNET.Impl.Operations.AndAlso;
 using CamlexNET.Impl.Operations.Array;
 using CamlexNET.Impl.Operations.BeginsWith;
+using CamlexNET.Impl.Operations.Constant;
 using CamlexNET.Impl.Operations.Contains;
 using CamlexNET.Impl.Operations.DateRangesOverlap;
 using CamlexNET.Impl.Operations.Eq;
@@ -89,6 +90,16 @@ namespace CamlexNET.Impl.Factories
             if (exprType == ExpressionType.LessThan)
             {
                 return new LtAnalyzer(this.operationResultBuilder, this.operandBuilder);
+            }
+            if (exprType == ExpressionType.MemberAccess)
+            {
+                var body = expr.Body as MemberExpression;
+                if (body.Expression.NodeType == ExpressionType.Constant)
+                {
+                    // at the moment we need only RowLimit constant. If in future we will need another constants
+                    // we need to pass tag for constant as the method parameter
+                    return new ConstantAnalyzer(this.operationResultBuilder, this.operandBuilder, Tags.RowLimit);
+                }
             }
 
             // it is not enough to check ExpressionType for IsNull operation.

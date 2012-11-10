@@ -39,5 +39,6 @@ namespace CamlexNET.Interfaces
         IOperand CreateValueOperandForNativeSyntax(Expression expr);
         IOperand CreateValueOperandForNativeSyntax(Expression expr, Type explicitOperandType);
         IOperand CreateValueOperandForStringBasedSyntax(Expression expr);
+        IOperand CreateConstantOperand(object val, string tag);
     }
 }

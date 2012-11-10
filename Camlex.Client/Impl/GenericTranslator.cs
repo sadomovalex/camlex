@@ -103,5 +103,18 @@ namespace CamlexNET.Impl
 
 			return new XElement(Tags.ViewFields, result.Value);
 		}
+
+	    public XElement TranslateRowLimit(LambdaExpression expr)
+	    {
+            if (!this.analyzer.IsValid(expr))
+            {
+                throw new NonSupportedExpressionException(expr);
+            }
+
+            var operation = this.analyzer.GetOperation(expr);
+            var operationCaml = operation.ToResult().Value;
+
+            return (XElement)operationCaml;
+	    }
 	}
 }
