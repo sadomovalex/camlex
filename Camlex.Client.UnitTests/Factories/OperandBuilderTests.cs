@@ -435,6 +435,14 @@ namespace CamlexNET.UnitTests.Factories
 			Assert.That(op.Attributes[0].Key, Is.EqualTo("LookupId"));
 			Assert.That(op.Attributes[0].Value, Is.EqualTo("True"));
 		}
+
+        [Test]
+        public void test_THAT_constant_operand_IS_created_successfully()
+        {
+            var operandBuilder = new OperandBuilder();
+            var operand = operandBuilder.CreateConstantOperand(10, "foo");
+            Assert.IsInstanceOf<ConstantOperand>(operand);
+        }
 	}
 }
 

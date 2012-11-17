@@ -97,6 +97,7 @@
     <Compile Include="Operands\BooleanValueOperandTests.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Operands\ConstantOperandTests.cs" />
     <Compile Include="Operands\UserIdValueOperandTests.cs" />
     <Compile Include="Operands\FieldRefOperandWithOrderingTests.cs" />
     <Compile Include="Operands\LookupValueValueOperandTests.cs" />
@@ -136,6 +137,8 @@
     <Compile Include="Operations\BeginsWith\BeginsWithOperationTests.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Operations\Constant\ConstantAnalyzerTests.cs" />
+    <Compile Include="Operations\Constant\ConstantOperationTests.cs" />
     <Compile Include="Operations\Contains\ContainsAnalyzerTests.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -220,6 +223,7 @@
     <Compile Include="ReverseEngeneering\Factories\ReOperandBuilderFromCamlTests.cs" />
     <Compile Include="ReverseEngeneering\Factories\ReTranslatorFromCamlFactoryTests.cs" />
     <Compile Include="ReverseEngeneering\Operands\BooleanValueOperandTests.cs" />
+    <Compile Include="ReverseEngeneering\Operands\ConstantOperandTests.cs" />
     <Compile Include="ReverseEngeneering\Operands\DateTimeValueOperandTests.cs" />
     <Compile Include="ReverseEngeneering\Operands\FieldRefOperandWithOrderingTests.cs" />
     <Compile Include="ReverseEngeneering\Operands\GenericStringBasedValueOperandTests.cs" />
@@ -231,6 +235,7 @@
     <Compile Include="ReverseEngeneering\Operations\AndAlsoOperationTests.cs" />
     <Compile Include="ReverseEngeneering\Operations\ArrayOperationTests.cs" />
     <Compile Include="ReverseEngeneering\Operations\BeginsWithOperationTests.cs" />
+    <Compile Include="ReverseEngeneering\Operations\ConstantOperationTests.cs" />
     <Compile Include="ReverseEngeneering\Operations\ContainsOperationTests.cs" />
     <Compile Include="ReverseEngeneering\Operations\DateRangesOverlapOperationTests.cs" />
     <Compile Include="ReverseEngeneering\Operations\OrElseOperationTests.cs" />
