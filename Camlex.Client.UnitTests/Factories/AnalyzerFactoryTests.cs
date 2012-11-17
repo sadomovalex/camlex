@@ -31,6 +31,7 @@ using CamlexNET.Impl.Operands;
 using CamlexNET.Impl.Operations.AndAlso;
 using CamlexNET.Impl.Operations.Array;
 using CamlexNET.Impl.Operations.BeginsWith;
+using CamlexNET.Impl.Operations.Constant;
 using CamlexNET.Impl.Operations.Contains;
 using CamlexNET.Impl.Operations.Eq;
 using CamlexNET.Impl.Operations.Geq;
@@ -177,5 +178,15 @@ namespace CamlexNET.UnitTests.Factories
 			var analyzer = analyzerFactory.Create(expr);
 			Assert.That(analyzer, Is.InstanceOf<ContainsAnalyzer>());
 		}
+
+        [Test]
+        public void test_WHEN_expression_IS_constant_THEN_constant_analyzer_IS_created()
+        {
+            int c = 10;
+            Expression<Func<int>> expr = () => c;
+            var analyzerFactory = new AnalyzerFactory(null, null);
+            var analyzer = analyzerFactory.Create(expr);
+            Assert.That(analyzer, Is.InstanceOf<ConstantAnalyzer>());
+        }
 	}
 }
