@@ -1122,5 +1122,31 @@ namespace CamlexNET.UnitTests
 
             Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
         }
+
+        [Test]
+        public void test_THAT_groupby_expression_without_group_limit_IS_translated_sucessfully()
+        {
+            var caml = Camlex.Query().GroupBy(x => x["foo"], true).ToString();
+
+            var expected =
+                "  <GroupBy Collapse=\"True\">" +
+                "    <FieldRef Name=\"foo\" />" +
+                "  </GroupBy>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        [Test]
+        public void test_THAT_groupby_expression_without_collapse_IS_translated_sucessfully()
+        {
+            var caml = Camlex.Query().GroupBy(x => x["foo"], 1).ToString();
+
+            var expected =
+                "  <GroupBy GroupLimit=\"1\">" +
+                "    <FieldRef Name=\"foo\" />" +
+                "  </GroupBy>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
     }
 }
