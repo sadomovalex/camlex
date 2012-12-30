@@ -486,6 +486,13 @@ namespace CamlexNET.Impl
             return convertToString(elements);
         }
 
+        public SPQuery ToSPQuery()
+        {
+            var query = new SPQuery();
+            query.Query = this.ToString(false);
+            return query;
+        }
+
         private string convertToString(XElement[] elements)
         {
             var sb = new StringBuilder();
