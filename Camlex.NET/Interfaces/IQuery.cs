@@ -59,5 +59,6 @@ namespace CamlexNET.Interfaces
         XElement[] ToCaml(bool includeQueryTag);
         string ToString();
         string ToString(bool includeQueryTag);
+        SPQuery ToSPQuery();
     }
 }
