@@ -27,38 +27,42 @@
 
 #endregion
 
-using System.Linq.Expressions;
 using CamlexNET.Impl.Operands;
-using CamlexNET.Impl.Operations.Lt;
 using NUnit.Framework;
 
-namespace CamlexNET.UnitTests.ReverseEngeneering.Operations
+namespace CamlexNET.UnitTests.Operands
 {
     [TestFixture]
-    public class LtOperationTests
+    [SetCulture("ru-RU")]
+    public class NumberValueOperandTests
     {
         [Test]
-        [SetUICulture("ru-RU")]
-        [TestCase(1, "(Convert(x.get_Item(\"Count\")) < 1)")]
-        [TestCase(-1, "(Convert(x.get_Item(\"Count\")) < -1)")]
-        [TestCase(-1.45, "(Convert(x.get_Item(\"Count\")) < -1,45)")]
-        public void test_THAT_lt_operation_with_double_IS_converted_to_expression_correctly(double value, string result)
+        [TestCase(1, "<Value Type=\"Number\">1</Value>")]
+        [TestCase(1.45, "<Value Type=\"Number\">1,45</Value>")]
+        public void test_THAT_number_value_IS_rendered_to_caml_properly(double val, string result)
         {
-            var op1 = new FieldRefOperand("Count");
-            var op2 = new NumberValueOperand(value);
-            var op = new LtOperation(null, op1, op2);
-            Expression expr = op.ToExpression();
-            Assert.That(expr.ToString(), Is.EqualTo(result));
+            var operand = new NumberValueOperand(val);
+            string caml = operand.ToCaml().ToString();
+            Assert.That(caml, Is.EqualTo(result));
         }
 
         [Test]
-        public void test_THAT_lt_operation_with_int_IS_converted_to_expression_correctly()
+        [TestCase("1", 1)]
+        [TestCase("1,78", 1.78)]
+        public void test_THAT_number_value_IS_successfully_created_from_valid_string(string input, double result)
         {
-            var op1 = new FieldRefOperand("Count");
-            var op2 = new IntegerValueOperand(1);
-            var op = new LtOperation(null, op1, op2);
-            Expression expr = op.ToExpression();
-            Assert.That(expr.ToString(), Is.EqualTo("(Convert(x.get_Item(\"Count\")) < 1)"));
+            var operand = new NumberValueOperand(input);
+            Assert.That(operand.Value, Is.EqualTo(result));
+        }
+
+        [Test]
+        [ExpectedException(typeof (InvalidValueForOperandTypeException))]
+        [TestCase("asdsad")]
+        [TestCase("1.89")]
+        public void test_WHEN_string_is_not_valid_number_THEN_exception_is_thrown(string input)
+        {
+            var operand = new NumberValueOperand(input);
+            Assert.That(operand.Value, Is.EqualTo(1));
         }
     }
 }

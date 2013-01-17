@@ -90,6 +90,7 @@
     <Compile Include="Operands\BooleanValueOperandTests.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Operands\NumberValueOperandTests.cs" />
     <Compile Include="Operands\UserIdValueOperandTests.cs" />
     <Compile Include="Operands\FieldRefOperandWithOrderingTests.cs" />
     <Compile Include="Operands\LookupValueValueOperandTests.cs" />
@@ -220,6 +221,7 @@
     <Compile Include="ReverseEngeneering\Operands\IntegerValueOperandTests.cs" />
     <Compile Include="ReverseEngeneering\Operands\FieldRefOperandTests.cs" />
     <Compile Include="ReverseEngeneering\Operands\NullValueOperandTests.cs" />
+    <Compile Include="ReverseEngeneering\Operands\NumberValueOperandTests.cs" />
     <Compile Include="ReverseEngeneering\Operands\TextValueOperandTests.cs" />
     <Compile Include="ReverseEngeneering\Operations\AndAlsoOperationTests.cs" />
     <Compile Include="ReverseEngeneering\Operations\ArrayOperationTests.cs" />

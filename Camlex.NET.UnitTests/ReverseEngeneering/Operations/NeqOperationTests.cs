@@ -44,5 +44,31 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Operations
             var expr = op.ToExpression();
             Assert.That(expr.ToString(), Is.EqualTo("(Convert(x.get_Item(\"Status\")) != True)"));
         }
+
+        [Test]
+        [TestCase(1, "(Convert(x.get_Item(\"Status\")) != 1)")]
+        public void test_THAT_neq_operation_with_int_IS_converted_to_expression_correctly(int value, string result)
+        {
+            var op1 = new FieldRefOperand("Status");
+            var op2 = new IntegerValueOperand(value);
+            var op = new NeqOperation(null, op1, op2);
+            var expr = op.ToExpression();
+            Assert.That(expr.ToString(), Is.EqualTo(result));
+        }
+
+        [Test]
+        [SetCulture("ru-RU")]
+        [TestCase(1, "(Convert(x.get_Item(\"Status\")) != 1)")]
+        [TestCase(1.45, "(Convert(x.get_Item(\"Status\")) != 1,45)")]
+        [TestCase(-1.45, "(Convert(x.get_Item(\"Status\")) != -1,45)")]
+        public void test_THAT_neq_operation_with_double_IS_converted_to_expression_correctly(double value, string result)
+        {
+            var op1 = new FieldRefOperand("Status");
+            var op2 = new NumberValueOperand(value);
+            var op = new NeqOperation(null, op1, op2);
+            var expr = op.ToExpression();
+            Assert.That(expr.ToString(), Is.EqualTo(result));
+        }
     }
 }
+

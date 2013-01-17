@@ -1,5 +1,4 @@
 ﻿#region Copyright(c) Alexey Sadomov, Vladimir Timashkov. All Rights Reserved.
-
 // -----------------------------------------------------------------------------
 // Copyright(c) 2010 Alexey Sadomov, Vladimir Timashkov. All Rights Reserved.
 //
@@ -24,41 +23,38 @@
 // under your local laws, the authors exclude the implied warranties of merchantability,
 // fitness for a particular purpose and non-infringement.
 // -----------------------------------------------------------------------------
-
 #endregion
-
 using System.Linq.Expressions;
-using CamlexNET.Impl.Operands;
-using CamlexNET.Impl.Operations.Lt;
-using NUnit.Framework;
+using System.Xml.Linq;
 
-namespace CamlexNET.UnitTests.ReverseEngeneering.Operations
+namespace CamlexNET.Impl.Operands
 {
-    [TestFixture]
-    public class LtOperationTests
+    internal class NumberValueOperand : ValueOperand<double>
     {
-        [Test]
-        [SetUICulture("ru-RU")]
-        [TestCase(1, "(Convert(x.get_Item(\"Count\")) < 1)")]
-        [TestCase(-1, "(Convert(x.get_Item(\"Count\")) < -1)")]
-        [TestCase(-1.45, "(Convert(x.get_Item(\"Count\")) < -1,45)")]
-        public void test_THAT_lt_operation_with_double_IS_converted_to_expression_correctly(double value, string result)
+        public NumberValueOperand(double value) :
+            base(typeof (DataTypes.Number), value)
         {
-            var op1 = new FieldRefOperand("Count");
-            var op2 = new NumberValueOperand(value);
-            var op = new LtOperation(null, op1, op2);
-            Expression expr = op.ToExpression();
-            Assert.That(expr.ToString(), Is.EqualTo(result));
         }
 
-        [Test]
-        public void test_THAT_lt_operation_with_int_IS_converted_to_expression_correctly()
+        public NumberValueOperand(string value) :
+            base(typeof (DataTypes.Number), 0)
         {
-            var op1 = new FieldRefOperand("Count");
-            var op2 = new IntegerValueOperand(1);
-            var op = new LtOperation(null, op1, op2);
-            Expression expr = op.ToExpression();
-            Assert.That(expr.ToString(), Is.EqualTo("(Convert(x.get_Item(\"Count\")) < 1)"));
+            if (!double.TryParse(value, out this.value))
+            {
+                throw new InvalidValueForOperandTypeException(value, Type);
+            }
+        }
+
+        public override XElement ToCaml()
+        {
+            return
+                new XElement(Tags.Value, new XAttribute(Attributes.Type, TypeName),
+                             new XText(Value.ToString()));
+        }
+
+        public override Expression ToExpression()
+        {
+            return Expression.Constant(Value);
         }
     }
 }

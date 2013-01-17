@@ -1,4 +1,5 @@
 ﻿#region Copyright(c) Alexey Sadomov, Vladimir Timashkov. All Rights Reserved.
+
 // -----------------------------------------------------------------------------
 // Copyright(c) 2010 Alexey Sadomov, Vladimir Timashkov. All Rights Reserved.
 //
@@ -23,8 +24,11 @@
 // under your local laws, the authors exclude the implied warranties of merchantability,
 // fitness for a particular purpose and non-infringement.
 // -----------------------------------------------------------------------------
+
 #endregion
+
 using System;
+using System.Linq.Expressions;
 using CamlexNET.Impl.Operands;
 using CamlexNET.Impl.Operations.Eq;
 using NUnit.Framework;
@@ -40,8 +44,64 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Operations
             var op1 = new FieldRefOperand("Status");
             var op2 = new BooleanValueOperand(true);
             var op = new EqOperation(null, op1, op2);
-            var expr = op.ToExpression();
+            Expression expr = op.ToExpression();
             Assert.That(expr.ToString(), Is.EqualTo("(Convert(x.get_Item(\"Status\")) = True)"));
+        }
+
+        [Test]
+        [SetCulture("ru-RU")]
+        [TestCase(1, "(Convert(x.get_Item(\"Status\")) = 1)")]
+        [TestCase(-1, "(Convert(x.get_Item(\"Status\")) = -1)")]
+        [TestCase(-1.45, "(Convert(x.get_Item(\"Status\")) = -1,45)")]
+        public void test_THAT_eq_operation_with_double_IS_converted_to_expression_correctly(double value, string result)
+        {
+            var op1 = new FieldRefOperand("Status");
+            var op2 = new NumberValueOperand(value);
+            var op = new EqOperation(null, op1, op2);
+            Expression expr = op.ToExpression();
+            Assert.That(expr.ToString(), Is.EqualTo(result));
+        }
+
+        [Test]
+        public void test_THAT_eq_operation_with_generic_string_based_operand_IS_converted_to_expression_correctly()
+        {
+            var op1 = new FieldRefOperand("Title");
+            var op2 = new GenericStringBasedValueOperand(typeof (DataTypes.Text), "foo");
+            var op = new EqOperation(null, op1, op2);
+            Expression expr = op.ToExpression();
+            Assert.That(expr.ToString(), Is.EqualTo("(x.get_Item(\"Title\") = Convert(Convert(\"foo\")))"));
+        }
+
+        [Test]
+        [TestCase(1, "(Convert(x.get_Item(\"Status\")) = 1)")]
+        [TestCase(-1, "(Convert(x.get_Item(\"Status\")) = -1)")]
+        public void test_THAT_eq_operation_with_int_IS_converted_to_expression_correctly(int value, string result)
+        {
+            var op1 = new FieldRefOperand("Status");
+            var op2 = new IntegerValueOperand(value);
+            var op = new EqOperation(null, op1, op2);
+            Expression expr = op.ToExpression();
+            Assert.That(expr.ToString(), Is.EqualTo(result));
+        }
+
+        [Test]
+        public void test_THAT_eq_operation_with_lookup_id_operand_IS_converted_to_expression_correctly()
+        {
+            var op1 = new FieldRefOperand("Title");
+            var op2 = new LookupIdValueOperand("1");
+            var op = new EqOperation(null, op1, op2);
+            Expression expr = op.ToExpression();
+            Assert.That(expr.ToString(), Is.EqualTo("(x.get_Item(\"Title\") = Convert(Convert(\"1\")))"));
+        }
+
+        [Test]
+        public void test_THAT_eq_operation_with_lookup_value_operand_IS_converted_to_expression_correctly()
+        {
+            var op1 = new FieldRefOperand("Title");
+            var op2 = new LookupValueValueOperand("foo");
+            var op = new EqOperation(null, op1, op2);
+            Expression expr = op.ToExpression();
+            Assert.That(expr.ToString(), Is.EqualTo("(x.get_Item(\"Title\") = Convert(Convert(\"foo\")))"));
         }
 
         [Test]
@@ -52,7 +112,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Operations
             var dt = new DateTime(2011, 4, 25, 19, 7, 00, 00);
             var op2 = new DateTimeValueOperand(dt, false);
             var op = new EqOperation(null, op1, op2);
-            var expr = op.ToExpression();
+            Expression expr = op.ToExpression();
             Assert.That(expr.ToString(), Is.EqualTo(string.Format("(Convert(x.get_Item(\"Modified\")) = {0})", dt)));
         }
 
@@ -64,8 +124,9 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Operations
             var dt = new DateTime(2011, 4, 25, 19, 7, 00, 00);
             var op2 = new DateTimeValueOperand(dt, true);
             var op = new EqOperation(null, op1, op2);
-            var expr = op.ToExpression();
-            Assert.That(expr.ToString(), Is.EqualTo(string.Format("(Convert(x.get_Item(\"Modified\")) = {0}.IncludeTimeValue())", dt)));
+            Expression expr = op.ToExpression();
+            Assert.That(expr.ToString(),
+                        Is.EqualTo(string.Format("(Convert(x.get_Item(\"Modified\")) = {0}.IncludeTimeValue())", dt)));
         }
 
         [Test]
@@ -75,7 +136,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Operations
 
             var op2 = new DateTimeValueOperand(Camlex.Now, false);
             var op = new EqOperation(null, op1, op2);
-            var expr = op.ToExpression();
+            Expression expr = op.ToExpression();
             Assert.That(expr.ToString(), Is.EqualTo("(x.get_Item(\"Modified\") = Convert(Convert(Camlex.Now)))"));
         }
 
@@ -86,38 +147,9 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Operations
 
             var op2 = new DateTimeValueOperand(Camlex.Now, true);
             var op = new EqOperation(null, op1, op2);
-            var expr = op.ToExpression();
-            Assert.That(expr.ToString(), Is.EqualTo("(x.get_Item(\"Modified\") = Convert(Convert(Camlex.Now)).IncludeTimeValue())"));
-        }
-
-        [Test]
-        public void test_THAT_eq_operation_with_generic_string_based_operand_IS_converted_to_expression_correctly()
-        {
-            var op1 = new FieldRefOperand("Title");
-            var op2 = new GenericStringBasedValueOperand(typeof(DataTypes.Text), "foo");
-            var op = new EqOperation(null, op1, op2);
-            var expr = op.ToExpression();
-            Assert.That(expr.ToString(), Is.EqualTo("(x.get_Item(\"Title\") = Convert(Convert(\"foo\")))"));
-        }
-
-        [Test]
-        public void test_THAT_eq_operation_with_lookup_id_operand_IS_converted_to_expression_correctly()
-        {
-            var op1 = new FieldRefOperand("Title");
-            var op2 = new LookupIdValueOperand("1");
-            var op = new EqOperation(null, op1, op2);
-            var expr = op.ToExpression();
-            Assert.That(expr.ToString(), Is.EqualTo("(x.get_Item(\"Title\") = Convert(Convert(\"1\")))"));
-        }
-
-        [Test]
-        public void test_THAT_eq_operation_with_lookup_value_operand_IS_converted_to_expression_correctly()
-        {
-            var op1 = new FieldRefOperand("Title");
-            var op2 = new LookupValueValueOperand("foo");
-            var op = new EqOperation(null, op1, op2);
-            var expr = op.ToExpression();
-            Assert.That(expr.ToString(), Is.EqualTo("(x.get_Item(\"Title\") = Convert(Convert(\"foo\")))"));
+            Expression expr = op.ToExpression();
+            Assert.That(expr.ToString(),
+                        Is.EqualTo("(x.get_Item(\"Modified\") = Convert(Convert(Camlex.Now)).IncludeTimeValue())"));
         }
     }
 }

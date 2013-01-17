@@ -214,7 +214,8 @@ namespace CamlexNET.Impl.Factories
                 // native operands are also supported. Several native operands are compirable
                 if (type != typeof(DateTime) &&
                     type != typeof(int) &&
-                    type != typeof(string))
+                    type != typeof(string) &&
+                    type != typeof(double))
                 {
                     throw new NonSupportedOperandTypeException(type);
                 }
@@ -223,6 +224,15 @@ namespace CamlexNET.Impl.Factories
             if (type == typeof(string) || type == typeof(DataTypes.Text))
             {
                 return new TextValueOperand((string)value);
+            }
+            //number operand can be native or string based
+            if (type == typeof(double) || type == typeof(DataTypes.Number))
+            {
+                if (value is double)
+                    return new NumberValueOperand((double)value);
+
+                if (value is string)
+                    return new NumberValueOperand((string)value);
             }
             // integer operand can be native or string based
             if (type == typeof(int) || type == typeof(DataTypes.Integer))
