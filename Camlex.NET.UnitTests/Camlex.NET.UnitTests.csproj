@@ -1,0 +1,265 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{298ACD3C-082D-406B-B4BB-8B8CAD5B18A6}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CamlexNET.UnitTests</RootNamespace>
+    <AssemblyName>Camlex.NET.UnitTests</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>Camlex.NET.snk</AssemblyOriginatorKeyFile>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.SharePoint, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL" />
+    <Reference Include="nunit.framework, Version=2.5.3.9345, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Camlex.NET.Foreign\NUnit\2.5.3.9345\bin\net-2.0\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Rhino.Mocks, Version=3.6.0.0, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Camlex.NET.Foreign\Rhino.Mocks\3.6.0.0\Rhino.Mocks.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CamlexJoinsTest.cs" />
+    <Compile Include="CamlexLookupTests.cs" />
+    <Compile Include="CamlexOrderByTests.cs" />
+    <Compile Include="CamlexTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CamlexViewFieldsTests.cs" />
+    <Compile Include="CamlexUserTests.cs" />
+    <Compile Include="Factories\AnalyzerFactoryTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Factories\OperandBuilderTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Factories\OperationResultBuilderTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Factories\TranslatorFactoryTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="GenericTranslatorTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Helpers\CamlComparer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Helpers\CaseInsensetiveComparer.cs" />
+    <Compile Include="Operands\BooleanValueOperandTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operands\NumberValueOperandTests.cs" />
+    <Compile Include="Operands\UserIdValueOperandTests.cs" />
+    <Compile Include="Operands\FieldRefOperandWithOrderingTests.cs" />
+    <Compile Include="Operands\LookupValueValueOperandTests.cs" />
+    <Compile Include="Operands\LookupIdValueOperandTests.cs" />
+    <Compile Include="Operands\GuidValueOperandTests.cs" />
+    <Compile Include="Operands\DateTimeValueOperandTests.cs" />
+    <Compile Include="Operands\FieldRefOperandTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operands\GenericStringBasedValueOperandTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operands\IntegerValueOperandTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operands\NullValueOperandTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operands\TextValueOperandTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operations\AndAlso\AndAlsoAnalyzerTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operations\AndAlso\AndAlsoOperationTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operations\Array\ArrayAnalyzerTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operations\Array\ArrayOperationTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operations\BeginsWith\BeginsWithAnalyzerTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operations\BeginsWith\BeginsWithOperationTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operations\Contains\ContainsAnalyzerTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operations\Contains\ContainsOperationTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operations\DateRangesOverlap\DateRangesOverlapAnalyzerTests.cs" />
+    <Compile Include="Operations\DateRangesOverlap\DateRangesOverlapOperationTests.cs" />
+    <Compile Include="Operations\Eq\EqAnalyzerTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operations\Eq\EqOperationTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operations\Geq\GeqAnalyzerTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operations\Geq\GeqOperationTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operations\Gt\GtAnalyzerTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operations\Gt\GtOperationTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operations\IsNotNull\IsNotNullAnalyzerTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operations\IsNotNull\IsNotNullOperationTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operations\IsNull\IsNullAnalyzerTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operations\IsNull\IsNullOperationTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operations\Leq\LeqAnalyzerTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operations\Leq\LeqOperationTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operations\Lt\LtAnalyzerTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operations\Lt\LtOperationTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operations\Neq\NeqAnalyzerTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operations\Neq\NeqOperationTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operations\OrElse\OrElseAnalyzerTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operations\OrElse\OrElseOperationTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReverseEngeneering\Analyzers\ReAndAlsoAnalyzerTest.cs" />
+    <Compile Include="ReverseEngeneering\Analyzers\ReBeginsWithAnalyzerTest.cs" />
+    <Compile Include="ReverseEngeneering\Analyzers\ReOrElseAnalyzerTest.cs" />
+    <Compile Include="ReverseEngeneering\Analyzers\TestBase\ReBinaryExpressionTestBase.cs" />
+    <Compile Include="ReverseEngeneering\Analyzers\ReContainsAnalyzerTest.cs" />
+    <Compile Include="ReverseEngeneering\Analyzers\ReEqAnalyzerTest.cs" />
+    <Compile Include="ReverseEngeneering\Analyzers\ReArrayAnalyzerTests.cs" />
+    <Compile Include="ReverseEngeneering\Analyzers\ReGeqAnalyzerTest.cs" />
+    <Compile Include="ReverseEngeneering\Analyzers\ReGtAnalyzerTest.cs" />
+    <Compile Include="ReverseEngeneering\Analyzers\ReIsNotNullAnalyzerTest.cs" />
+    <Compile Include="ReverseEngeneering\Analyzers\ReIsNullAnalyzerTest.cs" />
+    <Compile Include="ReverseEngeneering\Analyzers\ReLeqAnalyzerTest.cs" />
+    <Compile Include="ReverseEngeneering\Analyzers\ReLtAnalyzerTest.cs" />
+    <Compile Include="ReverseEngeneering\Analyzers\ReNeqAnalyzerTest.cs" />
+    <Compile Include="ReverseEngeneering\Analyzers\TestBase\ReCompositeExpressionTestBase.cs" />
+    <Compile Include="ReverseEngeneering\Analyzers\ReDateRangesOverlapAnalyzerTest.cs" />
+    <Compile Include="ReverseEngeneering\Analyzers\TestBase\ReUnaryExpressionTestBase.cs" />
+    <Compile Include="ReverseEngeneering\Factories\ReAnalyzerFromCamlFactoryTests.cs" />
+    <Compile Include="ReverseEngeneering\Factories\ReOperandBuilderFromCamlTests.cs" />
+    <Compile Include="ReverseEngeneering\Factories\ReTranslatorFromCamlFactoryTests.cs" />
+    <Compile Include="ReverseEngeneering\Operands\BooleanValueOperandTests.cs" />
+    <Compile Include="ReverseEngeneering\Operands\DateTimeValueOperandTests.cs" />
+    <Compile Include="ReverseEngeneering\Operands\FieldRefOperandWithOrderingTests.cs" />
+    <Compile Include="ReverseEngeneering\Operands\GenericStringBasedValueOperandTests.cs" />
+    <Compile Include="ReverseEngeneering\Operands\GuidValueOperandTests.cs" />
+    <Compile Include="ReverseEngeneering\Operands\IntegerValueOperandTests.cs" />
+    <Compile Include="ReverseEngeneering\Operands\FieldRefOperandTests.cs" />
+    <Compile Include="ReverseEngeneering\Operands\NullValueOperandTests.cs" />
+    <Compile Include="ReverseEngeneering\Operands\NumberValueOperandTests.cs" />
+    <Compile Include="ReverseEngeneering\Operands\TextValueOperandTests.cs" />
+    <Compile Include="ReverseEngeneering\Operations\AndAlsoOperationTests.cs" />
+    <Compile Include="ReverseEngeneering\Operations\ArrayOperationTests.cs" />
+    <Compile Include="ReverseEngeneering\Operations\BeginsWithOperationTests.cs" />
+    <Compile Include="ReverseEngeneering\Operations\ContainsOperationTests.cs" />
+    <Compile Include="ReverseEngeneering\Operations\DateRangesOverlapOperationTests.cs" />
+    <Compile Include="ReverseEngeneering\Operations\OrElseOperationTests.cs" />
+    <Compile Include="ReverseEngeneering\Operations\NeqOperationTests.cs" />
+    <Compile Include="ReverseEngeneering\Operations\LtOperationTests.cs" />
+    <Compile Include="ReverseEngeneering\Operations\LeqOperationTests.cs" />
+    <Compile Include="ReverseEngeneering\Operations\IsNullOperationTests.cs" />
+    <Compile Include="ReverseEngeneering\Operations\IsNotNullOperationTests.cs" />
+    <Compile Include="ReverseEngeneering\Operations\GtOperationTests.cs" />
+    <Compile Include="ReverseEngeneering\Operations\GeqOperationTests.cs" />
+    <Compile Include="ReverseEngeneering\Operations\EqOperationTests.cs" />
+    <Compile Include="ReverseEngeneering\MixQueryTests.cs" />
+    <Compile Include="ReverseEngeneering\ReLinkerFromCamlTests.cs" />
+    <Compile Include="ReverseEngeneering\ReQueryTests.cs" />
+    <Compile Include="ReverseEngeneering\ReTranslatorFromCamlTests.cs" />
+    <Compile Include="ReverseEngeneering\ReUserTests.cs" />
+    <Compile Include="ReverseEngeneering\XmlHelper.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Camlex.NET.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Camlex.NET\Camlex.NET.csproj">
+      <Project>{99FC65CD-823C-47AA-9D68-0BB9F31CDC72}</Project>
+      <Name>Camlex.NET</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
