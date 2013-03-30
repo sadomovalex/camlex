@@ -38,7 +38,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Operations
     public class LtOperationTests
     {
         [Test]
-        [SetUICulture("ru-RU")]
+        [SetCulture("ru-RU")]
         [TestCase(1, "(Convert(x.get_Item(\"Count\")) < 1)")]
         [TestCase(-1, "(Convert(x.get_Item(\"Count\")) < -1)")]
         [TestCase(-1.45, "(Convert(x.get_Item(\"Count\")) < -1,45)")]
