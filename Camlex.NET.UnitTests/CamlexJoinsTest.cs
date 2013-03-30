@@ -427,5 +427,19 @@ namespace CamlexNET.UnitTests
 
             Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
         }
+
+        [Test]
+        [ExpectedException(typeof(EmptyExpressionsListException))]
+        public void test_WHEN_list_of_expressions_is_null_THEN_exception_is_thrown()
+        {
+            Camlex.Query().WhereAny((IEnumerable<string>)null).ToString();
+        }
+
+        [Test]
+        [ExpectedException(typeof(EmptyExpressionsListException))]
+        public void test_WHEN_list_of_expressions_is_empty_THEN_exception_is_thrown()
+        {
+            Camlex.Query().WhereAny(new string[]{}).ToString();
+        }
     }
 }
