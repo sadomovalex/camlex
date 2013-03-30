@@ -181,7 +181,7 @@ namespace CamlexNET.UnitTests
         [ExpectedException(typeof(EmptyExpressionsListException))]
         public void test_WHEN_expressions_list_is_null_THEN_exception_is_thrown()
         {
-            Camlex.Query().WhereAny(null).ToString();
+            Camlex.Query().WhereAny((IEnumerable<Expression<Func<SPListItem, bool>>>)null).ToString();
         }
 
         [Test]
@@ -326,7 +326,106 @@ namespace CamlexNET.UnitTests
             Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
         }
 
+        [Test]
+        public void test_THAT_join_all_with_string_expressions_IS_translated_sucessfully()
+        {
+            var expr = new List<string>();
+            expr.Add(
+                "<Where>" +
+                "   <Eq>" +
+                "       <FieldRef Name=\"ID\" />" +
+                "       <Value Type=\"Integer\">1</Value>" +
+                "   </Eq>" +
+                "</Where>");
+            expr.Add(
+                "<Where>" +
+                "   <Eq>" +
+                "       <FieldRef Name=\"ID\" />" +
+                "       <Value Type=\"Integer\">2</Value>" +
+                "   </Eq>" +
+                "</Where>");
+            expr.Add(
+                "<Where>" +
+                "   <Eq>" +
+                "       <FieldRef Name=\"ID\" />" +
+                "       <Value Type=\"Integer\">3</Value>" +
+                "   </Eq>" +
+                "</Where>");
 
+            string caml = Camlex.Query().WhereAll(expr).ToString();
 
+            string expected =
+                "<Where>" +
+                "  <And>" +
+                "    <And>" +
+                "      <Eq>" +
+                "        <FieldRef Name=\"ID\" />" +
+                "        <Value Type=\"Integer\">1</Value>" +
+                "      </Eq>" +
+                "      <Eq>" +
+                "        <FieldRef Name=\"ID\" />" +
+                "        <Value Type=\"Integer\">2</Value>" +
+                "      </Eq>" +
+                "    </And>" +
+                "    <Eq>" +
+                "      <FieldRef Name=\"ID\" />" +
+                "      <Value Type=\"Integer\">3</Value>" +
+                "    </Eq>" +
+                "  </And>" +
+                "</Where>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        [Test]
+        public void test_THAT_join_any_with_string_expressions_IS_translated_sucessfully()
+        {
+            var expr = new List<string>();
+            expr.Add(
+                "<Where>" +
+                "   <Eq>" +
+                "       <FieldRef Name=\"ID\" />" +
+                "       <Value Type=\"Integer\">1</Value>" +
+                "   </Eq>" +
+                "</Where>");
+            expr.Add(
+                "<Where>" +
+                "   <Eq>" +
+                "       <FieldRef Name=\"ID\" />" +
+                "       <Value Type=\"Integer\">2</Value>" +
+                "   </Eq>" +
+                "</Where>");
+            expr.Add(
+                "<Where>" +
+                "   <Eq>" +
+                "       <FieldRef Name=\"ID\" />" +
+                "       <Value Type=\"Integer\">3</Value>" +
+                "   </Eq>" +
+                "</Where>");
+
+            string caml = Camlex.Query().WhereAny(expr).ToString();
+
+            string expected =
+                "<Where>" +
+                "  <Or>" +
+                "    <Or>" +
+                "      <Eq>" +
+                "        <FieldRef Name=\"ID\" />" +
+                "        <Value Type=\"Integer\">1</Value>" +
+                "      </Eq>" +
+                "      <Eq>" +
+                "        <FieldRef Name=\"ID\" />" +
+                "        <Value Type=\"Integer\">2</Value>" +
+                "      </Eq>" +
+                "    </Or>" +
+                "    <Eq>" +
+                "      <FieldRef Name=\"ID\" />" +
+                "      <Value Type=\"Integer\">3</Value>" +
+                "    </Eq>" +
+                "  </Or>" +
+                "</Where>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
     }
 }
