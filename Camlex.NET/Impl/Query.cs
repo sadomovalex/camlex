@@ -77,6 +77,16 @@ namespace CamlexNET.Impl
             return this.WhereAll(exprs);
         }
 
+        public IQuery WhereAll(IEnumerable<string> expressions)
+        {
+            if (expressions == null || !expressions.Any())
+            {
+                throw new EmptyExpressionsListException();
+            }
+            var exprs = new List<Expression<Func<SPListItem, bool>>>(expressions.Select(getWhereExpressionFromString));
+            return this.WhereAll(exprs);
+        }
+
         private Expression<Func<SPListItem, bool>> getWhereExpressionFromString(string existingWhere)
         {
             existingWhere = this.ensureParentTag(existingWhere, Tags.Query);
@@ -179,6 +189,16 @@ namespace CamlexNET.Impl
             var whereExpr = this.getWhereExpressionFromString(existingWhere);
             var exprs = new List<Expression<Func<SPListItem, bool>>>(expressions);
             exprs.Add(whereExpr);
+            return this.WhereAny(exprs);
+        }
+
+        public IQuery WhereAny(IEnumerable<string> expressions)
+        {
+            if (expressions == null || !expressions.Any())
+            {
+                throw new EmptyExpressionsListException();
+            }
+            var exprs = new List<Expression<Func<SPListItem, bool>>>(expressions.Select(getWhereExpressionFromString));
             return this.WhereAny(exprs);
         }
 
