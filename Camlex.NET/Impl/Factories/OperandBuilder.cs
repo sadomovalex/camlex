@@ -228,10 +228,10 @@ namespace CamlexNET.Impl.Factories
             //number operand can be native or string based
             if (type == typeof(double) || type == typeof(DataTypes.Number))
             {
-                if (value is double)
+                if (value.GetType() == typeof(double))
                     return new NumberValueOperand((double)value);
 
-                if (value is string)
+                if (value.GetType() == typeof(string))
                     return new NumberValueOperand((string)value);
             }
             // integer operand can be native or string based
