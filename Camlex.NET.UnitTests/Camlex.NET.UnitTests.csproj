@@ -157,6 +157,7 @@
     <Compile Include="Operations\Gt\GtOperationTests.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Operations\In\InAnalyzerTests.cs" />
     <Compile Include="Operations\IsNotNull\IsNotNullAnalyzerTests.cs">
       <SubType>Code</SubType>
     </Compile>

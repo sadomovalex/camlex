@@ -54,8 +54,8 @@ namespace CamlexNET.Impl
 
             // --- check for object ---
 
-            // left operand for string based syntax should be indexer call
-            if (!(body.Object is UnaryExpression))
+            // left operand for string based syntax should be convert of indexer
+            if (!(body.Object is UnaryExpression) || body.Object.NodeType != ExpressionType.Convert)
             {
                 return false;
             }
