@@ -24,31 +24,102 @@
 // fitness for a particular purpose and non-infringement.
 // -----------------------------------------------------------------------------
 #endregion
+
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using CamlexNET.Interfaces;
 
 namespace CamlexNET.Impl.Operations.In
 {
-    internal class InAnalyzer : BinaryExpressionBaseAnalyzer
+    internal class InAnalyzer : BaseAnalyzer
     {
+        protected IOperandBuilder operandBuilder;
         public InAnalyzer(IOperationResultBuilder operationResultBuilder, IOperandBuilder operandBuilder)
-            : base(operationResultBuilder, operandBuilder)
+            : base(operationResultBuilder)
         {
+            this.operandBuilder = operandBuilder;
         }
 
         public override bool IsValid(LambdaExpression expr)
         {
-            if (!base.IsValid(expr))
+            if (expr == null)
             {
                 return false;
             }
-            return (expr.Body.NodeType == ExpressionType.Equal);
+            // body should be MethodCallExpression
+            if (!(expr.Body is MethodCallExpression))
+            {
+                return false;
+            }
+            var body = expr.Body as MethodCallExpression;
+
+            // left operand for string based syntax should be enumerable
+            if (body.Arguments == null)
+            {
+                return false;
+            }
+
+            // there should be 2 arguments in Linq Contains method:
+            // public static bool Contains<TSource>(this IEnumerable<TSource> source, TSource value);
+            if (body.Arguments.Count != 2)
+            {
+                return false;
+            }
+
+            // 1st arg should be enumerable
+            var source = body.Arguments[0];
+            if (source == null)
+            {
+                return false;
+            }
+
+            if (!typeof(IEnumerable).IsAssignableFrom(source.Type))
+            {
+                return false;
+            }
+            if (!this.isValidEvaluableExpression(source))
+            {
+                return false;
+            }
+
+            var val = body.Arguments[1];
+            if (val == null)
+            {
+                return false;
+            }
+
+            // left operand for string based syntax should be convert of indexer
+            if (!(val is UnaryExpression) || val.NodeType != ExpressionType.Convert)
+            {
+                return false;
+            }
+            var methodCallExpression = ((UnaryExpression)val).Operand;
+            if (!(methodCallExpression is MethodCallExpression))
+            {
+                return false;
+            }
+            var objectExpression = (MethodCallExpression)methodCallExpression;
+            if (objectExpression.Method.Name != ReflectionHelper.IndexerMethodName)
+            {
+                return false;
+            }
+            if (objectExpression.Arguments.Count != 1)
+            {
+                return false;
+            }
+            if (!this.isValidEvaluableExpression(objectExpression.Arguments[0]))
+            {
+                return false;
+            }
+
+            return true;
         }
 
         public override IOperation GetOperation(LambdaExpression expr)
         {
-            return this.getOperation(expr,
-                (operationResultBuilder, fieldRefOperand, valueOperand) => new InOperation(this.operationResultBuilder, fieldRefOperand, valueOperand));
+            throw new NotImplementedException();
         }
     }
 }
