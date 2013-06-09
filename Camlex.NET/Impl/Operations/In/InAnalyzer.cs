@@ -24,38 +24,33 @@
 // fitness for a particular purpose and non-infringement.
 // -----------------------------------------------------------------------------
 #endregion
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml.Linq;
+using System.Linq.Expressions;
+using CamlexNET.Interfaces;
 
-namespace CamlexNET
+namespace CamlexNET.Impl.Operations.In
 {
-    internal static class Tags
+    internal class InAnalyzer : BinaryExpressionBaseAnalyzer
     {
-        public const string Query = "Query";
-        public const string Where = "Where";
-        public const string OrderBy = "OrderBy";
-        public const string GroupBy = "GroupBy";
-        public const string FieldRef = "FieldRef";
-        public const string Value = "Value";
-        public const string And = "And";
-        public const string Or = "Or";
-        public const string Eq = "Eq";
-        public const string Neq = "Neq";
-        public const string Geq = "Geq";
-        public const string Gt = "Gt";
-        public const string Leq = "Leq";
-        public const string Lt = "Lt";
-        public const string IsNotNull = "IsNotNull";
-        public const string IsNull = "IsNull";
-        public const string BeginsWith = "BeginsWith";
-        public const string Contains = "Contains";
-        public const string DateRangesOverlap = "DateRangesOverlap";
-        public const string ViewFields = "ViewFields";
-        public const string UserID = "UserID";
-        public const string In = "In";
-        public const string Values = "Values";
+        public InAnalyzer(IOperationResultBuilder operationResultBuilder, IOperandBuilder operandBuilder)
+            : base(operationResultBuilder, operandBuilder)
+        {
+        }
+
+        public override bool IsValid(LambdaExpression expr)
+        {
+            if (!base.IsValid(expr))
+            {
+                return false;
+            }
+            return (expr.Body.NodeType == ExpressionType.Equal);
+        }
+
+        public override IOperation GetOperation(LambdaExpression expr)
+        {
+            return this.getOperation(expr,
+                (operationResultBuilder, fieldRefOperand, valueOperand) => new InOperation(this.operationResultBuilder, fieldRefOperand, valueOperand));
+        }
     }
 }
+
+

@@ -27,35 +27,39 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Xml.Linq;
+using CamlexNET.Interfaces;
 
-namespace CamlexNET
+namespace CamlexNET.Impl.Operands
 {
-    internal static class Tags
+    // Values operand is used for In operator
+    internal class ValuesValueOperand : IOperand
     {
-        public const string Query = "Query";
-        public const string Where = "Where";
-        public const string OrderBy = "OrderBy";
-        public const string GroupBy = "GroupBy";
-        public const string FieldRef = "FieldRef";
-        public const string Value = "Value";
-        public const string And = "And";
-        public const string Or = "Or";
-        public const string Eq = "Eq";
-        public const string Neq = "Neq";
-        public const string Geq = "Geq";
-        public const string Gt = "Gt";
-        public const string Leq = "Leq";
-        public const string Lt = "Lt";
-        public const string IsNotNull = "IsNotNull";
-        public const string IsNull = "IsNull";
-        public const string BeginsWith = "BeginsWith";
-        public const string Contains = "Contains";
-        public const string DateRangesOverlap = "DateRangesOverlap";
-        public const string ViewFields = "ViewFields";
-        public const string UserID = "UserID";
-        public const string In = "In";
-        public const string Values = "Values";
+        private IEnumerable<IOperand> values;
+        public ValuesValueOperand(IEnumerable<IOperand> values)
+        {
+            if (values == null || !values.Any())
+            {
+                throw new Exception("Can't create Values operand: list of values is null or empty");
+            }
+            this.values = values;
+        }
+
+        public XElement ToCaml()
+        {
+            var el = new XElement(Tags.Values);
+            foreach (var operand in this.values)
+            {
+                el.Add(operand.ToCaml());
+            }
+            return el;
+        }
+
+        public Expression ToExpression()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

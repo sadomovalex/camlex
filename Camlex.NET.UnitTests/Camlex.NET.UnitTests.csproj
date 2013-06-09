@@ -112,6 +112,7 @@
     <Compile Include="Operands\TextValueOperandTests.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Operands\ValuesValueOperandTests.cs" />
     <Compile Include="Operations\AndAlso\AndAlsoAnalyzerTests.cs">
       <SubType>Code</SubType>
     </Compile>

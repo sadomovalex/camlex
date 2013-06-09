@@ -24,38 +24,42 @@
 // fitness for a particular purpose and non-infringement.
 // -----------------------------------------------------------------------------
 #endregion
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml.Linq;
 
-namespace CamlexNET
+using System;
+using System.Linq.Expressions;
+using System.Xml.Linq;
+using CamlexNET.Impl.Factories;
+using CamlexNET.Interfaces;
+
+namespace CamlexNET.Impl.Operations.In
 {
-    internal static class Tags
+    internal class InOperation : BinaryOperationBase
     {
-        public const string Query = "Query";
-        public const string Where = "Where";
-        public const string OrderBy = "OrderBy";
-        public const string GroupBy = "GroupBy";
-        public const string FieldRef = "FieldRef";
-        public const string Value = "Value";
-        public const string And = "And";
-        public const string Or = "Or";
-        public const string Eq = "Eq";
-        public const string Neq = "Neq";
-        public const string Geq = "Geq";
-        public const string Gt = "Gt";
-        public const string Leq = "Leq";
-        public const string Lt = "Lt";
-        public const string IsNotNull = "IsNotNull";
-        public const string IsNull = "IsNull";
-        public const string BeginsWith = "BeginsWith";
-        public const string Contains = "Contains";
-        public const string DateRangesOverlap = "DateRangesOverlap";
-        public const string ViewFields = "ViewFields";
-        public const string UserID = "UserID";
-        public const string In = "In";
-        public const string Values = "Values";
+        public InOperation(IOperationResultBuilder operationResultBuilder,
+            IOperand fieldRefOperand, IOperand valueOperand)
+            : base(operationResultBuilder, fieldRefOperand, valueOperand)
+        {
+        }
+
+        public override IOperationResult ToResult()
+        {
+            var result = new XElement(Tags.In,
+                             this.fieldRefOperand.ToCaml(),
+                             this.valueOperand.ToCaml());
+            return this.operationResultBuilder.CreateResult(result);
+        }
+
+        public override Expression ToExpression()
+        {
+            // in the field ref operand we don't know what type of the value it has. So perform
+            // conversion here
+//            var fieldRef = this.getFieldRefOperandExpression();
+//            var value = this.getValueOperandExpression();
+//
+//            return Expression.Equal(fieldRef, value);
+            throw new NotImplementedException();
+        }
     }
 }
+
+
