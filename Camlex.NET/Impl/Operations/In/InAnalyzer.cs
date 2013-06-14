@@ -29,6 +29,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using CamlexNET.Impl.Operands;
 using CamlexNET.Interfaces;
 
 namespace CamlexNET.Impl.Operations.In
@@ -119,7 +120,25 @@ namespace CamlexNET.Impl.Operations.In
 
         public override IOperation GetOperation(LambdaExpression expr)
         {
-            throw new NotImplementedException();
+            if (!IsValid(expr))
+            {
+                throw new NonSupportedExpressionException(expr);
+            }
+            var fieldRefOperand = this.getFieldRefOperand(expr);
+            var valueOperand = this.getValueOperand(expr);
+            return new InOperation(operationResultBuilder, fieldRefOperand, valueOperand);
+        }
+
+        private IOperand getValueOperand(LambdaExpression expr)
+        {
+            var body = expr.Body as MethodCallExpression;
+            return operandBuilder.CreateValuesValueOperand(body.Arguments[0]);
+        }
+
+        private IOperand getFieldRefOperand(LambdaExpression expr)
+        {
+            var body = expr.Body as MethodCallExpression;
+            return operandBuilder.CreateFieldRefOperand(body.Arguments[1], null);
         }
     }
 }

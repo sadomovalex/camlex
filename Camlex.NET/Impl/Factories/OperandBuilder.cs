@@ -25,6 +25,7 @@
 // -----------------------------------------------------------------------------
 #endregion
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -155,6 +156,27 @@ namespace CamlexNET.Impl.Factories
             // use conversion type as operand type (subclass of BaseFieldType should be used here)
             // because conversion operand has always string type for string based syntax
             return this.CreateValueOperandForNativeSyntax(internalExpression, newExpr.Type, expr);
+        }
+
+        public IOperand CreateValuesValueOperand(Expression expr)
+        {
+            var values = this.getArrayFromExpression(expr);
+            if (values == null)
+            {
+                throw new CantCreateValuesValueOperandException();
+            }
+            var list = new List<IOperand>();
+            foreach (var val in values)
+            {
+                list.Add(this.createValueOperand(val.GetType(), val, expr));
+            }
+            return new ValuesValueOperand(list);
+        }
+
+        private IEnumerable getArrayFromExpression(Expression expr)
+        {
+            var array = this.evaluateExpression(expr) as IEnumerable;
+            return array;
         }
 
         private IOperand createValueOperandFromNonConstantExpression(Expression expr, Type explicitOperandType, Expression sourceExpr)

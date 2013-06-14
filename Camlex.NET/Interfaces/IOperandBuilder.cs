@@ -25,6 +25,7 @@
 // -----------------------------------------------------------------------------
 #endregion
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -39,5 +40,6 @@ namespace CamlexNET.Interfaces
         IOperand CreateValueOperandForNativeSyntax(Expression expr);
         IOperand CreateValueOperandForNativeSyntax(Expression expr, Type explicitOperandType);
         IOperand CreateValueOperandForStringBasedSyntax(Expression expr);
+        IOperand CreateValuesValueOperand(Expression expr);
     }
 }
