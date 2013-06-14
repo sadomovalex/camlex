@@ -158,6 +158,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Operations\In\InAnalyzerTests.cs" />
+    <Compile Include="Operations\In\InOperationTests.cs" />
     <Compile Include="Operations\IsNotNull\IsNotNullAnalyzerTests.cs">
       <SubType>Code</SubType>
     </Compile>
