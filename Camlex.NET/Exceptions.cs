@@ -258,4 +258,12 @@ namespace CamlexNET
             base(msg)
         {}
     }
+
+    internal class CantCreateValuesValueOperandException : Exception
+    {
+        public CantCreateValuesValueOperandException() :
+            base("Can't create array of values from passed expression")
+        {
+        }
+    }
 }
