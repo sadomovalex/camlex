@@ -1148,5 +1148,53 @@ namespace CamlexNET.UnitTests
 
             Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
         }
+
+        [Test]
+        public void test_THAT_single_in_expression_IS_translated_sucessfully()
+        {
+            Func<int, string> f = i => i.ToString();
+            var caml = Camlex.Query().Where(x => (new[] { f(0), f(1), f(2) }).Contains((string)x[new Guid("{1DF87A41-D795-4C0F-915F-DC3D54B296AA}")])).ToString();
+
+            var expected =
+                "   <Where>" +
+                "       <In>" +
+                "           <FieldRef ID=\"1df87a41-d795-4c0f-915f-dc3d54b296aa\" />" +
+                "           <Values>" +
+                "               <Value Type=\"Text\">0</Value>" +
+                "               <Value Type=\"Text\">1</Value>" +
+                "               <Value Type=\"Text\">2</Value>" +
+                "           </Values>" +
+                "       </In>" +
+                "   </Where>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        [Test]
+        public void test_THAT_in_expression_with_and_IS_translated_sucessfully()
+        {
+            Func<int, string> f = i => i.ToString();
+            var caml = Camlex.Query().Where(x => (string)x["Title"] == "test" && (new[] { f(0), f(1), f(2) }).Contains((string)x[new Guid("{1DF87A41-D795-4C0F-915F-DC3D54B296AA}")])).ToString();
+
+            var expected =
+                "<Where>" +
+                "  <And>" +
+                "    <Eq>" +
+                "      <FieldRef Name=\"Title\" />" +
+                "      <Value Type=\"Text\">test</Value>" +
+                "    </Eq>" +
+                "    <In>" +
+                "      <FieldRef ID=\"1df87a41-d795-4c0f-915f-dc3d54b296aa\" />" +
+                "      <Values>" +
+                "        <Value Type=\"Text\">0</Value>" +
+                "        <Value Type=\"Text\">1</Value>" +
+                "        <Value Type=\"Text\">2</Value>" +
+                "      </Values>" +
+                "    </In>" +
+                "  </And>" +
+                "</Where>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
     }
 }
