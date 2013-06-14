@@ -25,6 +25,8 @@
 // -----------------------------------------------------------------------------
 #endregion
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using CamlexNET.Impl.Factories;
 using CamlexNET.Impl.Operands;
@@ -35,6 +37,7 @@ using CamlexNET.Impl.Operations.Contains;
 using CamlexNET.Impl.Operations.Eq;
 using CamlexNET.Impl.Operations.Geq;
 using CamlexNET.Impl.Operations.Gt;
+using CamlexNET.Impl.Operations.In;
 using CamlexNET.Impl.Operations.IsNotNull;
 using CamlexNET.Impl.Operations.IsNull;
 using CamlexNET.Impl.Operations.Leq;
@@ -176,6 +179,15 @@ namespace CamlexNET.UnitTests.Factories
             var analyzerFactory = new AnalyzerFactory(null, null);
             var analyzer = analyzerFactory.Create(expr);
             Assert.That(analyzer, Is.InstanceOf<ContainsAnalyzer>());
+        }
+
+        [Test]
+        public void test_WHEN_expression_IS_in_THEN_in_analyzer_IS_created()
+        {
+            Expression<Func<SPListItem, bool>> expr = x => ((IEnumerable<int>)new List<int>(new[] { 0, 1 })).Contains((int)x[new Guid("{1DF87A41-D795-4C0F-915F-DC3D54B296AA}")]);
+            var analyzerFactory = new AnalyzerFactory(null, null);
+            var analyzer = analyzerFactory.Create(expr);
+            Assert.That(analyzer, Is.InstanceOf<InAnalyzer>());
         }
     }
 }
