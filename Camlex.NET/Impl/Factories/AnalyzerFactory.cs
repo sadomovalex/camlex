@@ -37,6 +37,7 @@ using CamlexNET.Impl.Operations.DateRangesOverlap;
 using CamlexNET.Impl.Operations.Eq;
 using CamlexNET.Impl.Operations.Geq;
 using CamlexNET.Impl.Operations.Gt;
+using CamlexNET.Impl.Operations.In;
 using CamlexNET.Impl.Operations.IsNotNull;
 using CamlexNET.Impl.Operations.IsNull;
 using CamlexNET.Impl.Operations.Leq;
@@ -129,6 +130,9 @@ namespace CamlexNET.Impl.Factories
 
             var dateRangesOverlapAnalyzer = new DateRangesOverlapAnalyzer(operationResultBuilder, operandBuilder);
             if (dateRangesOverlapAnalyzer.IsValid(expr)) return dateRangesOverlapAnalyzer;
+
+            var inAnalyzer = new InAnalyzer(operationResultBuilder, operandBuilder);
+            if (inAnalyzer.IsValid(expr)) return inAnalyzer;
 
             throw new NonSupportedExpressionTypeException(exprType);
         }
