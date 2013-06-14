@@ -63,5 +63,32 @@ namespace CamlexNET.UnitTests.Operations.In
             var op = a.GetOperation(expr);
             Assert.IsInstanceOf<InOperation>(op);
         }
+
+        [Test]
+        public void test_THAT_in_list_expression_IS_valid()
+        {
+            var a = new InAnalyzer(null, null);
+            Expression<Func<SPListItem, bool>> expr = x => getArray().Contains((int)x["test"]);
+            Assert.IsTrue(a.IsValid(expr));
+        }
+
+        List<int> getArray()
+        {
+            var list = new List<int>();
+            for (int i = 0; i < 9; i++)
+            {
+                list.Add(i);
+            }
+            return list;
+        }
+
+        [Test]
+        public void test_THAT_operation_with_generic_list_IS_created_sucessfully()
+        {
+            var a = new InAnalyzer(new OperationResultBuilder(), new OperandBuilder());
+            Expression<Func<SPListItem, bool>> expr = x => getArray().Contains((int)x["test"]);
+            var op = a.GetOperation(expr);
+            Assert.IsInstanceOf<InOperation>(op);
+        }
     }
 }
