@@ -1196,5 +1196,42 @@ namespace CamlexNET.UnitTests
 
             Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
         }
+
+        [Test]
+        public void test_THAT_single_in_expression_with_dynamic_array_IS_translated_sucessfully()
+        {
+            var caml = Camlex.Query().Where(x => getArray().Contains((int)x["test"])).ToString();
+
+            var expected =
+                "<Where>" +
+                "  <In>" +
+                "    <FieldRef Name=\"test\" />" +
+                "    <Values>" +
+                "      <Value Type=\"Integer\">0</Value>" +
+                "      <Value Type=\"Integer\">1</Value>" +
+                "      <Value Type=\"Integer\">2</Value>" +
+                "      <Value Type=\"Integer\">3</Value>" +
+                "      <Value Type=\"Integer\">4</Value>" +
+                "      <Value Type=\"Integer\">5</Value>" +
+                "      <Value Type=\"Integer\">6</Value>" +
+                "      <Value Type=\"Integer\">7</Value>" +
+                "      <Value Type=\"Integer\">8</Value>" +
+                "      <Value Type=\"Integer\">9</Value>" +
+                "    </Values>" +
+                "  </In>" +
+                "</Where>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        List<int> getArray()
+        {
+            var list = new List<int>();
+            for (int i = 0; i < 10; i++)
+            {
+                list.Add(i);
+            }
+            return list;
+        }
     }
 }

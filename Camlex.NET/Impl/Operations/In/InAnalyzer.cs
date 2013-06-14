@@ -56,21 +56,39 @@ namespace CamlexNET.Impl.Operations.In
             }
             var body = expr.Body as MethodCallExpression;
 
+            if (body.Method.Name != ReflectionHelper.ContainsMethodName)
+            {
+                return false;
+            }
+
             // left operand for string based syntax should be enumerable
             if (body.Arguments == null)
             {
                 return false;
             }
 
-            // there should be 2 arguments in Linq Contains method:
-            // public static bool Contains<TSource>(this IEnumerable<TSource> source, TSource value);
-            if (body.Arguments.Count != 2)
+            // there are 2 possibilities:
+            // 1. generic List<> method: List<T>.Contains(T item)
+            // 2. Linq extension method: public static bool Contains<TSource>(this IEnumerable<TSource> source, TSource value)
+            if (body.Arguments.Count != 1 && body.Arguments.Count != 2)
             {
                 return false;
             }
 
+            // generic list method
+            if (body.Arguments.Count == 1)
+            {
+                return this.isValid(body.Object, body.Arguments[0]);
+            }
+
+            // linq extension method
+            return this.isValid(body.Arguments[0], body.Arguments[1]);
+        }
+
+        private bool isValid(Expression enumerable, Expression val)
+        {
             // 1st arg should be enumerable
-            var source = body.Arguments[0];
+            var source = enumerable;
             if (source == null)
             {
                 return false;
@@ -81,12 +99,6 @@ namespace CamlexNET.Impl.Operations.In
                 return false;
             }
             if (!this.isValidEvaluableExpression(source))
-            {
-                return false;
-            }
-
-            var val = body.Arguments[1];
-            if (val == null)
             {
                 return false;
             }
@@ -132,12 +144,24 @@ namespace CamlexNET.Impl.Operations.In
         private IOperand getValueOperand(LambdaExpression expr)
         {
             var body = expr.Body as MethodCallExpression;
+            if (body.Arguments.Count == 1)
+            {
+                // generic list method
+                return operandBuilder.CreateValuesValueOperand(body.Object);
+            }
+            // linq extension method
             return operandBuilder.CreateValuesValueOperand(body.Arguments[0]);
         }
 
         private IOperand getFieldRefOperand(LambdaExpression expr)
         {
             var body = expr.Body as MethodCallExpression;
+            if (body.Arguments.Count == 1)
+            {
+                // generic list method
+                return operandBuilder.CreateFieldRefOperand(body.Arguments[0], null);
+            }
+            // linq extension method
             return operandBuilder.CreateFieldRefOperand(body.Arguments[1], null);
         }
     }
