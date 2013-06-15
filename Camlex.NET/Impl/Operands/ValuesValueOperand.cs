@@ -58,12 +58,27 @@ namespace CamlexNET.Impl.Operands
 
         public override Expression ToExpression()
         {
-            var type = this.getOperandsType(this.Value.ElementAt(0));
+            var type = this.GetOperandsType();
             return Expression.NewArrayInit(type, this.Value.Select(v => v.ToExpression()));
+        }
+
+        public Type GetOperandsType()
+        {
+            var types = this.Value.Select(getOperandsType).ToList();
+            if (types == null || !types.Any())
+            {
+                throw new CantDetermineValueTypeException("Can't determine type of values: array of values is null or empty");
+            }
+            if (types.Distinct().Count() != 1)
+            {
+                throw new CantDetermineValueTypeException("Can't determine type of values: all values should have the same type, while in provided array they have different types");
+            }
+            return types[0];
         }
 
         private Type getOperandsType(IOperand operand)
         {
+            //var operand = this.Value.ElementAt(0);
             if (typeof (ValueOperand<>).IsAssignableFrom(operand.GetType()))
             {
                 throw new CantCreateExpressionForValuesValueOperandException();
