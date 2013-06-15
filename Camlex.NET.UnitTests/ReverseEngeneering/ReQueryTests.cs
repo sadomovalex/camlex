@@ -83,5 +83,25 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
             var expr = Camlex.QueryFromString(xml).ToExpression();
             Assert.That(expr.ToString(), Is.EqualTo("Query().GroupBy(x => new [] {x.get_Item(\"field1\"), x.get_Item(\"field2\")}, True, 10)"));
         }
+
+        [Test]
+        public void test_THAT_in_expression_IS_translated_sucessfully()
+        {
+            var xml =
+                "<Query>" +
+                "  <Where>" +
+                "    <In>" +
+                "      <FieldRef Name=\"test\" />" +
+                "      <Values>" +
+                "        <Value Type=\"Text\">test1</Value>" +
+                "        <Value Type=\"Text\">test2</Value>" +
+                "      </Values>" +
+                "    </In>" +
+                "  </Where>" +
+                "</Query>";
+
+            var expr = Camlex.QueryFromString(xml).ToExpression();
+            Assert.That(expr.ToString(), Is.EqualTo("Query().Where(x => new [] {\"test1\", \"test2\"}.Contains(Convert(x.get_Item(\"test\"))))"));
+        }
     }
 }

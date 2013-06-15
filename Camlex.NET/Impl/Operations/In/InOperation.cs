@@ -70,23 +70,6 @@ namespace CamlexNET.Impl.Operations.In
                 .Where(m => m.Name == ReflectionHelper.ContainsMethodName && m.GetParameters().Count() == 2).First();
             return Expression.Call(null, mi.MakeGenericMethod(valueOperandType), valueExpr, fieldRefExpr);
         }
-
-//        protected override Type getValueOperandType()
-//        {
-//            var valuesOperand = this.valueOperand as ValuesValueOperand;
-//            var values = valuesOperand.Value;
-//            if (values == null || !values.Any())
-//            {
-//                throw new CantDetermineValueTypeException("Can't determine type of values: array of values is null or empty");
-//            }
-//            // all values should have the same type
-//            var types = values.Select(v => v.GetType()).Distinct();
-//            if (types.Count() != 1)
-//            {
-//                throw new CantDetermineValueTypeException("Can't determine type of values: all values should have the same type, while in provided array they have different types");
-//            }
-//            return types.ElementAt(0);
-//        }
     }
 }
 
