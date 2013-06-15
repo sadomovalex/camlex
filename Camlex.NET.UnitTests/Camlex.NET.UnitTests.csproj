@@ -227,6 +227,7 @@
     <Compile Include="ReverseEngeneering\Operands\NullValueOperandTests.cs" />
     <Compile Include="ReverseEngeneering\Operands\NumberValueOperandTests.cs" />
     <Compile Include="ReverseEngeneering\Operands\TextValueOperandTests.cs" />
+    <Compile Include="ReverseEngeneering\Operands\ValuesValueOperandTests.cs" />
     <Compile Include="ReverseEngeneering\Operations\AndAlsoOperationTests.cs" />
     <Compile Include="ReverseEngeneering\Operations\ArrayOperationTests.cs" />
     <Compile Include="ReverseEngeneering\Operations\BeginsWithOperationTests.cs" />

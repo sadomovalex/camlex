@@ -37,7 +37,6 @@ namespace CamlexNET.Impl.Operands
     // Values operand is used for In operator
     internal class ValuesValueOperand : ValueOperand<IEnumerable<IOperand>>
     {
-        private IEnumerable<IOperand> values;
         public ValuesValueOperand(IEnumerable<IOperand> values)
             : base(typeof(IEnumerable<IOperand>), values)
         {
@@ -45,13 +44,12 @@ namespace CamlexNET.Impl.Operands
             {
                 throw new CantCreateValuesValueOperandException("Can't create Values operand: list of values is null or empty");
             }
-            this.values = values;
         }
 
         public override XElement ToCaml()
         {
             var el = new XElement(Tags.Values);
-            foreach (var operand in this.values)
+            foreach (var operand in this.Value)
             {
                 el.Add(operand.ToCaml());
             }
@@ -60,7 +58,29 @@ namespace CamlexNET.Impl.Operands
 
         public override Expression ToExpression()
         {
-            throw new NotImplementedException();
+            var type = this.getOperandsType(this.Value.ElementAt(0));
+            return Expression.NewArrayInit(type, this.Value.Select(v => v.ToExpression()));
+        }
+
+        private Type getOperandsType(IOperand operand)
+        {
+            if (typeof (ValueOperand<>).IsAssignableFrom(operand.GetType()))
+            {
+                throw new CantCreateExpressionForValuesValueOperandException();
+            }
+            var baseType = operand.GetType().BaseType;
+            if (baseType == null || !baseType.IsGenericType)
+            {
+                throw new CantCreateExpressionForValuesValueOperandException();
+            }
+
+            var genericParams = baseType.GetGenericArguments();
+            if (genericParams.Length != 1)
+            {
+                throw new CantCreateExpressionForValuesValueOperandException();
+            }
+
+            return genericParams[0];
         }
     }
 }

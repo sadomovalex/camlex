@@ -276,4 +276,11 @@ namespace CamlexNET
         public CantDetermineValueTypeException(string msg) : base(msg)
         {}
     }
+
+    internal class CantCreateExpressionForValuesValueOperandException : Exception
+    {
+        public CantCreateExpressionForValuesValueOperandException()
+            : base("Can't create expression for values value operand")
+        { }
+    }
 }
