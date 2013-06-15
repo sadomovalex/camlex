@@ -102,6 +102,7 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Factories
             if (el.Name == Tags.Lt) return new ReLtAnalyzer(el, operandBuilder);
             if (el.Name == Tags.Neq) return new ReNeqAnalyzer(el, operandBuilder);
             if (el.Name == Tags.DateRangesOverlap) return new ReDateRangesOverlapAnalyzer(el, operandBuilder);
+            if (el.Name == Tags.In) return new ReInAnalyzer(el, operandBuilder);
             return null;
         }
 
