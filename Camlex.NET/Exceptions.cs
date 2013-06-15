@@ -261,9 +261,19 @@ namespace CamlexNET
 
     internal class CantCreateValuesValueOperandException : Exception
     {
-        public CantCreateValuesValueOperandException() :
-            base("Can't create array of values from passed expression")
-        {
-        }
+        public CantCreateValuesValueOperandException(string msg) : base(msg)
+        {}
+    }
+
+    internal class OperationShouldContainValuesValueOperandException : GenericException
+    {
+        public OperationShouldContainValuesValueOperandException() : base("Operation should contain ValuesValueOperand")
+        {}
+    }
+
+    internal class CantDetermineValueTypeException : Exception
+    {
+        public CantDetermineValueTypeException(string msg) : base(msg)
+        {}
     }
 }

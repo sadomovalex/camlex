@@ -24,43 +24,65 @@
 // fitness for a particular purpose and non-infringement.
 // -----------------------------------------------------------------------------
 #endregion
-using System;
-using System.Collections.Generic;
+
 using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
 using System.Xml.Linq;
+using CamlexNET.Impl.Operations.Contains;
+using CamlexNET.Impl.Operations.In;
 using CamlexNET.Interfaces;
+using CamlexNET.Interfaces.ReverseEngeneering;
 
-namespace CamlexNET.Impl.Operands
+namespace CamlexNET.Impl.ReverseEngeneering.Caml.Analyzers
 {
-    // Values operand is used for In operator
-    internal class ValuesValueOperand : ValueOperand<IEnumerable<IOperand>>
+    internal class ReInAnalyzer : ReBinaryExpressionBaseAnalyzer
     {
-        private IEnumerable<IOperand> values;
-        public ValuesValueOperand(IEnumerable<IOperand> values)
-            : base(typeof(IEnumerable<IOperand>), values)
+        public ReInAnalyzer(XElement el, IReOperandBuilder operandBuilder) :
+            base(el, operandBuilder)
         {
-            if (values == null || !values.Any())
-            {
-                throw new CantCreateValuesValueOperandException("Can't create Values operand: list of values is null or empty");
-            }
-            this.values = values;
         }
 
-        public override XElement ToCaml()
+        public override bool IsValid()
         {
-            var el = new XElement(Tags.Values);
-            foreach (var operand in this.values)
-            {
-                el.Add(operand.ToCaml());
-            }
-            return el;
+            if (!base.IsValid()) return false;
+            if (el.Name != Tags.In) return false;
+            return true;
         }
 
-        public override Expression ToExpression()
+//        protected override bool isValueValid(string valueType, string value, bool isLookupId)
+//        {
+//            if (valueType != typeof(DataTypes.Text).Name &&
+//                valueType != typeof(DataTypes.Note).Name)
+//            {
+//                return false;
+//            }
+//            return base.isValueValid(valueType, value, isLookupId);
+//        }
+
+        protected override bool hasValidValueElement()
         {
-            throw new NotImplementedException();
+            if (el.Elements(Tags.Values).Count() != 1)
+            {
+                return false;
+            }
+
+            var valuesElement = el.Elements(Tags.Values).First();
+            if (!valuesElement.Elements(Tags.Value).Any())
+            {
+                return false;
+            }
+
+            if (valuesElement.Elements(Tags.Value).Any(e => !this.hasValidValueElement(e)))
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public override IOperation GetOperation()
+        {
+            return getOperation((fieldRefOperand, valueOperand) =>
+                new InOperation(null, fieldRefOperand, valueOperand));
         }
     }
 }
+

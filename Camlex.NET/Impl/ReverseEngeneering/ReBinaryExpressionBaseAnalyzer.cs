@@ -77,10 +77,15 @@ namespace CamlexNET.Impl.ReverseEngeneering
             return true;
         }
 
-        protected bool hasValidValueElement()
+        protected virtual bool hasValidValueElement()
         {
             if (el.Elements(Tags.Value).Count() != 1) return false;
             var valueElement = el.Elements(Tags.Value).First();
+            return this.hasValidValueElement(valueElement);
+        }
+
+        protected bool hasValidValueElement(XElement valueElement)
+        {
             var typeAttribute = valueElement.Attributes()
                 .Where(a => a.Name == Attributes.Type).FirstOrDefault();
             if (typeAttribute == null) return false;

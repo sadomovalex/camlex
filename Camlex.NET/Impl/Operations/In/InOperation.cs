@@ -26,9 +26,11 @@
 #endregion
 
 using System;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Xml.Linq;
 using CamlexNET.Impl.Factories;
+using CamlexNET.Impl.Operands;
 using CamlexNET.Interfaces;
 
 namespace CamlexNET.Impl.Operations.In
@@ -51,13 +53,36 @@ namespace CamlexNET.Impl.Operations.In
 
         public override Expression ToExpression()
         {
-            // in the field ref operand we don't know what type of the value it has. So perform
-            // conversion here
-//            var fieldRef = this.getFieldRefOperandExpression();
-//            var value = this.getValueOperandExpression();
-//
-//            return Expression.Equal(fieldRef, value);
-            throw new NotImplementedException();
+            if (!(this.fieldRefOperand is FieldRefOperand))
+            {
+                throw new OperationShouldContainFieldRefOperandException();
+            }
+            if (!(this.valueOperand is ValuesValueOperand))
+            {
+                throw new OperationShouldContainValuesValueOperandException();
+            }
+            var valueOperandType = this.getValueOperandType();
+            var fieldRefExpr = this.getFieldRefOperandExpression(valueOperandType);
+            var valueExpr = this.getValueOperandExpression();
+            var mi = typeof(string[]).GetMethod(ReflectionHelper.ContainsMethodName, new[] { typeof(string) });
+            return Expression.Call(fieldRefExpr, mi, valueExpr);
+        }
+
+        protected override Type getValueOperandType()
+        {
+            var valuesOperand = this.valueOperand as ValuesValueOperand;
+            var values = valuesOperand.Value;
+            if (values == null || !values.Any())
+            {
+                throw new CantDetermineValueTypeException("Can't determine type of values: array of values is null or empty");
+            }
+            // all values should have the same type
+            var types = values.Select(v => v.GetType()).Distinct();
+            if (types.Count() != 1)
+            {
+                throw new CantDetermineValueTypeException("Can't determine type of values: all values should have the same type, while in provided array they have different types");
+            }
+            return types.ElementAt(0);
         }
     }
 }

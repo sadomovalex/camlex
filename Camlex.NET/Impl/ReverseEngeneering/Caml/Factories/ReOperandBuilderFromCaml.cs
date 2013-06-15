@@ -111,7 +111,23 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Factories
             {
                 throw new ArgumentNullException("operationElement");
             }
-            var valueElement = operationElement.Elements(Tags.Value).FirstOrDefault();
+            var valuesElement = operationElement.Elements(Tags.Values).FirstOrDefault();
+            if (valuesElement == null)
+            {
+                return this.createValueOperand(operationElement, operationElement.Elements(Tags.Value).FirstOrDefault(), isComparision);
+            }
+
+            var values = new List<IOperand>();
+            valuesElement.Elements(Tags.Value).ToList().ForEach(e => values.Add(this.createValueOperand(operationElement, e, isComparision)));
+            return new ValuesValueOperand(values);
+        }
+
+        private IOperand createValueOperand(XElement operationElement, XElement valueElement, bool isComparision)
+        {
+            if (operationElement == null)
+            {
+                throw new ArgumentNullException("operationElement");
+            }
             if (valueElement == null)
             {
                 throw new ArgumentNullException("valueElement");
