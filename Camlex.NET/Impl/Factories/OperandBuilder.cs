@@ -163,7 +163,7 @@ namespace CamlexNET.Impl.Factories
             var values = this.getArrayFromExpression(expr);
             if (values == null)
             {
-                throw new CantCreateValuesValueOperandException();
+                throw new CantCreateValuesValueOperandException("Can't create array of values from passed expression");
             }
             var list = new List<IOperand>();
             foreach (var val in values)
