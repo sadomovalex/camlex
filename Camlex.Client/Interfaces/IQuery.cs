@@ -78,6 +78,8 @@ namespace CamlexNET.Interfaces
 //        IQuery ViewFields(string existingViewFields, IEnumerable<Guid> ids);
 //        IQuery ViewFields(string existingViewFields, IEnumerable<Guid> ids, bool includeViewFieldsTag);
 
+	    IQuery Scope(ViewScope scope);
+
 	    XElement[] ToCaml(bool includeViewTag);
 		string ToString();
 		string ToString(bool includeViewTag);
