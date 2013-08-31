@@ -38,12 +38,14 @@ namespace CamlexNET.UnitTests
 			string caml = Camlex.Query().Where(x => x["Ref"] == (DataTypes.LookupId)"123").ToString();
 
 			const string expected =
-				"<Where>" +
+                "<Query>" +
+                "  <Where>" +
 				"    <Eq>" +
 				"        <FieldRef Name=\"Ref\" LookupId=\"True\" />" +
 				"        <Value Type=\"Lookup\">123</Value>" +
 				"   </Eq>" +
-				"</Where>";
+                "  </Where>" +
+                "</Query>";
 
 			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
 		}
@@ -72,12 +74,14 @@ namespace CamlexNET.UnitTests
 			string caml = Camlex.Query().Where(x => x["Ref"] == (DataTypes.LookupValue)"123").ToString();
 
 			const string expected =
-				"<Where>" +
+                "<Query>" +
+                "  <Where>" +
 				"    <Eq>" +
 				"        <FieldRef Name=\"Ref\" />" +
 				"        <Value Type=\"Lookup\">123</Value>" +
 				"    </Eq>" +
-				"</Where>";
+                "  </Where>" +
+                "</Query>";
 
 			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
 		}

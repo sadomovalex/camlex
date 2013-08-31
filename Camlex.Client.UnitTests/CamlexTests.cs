@@ -65,12 +65,14 @@ namespace CamlexNET.UnitTests
 			string caml = Camlex.Query().Where(x => (string)x["Title"] == "testValue").ToString();
 
 			const string expected =
-				"<Where>" +
+                "<Query>" +
+                "  <Where>" +
 				"    <Eq>" +
 				"        <FieldRef Name=\"Title\" />" +
 				"        <Value Type=\"Text\">testValue</Value>" +
 				"    </Eq>" +
-				"</Where>";
+                "  </Where>" +
+                "</Query>";
 
 			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
 		}
@@ -82,12 +84,14 @@ namespace CamlexNET.UnitTests
 			string caml = Camlex.Query().Where(x => (string)x["Title"] == val).ToString();
 
 			const string expected =
-				"<Where>" +
+                "<Query>" +
+                "  <Where>" +
 				"    <Eq>" +
 				"        <FieldRef Name=\"Title\" />" +
 				"        <Value Type=\"Text\">testValue</Value>" +
 				"    </Eq>" +
-				"</Where>";
+                "  </Where>" +
+                "</Query>";
 
 			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
 		}
@@ -99,11 +103,13 @@ namespace CamlexNET.UnitTests
 			string caml = Camlex.Query().Where(x => (string)x["Title"] == val).ToString();
 
 			const string expected =
-				"<Where>" +
+                "<Query>" +
+                "  <Where>" +
 				"    <IsNull>" +
 				"        <FieldRef Name=\"Title\" />" +
 				"    </IsNull>" +
-				"</Where>";
+                "  </Where>" +
+                "</Query>";
 
 			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
 		}
@@ -123,12 +129,14 @@ namespace CamlexNET.UnitTests
 			string caml = Camlex.Query().Where(x => (string)x[val] == val).ToString();
 
 			const string expected =
-				"<Where>" +
+                "<Query>" +
+                "  <Where>" +
 				"    <Eq>" +
 				"        <FieldRef Name=\"Title\" />" +
 				"        <Value Type=\"Text\">Title</Value>" +
 				"    </Eq>" +
-				"</Where>";
+                "  </Where>" +
+                "</Query>";
 
 			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
 		}
@@ -140,12 +148,14 @@ namespace CamlexNET.UnitTests
 			string caml = Camlex.Query().Where(x => x["Count"] == (DataTypes.Integer)val).ToString();
 
 			const string expected =
-				"<Where>" +
+                "<Query>" +
+                "  <Where>" +
 				"    <Eq>" +
 				"        <FieldRef Name=\"Count\" />" +
 				"        <Value Type=\"Integer\">123</Value>" +
 				"    </Eq>" +
-				"</Where>";
+                "  </Where>" +
+                "</Query>";
 
 			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
 		}
@@ -157,12 +167,14 @@ namespace CamlexNET.UnitTests
 			string caml = Camlex.Query().Where(x => x[val] == (DataTypes.Note)val).ToString();
 
 			const string expected =
-				"<Where>" +
+                "<Query>" +
+                "  <Where>" +
 				"    <Eq>" +
 				"        <FieldRef Name=\"Title\" />" +
 				"        <Value Type=\"Note\">Title</Value>" +
 				"    </Eq>" +
-				"</Where>";
+                "  </Where>" +
+                "</Query>";
 
 			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
 		}
@@ -173,12 +185,14 @@ namespace CamlexNET.UnitTests
 			string caml = Camlex.Query().Where(x => (int)x["Count"] == this.getIntegerValue(123)).ToString();
 
 			const string expected =
-				"<Where>" +
+                "<Query>" +
+                "  <Where>" +
 				"    <Eq>" +
 				"        <FieldRef Name=\"Count\" />" +
 				"        <Value Type=\"Integer\">123</Value>" +
 				"    </Eq>" +
-				"</Where>";
+                "  </Where>" +
+                "</Query>";
 
 			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
 		}
@@ -189,12 +203,14 @@ namespace CamlexNET.UnitTests
 			string caml = Camlex.Query().Where(x => (string)x[this.getStringValueFoo()] == this.getStringValueFoo()).ToString();
 
 			const string expected =
-				"<Where>" +
+                "<Query>" +
+                "  <Where>" +
 				"    <Eq>" +
 				"        <FieldRef Name=\"Foo\" />" +
 				"        <Value Type=\"Text\">Foo</Value>" +
 				"    </Eq>" +
-				"</Where>";
+                "  </Where>" +
+                "</Query>";
 
 			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
 		}
@@ -205,12 +221,14 @@ namespace CamlexNET.UnitTests
 			string caml = Camlex.Query().Where(x => (bool)x["Foo"] == getBooleanValueFalse()).ToString();
 
 			const string expected =
-				"<Where>" +
+                "<Query>" +
+                "  <Where>" +
 				"    <Eq>" +
 				"        <FieldRef Name=\"Foo\" />" +
 				"        <Value Type=\"Boolean\">0</Value>" +
 				"    </Eq>" +
-				"</Where>";
+                "  </Where>" +
+                "</Query>";
 
 			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
 		}
@@ -221,12 +239,14 @@ namespace CamlexNET.UnitTests
 			string caml = Camlex.Query().Where(x => (int)x["Count"] == getIntegerValue(456)).ToString();
 
 			const string expected =
-				"<Where>" +
+               "<Query>" +
+               "  <Where>" +
 				"    <Eq>" +
 				"        <FieldRef Name=\"Count\" />" +
 				"        <Value Type=\"Integer\">456</Value>" +
 				"    </Eq>" +
-				"</Where>";
+                "  </Where>" +
+                "</Query>";
 
 			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
 		}
@@ -238,12 +258,14 @@ namespace CamlexNET.UnitTests
 			string caml = Camlex.Query().Where(x => (int)x["Count"] == add(2, 3)).ToString();
 
 			const string expected =
-				"<Where>" +
+               "<Query>" +
+               "  <Where>" +
 				"    <Eq>" +
 				"        <FieldRef Name=\"Count\" />" +
 				"        <Value Type=\"Integer\">5</Value>" +
 				"    </Eq>" +
-				"</Where>";
+                "  </Where>" +
+                "</Query>";
 
 			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
 		}
@@ -255,12 +277,14 @@ namespace CamlexNET.UnitTests
 			string caml = Camlex.Query().Where(x => (int)x["Count"] == foo.Prop).ToString();
 
 			const string expected =
-				"<Where>" +
+               "<Query>" +
+               "  <Where>" +
 				"    <Eq>" +
 				"        <FieldRef Name=\"Count\" />" +
 				"        <Value Type=\"Integer\">1</Value>" +
 				"    </Eq>" +
-				"</Where>";
+                "  </Where>" +
+                "</Query>";
 
 			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
 		}
@@ -272,12 +296,14 @@ namespace CamlexNET.UnitTests
 			string caml = Camlex.Query().Where(x => (string)x["Title"] == foo.Func()).ToString();
 
 			const string expected =
-				"<Where>" +
+               "<Query>" +
+               "  <Where>" +
 				"    <Eq>" +
 				"        <FieldRef Name=\"Title\" />" +
 				"        <Value Type=\"Text\">CamlexNET.UnitTests.CamlexTests+Foo</Value>" +
 				"    </Eq>" +
-				"</Where>";
+                "  </Where>" +
+                "</Query>";
 
 			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
 		}
@@ -289,12 +315,14 @@ namespace CamlexNET.UnitTests
 			string caml = Camlex.Query().Where(x => (string)x["Title"] == (b ? this.getStringValueVal3() : "foo")).ToString();
 
 			const string expected =
-				"<Where>" +
+               "<Query>" +
+               "  <Where>" +
 				"    <Eq>" +
 				"        <FieldRef Name=\"Title\" />" +
 				"        <Value Type=\"Text\">val3</Value>" +
 				"    </Eq>" +
-				"</Where>";
+                "  </Where>" +
+                "</Query>";
 
 			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
 		}
@@ -306,7 +334,8 @@ namespace CamlexNET.UnitTests
 				Camlex.Query().Where(x => (string)x["Status"] != "Completed" || x["Status"] == null).ToString();
 
 			const string expected =
-				"<Where>" +
+               "<Query>" +
+               "  <Where>" +
 				"    <Or>" +
 				"        <Neq>" +
 				"            <FieldRef Name=\"Status\" />" +
@@ -316,7 +345,8 @@ namespace CamlexNET.UnitTests
 				"            <FieldRef Name=\"Status\" />" +
 				"        </IsNull>" +
 				"   </Or>" +
-				"</Where>";
+                "  </Where>" +
+                "</Query>";
 
 			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
 		}
@@ -329,7 +359,8 @@ namespace CamlexNET.UnitTests
 					OrderBy(x => new[] { x["Modified"] as Camlex.Desc }).ToString();
 
 			const string expected =
-				"<Where>" +
+                "<Query>" +
+                "  <Where>" +
 				"    <Or>" +
 				"        <Neq>" +
 				"            <FieldRef Name=\"Status\" />" +
@@ -339,10 +370,11 @@ namespace CamlexNET.UnitTests
 				"            <FieldRef Name=\"Status\" />" +
 				"        </IsNull>" +
 				"     </Or>" +
-				"</Where>" +
-				"<OrderBy>" +
+                "  </Where>" +
+				"  <OrderBy>" +
 				"    <FieldRef Name=\"Modified\" Ascending=\"False\" />" +
-				"</OrderBy>";
+				"  </OrderBy>" +
+                "</Query>";
 
 			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
 		}
@@ -353,12 +385,14 @@ namespace CamlexNET.UnitTests
 			var caml = Camlex.Query().Where(x => ((string)x["Count"]).StartsWith("foo")).ToString();
 
 			const string expected =
-				"<Where>" +
+               "<Query>" +
+               "  <Where>" +
 				"    <BeginsWith>" +
 				"        <FieldRef Name=\"Count\" />" +
 				"        <Value Type=\"Text\">foo</Value>" +
 				"    </BeginsWith>" +
-				"</Where>";
+                "  </Where>" +
+                "</Query>";
 
 			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
 		}
@@ -369,12 +403,14 @@ namespace CamlexNET.UnitTests
 			var caml = Camlex.Query().Where(x => ((string)x["Count"]).Contains("foo")).ToString();
 
 			const string expected =
-				"<Where>" +
+               "<Query>" +
+               "  <Where>" +
 				"    <Contains>" +
 				"        <FieldRef Name=\"Count\" />" +
 				"        <Value Type=\"Text\">foo</Value>" +
 				"    </Contains>" +
-				"</Where>";
+                "  </Where>" +
+                "</Query>";
 
 			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
 		}
@@ -386,12 +422,14 @@ namespace CamlexNET.UnitTests
 			var caml = Camlex.Query().Where(x => ((string)x[val]).Contains("foo")).ToString();
 
 			const string expected =
-				"<Where>" +
+               "<Query>" +
+               "  <Where>" +
 				"    <Contains>" +
 				"        <FieldRef Name=\"Count\" />" +
 				"        <Value Type=\"Text\">foo</Value>" +
 				"    </Contains>" +
-				"</Where>";
+                "  </Where>" +
+                "</Query>";
 
 			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
 		}
@@ -403,12 +441,14 @@ namespace CamlexNET.UnitTests
 			var caml = Camlex.Query().Where(x => ((string)x["Count"]).Contains(val)).ToString();
 
 			const string expected =
-				"<Where>" +
+               "<Query>" +
+               "  <Where>" +
 				"    <Contains>" +
 				"        <FieldRef Name=\"Count\" />" +
 				"        <Value Type=\"Text\">foo</Value>" +
 				"    </Contains>" +
-				"</Where>";
+                "  </Where>" +
+                "</Query>";
 
 			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
 		}
@@ -420,12 +460,14 @@ namespace CamlexNET.UnitTests
 			var caml = Camlex.Query().Where(x => ((string)x["Count"]).Contains(b ? "foo" : "bar")).ToString();
 
 			const string expected =
-				"<Where>" +
+               "<Query>" +
+               "  <Where>" +
 				"    <Contains>" +
 				"        <FieldRef Name=\"Count\" />" +
 				"        <Value Type=\"Text\">foo</Value>" +
 				"    </Contains>" +
-				"</Where>";
+                "  </Where>" +
+                "</Query>";
 
 			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
 		}
@@ -438,7 +480,8 @@ namespace CamlexNET.UnitTests
 					.ToString();
 
 			const string expected =
-				"<Where>" +
+               "<Query>" +
+               "  <Where>" +
 				"    <And>" +
 				"        <BeginsWith>" +
 				"            <FieldRef Name=\"Title\" />" +
@@ -449,7 +492,8 @@ namespace CamlexNET.UnitTests
 				"            <Value Type=\"Text\">Camlex</Value>" +
 				"        </Contains>" +
 				"    </And>" +
-				"</Where>";
+                "  </Where>" +
+                "</Query>";
 
 			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
 		}
@@ -462,7 +506,8 @@ namespace CamlexNET.UnitTests
 					.ToString();
 
 			const string expected =
-				"<Where>" +
+               "<Query>" +
+               "  <Where>" +
 				"    <And>" +
 				"        <BeginsWith>" +
 				"            <FieldRef Name=\"Title\" />" +
@@ -472,7 +517,8 @@ namespace CamlexNET.UnitTests
 				"            <FieldRef Name=\"Status\" />" +
 				"        </IsNotNull>" +
 				"    </And>" +
-				"</Where>";
+                "  </Where>" +
+                "</Query>";
 
 			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
 		}
@@ -483,9 +529,11 @@ namespace CamlexNET.UnitTests
 			var caml = Camlex.Query().GroupBy(x => x["field1"]).ToString();
 
 			var expected =
-				"<GroupBy>" +
+                "<Query>" +
+				"  <GroupBy>" +
 				"    <FieldRef Name=\"field1\" />" +
-				"</GroupBy>";
+				"  </GroupBy>" +
+                "</Query>";
 
 			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
 		}
@@ -496,10 +544,12 @@ namespace CamlexNET.UnitTests
 			var caml = Camlex.Query().GroupBy(x => new[] { x["field1"], x["field2"] }, true, 10).ToString();
 
 			var expected =
-				"<GroupBy Collapse=\"True\" GroupLimit=\"10\">" +
+                "<Query>" +
+				"  <GroupBy Collapse=\"True\" GroupLimit=\"10\">" +
 				"    <FieldRef Name=\"field1\" />" +
 				"    <FieldRef Name=\"field2\" />" +
-				"</GroupBy>";
+				"  </GroupBy>" +
+                "</Query>";
 
 			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
 		}
@@ -512,14 +562,16 @@ namespace CamlexNET.UnitTests
 						x["StartField"], x["StopField"], x["RecurrenceID"], now)).ToString();
 
 			var expected =
-				"<Where>" +
+               "<Query>" +
+               "  <Where>" +
 				"    <DateRangesOverlap>" +
 				"        <FieldRef Name=\"StartField\" />" +
 				"        <FieldRef Name=\"StopField\" />" +
 				"        <FieldRef Name=\"RecurrenceID\" />" +
 				"        <Value Type=\"DateTime\">" + now.ToString("s") + "Z</Value>" +
 				"    </DateRangesOverlap>" +
-				"</Where>";
+                "  </Where>" +
+                "</Query>";
 
 			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
 		}
@@ -532,14 +584,16 @@ namespace CamlexNET.UnitTests
 						x["StartField"], x["StopField"], x["RecurrenceID"], (DataTypes.DateTime)now)).ToString();
 
 			var expected =
-				"<Where>" +
+               "<Query>" +
+               "  <Where>" +
 				"    <DateRangesOverlap>" +
 				"        <FieldRef Name=\"StartField\" />" +
 				"        <FieldRef Name=\"StopField\" />" +
 				"        <FieldRef Name=\"RecurrenceID\" />" +
 				"        <Value Type=\"DateTime\">" + DateTime.Parse(now).ToString("s") + "Z</Value>" +
 				"    </DateRangesOverlap>" +
-				"</Where>";
+                "  </Where>" +
+                "</Query>";
 
 			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
 		}
@@ -551,14 +605,16 @@ namespace CamlexNET.UnitTests
 						x["StartField"], x["StopField"], x["RecurrenceID"], (DataTypes.DateTime)Camlex.Month)).ToString();
 
 			var expected =
-				"<Where>" +
+               "<Query>" +
+               "  <Where>" +
 				"    <DateRangesOverlap>" +
 				"        <FieldRef Name=\"StartField\" />" +
 				"        <FieldRef Name=\"StopField\" />" +
 				"        <FieldRef Name=\"RecurrenceID\" />" +
 				"        <Value Type=\"DateTime\"><Month /></Value>" +
 				"    </DateRangesOverlap>" +
-				"</Where>";
+                "  </Where>" +
+                "</Query>";
 
 			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
 		}
@@ -575,7 +631,8 @@ namespace CamlexNET.UnitTests
 				.ToString();
 
 			var expected =
-				"<Where>" +
+               "<Query>" +
+               "  <Where>" +
 				"    <Or>" +
 				"        <Eq>" +
 				"            <FieldRef Name=\"Id\" />" +
@@ -585,15 +642,16 @@ namespace CamlexNET.UnitTests
 				"            <FieldRef Name=\"Description\" />" +
 				"         </IsNotNull>" +
 				"     </Or>" +
-				"</Where>" +
-				"<OrderBy>" +
+                "  </Where>" +
+				"  <OrderBy>" +
 				"    <FieldRef Name=\"_Author\" />" +
 				"    <FieldRef Name=\"AuthoringDate\" />" +
 				"    <FieldRef Name=\"AssignedTo\" Ascending=\"True\" />" +
-				"</OrderBy>" +
-				"<GroupBy Collapse=\"True\">" +
+				"  </OrderBy>" +
+				"  <GroupBy Collapse=\"True\">" +
 				"    <FieldRef Name=\"Title\" />" +
-				"</GroupBy>" +
+				"  </GroupBy>" +
+                "</Query>" +
                 "<ViewFields>" +
                 "    <FieldRef Name=\"Foo\" />" +
                 "    <FieldRef Name=\"Bar\" />" +
@@ -616,12 +674,14 @@ namespace CamlexNET.UnitTests
 			string caml = Camlex.Query().Where(x => (string)x[(string)this.getStringValueFoo()] == "1" + 2.ToString()).ToString();
 
 			const string expected =
-				"<Where>" +
+                "<Query>" +
+                "  <Where>" +
 				"    <Eq>" +
 				"        <FieldRef Name=\"Foo\" />" +
 				"        <Value Type=\"Text\">12</Value>" +
 				"    </Eq>" +
-				"</Where>";
+                "  </Where>" +
+                "</Query>";
 
 			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
 		}
@@ -639,12 +699,14 @@ namespace CamlexNET.UnitTests
 			string caml = Camlex.Query().Where(x => (int)x["ID"] != 1).ToString();
 
 			const string expected =
-				"<Where>" +
+                "<Query>" +
+                "  <Where>" +
 				"    <Neq>" +
 				"        <FieldRef Name=\"ID\" />" +
 				"        <Value Type=\"Integer\">1</Value>" +
 				"    </Neq>" +
-				"</Where>";
+                "  </Where>" +
+                "</Query>";
 
 			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
 		}
@@ -655,12 +717,14 @@ namespace CamlexNET.UnitTests
 			string caml = Camlex.Query().Where(x => (int)x["ID"] >= 1).ToString();
 
 			const string expected =
-				"<Where>" +
+                "<Query>" +
+                "  <Where>" +
 				"    <Geq>" +
 				"        <FieldRef Name=\"ID\" />" +
 				"        <Value Type=\"Integer\">1</Value>" +
 				"    </Geq>" +
-				"</Where>";
+                "  </Where>" +
+                "</Query>";
 
 			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
 		}
@@ -671,12 +735,14 @@ namespace CamlexNET.UnitTests
 			string caml = Camlex.Query().Where(x => (int)x["ID"] > 1).ToString();
 
 			const string expected =
-				"<Where>" +
+                "<Query>" +
+                "  <Where>" +
 				"    <Gt>" +
 				"        <FieldRef Name=\"ID\" />" +
 				"        <Value Type=\"Integer\">1</Value>" +
 				"    </Gt>" +
-				"</Where>";
+                "  </Where>" +
+                "</Query>";
 
 			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
 		}
@@ -687,12 +753,14 @@ namespace CamlexNET.UnitTests
 			string caml = Camlex.Query().Where(x => (int)x["ID"] <= 1).ToString();
 
 			const string expected =
-				"<Where>" +
+                "<Query>" +
+                "  <Where>" +
 				"    <Leq>" +
 				"        <FieldRef Name=\"ID\" />" +
 				"        <Value Type=\"Integer\">1</Value>" +
 				"    </Leq>" +
-				"</Where>";
+                "  </Where>" +
+                "</Query>";
 
 			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
 		}
@@ -703,12 +771,14 @@ namespace CamlexNET.UnitTests
 			string caml = Camlex.Query().Where(x => (int)x["ID"] < 1).ToString();
 
 			const string expected =
-				"<Where>" +
+                "<Query>" +
+                "  <Where>" +
 				"    <Lt>" +
 				"        <FieldRef Name=\"ID\" />" +
 				"        <Value Type=\"Integer\">1</Value>" +
 				"    </Lt>" +
-				"</Where>";
+                "  </Where>" +
+                "</Query>";
 
 			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
 		}
@@ -719,12 +789,14 @@ namespace CamlexNET.UnitTests
 			var caml = Camlex.Query().Where(x => x["ID"] != (DataTypes.Currency)"1.2345").ToString();
 
 			var expected =
-				"<Where>" +
+                "<Query>" +
+                "  <Where>" +
 				"    <Neq>" +
 				"        <FieldRef Name=\"ID\" />" +
 				"        <Value Type=\"Currency\">1.2345</Value>" +
 				"    </Neq>" +
-				"</Where>";
+                "  </Where>" +
+                "</Query>";
 
 			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
 		}
@@ -735,12 +807,14 @@ namespace CamlexNET.UnitTests
 			var caml = Camlex.Query().Where(x => x["ID"] >= (DataTypes.Currency)"1.2345").ToString();
 
 			var expected =
-				"<Where>" +
+                "<Query>" +
+                "  <Where>" +
 				"    <Geq>" +
 				"        <FieldRef Name=\"ID\" />" +
 				"        <Value Type=\"Currency\">1.2345</Value>" +
 				"    </Geq>" +
-				"</Where>";
+                "  </Where>" +
+                "</Query>";
 
 			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
 		}
@@ -751,12 +825,14 @@ namespace CamlexNET.UnitTests
 			var caml = Camlex.Query().Where(x => x["ID"] > (DataTypes.Currency)"1.2345").ToString();
 
 			var expected =
-				"<Where>" +
+                "<Query>" +
+                "  <Where>" +
 				"    <Gt>" +
 				"        <FieldRef Name=\"ID\" />" +
 				"        <Value Type=\"Currency\">1.2345</Value>" +
 				"    </Gt>" +
-				"</Where>";
+                "  </Where>" +
+                "</Query>";
 
 			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
 		}
@@ -767,12 +843,14 @@ namespace CamlexNET.UnitTests
 			var caml = Camlex.Query().Where(x => x["ID"] <= (DataTypes.Currency)"1.2345").ToString();
 
 			var expected =
-				"<Where>" +
+                "<Query>" +
+                "  <Where>" +
 				"    <Leq>" +
 				"        <FieldRef Name=\"ID\" />" +
 				"        <Value Type=\"Currency\">1.2345</Value>" +
 				"    </Leq>" +
-				"</Where>";
+                "  </Where>" +
+                "</Query>";
 
 			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
 		}
@@ -783,12 +861,14 @@ namespace CamlexNET.UnitTests
 			var caml = Camlex.Query().Where(x => x["ID"] < (DataTypes.Currency)"1.2345").ToString();
 
 			var expected =
-				"<Where>" +
+                "<Query>" +
+                "  <Where>" +
 				"    <Lt>" +
 				"        <FieldRef Name=\"ID\" />" +
 				"        <Value Type=\"Currency\">1.2345</Value>" +
 				"    </Lt>" +
-				"</Where>";
+                "  </Where>" +
+                "</Query>";
 
 			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
 		}
@@ -800,12 +880,14 @@ namespace CamlexNET.UnitTests
 				.Where(x => (string)x["Title"] == "testValue").ToString();
 
 			const string expected =
-				"<Where>" +
+                "<Query>" +
+                "  <Where>" +
 				"    <Eq>" +
 				"        <FieldRef Name=\"Title\" />" +
 				"        <Value Type=\"Text\">testValue</Value>" +
 				"     </Eq>" +
-				"</Where>";
+                "  </Where>" +
+                "</Query>";
 
 			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
 		}
@@ -859,12 +941,14 @@ namespace CamlexNET.UnitTests
 				.Where(x => (string)x["4feaf1f3-5b04-4d93-b0fc-4e48d0c60eed"] == "val").ToString();
 
 			const string expected =
-				"<Where>" +
+                "<Query>" +
+                "  <Where>" +
 				"    <Eq>" +
 				"        <FieldRef ID=\"4feaf1f3-5b04-4d93-b0fc-4e48d0c60eed\" />" +
 				"        <Value Type=\"Text\">val</Value>" +
 				"    </Eq>" +
-				"</Where>";
+                "  </Where>" +
+                "</Query>";
 
 			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
 		}
@@ -878,12 +962,14 @@ namespace CamlexNET.UnitTests
 				.Where(x => (string)x[guid] == "val").ToString();
 
 			const string expected =
-				"<Where>" +
+                "<Query>" +
+                "  <Where>" +
 				"    <Eq>" +
 				"        <FieldRef ID=\"4feaf1f3-5b04-4d93-b0fc-4e48d0c60eed\" />" +
 				"        <Value Type=\"Text\">val</Value>" +
 				"    </Eq>" +
-				"</Where>";
+                "  </Where>" +
+                "</Query>";
 
 			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
 		}
@@ -915,12 +1001,14 @@ namespace CamlexNET.UnitTests
 			string caml = Camlex.Query().Where(x => (Guid)x["Foo"] == val).ToString();
 
 			const string expected =
-				"<Where>" +
+                "<Query>" +
+                "  <Where>" +
 				"    <Eq>" +
 				"        <FieldRef Name=\"Foo\" />" +
 				"        <Value Type=\"Guid\">4feaf1f3-5b04-4d93-b0fc-4e48d0c60eed</Value>" +
 				"    </Eq>" +
-				"</Where>";
+                "  </Where>" +
+                "</Query>";
 
 			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
 		}
@@ -932,12 +1020,14 @@ namespace CamlexNET.UnitTests
 			string caml = Camlex.Query().Where(x => x["Count"] == (DataTypes.Guid)val).ToString();
 
 			const string expected =
-				"<Where>" +
+                "<Query>" +
+                "  <Where>" +
 				"    <Eq>" +
 				"        <FieldRef Name=\"Count\" />" +
 				"        <Value Type=\"Guid\">4feaf1f3-5b04-4d93-b0fc-4e48d0c60eed</Value>" +
 				"    </Eq>" +
-				"</Where>";
+                "  </Where>" +
+                "</Query>";
 
 			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
 		}
@@ -949,12 +1039,14 @@ namespace CamlexNET.UnitTests
 			string caml = Camlex.Query().Where(x => x[val] == (DataTypes.Guid)val).ToString();
 
 			const string expected =
-				"<Where>" +
+                "<Query>" +
+                "  <Where>" +
 				"    <Eq>" +
 				"        <FieldRef ID=\"4feaf1f3-5b04-4d93-b0fc-4e48d0c60eed\" />" +
 				"        <Value Type=\"Guid\">4feaf1f3-5b04-4d93-b0fc-4e48d0c60eed</Value>" +
 				"    </Eq>" +
-				"</Where>";
+                "  </Where>" +
+                "</Query>";
 
 			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
 		}
@@ -965,12 +1057,14 @@ namespace CamlexNET.UnitTests
 			string caml = Camlex.Query().Where(x => (Guid)x["Foo"] == this.getGuid()).ToString();
 
 			const string expected =
-				"<Where>" +
+                "<Query>" +
+                "  <Where>" +
 				"    <Eq>" +
 				"        <FieldRef Name=\"Foo\" />" +
 				"        <Value Type=\"Guid\">4feaf1f3-5b04-4d93-b0fc-4e48d0c60eed</Value>" +
 				"    </Eq>" +
-				"</Where>";
+                "  </Where>" +
+                "</Query>";
 
 			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
 		}
@@ -999,9 +1093,11 @@ namespace CamlexNET.UnitTests
 			var caml = Camlex.Query().GroupBy(x => x[b ? "field1" : "field2"]).ToString();
 
 			var expected =
-				"<GroupBy>" +
+                "<Query>" +
+				"  <GroupBy>" +
 				"    <FieldRef Name=\"field1\" />" +
-				"</GroupBy>";
+				"  </GroupBy>" +
+                "</Query>";
 
 			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
 		}
@@ -1012,9 +1108,11 @@ namespace CamlexNET.UnitTests
             var caml = Camlex.Query().GroupBy(x => x["foo"], true).ToString();
 
             var expected =
+                "<Query>" +
                 "  <GroupBy Collapse=\"True\">" +
                 "    <FieldRef Name=\"foo\" />" +
-                "  </GroupBy>";
+                "  </GroupBy>" +
+                "</Query>";
 
             Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
         }
@@ -1025,9 +1123,11 @@ namespace CamlexNET.UnitTests
             var caml = Camlex.Query().GroupBy(x => x["foo"], 1).ToString();
 
             var expected =
+                "<Query>" +
                 "  <GroupBy GroupLimit=\"1\">" +
                 "    <FieldRef Name=\"foo\" />" +
-                "  </GroupBy>";
+                "  </GroupBy>" +
+                "</Query>";
 
             Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
         }
@@ -1039,16 +1139,18 @@ namespace CamlexNET.UnitTests
             var caml = Camlex.Query().Where(x => (new[] { f(0), f(1), f(2) }).Contains((string)x["test"])).ToString();
 
             var expected =
-                "   <Where>" +
-                "       <In>" +
-                "           <FieldRef Name=\"test\" />" +
-                "           <Values>" +
-                "               <Value Type=\"Text\">0</Value>" +
-                "               <Value Type=\"Text\">1</Value>" +
-                "               <Value Type=\"Text\">2</Value>" +
-                "           </Values>" +
-                "       </In>" +
-                "   </Where>";
+                "<Query>" +
+                "  <Where>" +
+                "    <In>" +
+                "      <FieldRef Name=\"test\" />" +
+                "      <Values>" +
+                "         <Value Type=\"Text\">0</Value>" +
+                "         <Value Type=\"Text\">1</Value>" +
+                "         <Value Type=\"Text\">2</Value>" +
+                "      </Values>" +
+                "    </In>" +
+                "  </Where>" +
+                "</Query>";
 
             Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
         }
@@ -1101,7 +1203,8 @@ namespace CamlexNET.UnitTests
             var caml = Camlex.Query().Where(x => (string)x["Title"] == "test" && (new[] { f(0), f(1), f(2) }).Contains((string)x["Description"])).ToString();
 
             var expected =
-                "<Where>" +
+                "<Query>" +
+                "  <Where>" +
                 "  <And>" +
                 "    <Eq>" +
                 "      <FieldRef Name=\"Title\" />" +
@@ -1116,7 +1219,8 @@ namespace CamlexNET.UnitTests
                 "      </Values>" +
                 "    </In>" +
                 "  </And>" +
-                "</Where>";
+                "  </Where>" +
+                "</Query>";
 
             Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
         }
@@ -1127,7 +1231,8 @@ namespace CamlexNET.UnitTests
             var caml = Camlex.Query().Where(x => getArray().Contains((int)x["test"])).ToString();
 
             var expected =
-                "<Where>" +
+                "<Query>" +
+                "  <Where>" +
                 "  <In>" +
                 "    <FieldRef Name=\"test\" />" +
                 "    <Values>" +
@@ -1143,7 +1248,8 @@ namespace CamlexNET.UnitTests
                 "      <Value Type=\"Integer\">9</Value>" +
                 "    </Values>" +
                 "  </In>" +
-                "</Where>";
+                "  </Where>" +
+                "</Query>";
 
             Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
         }

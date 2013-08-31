@@ -40,15 +40,18 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
 		public void test_THAT_existing_single_eq_expression_IS_mixed_with_single_expression_correctly_using_and()
 		{
 			const string existingQuery =
-				"<Where>" +
+                "<Query>" +
+                "  <Where>" +
 				"    <Eq>" +
 				"        <FieldRef Name=\"Title\" />" +
 				"        <Value Type=\"Text\">testValue</Value>" +
 				"    </Eq>" +
-				"</Where>";
+               "  </Where>" +
+               "</Query>";
 
 			const string expected =
-				"<Where>" +
+                "<Query>" +
+                "  <Where>" +
 				"  <And>" +
 				"    <Eq>" +
 				"      <FieldRef Name=\"Title\" />" +
@@ -59,7 +62,8 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
 				"      <Value Type=\"Text\">testValue</Value>" +
 				"    </Eq>" +
 				"  </And>" +
-				"</Where>";
+			   "  </Where>" +
+               "</Query>";
 
 			var query = Camlex.Query().WhereAll(existingQuery, x => (string)x["Title"] == "foo").ToString();
 			Assert.That(query, Is.EqualTo(expected).Using(new CamlComparer()));
@@ -79,7 +83,8 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
 				"</Query>";
 
 			const string expected =
-				"<Where>" +
+                "<Query>" +
+                "  <Where>" +
 				"  <And>" +
 				"    <Eq>" +
 				"      <FieldRef Name=\"Title\" />" +
@@ -90,7 +95,8 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
 				"      <Value Type=\"Text\">testValue</Value>" +
 				"    </Eq>" +
 				"  </And>" +
-				"</Where>";
+               "  </Where>" +
+               "</Query>";
 
 			var query = Camlex.Query().WhereAll(existingQuery, x => (string)x["Title"] == "foo").ToString();
 			Assert.That(query, Is.EqualTo(expected).Using(new CamlComparer()));
@@ -100,7 +106,8 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
 		public void test_THAT_existing_several_expressions_ARE_mixed_with_several_expressions_correctly_using_and()
 		{
 			const string existingQuery =
-				"<Where>" +
+                "<Query>" +
+                "  <Where>" +
 				"  <And>" +
 				"    <Eq>" +
 				"      <FieldRef Name=\"Title\" />" +
@@ -111,10 +118,12 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
 				"      <Value Type=\"Text\">testValue</Value>" +
 				"    </Eq>" +
 				"  </And>" +
-				"</Where>";
+                "  </Where>" +
+                "</Query>";
 
 			const string expected =
-				"<Where>" +
+                "<Query>" +
+                "  <Where>" +
 				"  <And>" +
 				"    <And>" +
 				"      <Gt>" +
@@ -136,7 +145,8 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
 				"      </Eq>" +
 				"    </And>" +
 				"  </And>" +
-				"</Where>";
+                "  </Where>" +
+                "</Query>";
 
 			var query = Camlex.Query().WhereAll(existingQuery, x => (int)x["Count"] > 1 && x["Status"] != null).ToString();
 			Assert.That(query, Is.EqualTo(expected).Using(new CamlComparer()));
@@ -146,15 +156,18 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
 		public void test_THAT_existing_single_eq_expression_IS_mixed_with_single_expression_correctly_using_or()
 		{
 			const string existingQuery =
-				"   <Where>" +
+                "<Query>" +
+                "  <Where>" +
 				"       <Eq>" +
 				"           <FieldRef Name=\"Title\" />" +
 				"           <Value Type=\"Text\">testValue</Value>" +
 				"       </Eq>" +
-				"   </Where>";
+               "  </Where>" +
+               "</Query>";
 
 			const string expected =
-				"<Where>" +
+                "<Query>" +
+                "  <Where>" +
 				"  <Or>" +
 				"    <Eq>" +
 				"      <FieldRef Name=\"Title\" />" +
@@ -165,7 +178,8 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
 				"      <Value Type=\"Text\">testValue</Value>" +
 				"    </Eq>" +
 				"  </Or>" +
-				"</Where>";
+               "  </Where>" +
+               "</Query>";
 
 			var query = Camlex.Query().WhereAny(existingQuery, x => (string)x["Title"] == "foo").ToString();
 			Assert.That(query, Is.EqualTo(expected).Using(new CamlComparer()));
@@ -175,7 +189,8 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
 		public void test_THAT_existing_several_expressions_ARE_mixed_with_several_expressions_correctly_using_or()
 		{
 			const string existingQuery =
-				"<Where>" +
+                "<Query>" +
+                "  <Where>" +
 				"  <And>" +
 				"    <Eq>" +
 				"      <FieldRef Name=\"Title\" />" +
@@ -186,10 +201,12 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
 				"      <Value Type=\"Text\">testValue</Value>" +
 				"    </Eq>" +
 				"  </And>" +
-				"</Where>";
+               "  </Where>" +
+               "</Query>";
 
 			const string expected =
-				"<Where>" +
+                "<Query>" +
+                "  <Where>" +
 				"  <Or>" +
 				"    <And>" +
 				"      <Gt>" +
@@ -211,7 +228,8 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
 				"      </Eq>" +
 				"    </And>" +
 				"  </Or>" +
-				"</Where>";
+               "  </Where>" +
+               "</Query>";
 
 			var query = Camlex.Query().WhereAny(existingQuery, x => (int)x["Count"] > 1 && x["Status"] != null).ToString();
 			Assert.That(query, Is.EqualTo(expected).Using(new CamlComparer()));
@@ -222,11 +240,11 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
 		public void test_WHEN_where_is_not_provided_THEN_exception_is_thrown()
 		{
 			const string existingQuery =
-				"<Query>" +
+                "<Query>" +
 				"  <OrderBy>" +
 				"    <FieldRef Name=\"Modified\" Ascending=\"False\" />" +
 				"  </OrderBy>" +
-				"</Query>";
+               "</Query>";
 			var query = Camlex.Query().WhereAll(existingQuery, x => (string)x["Title"] == "foo").ToString();
 		}
 
@@ -234,15 +252,19 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
 		public void test_THAT_single_order_by_IS_mixed_with_single_order_by_correctly()
 		{
 			const string existingQuery =
+                "<Query>" +
 				"  <OrderBy>" +
 				"    <FieldRef Name=\"Modified\" Ascending=\"False\" />" +
-				"  </OrderBy>";
+				"  </OrderBy>" +
+                "</Query>";
 
 			const string expected =
-				"<OrderBy>" +
-				"  <FieldRef Name=\"Modified\" Ascending=\"False\" />" +
-				"  <FieldRef Name=\"Title\" />" +
-				"</OrderBy>";
+                "<Query>" +
+				"  <OrderBy>" +
+				"    <FieldRef Name=\"Modified\" Ascending=\"False\" />" +
+				"    <FieldRef Name=\"Title\" />" +
+				"  </OrderBy>" +
+                "</Query>";
 
 			var query = Camlex.Query().OrderBy(existingQuery, x => x["Title"]).ToString();
 			Assert.That(query, Is.EqualTo(expected).Using(new CamlComparer()));
@@ -252,16 +274,20 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
 		public void test_THAT_single_order_by_IS_mixed_with_several_order_by_correctly()
 		{
 			const string existingQuery =
+                "<Query>" +
 				"  <OrderBy>" +
 				"    <FieldRef Name=\"Modified\" Ascending=\"False\" />" +
-				"  </OrderBy>";
+				"  </OrderBy>" +
+                "</Query>";
 
 			const string expected =
-				"<OrderBy>" +
-				"  <FieldRef Name=\"Modified\" Ascending=\"False\" />" +
-				"  <FieldRef Name=\"Title\" />" +
-				"  <FieldRef Name=\"State\" Ascending=\"True\" />" +
-				"</OrderBy>";
+                "<Query>" +
+				"  <OrderBy>" +
+				"    <FieldRef Name=\"Modified\" Ascending=\"False\" />" +
+				"    <FieldRef Name=\"Title\" />" +
+				"    <FieldRef Name=\"State\" Ascending=\"True\" />" +
+				"  </OrderBy>" +
+                "</Query>";
 
 			var query = Camlex.Query().OrderBy(existingQuery, x => new[] { x["Title"], x["State"] as Camlex.Asc }).ToString();
 			Assert.That(query, Is.EqualTo(expected).Using(new CamlComparer()));
@@ -271,18 +297,22 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
 		public void test_THAT_several_order_by_IS_mixed_with_several_order_by_correctly()
 		{
 			const string existingQuery =
+                "<Query>" +
 				"  <OrderBy>" +
 				"    <FieldRef Name=\"Modified\" Ascending=\"False\" />" +
 				"    <FieldRef Name=\"ModifiedBy\" />" +
-				"  </OrderBy>";
+				"  </OrderBy>" +
+                "</Query>";
 
 			const string expected =
-				"<OrderBy>" +
-				"  <FieldRef Name=\"Modified\" Ascending=\"False\" />" +
-				"  <FieldRef Name=\"ModifiedBy\" />" +
-				"  <FieldRef Name=\"Title\" />" +
-				"  <FieldRef Name=\"State\" Ascending=\"True\" />" +
-				"</OrderBy>";
+                "<Query>" +
+				"  <OrderBy>" +
+				"    <FieldRef Name=\"Modified\" Ascending=\"False\" />" +
+				"    <FieldRef Name=\"ModifiedBy\" />" +
+				"    <FieldRef Name=\"Title\" />" +
+				"    <FieldRef Name=\"State\" Ascending=\"True\" />" +
+				"  </OrderBy>" +
+                "</Query>";
 
 			var query = Camlex.Query().OrderBy(existingQuery, x => new[] { x["Title"], x["State"] as Camlex.Asc }).ToString();
 			Assert.That(query, Is.EqualTo(expected).Using(new CamlComparer()));
@@ -292,18 +322,22 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
 		public void test_THAT_order_by_collection_IS_mixed_with_several_order_by_correctly()
 		{
 			const string existingQuery =
+                "<Query>" +
 				"  <OrderBy>" +
 				"    <FieldRef Name=\"Modified\" Ascending=\"False\" />" +
 				"    <FieldRef Name=\"ModifiedBy\" />" +
-				"  </OrderBy>";
+				"  </OrderBy>" +
+                "</Query>";
 
 			const string expected =
-				"<OrderBy>" +
-				"  <FieldRef Name=\"Modified\" Ascending=\"False\" />" +
-				"  <FieldRef Name=\"ModifiedBy\" />" +
-				"  <FieldRef Name=\"Title\" />" +
-				"  <FieldRef Name=\"State\" Ascending=\"True\" />" +
-				"</OrderBy>";
+                "<Query>" +
+				"  <OrderBy>" +
+				"    <FieldRef Name=\"Modified\" Ascending=\"False\" />" +
+				"    <FieldRef Name=\"ModifiedBy\" />" +
+				"    <FieldRef Name=\"Title\" />" +
+				"    <FieldRef Name=\"State\" Ascending=\"True\" />" +
+				"  </OrderBy>" +
+                "</Query>";
 
 			var exprs = new List<Expression<Func<ListItem, object>>>();
 			exprs.Add(x => x["Title"]);
@@ -318,12 +352,14 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
 		public void test_WHEN_order_by_is_not_provided_THEN_exception_is_thrown()
 		{
 			const string existingQuery =
-				"   <Where>" +
-				"       <Eq>" +
-				"           <FieldRef Name=\"Title\" />" +
-				"           <Value Type=\"Text\">testValue</Value>" +
-				"       </Eq>" +
-				"   </Where>";
+                "<Query>" +
+				"  <Where>" +
+				"    <Eq>" +
+				"      <FieldRef Name=\"Title\" />" +
+				"      <Value Type=\"Text\">testValue</Value>" +
+				"    </Eq>" +
+				"  </Where>" +
+                "</Query>";
 			var query = Camlex.Query().OrderBy(existingQuery, x => x["Title"]).ToString();
 		}
 
@@ -331,15 +367,19 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
 		public void test_THAT_single_group_by_IS_mixed_with_single_group_by_correctly()
 		{
 			const string existingQuery =
+                "<Query>" +
 				"  <GroupBy>" +
 				"    <FieldRef Name=\"Modified\" />" +
-				"  </GroupBy>";
+				"  </GroupBy>" +
+                "</Query>";
 
 			const string expected =
-				"<GroupBy>" +
-				"  <FieldRef Name=\"Modified\" />" +
-				"  <FieldRef Name=\"Title\" />" +
-				"</GroupBy>";
+                "<Query>" +
+				"  <GroupBy>" +
+				"    <FieldRef Name=\"Modified\" />" +
+				"    <FieldRef Name=\"Title\" />" +
+				"  </GroupBy>" +
+                "</Query>";
 
 			var query = Camlex.Query().GroupBy(existingQuery, x => x["Title"]).ToString();
 			Assert.That(query, Is.EqualTo(expected).Using(new CamlComparer()));
@@ -349,16 +389,20 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
 		public void test_THAT_single_group_by_IS_mixed_with_several_group_by_correctly()
 		{
 			const string existingQuery =
+                "<Query>" +
 				"  <GroupBy>" +
 				"    <FieldRef Name=\"Modified\" />" +
-				"  </GroupBy>";
+				"  </GroupBy>" +
+                "</Query>";
 
 			const string expected =
-				"<GroupBy>" +
-				"  <FieldRef Name=\"Modified\" />" +
-				"  <FieldRef Name=\"Title\" />" +
-				"  <FieldRef Name=\"State\" />" +
-				"</GroupBy>";
+                "<Query>" +
+				"  <GroupBy>" +
+				"    <FieldRef Name=\"Modified\" />" +
+				"    <FieldRef Name=\"Title\" />" +
+				"    <FieldRef Name=\"State\" />" +
+				"  </GroupBy>" +
+                "</Query>";
 
 			var query = Camlex.Query().GroupBy(existingQuery, x => new[] { x["Title"], x["State"] }).ToString();
 			Assert.That(query, Is.EqualTo(expected).Using(new CamlComparer()));
@@ -368,18 +412,22 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
 		public void test_THAT_several_group_by_IS_mixed_with_several_group_by_correctly()
 		{
 			const string existingQuery =
+                "<Query>" +
 				"  <GroupBy>" +
 				"    <FieldRef Name=\"Modified\" />" +
 				"    <FieldRef Name=\"ModifiedBy\" />" +
-				"  </GroupBy>";
+				"  </GroupBy>" +
+                "</Query>";
 
 			const string expected =
-				"<GroupBy>" +
-				"  <FieldRef Name=\"Modified\" />" +
-				"  <FieldRef Name=\"ModifiedBy\" />" +
-				"  <FieldRef Name=\"Title\" />" +
-				"  <FieldRef Name=\"State\" />" +
-				"</GroupBy>";
+                "<Query>" +
+				"  <GroupBy>" +
+				"    <FieldRef Name=\"Modified\" />" +
+				"    <FieldRef Name=\"ModifiedBy\" />" +
+				"    <FieldRef Name=\"Title\" />" +
+				"    <FieldRef Name=\"State\" />" +
+				"  </GroupBy>" +
+                "</Query>";
 
 			var query = Camlex.Query().GroupBy(existingQuery, x => new[] { x["Title"], x["State"] }).ToString();
 			Assert.That(query, Is.EqualTo(expected).Using(new CamlComparer()));
@@ -389,18 +437,22 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
 		public void test_THAT_existing_group_by_HAS_more_priority()
 		{
 			const string existingQuery =
-				"<GroupBy Collapse=\"False\" GroupLimit=\"20\">" +
-				"	<FieldRef Name=\"Modified\" />" +
-				"	<FieldRef Name=\"ModifiedBy\" />" +
-				"</GroupBy>";
+                "<Query>" +
+				"  <GroupBy Collapse=\"False\" GroupLimit=\"20\">" +
+				"	 <FieldRef Name=\"Modified\" />" +
+				"	 <FieldRef Name=\"ModifiedBy\" />" +
+				"  </GroupBy>" +
+                "</Query>";
 
 			const string expected =
-				"<GroupBy Collapse=\"False\" GroupLimit=\"20\">" +
-				"	<FieldRef Name=\"Modified\" />" +
-				"	<FieldRef Name=\"ModifiedBy\" />" +
-				"	<FieldRef Name=\"Title\" />" +
-				"	<FieldRef Name=\"State\" />" +
-				"</GroupBy>";
+                "<Query>" +
+				"  <GroupBy Collapse=\"False\" GroupLimit=\"20\">" +
+				"	 <FieldRef Name=\"Modified\" />" +
+				"	 <FieldRef Name=\"ModifiedBy\" />" +
+				"	 <FieldRef Name=\"Title\" />" +
+				"	 <FieldRef Name=\"State\" />" +
+				"  </GroupBy>" +
+                "</Query>";
 
 			var query = Camlex.Query().GroupBy(existingQuery, x => new[] { x["Title"], x["State"] }).ToString();
 			Assert.That(query, Is.EqualTo(expected).Using(new CamlComparer()));
@@ -436,12 +488,14 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
 		public void test_WHEN_group_by_is_not_provided_THEN_exception_is_thrown()
 		{
 			const string existingQuery =
-				"   <Where>" +
-				"       <Eq>" +
-				"           <FieldRef Name=\"Title\" />" +
-				"           <Value Type=\"Text\">testValue</Value>" +
-				"       </Eq>" +
-				"   </Where>";
+                "<Query>" +
+				"  <Where>" +
+				"    <Eq>" +
+				"      <FieldRef Name=\"Title\" />" +
+				"      <Value Type=\"Text\">testValue</Value>" +
+				"    </Eq>" +
+				"  </Where>" +
+                "</Query>";
 			var query = Camlex.Query().GroupBy(existingQuery, x => x["Title"]).ToString();
 		}
 
@@ -607,12 +661,14 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
 		public void test_WHEN_view_fields_is_not_provided_THEN_exception_is_thrown()
 		{
 			const string existingQuery =
+                "<Query>" +
 				"   <Where>" +
 				"       <Eq>" +
 				"           <FieldRef Name=\"Title\" />" +
 				"           <Value Type=\"Text\">testValue</Value>" +
 				"       </Eq>" +
-				"   </Where>";
+				"   </Where>" +
+                "</Query>";
 			var query = Camlex.Query().ViewFields(existingQuery, x => x["Title"]).ToString();
 		}
 	}
