@@ -28,6 +28,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using CamlexNET.UnitTests.Helpers;
+using Microsoft.SharePoint.Client;
 using NUnit.Framework;
 
 namespace CamlexNET.UnitTests
@@ -1262,6 +1263,52 @@ namespace CamlexNET.UnitTests
                 list.Add(i);
             }
             return list;
+        }
+
+        [Test]
+        public void test_THAT_query_with_recursive__scope_IS_created_successfully()
+        {
+            var caml = Camlex.Query()
+                .Where(x => (string)x["Title"] == "test")
+                .Scope(ViewScope.Recursive)
+                .ToCamlQuery();
+
+            const string expected =
+                "<View Scope=\"Recursive\">" +
+                "  <Query>" +
+                "    <Where>" +
+                "      <Eq>" +
+                "        <FieldRef Name=\"Title\" />" +
+                "        <Value Type=\"Text\">test</Value>" +
+                "       </Eq>" +
+                "    </Where>" +
+                "  </Query>" +
+                "</View>";
+
+            Assert.That(caml.ViewXml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        [Test]
+        public void test_THAT_query_with_default_scope_IS_created_successfully()
+        {
+            var caml = Camlex.Query()
+                .Where(x => (string)x["Title"] == "test")
+                .Scope(ViewScope.DefaultValue)
+                .ToCamlQuery();
+
+            const string expected =
+                "<View>" +
+                "  <Query>" +
+                "    <Where>" +
+                "      <Eq>" +
+                "        <FieldRef Name=\"Title\" />" +
+                "        <Value Type=\"Text\">test</Value>" +
+                "       </Eq>" +
+                "    </Where>" +
+                "  </Query>" +
+                "</View>";
+
+            Assert.That(caml.ViewXml, Is.EqualTo(expected).Using(new CamlComparer()));
         }
 	}
 }
