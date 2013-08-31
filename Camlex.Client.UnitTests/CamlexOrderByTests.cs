@@ -43,9 +43,11 @@ namespace CamlexNET.UnitTests
 			var caml = Camlex.Query().OrderBy(x => x["field1"] as Camlex.Desc).ToString();
 
 			const string expected =
-				"<OrderBy>" +
+                "<Query>" +
+				"  <OrderBy>" +
 				"    <FieldRef Name=\"field1\" Ascending=\"False\" />" +
-				"</OrderBy>";
+				"  </OrderBy>" +
+                "</Query>";
 
 			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
 		}
@@ -57,11 +59,13 @@ namespace CamlexNET.UnitTests
 				x => new[] { x["field1"], x["field2"] as Camlex.Desc, x["field3"] as Camlex.Asc }).ToString();
 
 			const string expected =
-				"<OrderBy>" +
+                "<Query>" +
+                "  <OrderBy>" +
 				"    <FieldRef Name=\"field1\" />" +
 				"    <FieldRef Name=\"field2\" Ascending=\"False\" />" +
 				"    <FieldRef Name=\"field3\" Ascending=\"True\" />" +
-				"</OrderBy>";
+                "  </OrderBy>" +
+                "</Query>";
 
 			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
 		}
@@ -92,10 +96,12 @@ namespace CamlexNET.UnitTests
 			var caml = Camlex.Query().OrderBy(orderByList).ToString();
 
 			const string expected =
-				"<OrderBy>" +
+                "<Query>" +
+                "  <OrderBy>" +
 				"    <FieldRef Name=\"Title\" Ascending=\"True\" />" +
 				"    <FieldRef Name=\"Date\" Ascending=\"False\" />" +
-				"</OrderBy>";
+                "  </OrderBy>" +
+                "</Query>";
 
 			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
 		}
@@ -112,10 +118,12 @@ namespace CamlexNET.UnitTests
 			var caml = Camlex.Query().OrderBy(orderByList).ToString();
 
 			const string expected =
-				"<OrderBy>" +
+                "<Query>" +
+                "  <OrderBy>" +
 				"    <FieldRef Name=\"Title\" Ascending=\"True\" />" +
 				"    <FieldRef Name=\"Date\" Ascending=\"False\" />" +
-				"</OrderBy>";
+                "  </OrderBy>" +
+                "</Query>";
 
 			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
 		}
@@ -148,11 +156,13 @@ namespace CamlexNET.UnitTests
 			var caml = Camlex.Query().OrderBy(orderByList).ToString();
 
 			const string expected =
-				"<OrderBy>" +
+                "<Query>" +
+                "  <OrderBy>" +
 				"    <FieldRef Name=\"Title\" />" +
 				"    <FieldRef Name=\"Date\" />" +
 				"    <FieldRef Name=\"sssss\" />" +
-				"</OrderBy>";
+                "  </OrderBy>" +
+                "</Query>";
 
 			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
 		}

@@ -44,7 +44,8 @@ namespace CamlexNET.UnitTests
 											(int)x["Count"] == 1).ToString();
 
 			const string expected =
-			   "<Where>" +
+               "<Query>" +
+			   "  <Where>" +
 			   "    <And>" +
 			   "        <Eq>" +
 			   "            <FieldRef Name=\"Title\" />" +
@@ -55,7 +56,8 @@ namespace CamlexNET.UnitTests
 			   "            <Value Type=\"Integer\">1</Value>" +
 			   "        </Eq>" +
 			   "    </And>" +
-			   "</Where>";
+			   "  </Where>" +
+               "</Query>";
 
 			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
 		}
@@ -67,7 +69,8 @@ namespace CamlexNET.UnitTests
 											(int)x["Count1"] == 1) || (int)x["Count2"] == 2).ToString();
 
 			const string expected =
-				"<Where>" +
+                "<Query>" +
+                "  <Where>" +
 				"    <Or>" +
 				"        <And>" +
 				"            <Eq>" +
@@ -84,7 +87,8 @@ namespace CamlexNET.UnitTests
 				"            <Value Type=\"Integer\">2</Value>" +
 				"        </Eq>" +
 				"    </Or>" +
-				"</Where>";
+                "  </Where>" +
+                "</Query>";
 
 			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
 		}
@@ -104,7 +108,8 @@ namespace CamlexNET.UnitTests
 			string caml = Camlex.Query().WhereAll(expressions).ToString();
 
 			const string expected =
-				"<Where>" +
+                "<Query>" +
+                "  <Where>" +
 				"    <And>" +
 				"        <And>" +
 				"            <Eq>" +
@@ -121,7 +126,8 @@ namespace CamlexNET.UnitTests
 				"            <Value Type=\"Integer\">3</Value>" +
 				"        </Eq>" +
 				"    </And>" +
-				"</Where>";
+                "  </Where>" +
+                "</Query>";
 
 			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
 		}
@@ -141,7 +147,8 @@ namespace CamlexNET.UnitTests
 			string caml = Camlex.Query().WhereAny(expressions).ToString();
 
 			const string expected =
-				"<Where>" +
+                "<Query>" +
+                "  <Where>" +
 				"    <Or>" +
 				"        <Or>" +
 				"            <Eq>" +
@@ -158,7 +165,8 @@ namespace CamlexNET.UnitTests
 				"            <Value Type=\"Integer\">3</Value>" +
 				"        </Eq>" +
 				"    </Or>" +
-				"</Where>";
+                "  </Where>" +
+                "</Query>";
 
 			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
 		}
@@ -193,12 +201,14 @@ namespace CamlexNET.UnitTests
 			string caml = Camlex.Query().WhereAny(expressions).ToString();
 
 			const string expected =
-				"<Where>" +
+                "<Query>" +
+                "  <Where>" +
 				"    <Eq>" +
 				"        <FieldRef Name=\"ID\" />" +
 				"        <Value Type=\"Integer\">1</Value>" +
 				"    </Eq>" +
-				"</Where>";
+                "  </Where>" +
+                "</Query>";
 
 			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
 		}
@@ -218,12 +228,14 @@ namespace CamlexNET.UnitTests
 			string caml = Camlex.Query().WhereAll(expressions).ToString();
 
 			const string expected =
-				"<Where>" +
+                "<Query>" +
+                "  <Where>" +
 				"    <Eq>" +
 				"        <FieldRef Name=\"ID\" />" +
 				"        <Value Type=\"Integer\">1</Value>" +
 				"    </Eq>" +
-				"</Where>";
+                "  </Where>" +
+                "</Query>";
 
 			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
 		}
@@ -255,7 +267,8 @@ namespace CamlexNET.UnitTests
 			string caml = Camlex.Query().WhereAny(expressions).ToString();
 
 			const string expected =
-				"<Where>" +
+                "<Query>" +
+                "  <Where>" +
 				"    <Or>" +
 				"        <Or>" +
 				"            <Eq>" +
@@ -272,7 +285,8 @@ namespace CamlexNET.UnitTests
 				"            <Value Type=\"Integer\">3</Value>" +
 				"        </Eq>" +
 				"    </Or>" +
-				"</Where>";
+                "  </Where>" +
+                "</Query>";
 
 			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
 		}
@@ -293,7 +307,8 @@ namespace CamlexNET.UnitTests
 			var caml = Camlex.Query().Where(finalExpression).ToString();
 
 			const string expected =
-				"<Where>" +
+                "<Query>" +
+                "  <Where>" +
 				"    <And>" +
 				"        <Or>" +
 				"            <Or>" +
@@ -316,41 +331,49 @@ namespace CamlexNET.UnitTests
 				"            <Value Type=\"Text\">Test</Value>" +
 				"        </Eq>" +
 				"    </And>" +
-				"</Where>";
+                "  </Where>" +
+                "</Query>";
 
 			Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
 		}
 
         [Test]
-        public void test_THAT_join_all_with_string_expressions_IS_translated_sucessfully()
+        public void test_THAT_join_all_with_string_expressions_ARE_translated_sucessfully()
         {
             var expr = new List<string>();
             expr.Add(
-                "<Where>" +
+                "<Query>" +
+                "  <Where>" +
                 "   <Eq>" +
                 "       <FieldRef Name=\"ID\" />" +
                 "       <Value Type=\"Integer\">1</Value>" +
                 "   </Eq>" +
-                "</Where>");
+                "  </Where>" +
+                "</Query>");
             expr.Add(
-                "<Where>" +
+                "<Query>" +
+                "  <Where>" +
                 "   <Eq>" +
                 "       <FieldRef Name=\"ID\" />" +
                 "       <Value Type=\"Integer\">2</Value>" +
                 "   </Eq>" +
-                "</Where>");
+                "  </Where>" +
+                "</Query>");
             expr.Add(
-                "<Where>" +
+                "<Query>" +
+                "  <Where>" +
                 "   <Eq>" +
                 "       <FieldRef Name=\"ID\" />" +
                 "       <Value Type=\"Integer\">3</Value>" +
                 "   </Eq>" +
-                "</Where>");
+                "  </Where>" +
+                "</Query>");
 
             string caml = Camlex.Query().WhereAll(expr).ToString();
 
             string expected =
-                "<Where>" +
+                "<Query>" +
+                "  <Where>" +
                 "  <And>" +
                 "    <And>" +
                 "      <Eq>" +
@@ -367,7 +390,8 @@ namespace CamlexNET.UnitTests
                 "      <Value Type=\"Integer\">3</Value>" +
                 "    </Eq>" +
                 "  </And>" +
-                "</Where>";
+                "  </Where>" +
+                "</Query>";
 
             Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
         }
@@ -377,31 +401,38 @@ namespace CamlexNET.UnitTests
         {
             var expr = new List<string>();
             expr.Add(
-                "<Where>" +
+                "<Query>" +
+                "  <Where>" +
                 "   <Eq>" +
                 "       <FieldRef Name=\"ID\" />" +
                 "       <Value Type=\"Integer\">1</Value>" +
                 "   </Eq>" +
-                "</Where>");
+                "  </Where>" +
+                "</Query>");
             expr.Add(
-                "<Where>" +
+                "<Query>" +
+                "  <Where>" +
                 "   <Eq>" +
                 "       <FieldRef Name=\"ID\" />" +
                 "       <Value Type=\"Integer\">2</Value>" +
                 "   </Eq>" +
-                "</Where>");
+                "  </Where>" +
+                "</Query>");
             expr.Add(
-                "<Where>" +
+                "<Query>" +
+                "  <Where>" +
                 "   <Eq>" +
                 "       <FieldRef Name=\"ID\" />" +
                 "       <Value Type=\"Integer\">3</Value>" +
                 "   </Eq>" +
-                "</Where>");
+                "  </Where>" +
+                "</Query>");
 
             string caml = Camlex.Query().WhereAny(expr).ToString();
 
             string expected =
-                "<Where>" +
+                "<Query>" +
+                "  <Where>" +
                 "  <Or>" +
                 "    <Or>" +
                 "      <Eq>" +
@@ -418,7 +449,8 @@ namespace CamlexNET.UnitTests
                 "      <Value Type=\"Integer\">3</Value>" +
                 "    </Eq>" +
                 "  </Or>" +
-                "</Where>";
+                "  </Where>" +
+                "</Query>";
 
             Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
         }

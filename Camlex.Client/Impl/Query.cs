@@ -531,19 +531,26 @@ namespace CamlexNET.Impl
             }
             else
             {
+                var queryElement = new XElement(Tags.Query);
                 // Return 'raw' elements
                 if (this.where != null)
                 {
-                    elements.Add(this.where);
+                    queryElement.Add(this.where);
                 }
                 if (this.orderBy != null)
                 {
-                    elements.Add(this.orderBy);
+                    queryElement.Add(this.orderBy);
                 }
                 if (this.groupBy != null)
                 {
-                    elements.Add(this.groupBy);
+                    queryElement.Add(this.groupBy);
                 }
+
+                if (queryElement.HasElements)
+                {
+                    elements.Add(queryElement);
+                }
+
                 if (this.viewFields != null)
                 {
                     elements.Add(this.viewFields);
