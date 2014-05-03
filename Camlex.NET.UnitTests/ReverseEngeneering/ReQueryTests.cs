@@ -85,7 +85,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
         }
 
         [Test]
-        public void test_THAT_in_expression_IS_translated_sucessfully()
+        public void test_THAT_in_expression_IS_translated_successfully()
         {
             var xml =
                 "<Query>" +
@@ -102,6 +102,69 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
 
             var expr = Camlex.QueryFromString(xml).ToExpression();
             Assert.That(expr.ToString(), Is.EqualTo("Query().Where(x => new [] {\"test1\", \"test2\"}.Contains(Convert(x.get_Item(\"test\"))))"));
+        }
+
+        [Test]
+        public void test_THAT_true_boolean_expression_IS_translated_successfully()
+        {
+            var xml =
+                "<Query>" +
+                "  <Where>" +
+                "    <Eq>" +
+                "      <FieldRef Name=\"foo\" />" +
+                "      <Value Type=\"Boolean\">1</Value>" +
+                "    </Eq>" +
+                "  </Where>" +
+                "</Query>";
+
+            var expr = Camlex.QueryFromString(xml).ToExpression();
+            Assert.That(expr.ToString(), Is.EqualTo("Query().Where(x => Convert(x.get_Item(\"foo\")))"));
+        }
+
+        [Test]
+        public void test_THAT_false_boolean_expression_IS_translated_successfully()
+        {
+            var xml =
+                "<Query>" +
+                "  <Where>" +
+                "    <Eq>" +
+                "      <FieldRef Name=\"foo\" />" +
+                "      <Value Type=\"Boolean\">0</Value>" +
+                "    </Eq>" +
+                "  </Where>" +
+                "</Query>";
+
+            var expr = Camlex.QueryFromString(xml).ToExpression();
+            Assert.That(expr.ToString(), Is.EqualTo("Query().Where(x => Not(Convert(x.get_Item(\"foo\"))))"));
+        }
+
+        [Test]
+        public void test_THAT_mixed_boolean_expression_IS_translated_successfully()
+        {
+            var xml =
+                "<Query>" +
+                "   <Where>" +
+                "       <Or>" +
+                "           <And>" +
+                "               <Eq>" +
+                "                   <FieldRef Name=\"foo1\" />" +
+                "                   <Value Type=\"Boolean\">1</Value>" +
+                "               </Eq>" +
+                "               <Eq>" +
+                "                   <FieldRef Name=\"foo2\" />" +
+                "                   <Value Type=\"Boolean\">0</Value>" +
+                "               </Eq>" +
+                "           </And>" +
+                "           <Eq>" +
+                "               <FieldRef Name=\"foo3\" />" +
+                "               <Value Type=\"Boolean\">1</Value>" +
+                "           </Eq>" +
+                "       </Or>" +
+                "   </Where>" +
+                "</Query>";
+
+            var expr = Camlex.QueryFromString(xml).ToExpression();
+            Assert.That(expr.ToString(), Is.EqualTo("Query().Where(x => ((Convert(x.get_Item(\"foo1\")) && Not(Convert(x.get_Item(\"foo2\")))) || Convert(x.get_Item(\"foo3\"))))"));
         }
     }
 }

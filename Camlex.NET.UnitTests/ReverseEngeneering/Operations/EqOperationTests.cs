@@ -45,7 +45,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Operations
             var op2 = new BooleanValueOperand(true);
             var op = new EqOperation(null, op1, op2);
             Expression expr = op.ToExpression();
-            Assert.That(expr.ToString(), Is.EqualTo("(Convert(x.get_Item(\"Status\")) = True)"));
+            Assert.That(expr.ToString(), Is.EqualTo("Convert(x.get_Item(\"Status\"))"));
         }
 
         [Test]
