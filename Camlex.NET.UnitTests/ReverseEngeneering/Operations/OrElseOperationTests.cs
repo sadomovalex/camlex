@@ -50,7 +50,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Operations
             var op = new OrElseOperation(null, op1, op2);
 
             var expr = op.ToExpression();
-            Assert.That(expr.ToString(), Is.EqualTo("((Convert(x.get_Item(\"Status\")) = True) || (Convert(x.get_Item(\"Status\")) = False))"));
+            Assert.That(expr.ToString(), Is.EqualTo("(Convert(x.get_Item(\"Status\")) || Not(Convert(x.get_Item(\"Status\"))))"));
         }
     }
 }

@@ -56,6 +56,16 @@ namespace CamlexNET.Impl.Operations.Eq
             var fieldRef = this.getFieldRefOperandExpression();
             var value = this.getValueOperandExpression();
 
+            // for boolean expressions now it is enough to return convert expression (or not convert depending on value)
+            if (value.NodeType == ExpressionType.Constant && value.Type == typeof(bool))
+            {
+                if ((bool) ((ConstantExpression) value).Value)
+                {
+                    return fieldRef;
+                }
+                return Expression.Not(fieldRef);
+            }
+
             return Expression.Equal(fieldRef, value);
         }
     }
