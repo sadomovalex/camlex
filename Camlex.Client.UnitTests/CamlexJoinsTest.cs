@@ -26,6 +26,7 @@
 #endregion
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using CamlexNET.Impl.Helpers;
 using CamlexNET.UnitTests.Helpers;
@@ -472,7 +473,7 @@ namespace CamlexNET.UnitTests
         [Test]
         public void test_THAT_join_all_with_true_explicit_boolean_cast_expressions_ARE_translated_sucessfully()
         {
-            var expressions = new List<Expression<Func<SPListItem, bool>>>();
+            var expressions = new List<Expression<Func<ListItem, bool>>>();
             Enumerable.Range(0, 3).ToList().ForEach(i => expressions.Add(x => (bool)x["foo" + i]));
 
             string caml = Camlex.Query().WhereAll(expressions).ToString();
@@ -503,7 +504,7 @@ namespace CamlexNET.UnitTests
         [Test]
         public void test_THAT_join_all_with_false_explicit_boolean_cast_expressions_ARE_translated_sucessfully()
         {
-            var expressions = new List<Expression<Func<SPListItem, bool>>>();
+            var expressions = new List<Expression<Func<ListItem, bool>>>();
             Enumerable.Range(1, 3).ToList().ForEach(i => expressions.Add(x => !(bool)x["foo" + i]));
 
             string caml = Camlex.Query().WhereAll(expressions).ToString();
