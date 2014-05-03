@@ -62,7 +62,7 @@ namespace CamlexNET.Impl
             return this;
         }
 
-        private Expression<Func<SPListItem, bool>> canonize(Expression<Func<SPListItem, bool>> expr)
+        private Expression<Func<ListItem, bool>> canonize(Expression<Func<ListItem, bool>> expr)
         {
             if (expr == null)
             {
@@ -73,13 +73,13 @@ namespace CamlexNET.Impl
             {
                 var left = this.canonizeBody(((BinaryExpression) expr.Body).Left);
                 var right = this.canonizeBody(((BinaryExpression)expr.Body).Right);
-                return Expression.Lambda<Func<SPListItem, bool>>(expr.Body.NodeType == ExpressionType.AndAlso ? Expression.AndAlso(left, right) : Expression.OrElse(left, right),
-                    Expression.Parameter(typeof(SPListItem), ReflectionHelper.CommonParameterName));
+                return Expression.Lambda<Func<ListItem, bool>>(expr.Body.NodeType == ExpressionType.AndAlso ? Expression.AndAlso(left, right) : Expression.OrElse(left, right),
+                    Expression.Parameter(typeof(ListItem), ReflectionHelper.CommonParameterName));
             }
 
             // canonize boolean expression with explicit cast to equal expression in order to reuse existing code
             var exprBody = this.canonizeBody(expr.Body);
-            return Expression.Lambda<Func<SPListItem, bool>>(exprBody, Expression.Parameter(typeof(SPListItem), ReflectionHelper.CommonParameterName));
+            return Expression.Lambda<Func<ListItem, bool>>(exprBody, Expression.Parameter(typeof(ListItem), ReflectionHelper.CommonParameterName));
         }
 
         private Expression canonizeBody(Expression expr)
