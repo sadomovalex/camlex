@@ -66,16 +66,35 @@ namespace CamlexNET.Impl
                 throw new NullReferenceException("Expression is null");
             }
 
-            // canonize boolean expression with explicit cast to equal expression in order to reuse existing code
-            if (expr.Body.Type == typeof(bool) && expr.Body.NodeType == ExpressionType.Convert)
+            if ((expr.Body.NodeType == ExpressionType.AndAlso || expr.Body.NodeType == ExpressionType.OrElse))
             {
-                expr = Expression.Lambda<Func<SPListItem, bool>>(Expression.Equal(expr.Body, Expression.Constant(true)),
+                var left = this.canonizeBody(((BinaryExpression) expr.Body).Left);
+                var right = this.canonizeBody(((BinaryExpression)expr.Body).Right);
+                return Expression.Lambda<Func<SPListItem, bool>>(expr.Body.NodeType == ExpressionType.AndAlso ? Expression.AndAlso(left, right) : Expression.OrElse(left, right),
                     Expression.Parameter(typeof(SPListItem), ReflectionHelper.CommonParameterName));
             }
-            else if (expr.Body.Type == typeof(bool) && expr.Body.NodeType == ExpressionType.Not)
+
+            // canonize boolean expression with explicit cast to equal expression in order to reuse existing code
+            var exprBody = this.canonizeBody(expr.Body);
+            return Expression.Lambda<Func<SPListItem, bool>>(exprBody, Expression.Parameter(typeof(SPListItem), ReflectionHelper.CommonParameterName));
+        }
+
+        private Expression canonizeBody(Expression expr)
+        {
+            if ((expr.NodeType == ExpressionType.AndAlso || expr.NodeType == ExpressionType.OrElse))
             {
-                expr = Expression.Lambda<Func<SPListItem, bool>>(Expression.Equal(((UnaryExpression)expr.Body).Operand, Expression.Constant(false)),
-                    Expression.Parameter(typeof(SPListItem), ReflectionHelper.CommonParameterName));
+                var left = this.canonizeBody(((BinaryExpression)expr).Left);
+                var right = this.canonizeBody(((BinaryExpression)expr).Right);
+                return (expr.NodeType == ExpressionType.AndAlso ? Expression.AndAlso(left, right) : Expression.OrElse(left, right));
+            }
+
+            if (expr.Type == typeof(bool) && expr.NodeType == ExpressionType.Convert)
+            {
+                expr = Expression.Equal(expr, Expression.Constant(true));
+            }
+            else if (expr.Type == typeof(bool) && expr.NodeType == ExpressionType.Not)
+            {
+                expr = Expression.Equal(((UnaryExpression)expr).Operand, Expression.Constant(false));
             }
             return expr;
         }

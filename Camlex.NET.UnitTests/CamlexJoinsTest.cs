@@ -441,5 +441,95 @@ namespace CamlexNET.UnitTests
         {
             Camlex.Query().WhereAny(new string[]{}).ToString();
         }
+
+        [Test]
+        public void test_THAT_join_all_with_true_explicit_boolean_cast_expressions_ARE_translated_sucessfully()
+        {
+            var expressions = new List<Expression<Func<SPListItem, bool>>>();
+            Enumerable.Range(0, 3).ToList().ForEach(i => expressions.Add(x => (bool)x["foo" + i]));
+
+            string caml = Camlex.Query().WhereAll(expressions).ToString();
+
+            string expected =
+                "   <Where>" +
+                "       <And>" +
+                "           <And>" +
+                "               <Eq>" +
+                "                   <FieldRef Name=\"foo0\" />" +
+                "                   <Value Type=\"Boolean\">1</Value>" +
+                "               </Eq>" +
+                "               <Eq>" +
+                "                   <FieldRef Name=\"foo1\" />" +
+                "                   <Value Type=\"Boolean\">1</Value>" +
+                "               </Eq>" +
+                "           </And>" +
+                "           <Eq>" +
+                "               <FieldRef Name=\"foo2\" />" +
+                "               <Value Type=\"Boolean\">1</Value>" +
+                "           </Eq>" +
+                "       </And>" +
+                "   </Where>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        [Test]
+        public void test_THAT_join_all_with_false_explicit_boolean_cast_expressions_ARE_translated_sucessfully()
+        {
+            var expressions = new List<Expression<Func<SPListItem, bool>>>();
+            Enumerable.Range(1, 3).ToList().ForEach(i => expressions.Add(x => !(bool)x["foo" + i]));
+
+            string caml = Camlex.Query().WhereAll(expressions).ToString();
+
+            string expected =
+                "   <Where>" +
+                "       <And>" +
+                "           <And>" +
+                "               <Eq>" +
+                "                   <FieldRef Name=\"foo1\" />" +
+                "                   <Value Type=\"Boolean\">0</Value>" +
+                "               </Eq>" +
+                "               <Eq>" +
+                "                   <FieldRef Name=\"foo2\" />" +
+                "                   <Value Type=\"Boolean\">0</Value>" +
+                "               </Eq>" +
+                "           </And>" +
+                "           <Eq>" +
+                "               <FieldRef Name=\"foo3\" />" +
+                "               <Value Type=\"Boolean\">0</Value>" +
+                "           </Eq>" +
+                "       </And>" +
+                "   </Where>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        [Test]
+        public void test_THAT_mixed_join_explicit_boolean_cast_expressions_ARE_translated_sucessfully()
+        {
+            string caml = Camlex.Query().Where(x => ((bool)x["foo1"] && !(bool)x["foo2"]) || (bool)x["foo3"]).ToString();
+
+            string expected =
+                "   <Where>" +
+                "       <Or>" +
+                "           <And>" +
+                "               <Eq>" +
+                "                   <FieldRef Name=\"foo1\" />" +
+                "                   <Value Type=\"Boolean\">1</Value>" +
+                "               </Eq>" +
+                "               <Eq>" +
+                "                   <FieldRef Name=\"foo2\" />" +
+                "                   <Value Type=\"Boolean\">0</Value>" +
+                "               </Eq>" +
+                "           </And>" +
+                "           <Eq>" +
+                "               <FieldRef Name=\"foo3\" />" +
+                "               <Value Type=\"Boolean\">1</Value>" +
+                "           </Eq>" +
+                "       </Or>" +
+                "   </Where>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
     }
 }
