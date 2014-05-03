@@ -1198,7 +1198,7 @@ namespace CamlexNET.UnitTests
         }
 
         [Test]
-        public void test_THAT_single_in_expression_with_dynamic_array_IS_translated_sucessfully()
+        public void test_THAT_single_in_expression_with_dynamic_array_IS_translated_successfully()
         {
             var caml = Camlex.Query().Where(x => getArray().Contains((int)x["test"])).ToString();
 
@@ -1232,6 +1232,38 @@ namespace CamlexNET.UnitTests
                 list.Add(i);
             }
             return list;
+        }
+
+        [Test]
+        public void test_THAT_true_boolean_expression_with_explicit_cast_IS_translated_successfully()
+        {
+            var caml = Camlex.Query().Where(x => (bool)x["foo"]).ToString();
+
+            string expected =
+                "   <Where>" +
+                "       <Eq>" +
+                "           <FieldRef Name=\"foo\" />" +
+                "           <Value Type=\"Boolean\">1</Value>" +
+                "       </Eq>" +
+                "   </Where>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        [Test]
+        public void test_THAT_false_boolean_expression_with_explicit_cast_IS_translated_successfully()
+        {
+            var caml = Camlex.Query().Where(x => !(bool)x["foo"]).ToString();
+
+            string expected =
+                "   <Where>" +
+                "       <Eq>" +
+                "           <FieldRef Name=\"foo\" />" +
+                "           <Value Type=\"Boolean\">0</Value>" +
+                "       </Eq>" +
+                "   </Where>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
         }
     }
 }

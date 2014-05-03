@@ -53,9 +53,31 @@ namespace CamlexNET.Impl
 
         public IQuery Where(Expression<Func<SPListItem, bool>> expr)
         {
+            expr = this.canonize(expr);
             var translator = translatorFactory.Create(expr);
             this.where = translator.TranslateWhere(expr);
             return this;
+        }
+
+        private Expression<Func<SPListItem, bool>> canonize(Expression<Func<SPListItem, bool>> expr)
+        {
+            if (expr == null)
+            {
+                throw new NullReferenceException("Expression is null");
+            }
+
+            // canonize boolean expression with explicit cast to equal expression in order to reuse existing code
+            if (expr.Body.Type == typeof(bool) && expr.Body.NodeType == ExpressionType.Convert)
+            {
+                expr = Expression.Lambda<Func<SPListItem, bool>>(Expression.Equal(expr.Body, Expression.Constant(true)),
+                    Expression.Parameter(typeof(SPListItem), ReflectionHelper.CommonParameterName));
+            }
+            else if (expr.Body.Type == typeof(bool) && expr.Body.NodeType == ExpressionType.Not)
+            {
+                expr = Expression.Lambda<Func<SPListItem, bool>>(Expression.Equal(((UnaryExpression)expr.Body).Operand, Expression.Constant(false)),
+                    Expression.Parameter(typeof(SPListItem), ReflectionHelper.CommonParameterName));
+            }
+            return expr;
         }
 
         public IQuery WhereAll(IEnumerable<Expression<Func<SPListItem, bool>>> expressions)
