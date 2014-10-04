@@ -495,6 +495,11 @@ namespace CamlexNET.Impl
             return this.ViewFields(existingViewFields, this.createExpressionFromArray(ids), includeViewFieldsTag);
         }
 
+        public IJoin Joins()
+        {
+            return new Join();
+        }
+
         private Expression<Func<SPListItem, object[]>> createExpressionFromArray<T>(IEnumerable<T> items)
         {
             return Expression.Lambda<Func<SPListItem, object[]>>(

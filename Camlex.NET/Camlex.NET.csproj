@@ -66,6 +66,7 @@
     <Compile Include="Impl\CompositeExpressionBaseAnalyzer.cs" />
     <Compile Include="Impl\CompositeOperationBase.cs" />
     <Compile Include="Impl\Helpers\ExpressionsHelper.cs" />
+    <Compile Include="Impl\Join.cs" />
     <Compile Include="Impl\Operands\BooleanValueOperand.cs" />
     <Compile Include="Impl\Operands\ValuesValueOperand.cs" />
     <Compile Include="Impl\Operands\NumberValueOperand.cs" />
@@ -154,6 +155,7 @@
     <Compile Include="Impl\Operations\Results\XElementOperationResult.cs" />
     <Compile Include="Interfaces\IAnalyzer.cs" />
     <Compile Include="Interfaces\IAnalyzerFactory.cs" />
+    <Compile Include="Interfaces\IJoin.cs" />
     <Compile Include="Interfaces\IOperand.cs" />
     <Compile Include="Interfaces\IOperandBuilder.cs" />
     <Compile Include="Interfaces\IOperation.cs" />
