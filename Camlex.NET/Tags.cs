@@ -57,5 +57,7 @@ namespace CamlexNET
         public const string UserID = "UserID";
         public const string In = "In";
         public const string Values = "Values";
+        public const string Joins = "Joins";
+        public const string Join = "Join";
     }
 }

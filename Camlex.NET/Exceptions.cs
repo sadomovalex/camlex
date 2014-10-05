@@ -212,46 +212,7 @@ namespace CamlexNET
         }
     }
 
-//    internal class NonSupportedTagException : Exception
-//    {
-//        public NonSupportedTagException(string name) :
-//            base(string.Format("Tag '{0}' is not supported. Supported tags are: {1}, {2}, {3}, {4}", name, Tags.Where, Tags.OrderBy, Tags.GroupBy, Tags.ViewFields))
-//        {
-//        }
-//    }
-
-//    internal class NonSupportedXmlException : Exception
-//    {
-//        public NonSupportedXmlException(XElement el) :
-//            base(string.Format("Xml element '{0}' is not supported", el))
-//        {
-//        }
-//    }
-//
-//    internal class AtLeastOneAttributeShouldBeSpecifiedException : Exception
-//    {
-//        public AtLeastOneAttributeShouldBeSpecifiedException(string attr1, string attr2) :
-//            base(string.Format("At least one from two attributes should be specified: {0} or {1}", attr1, attr2))
-//        {
-//        }
-//    }
-//
-//    internal class OnlyOneAttributeShouldBeSpecifiedException : Exception
-//    {
-//        public OnlyOneAttributeShouldBeSpecifiedException(string attr1, string attr2) :
-//            base(string.Format("Only one from two attributes should be specified: {0} or {1}", attr1, attr2))
-//        {
-//        }
-//    }
-//
-//    internal class NotCorrectAttrValueException : Exception
-//    {
-//        public NotCorrectAttrValueException(string value, string attr) :
-//            base(string.Format("Value '{0}' is not correct for attribute '{1}'", value, attr))
-//        {
-//        }
-//    }
-
+    // Reverse engineering exceptions
     internal class CamlAnalysisException : Exception
     {
         public CamlAnalysisException(string msg) :

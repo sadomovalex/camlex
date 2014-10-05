@@ -112,7 +112,27 @@ namespace CamlexNET.Impl
 
         public XElement TranslateJoin(Expression<Func<SPListItem, object>> expr, JoinType type, string foreignListAlias, string primaryListAlias)
         {
-            throw new NotImplementedException();
+            if (!this.analyzer.IsValid(expr))
+            {
+                throw new NonSupportedExpressionException(expr);
+            }
+
+            var operation = this.analyzer.GetOperation(expr);
+            var result = (XElementOperationResult)operation.ToResult();
+
+            var primaryElement = (XElement) result.Value;
+            if (!string.IsNullOrEmpty(primaryListAlias))
+            {
+                primaryElement.SetAttributeValue(Attributes.List, primaryListAlias);
+            }
+
+            var array = new XElement[2];
+            array[0] = primaryElement;
+            array[1] = new XElement(Tags.FieldRef, new XAttribute(Attributes.List, foreignListAlias), new XAttribute(Attributes.Name, Values.Id));
+
+            var caml = new XElement(Tags.Join, result.Value);
+            caml.SetAttributeValue(Attributes.ListAlias, foreignListAlias);
+            return caml;
         }
     }
 }

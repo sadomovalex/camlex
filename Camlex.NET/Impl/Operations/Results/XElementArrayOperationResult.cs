@@ -30,6 +30,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Xml.Linq;
+using CamlexNET.Impl.Helpers;
 using CamlexNET.Interfaces;
 
 namespace CamlexNET.Impl.Operations.Results
@@ -43,25 +44,14 @@ namespace CamlexNET.Impl.Operations.Results
             this.elements = elements;
         }
 
-//        public XElementArrayOperationResult(Expression expression)
-//            : base(expression)
-//        {}
-
         public object Value
         {
             get { return this.elements; }
         }
 
-//        public Expression Expression
-//        {
-//            get { return this.expression; }
-//        }
-
         public override string ToString()
         {
-            var sb = new StringBuilder();
-            System.Array.ForEach(this.elements, e => sb.Append(e.ToString()));
-            return sb.ToString();
+            return ConvertHelper.ConvertToString(this.elements);
         }
     }
 }
