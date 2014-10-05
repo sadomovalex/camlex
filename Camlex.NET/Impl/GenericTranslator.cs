@@ -131,6 +131,7 @@ namespace CamlexNET.Impl
             array[1] = new XElement(Tags.FieldRef, new XAttribute(Attributes.List, foreignListAlias), new XAttribute(Attributes.Name, Values.Id));
 
             var caml = new XElement(Tags.Join, result.Value);
+            caml.SetAttributeValue(Attributes.Type, type.ToString().ToUpper());
             caml.SetAttributeValue(Attributes.ListAlias, foreignListAlias);
             return caml;
         }
