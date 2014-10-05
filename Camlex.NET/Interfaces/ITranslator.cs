@@ -40,5 +40,6 @@ namespace CamlexNET.Interfaces
         XElement TranslateOrderBy(LambdaExpression expr);
         XElement TranslateGroupBy(LambdaExpression expr, bool? collapse, int? groupLimit);
         XElement TranslateViewFields(Expression<Func<SPListItem, object[]>> expr);
+        XElement TranslateJoin(Expression<Func<SPListItem, object>> expr, JoinType type, string foreignListAlias, string primaryListAlias);
     }
 }

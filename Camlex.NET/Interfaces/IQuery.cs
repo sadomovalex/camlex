@@ -58,7 +58,6 @@ namespace CamlexNET.Interfaces
         IQuery GroupBy(Expression<Func<SPListItem, object>> expr, bool? collapse);
         IQuery GroupBy(string existingGroupBy, Expression<Func<SPListItem, object>> expr);
         IQuery GroupBy(string existingGroupBy, Expression<Func<SPListItem, object[]>> expr);
-        IJoin Joins();
         XElement[] ToCaml(bool includeQueryTag);
         string ToString();
         string ToString(bool includeQueryTag);

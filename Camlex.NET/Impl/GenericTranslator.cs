@@ -109,5 +109,10 @@ namespace CamlexNET.Impl
             var caml = new XElement(Tags.ViewFields, result.Value);
             return caml;
         }
+
+        public XElement TranslateJoin(Expression<Func<SPListItem, object>> expr, JoinType type, string foreignListAlias, string primaryListAlias)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
