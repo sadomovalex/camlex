@@ -41,10 +41,7 @@ namespace CamlexNET
         /// <returns>Not modified DateTime value</returns>
         public static DateTime IncludeTimeValue(this DateTime dateTime) { return dateTime; }
 
-//        public static IEnumerable<Expression<Func<SPListItem, bool>>> ForEach<T>(this IEnumerable<T> values,
-//            Expression<Func<SPListItem, bool>> expr)
-//        {
-//            throw new NotImplementedException();
-//        }
+        public static object List(this object val, string foreignListAlias) { return val; }
+        public static object ShowField(this object val, string fieldTitle) { return val; }
     }
 }

@@ -54,5 +54,8 @@ namespace CamlexNET.Interfaces
         string ViewFields(string existingViewFields, IEnumerable<string> titles, bool includeViewFieldsTag);
         string ViewFields(string existingViewFields, IEnumerable<Guid> ids);
         string ViewFields(string existingViewFields, IEnumerable<Guid> ids, bool includeViewFieldsTag);
+
+        string ProjectedFields(Expression<Func<SPListItem, object>> expr);
+        string ProjectedFields(Expression<Func<SPListItem, object[]>> expr);
     }
 }
