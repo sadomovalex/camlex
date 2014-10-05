@@ -495,6 +495,16 @@ namespace CamlexNET.Impl
             return this.ViewFields(existingViewFields, this.createExpressionFromArray(ids), includeViewFieldsTag);
         }
 
+        public string ProjectedFields(Expression<Func<SPListItem, object>> expr)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string ProjectedFields(Expression<Func<SPListItem, object[]>> expr)
+        {
+            throw new NotImplementedException();
+        }
+
         public IJoin Joins()
         {
             return new Join();
