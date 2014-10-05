@@ -407,7 +407,7 @@ namespace CamlexNET.Impl
                 {
                     return string.Empty;
                 }
-                return this.convertToString(elements.ToArray());
+                return ConvertHelper.ConvertToString(elements.ToArray());
             }
             return viewFields.ToString();
         }
@@ -495,6 +495,12 @@ namespace CamlexNET.Impl
             return this.ViewFields(existingViewFields, this.createExpressionFromArray(ids), includeViewFieldsTag);
         }
 
+        public IJoin Joins()
+        {
+            var joins = new List<XElement>();
+            return new Join(this.translatorFactory, joins);
+        }
+
         public string ProjectedFields(Expression<Func<SPListItem, object>> expr)
         {
             throw new NotImplementedException();
@@ -503,11 +509,6 @@ namespace CamlexNET.Impl
         public string ProjectedFields(Expression<Func<SPListItem, object[]>> expr)
         {
             throw new NotImplementedException();
-        }
-
-        public IJoin Joins()
-        {
-            return new Join();
         }
 
         private Expression<Func<SPListItem, object[]>> createExpressionFromArray<T>(IEnumerable<T> items)
@@ -559,7 +560,7 @@ namespace CamlexNET.Impl
         public string ToString(bool includeQueryTag)
         {
             var elements = this.ToCaml(includeQueryTag);
-            return convertToString(elements);
+            return ConvertHelper.ConvertToString(elements);
         }
 
         public SPQuery ToSPQuery()
@@ -567,13 +568,6 @@ namespace CamlexNET.Impl
             var query = new SPQuery();
             query.Query = this.ToString(false);
             return query;
-        }
-
-        private string convertToString(XElement[] elements)
-        {
-            var sb = new StringBuilder();
-            Array.ForEach(elements, e => sb.Append(e.ToString()));
-            return sb.ToString();
         }
 
         public static implicit operator string(Query query)

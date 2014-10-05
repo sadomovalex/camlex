@@ -13,7 +13,7 @@ namespace CamlexNET.UnitTests
         [Test]
         public void test_THAT_single_join_IS_translated_properly()
         {
-            string caml = Camlex.Query().Joins().Left(x => x["test"], "foo").ToString();
+            string caml = Camlex.Query().Joins().Left(x => x["test"], "foo").Left(x => x["test"], "foo").ToString();
             string expected =
                "<Join Type=\"LEFT\" ListAlias=\"foo\">" +
                "    <Eq>" +
