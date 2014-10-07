@@ -40,6 +40,7 @@ using CamlexNET.Impl.Operations.Gt;
 using CamlexNET.Impl.Operations.In;
 using CamlexNET.Impl.Operations.IsNotNull;
 using CamlexNET.Impl.Operations.IsNull;
+using CamlexNET.Impl.Operations.Join;
 using CamlexNET.Impl.Operations.Leq;
 using CamlexNET.Impl.Operations.Lt;
 using CamlexNET.Impl.Operations.Neq;
@@ -123,16 +124,34 @@ namespace CamlexNET.Impl.Factories
             }
 
             var beginsWithAnalyzer = new BeginsWithAnalyzer(operationResultBuilder, operandBuilder);
-            if (beginsWithAnalyzer.IsValid(expr)) return beginsWithAnalyzer;
+            if (beginsWithAnalyzer.IsValid(expr))
+            {
+                return beginsWithAnalyzer;
+            }
 
             var containsAnalyzer = new ContainsAnalyzer(operationResultBuilder, operandBuilder);
-            if (containsAnalyzer.IsValid(expr)) return containsAnalyzer;
+            if (containsAnalyzer.IsValid(expr))
+            {
+                return containsAnalyzer;
+            }
 
             var dateRangesOverlapAnalyzer = new DateRangesOverlapAnalyzer(operationResultBuilder, operandBuilder);
-            if (dateRangesOverlapAnalyzer.IsValid(expr)) return dateRangesOverlapAnalyzer;
+            if (dateRangesOverlapAnalyzer.IsValid(expr))
+            {
+                return dateRangesOverlapAnalyzer;
+            }
 
             var inAnalyzer = new InAnalyzer(operationResultBuilder, operandBuilder);
-            if (inAnalyzer.IsValid(expr)) return inAnalyzer;
+            if (inAnalyzer.IsValid(expr))
+            {
+                return inAnalyzer;
+            }
+
+            var joinAnalyzer = new JoinAnalyzer(operationResultBuilder, operandBuilder);
+            if (joinAnalyzer.IsValid(expr))
+            {
+                return joinAnalyzer;
+            }
 
             throw new NonSupportedExpressionTypeException(exprType);
         }
