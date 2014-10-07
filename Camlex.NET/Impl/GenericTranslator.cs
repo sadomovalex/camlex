@@ -110,7 +110,7 @@ namespace CamlexNET.Impl
             return caml;
         }
 
-        public XElement TranslateJoin(Expression<Func<SPListItem, object>> expr, JoinType type, string foreignListAlias, string primaryListAlias)
+        public XElement TranslateJoin(Expression<Func<SPListItem, object>> expr, JoinType type)
         {
             if (!this.analyzer.IsValid(expr))
             {
@@ -118,21 +118,21 @@ namespace CamlexNET.Impl
             }
 
             var operation = this.analyzer.GetOperation(expr);
-            var result = (XElementOperationResult)operation.ToResult();
+            var result = (JoinOperationResult)operation.ToResult();
 
             var primaryElement = (XElement) result.Value;
-            if (!string.IsNullOrEmpty(primaryListAlias))
+            if (!string.IsNullOrEmpty(result.PrimaryListAlias))
             {
-                primaryElement.SetAttributeValue(Attributes.List, primaryListAlias);
+                primaryElement.SetAttributeValue(Attributes.List, result.PrimaryListAlias);
             }
 
             var array = new XElement[2];
             array[0] = primaryElement;
-            array[1] = new XElement(Tags.FieldRef, new XAttribute(Attributes.List, foreignListAlias), new XAttribute(Attributes.Name, Values.Id));
+            array[1] = new XElement(Tags.FieldRef, new XAttribute(Attributes.List, result.ForeignListAlias), new XAttribute(Attributes.Name, Values.Id));
 
             var caml = new XElement(Tags.Join, result.Value);
             caml.SetAttributeValue(Attributes.Type, type.ToString().ToUpper());
-            caml.SetAttributeValue(Attributes.ListAlias, foreignListAlias);
+            caml.SetAttributeValue(Attributes.ListAlias, result.ForeignListAlias);
             return caml;
         }
     }

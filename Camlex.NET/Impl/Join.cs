@@ -22,32 +22,22 @@ namespace CamlexNET.Impl
             this.joins = joins;
         }
 
-        public IJoin Left(Expression<Func<SPListItem, object>> expr, string foreignListAlias)
+        public IJoin Left(Expression<Func<SPListItem, object>> expr)
         {
-            return Left(expr, string.Empty, foreignListAlias);
+            return join(expr, JoinType.Left);
         }
 
-        public IJoin Left(Expression<Func<SPListItem, object>> expr, string primaryListAlias, string foreignListAlias)
-        {
-            return join(expr, primaryListAlias, foreignListAlias, JoinType.Left);
-        }
-
-        private IJoin join(Expression<Func<SPListItem, object>> expr, string primaryListAlias, string foreignListAlias, JoinType type)
+        private IJoin join(Expression<Func<SPListItem, object>> expr, JoinType type)
         {
             var translator = translatorFactory.Create(expr);
-            var join = translator.TranslateJoin(expr, type, primaryListAlias, foreignListAlias);
+            var join = translator.TranslateJoin(expr, type);
             this.joins.Add(join);
             return this;
         }
 
-        public IJoin Inner(Expression<Func<SPListItem, object>> expr, string foreignListAlias)
+        public IJoin Inner(Expression<Func<SPListItem, object>> expr)
         {
-            return Inner(expr, string.Empty, foreignListAlias);
-        }
-
-        public IJoin Inner(Expression<Func<SPListItem, object>> expr, string primaryListAlias, string foreignListAlias)
-        {
-            return join(expr, primaryListAlias, foreignListAlias, JoinType.Inner);
+            return join(expr, JoinType.Inner);
         }
     }
 }

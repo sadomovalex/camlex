@@ -25,25 +25,36 @@
 // -----------------------------------------------------------------------------
 #endregion
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
-using Microsoft.SharePoint;
+using System.Xml.Linq;
+using CamlexNET.Interfaces;
 
-namespace CamlexNET
+namespace CamlexNET.Impl.Operations.Results
 {
-    public static class ExtensionMethods
+    internal class JoinOperationResult : XElementOperationResult
     {
-        /// <summary>Marker method toindicate that DateTime value should have IncludeTimeValue attribute</summary>
-        /// <param name="dateTime">DateTime value</param>
-        /// <returns>Not modified DateTime value</returns>
-        public static DateTime IncludeTimeValue(this DateTime dateTime) { return dateTime; }
+        private readonly string primaryListAlias;
+        private readonly string foreignListAlias;
 
-        public static object PrimaryList(this object val, string primaryListAlias) { return val; }
-        public static object ForeignList(this object val, string foreignListAlias) { return val; }
-        public static object List(this object val, string foreignListAlias) { return val; }
-        public static object ShowField(this object val, string fieldTitle) { return val; }
+        public JoinOperationResult(XElement element, string primaryListAlias, string foreignListAlias):
+            base(element)
+        {
+            this.primaryListAlias = primaryListAlias;
+            this.foreignListAlias = foreignListAlias;
+        }
+
+
+        public string PrimaryListAlias
+        {
+            get { return primaryListAlias; }
+        }
+
+        public string ForeignListAlias
+        {
+            get { return foreignListAlias; }
+        }
     }
 }

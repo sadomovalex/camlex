@@ -24,33 +24,53 @@
 // fitness for a particular purpose and non-infringement.
 // -----------------------------------------------------------------------------
 #endregion
+
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
+using System.Reflection;
 using System.Xml.Linq;
+using CamlexNET.Impl.Factories;
+using CamlexNET.Impl.Operands;
 using CamlexNET.Interfaces;
 
-namespace CamlexNET.Impl.Operations.Results
+namespace CamlexNET.Impl.Operations.Join
 {
-    internal class XElementOperationResult : IOperationResult
+    internal class JoinOperation : BinaryOperationBase
     {
-        private XElement element;
-
-        public XElementOperationResult(XElement element)
+        public JoinOperation(IOperationResultBuilder operationResultBuilder,
+            IOperand fieldRefOperand, IOperand valueOperand)
+            : base(operationResultBuilder, fieldRefOperand, valueOperand)
         {
-            this.element = element;
         }
 
-        public object Value
+        public override IOperationResult ToResult()
         {
-            get { return this.element; }
+            var result = new XElement(Tags.In,
+                             this.fieldRefOperand.ToCaml(),
+                             this.valueOperand.ToCaml());
+            return this.operationResultBuilder.CreateResult(result);
         }
 
-        public override string ToString()
+        public override Expression ToExpression()
         {
-            return this.element.ToString();
+            if (!(this.fieldRefOperand is FieldRefOperand))
+            {
+                throw new OperationShouldContainFieldRefOperandException();
+            }
+            if (!(this.valueOperand is ValuesValueOperand))
+            {
+                throw new OperationShouldContainValuesValueOperandException();
+            }
+            var valueOperandType = ((ValuesValueOperand)this.valueOperand).GetOperandsType();
+            var fieldRefExpr = this.getFieldRefOperandExpression(valueOperandType);
+            var valueExpr = this.getValueOperandExpression();
+            //var mi = valueOperandType.MakeArrayType().GetMethod(ReflectionHelper.ContainsMethodName, BindingFlags.Public | BindingFlags.Static);
+            var mi = typeof(System.Linq.Enumerable).GetMethods(BindingFlags.Static | BindingFlags.Public)
+                .Where(m => m.Name == ReflectionHelper.ContainsMethodName && m.GetParameters().Count() == 2).First();
+            return Expression.Call(null, mi.MakeGenericMethod(valueOperandType), valueExpr, fieldRefExpr);
         }
     }
 }
+
+

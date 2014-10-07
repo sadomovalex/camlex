@@ -61,6 +61,11 @@ namespace CamlexNET
         public const string LessThanMethodSymbol = "<";
         public const string LessThanOrEqualMethodSymbol = "<=";
 
+        public const string PrimaryListMethodName = "PrimaryList";
+        public const string ForeignListMethodName = "ForeignList";
+        public const string ListMethodName = "List";
+        public const string ShowFieldMethodName = "ShowFieldList";
+
 //        public static IEnumerable<ParameterExpression> GetExpressionParameters(ParameterInfo[] parameterInfos)
 //        {
 //            var result = new List<ParameterExpression>();

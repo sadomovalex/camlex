@@ -86,6 +86,9 @@
     <Compile Include="Impl\Operations\DateRangesOverlap\DateRangesOverlapOperation.cs" />
     <Compile Include="Impl\Operations\In\InAnalyzer.cs" />
     <Compile Include="Impl\Operations\In\InOperation.cs" />
+    <Compile Include="Impl\Operations\Join\JoinOperation.cs" />
+    <Compile Include="Impl\Operations\Join\JoinAnalyzer.cs" />
+    <Compile Include="Impl\Operations\Results\JoinOperationResult.cs" />
     <Compile Include="Impl\Query.cs" />
     <Compile Include="Impl\ReverseEngeneering\Caml\Analyzers\ReInAnalyzer.cs" />
     <Compile Include="Impl\ReverseEngeneering\Caml\Analyzers\ReAndAlsoAnalyzer.cs" />

@@ -11,13 +11,28 @@ namespace CamlexNET.UnitTests
     public class CamlexListJoinTests
     {
         [Test]
-        public void test_THAT_single_join_IS_translated_properly()
+        public void test_THAT_single_left_join_IS_translated_properly()
         {
-            string caml = Camlex.Query().Joins().Left(x => x["test"], "foo").Left(x => x["test"], "foo").ToString();
+            string caml = Camlex.Query().Joins().Left(x => x["test"].ForeignList("foo")).ToString();
             string expected =
                "<Join Type=\"LEFT\" ListAlias=\"foo\">" +
                "    <Eq>" +
                "      <FieldRef Name=\"test\" RefType=\"Id\"/>" +
+               "      <FieldRef List=\"foo\" Name=\"Id\"/>" +
+               "    </Eq>" +
+               "  </Join>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        [Test]
+        public void test_THAT_single_left_join_with_primary_list_IS_translated_properly()
+        {
+            string caml = Camlex.Query().Joins().Left(x => x["test"].PrimaryList("bar").ForeignList("foo")).ToString();
+            string expected =
+               "<Join Type=\"LEFT\" ListAlias=\"foo\">" +
+               "    <Eq>" +
+               "      <FieldRef List=\"bar\" Name=\"test\" RefType=\"Id\"/>" +
                "      <FieldRef List=\"foo\" Name=\"Id\"/>" +
                "    </Eq>" +
                "  </Join>";
