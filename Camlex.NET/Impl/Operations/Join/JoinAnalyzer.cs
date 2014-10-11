@@ -55,14 +55,12 @@ namespace CamlexNET.Impl.Operations.Join
                 return false;
             }
             var body = expr.Body as MethodCallExpression;
+            return this.isValid(body, ReflectionHelper.ForeignListMethodName);
+        }
 
-            if (body.Method.Name != ReflectionHelper.ForeignListMethodName)
-            {
-                return false;
-            }
-
-            // left operand for string based syntax should be enumerable
-            if (body.Arguments == null)
+        private bool isValid(MethodCallExpression body, string methodName)
+        {
+            if (body.Method.Name != methodName)
             {
                 return false;
             }
@@ -72,7 +70,56 @@ namespace CamlexNET.Impl.Operations.Join
                 return false;
             }
 
-            throw new NotImplementedException();
+            if (body.Arguments[0].NodeType != ExpressionType.Call)
+            {
+                return false;
+            }
+
+            var leftExpression = body.Arguments[0] as MethodCallExpression;
+            if (!this.isValid(leftExpression, ReflectionHelper.PrimaryListMethodName))
+            {
+                if (!this.isValidLeftExpression(body.Arguments[0]))
+                {
+                    return false;
+                }
+            }
+
+            // parameter of indexer can be constant, variable or method call
+            var argumentExpression = body.Arguments[1];
+            if (!this.isValidEvaluableExpression(argumentExpression))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        protected bool isValidLeftExpression(Expression leftExpression)
+        {
+            if (!(leftExpression is MethodCallExpression))
+            {
+                return false;
+            }
+            var leftOperand = leftExpression as MethodCallExpression;
+            if (leftOperand.Method.Name != ReflectionHelper.IndexerMethodName)
+            {
+                return false;
+            }
+
+            if (leftOperand.Arguments.Count != 1)
+            {
+                return false;
+            }
+
+            // parameter of indexer can be constant, variable or method call
+            var argumentExpression = leftOperand.Arguments[0];
+            if (!this.isValidEvaluableExpression(argumentExpression))
+            {
+                return false;
+            }
+
+            // type of argument expression should be string or guid
+            return (argumentExpression.Type == typeof(string) || argumentExpression.Type == typeof(Guid));
         }
 
         public override IOperation GetOperation(LambdaExpression expr)
