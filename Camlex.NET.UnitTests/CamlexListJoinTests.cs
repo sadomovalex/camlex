@@ -17,8 +17,8 @@ namespace CamlexNET.UnitTests
             string expected =
                "<Join Type=\"LEFT\" ListAlias=\"foo\">" +
                "    <Eq>" +
-               "      <FieldRef Name=\"test\" RefType=\"Id\"/>" +
-               "      <FieldRef List=\"foo\" Name=\"Id\"/>" +
+               "      <FieldRef Name=\"test\" RefType=\"Id\" />" +
+               "      <FieldRef List=\"foo\" Name=\"Id\" />" +
                "    </Eq>" +
                "</Join>";
 
@@ -32,8 +32,8 @@ namespace CamlexNET.UnitTests
             string expected =
                "<Join Type=\"LEFT\" ListAlias=\"bar\">" +
                "    <Eq>" +
-               "      <FieldRef List=\"foo\" Name=\"test\" RefType=\"Id\"/>" +
-               "      <FieldRef List=\"bar\" Name=\"Id\"/>" +
+               "      <FieldRef List=\"foo\" Name=\"test\" RefType=\"Id\" />" +
+               "      <FieldRef List=\"bar\" Name=\"Id\" />" +
                "    </Eq>" +
                "</Join>";
 
@@ -44,7 +44,7 @@ namespace CamlexNET.UnitTests
         public void test_THAT_single_projected_field_IS_translated_properly()
         {
             string caml = Camlex.Query().ProjectedFields(x => x["test"].List("foo").ShowField("Title"));
-            string expected = "<Field Name=\"test\" Type=\"Lookup\" List=\"foo\" ShowField=\"Title\"/>";
+            string expected = "<Field Name=\"test\" Type=\"Lookup\" List=\"foo\" ShowField=\"Title\" />";
 
             Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
         }

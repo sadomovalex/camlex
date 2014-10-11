@@ -124,6 +124,16 @@ namespace CamlexNET.Impl.Factories
             return new FieldRefOperandWithOrdering(fieldRefOperand, orderDirection);
         }
 
+        public IOperand CreateFieldRefOperandForJoin(Expression expr)
+        {
+            if (expr is ConstantExpression)
+            {
+                return new FieldRefOperand((string)(expr as ConstantExpression).Value);
+            }
+            string name = (string)this.evaluateExpression(expr);
+            return new FieldRefOperand(name);
+        }
+
         // ----- Value Operand -----
 
         public IOperand CreateValueOperandForNativeSyntax(Expression expr)

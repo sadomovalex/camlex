@@ -46,29 +46,33 @@ namespace CamlexNET.Impl.Operations.Join
 
         public override IOperationResult ToResult()
         {
-            var result = new XElement(Tags.In,
-                             this.fieldRefOperand.ToCaml(),
-                             this.valueOperand.ToCaml());
+            var primaryElement = this.fieldRefOperand.ToCaml();
+            //this.replaceNameWithList(primaryElement);
+            primaryElement.SetAttributeValue(Attributes.RefType, Values.Id);
+
+            string foreignList = ((FieldRefOperand)this.valueOperand).FieldName;
+            var foreignElement = this.valueOperand.ToCaml();
+            this.replaceNameWithList(foreignElement);
+            foreignElement.SetAttributeValue(Attributes.Name, Values.Id);
+
+            var result = new XElement(Tags.Join, new XAttribute(Attributes.ListAlias, foreignList), new XElement(Tags.Eq, primaryElement, foreignElement));
             return this.operationResultBuilder.CreateResult(result);
+        }
+
+        private void replaceNameWithList(XElement e)
+        {
+            var nameAttr = e.Attributes().FirstOrDefault(a => a.Name == Attributes.Name);
+            if (nameAttr != null)
+            {
+                string val = nameAttr.Value;
+                e.RemoveAttributes();
+                e.SetAttributeValue(Attributes.List, val);
+            }
         }
 
         public override Expression ToExpression()
         {
-            if (!(this.fieldRefOperand is FieldRefOperand))
-            {
-                throw new OperationShouldContainFieldRefOperandException();
-            }
-            if (!(this.valueOperand is ValuesValueOperand))
-            {
-                throw new OperationShouldContainValuesValueOperandException();
-            }
-            var valueOperandType = ((ValuesValueOperand)this.valueOperand).GetOperandsType();
-            var fieldRefExpr = this.getFieldRefOperandExpression(valueOperandType);
-            var valueExpr = this.getValueOperandExpression();
-            //var mi = valueOperandType.MakeArrayType().GetMethod(ReflectionHelper.ContainsMethodName, BindingFlags.Public | BindingFlags.Static);
-            var mi = typeof(System.Linq.Enumerable).GetMethods(BindingFlags.Static | BindingFlags.Public)
-                .Where(m => m.Name == ReflectionHelper.ContainsMethodName && m.GetParameters().Count() == 2).First();
-            return Expression.Call(null, mi.MakeGenericMethod(valueOperandType), valueExpr, fieldRefExpr);
+            throw new NotImplementedException();
         }
     }
 }

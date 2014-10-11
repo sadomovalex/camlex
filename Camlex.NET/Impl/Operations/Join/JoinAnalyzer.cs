@@ -84,9 +84,8 @@ namespace CamlexNET.Impl.Operations.Join
                 }
             }
 
-            // parameter of indexer can be constant, variable or method call
             var argumentExpression = body.Arguments[1];
-            if (!this.isValidEvaluableExpression(argumentExpression))
+            if (!this.isValidEvaluableExpression(argumentExpression) || argumentExpression.Type != typeof(string))
             {
                 return false;
             }
@@ -118,8 +117,8 @@ namespace CamlexNET.Impl.Operations.Join
                 return false;
             }
 
-            // type of argument expression should be string or guid
-            return (argumentExpression.Type == typeof(string) || argumentExpression.Type == typeof(Guid));
+            // type of argument expression should be string
+            return (argumentExpression.Type == typeof(string));
         }
 
         public override IOperation GetOperation(LambdaExpression expr)
@@ -136,25 +135,21 @@ namespace CamlexNET.Impl.Operations.Join
         private IOperand getValueOperand(LambdaExpression expr)
         {
             var body = expr.Body as MethodCallExpression;
-            if (body.Arguments.Count == 1)
-            {
-                // generic list method
-                return operandBuilder.CreateValuesValueOperand(body.Object);
-            }
-            // linq extension method
-            return operandBuilder.CreateValuesValueOperand(body.Arguments[0]);
+            return this.operandBuilder.CreateFieldRefOperandForJoin(body.Arguments[1]);
         }
 
         private IOperand getFieldRefOperand(LambdaExpression expr)
         {
             var body = expr.Body as MethodCallExpression;
-            if (body.Arguments.Count == 1)
+            if (body.Method.Name == ReflectionHelper.ForeignListMethodName)
             {
-                // generic list method
+                // only foreign list is specified
                 return operandBuilder.CreateFieldRefOperand(body.Arguments[0], null);
             }
-            // linq extension method
-            return operandBuilder.CreateFieldRefOperand(body.Arguments[1], null);
+
+            // both primary and foreign lists are specified
+            var leftExpression = body.Arguments[0] as MethodCallExpression;
+            return operandBuilder.CreateFieldRefOperand(leftExpression.Arguments[0], null);
         }
     }
 }

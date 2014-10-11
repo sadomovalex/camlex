@@ -118,22 +118,21 @@ namespace CamlexNET.Impl
             }
 
             var operation = this.analyzer.GetOperation(expr);
-            var result = (JoinOperationResult)operation.ToResult();
+            var result = operation.ToResult();
+            var element = (XElement)result.Value;
 
-            var primaryElement = (XElement) result.Value;
-            if (!string.IsNullOrEmpty(result.PrimaryListAlias))
+            if (element.HasAttributes)
             {
-                primaryElement.SetAttributeValue(Attributes.List, result.PrimaryListAlias);
+                var attributes = element.Attributes().ToList();
+                attributes.Insert(0, new XAttribute(Attributes.Type, type.ToString().ToUpper()));
+                element.RemoveAttributes();
+                element.Add(attributes);
             }
-
-            var array = new XElement[2];
-            array[0] = primaryElement;
-            array[1] = new XElement(Tags.FieldRef, new XAttribute(Attributes.List, result.ForeignListAlias), new XAttribute(Attributes.Name, Values.Id));
-
-            var caml = new XElement(Tags.Join, result.Value);
-            caml.SetAttributeValue(Attributes.Type, type.ToString().ToUpper());
-            caml.SetAttributeValue(Attributes.ListAlias, result.ForeignListAlias);
-            return caml;
+            else
+            {
+                element.SetAttributeValue(Attributes.Type, type.ToString().ToUpper());
+            }
+            return element;
         }
     }
 }
