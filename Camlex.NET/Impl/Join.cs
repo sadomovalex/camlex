@@ -39,5 +39,25 @@ namespace CamlexNET.Impl
         {
             return join(expr, JoinType.Inner);
         }
+
+        public override string ToString()
+        {
+            return this.ToString(false);
+        }
+
+        public string ToString(bool includeJoinsTag)
+        {
+            var elements = this.ToCaml(includeJoinsTag);
+            return ConvertHelper.ConvertToString(elements);
+        }
+
+        public XElement[] ToCaml(bool includeJoinsTag)
+        {
+            if (includeJoinsTag)
+            {
+                return new[] { new XElement(Tags.Joins, this.joins) };
+            }
+            return this.joins.ToArray();
+        }
     }
 }

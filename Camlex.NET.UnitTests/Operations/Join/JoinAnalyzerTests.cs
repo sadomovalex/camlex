@@ -29,5 +29,14 @@ namespace CamlexNET.UnitTests.Operations.Join
             Expression<Func<SPListItem, object>> expr = x => x["test"].PrimaryList("foo").ForeignList("bar");
             Assert.IsTrue(a.IsValid(expr));
         }
+
+        [Test]
+        public void test_THAT_join_with_foreign_and_primary_lists_and_non_constants_params_IS_valid()
+        {
+            Func<string> f = () => "foo";
+            var a = new JoinAnalyzer(null, null);
+            Expression<Func<SPListItem, object>> expr = x => x[f()].PrimaryList(f()).ForeignList(f());
+            Assert.IsTrue(a.IsValid(expr));
+        }
     }
 }
