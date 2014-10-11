@@ -172,6 +172,7 @@
     <Compile Include="Operations\IsNull\IsNullOperationTests.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Operations\Join\JoinAnalyzerTests.cs" />
     <Compile Include="Operations\Leq\LeqAnalyzerTests.cs">
       <SubType>Code</SubType>
     </Compile>

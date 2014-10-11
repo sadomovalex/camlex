@@ -20,7 +20,7 @@ namespace CamlexNET.UnitTests
                "      <FieldRef Name=\"test\" RefType=\"Id\"/>" +
                "      <FieldRef List=\"foo\" Name=\"Id\"/>" +
                "    </Eq>" +
-               "  </Join>";
+               "</Join>";
 
             Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
         }
@@ -28,14 +28,14 @@ namespace CamlexNET.UnitTests
         [Test]
         public void test_THAT_single_left_join_with_primary_list_IS_translated_properly()
         {
-            string caml = Camlex.Query().Joins().Left(x => x["test"].PrimaryList("bar").ForeignList("foo")).ToString();
+            string caml = Camlex.Query().Joins().Left(x => x["test"].PrimaryList("foo").ForeignList("bar")).ToString();
             string expected =
-               "<Join Type=\"LEFT\" ListAlias=\"foo\">" +
+               "<Join Type=\"LEFT\" ListAlias=\"bar\">" +
                "    <Eq>" +
-               "      <FieldRef List=\"bar\" Name=\"test\" RefType=\"Id\"/>" +
-               "      <FieldRef List=\"foo\" Name=\"Id\"/>" +
+               "      <FieldRef List=\"foo\" Name=\"test\" RefType=\"Id\"/>" +
+               "      <FieldRef List=\"bar\" Name=\"Id\"/>" +
                "    </Eq>" +
-               "  </Join>";
+               "</Join>";
 
             Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
         }
