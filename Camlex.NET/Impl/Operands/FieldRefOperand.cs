@@ -63,6 +63,10 @@ namespace CamlexNET.Impl.Operands
             {
                 return this.attributes;
             }
+            set
+            {
+                this.attributes = value;
+            }
         }
 
         protected FieldRefOperand(List<KeyValuePair<string, string>> attributes)

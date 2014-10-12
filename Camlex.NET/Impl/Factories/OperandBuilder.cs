@@ -126,12 +126,41 @@ namespace CamlexNET.Impl.Factories
 
         public IOperand CreateFieldRefOperandForJoin(Expression expr)
         {
+            string list = string.Empty;
             if (expr is ConstantExpression)
             {
-                return new FieldRefOperand((string)(expr as ConstantExpression).Value);
+                list = (string) (expr as ConstantExpression).Value;
             }
-            string name = (string)this.evaluateExpression(expr);
-            return new FieldRefOperand(name);
+            else
+            {
+                list = (string) this.evaluateExpression(expr);
+            }
+            return new FieldRefOperand(Values.Id, new List<KeyValuePair<string, string>>(new[]{new KeyValuePair<string, string>(Attributes.List, list)}));
+        }
+
+        public IOperand CreateFieldRefOperandForJoin(Expression expr, Expression primaryListExpr)
+        {
+            string list = string.Empty;
+            if (primaryListExpr is ConstantExpression)
+            {
+                list = (string) (primaryListExpr as ConstantExpression).Value;
+            }
+            else
+            {
+                list = (string) this.evaluateExpression(primaryListExpr);
+            }
+
+            var attributes = new List<KeyValuePair<string, string>>();
+
+            if (!string.IsNullOrEmpty(list))
+            {
+                attributes.Add(new KeyValuePair<string, string>(Attributes.List, list));
+            }
+            attributes.Add(new KeyValuePair<string, string>(Attributes.RefType, Values.Id));
+
+            var fieldRef = (FieldRefOperand)this.CreateFieldRefOperand(expr, null);
+            fieldRef.Attributes = attributes;
+            return fieldRef;
         }
 
         // ----- Value Operand -----

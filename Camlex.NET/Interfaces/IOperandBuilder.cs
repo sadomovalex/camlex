@@ -38,6 +38,7 @@ namespace CamlexNET.Interfaces
         IOperand CreateFieldRefOperand(Expression expr, IOperand valueOperand);
         IOperand CreateFieldRefOperandWithOrdering(Expression expr, Camlex.OrderDirection orderDirection);
         IOperand CreateFieldRefOperandForJoin(Expression expr);
+        IOperand CreateFieldRefOperandForJoin(Expression expr, Expression primaryListExpr);
         IOperand CreateValueOperandForNativeSyntax(Expression expr);
         IOperand CreateValueOperandForNativeSyntax(Expression expr, Type explicitOperandType);
         IOperand CreateValueOperandForStringBasedSyntax(Expression expr);

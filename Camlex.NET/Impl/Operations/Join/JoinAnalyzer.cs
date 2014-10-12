@@ -141,15 +141,17 @@ namespace CamlexNET.Impl.Operations.Join
         private IOperand getFieldRefOperand(LambdaExpression expr)
         {
             var body = expr.Body as MethodCallExpression;
-            if (body.Method.Name == ReflectionHelper.ForeignListMethodName)
+            var leftExpression = body.Arguments[0] as MethodCallExpression;
+            if (leftExpression.Method.Name == ReflectionHelper.PrimaryListMethodName)
             {
-                // only foreign list is specified
-                return operandBuilder.CreateFieldRefOperand(body.Arguments[0], null);
+                // both primary and foreign lists are specified
+                return operandBuilder.CreateFieldRefOperandForJoin(leftExpression.Arguments[0], leftExpression.Arguments[1]);
             }
 
-            // both primary and foreign lists are specified
-            var leftExpression = body.Arguments[0] as MethodCallExpression;
-            return operandBuilder.CreateFieldRefOperand(leftExpression.Arguments[0], null);
+            // only foreign list is specified
+            var fieldRef = (FieldRefOperand)operandBuilder.CreateFieldRefOperand(body.Arguments[0], null);
+            fieldRef.Attributes = new List<KeyValuePair<string, string>>(new[]{new KeyValuePair<string, string>(Attributes.RefType, Values.Id)});
+            return fieldRef;
         }
     }
 }
