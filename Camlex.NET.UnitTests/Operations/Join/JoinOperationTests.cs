@@ -29,10 +29,12 @@ namespace CamlexNET.UnitTests.Operations.Join
             string caml = op.ToResult().ToString();
 
             string expected =
-                @"<Join>
-                    <fieldRefOperandStub />
-                    <valueOperandStub />
-                </Join>";
+                "<Join ListAlias=\"\">" +
+                "  <Eq>" +
+                "    <fieldRefOperandStub />" +
+                "    <valueOperandStub />" +
+                "  </Eq>" +
+                "</Join>";
             Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
         }
     }

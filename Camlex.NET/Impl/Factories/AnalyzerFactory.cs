@@ -45,6 +45,7 @@ using CamlexNET.Impl.Operations.Leq;
 using CamlexNET.Impl.Operations.Lt;
 using CamlexNET.Impl.Operations.Neq;
 using CamlexNET.Impl.Operations.OrElse;
+using CamlexNET.Impl.Operations.ProjectedField;
 using CamlexNET.Interfaces;
 
 namespace CamlexNET.Impl.Factories
@@ -151,6 +152,12 @@ namespace CamlexNET.Impl.Factories
             if (joinAnalyzer.IsValid(expr))
             {
                 return joinAnalyzer;
+            }
+
+            var projectedFieldAnalyzer = new ProjectedFieldAnalyzer(operationResultBuilder, operandBuilder);
+            if (projectedFieldAnalyzer.IsValid(expr))
+            {
+                return projectedFieldAnalyzer;
             }
 
             throw new NonSupportedExpressionTypeException(exprType);

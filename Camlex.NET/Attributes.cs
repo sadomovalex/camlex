@@ -28,6 +28,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml.Linq;
 
 namespace CamlexNET
 {
@@ -44,5 +45,6 @@ namespace CamlexNET
         public const string ListAlias = "ListAlias";
         public const string List = "List";
         public const string RefType = "RefType";
+        public static string ShowField = "ShowField";
     }
 }

@@ -163,6 +163,40 @@ namespace CamlexNET.Impl.Factories
             return fieldRef;
         }
 
+        public IOperand CreateFieldRefOperandForProjectedField(Expression expr, Expression listExpr, Expression showFieldExpr)
+        {
+            string showField = string.Empty;
+            if (showFieldExpr is ConstantExpression)
+            {
+                showField = (string)(showFieldExpr as ConstantExpression).Value;
+            }
+            else
+            {
+                showField = (string)this.evaluateExpression(showFieldExpr);
+            }
+
+            string list = string.Empty;
+            if (listExpr is ConstantExpression)
+            {
+                list = (string)(listExpr as ConstantExpression).Value;
+            }
+            else
+            {
+                list = (string)this.evaluateExpression(listExpr);
+            }
+
+            var attributes = new List<KeyValuePair<string, string>>();
+
+            attributes.Add(new KeyValuePair<string, string>(Attributes.Type, Values.Lookup));
+            attributes.Add(new KeyValuePair<string, string>(Attributes.List, list));
+            attributes.Add(new KeyValuePair<string, string>(Attributes.ShowField, showField));
+
+            var fieldRef = (FieldRefOperand)this.CreateFieldRefOperand(expr, null);
+            fieldRef.TagName = Tags.Field;
+            fieldRef.Attributes = attributes;
+            return fieldRef;
+        }
+
         // ----- Value Operand -----
 
         public IOperand CreateValueOperandForNativeSyntax(Expression expr)
