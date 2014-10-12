@@ -38,8 +38,7 @@ namespace CamlexNET.Interfaces
 		XElement TranslateGroupBy(LambdaExpression expr, bool? collapse, int? groupLimit);
 		XElement TranslateViewFields(Expression<Func<ListItem, object[]>> expr);
         XElement TranslateRowLimit(LambdaExpression expr);
-        XElement TranslateJoin(Expression<Func<SPListItem, object>> expr, JoinType type);
-        XElement TranslateProjectedField(Expression<Func<SPListItem, object>> expr);
-        XElement TranslateProjectedField(Expression<Func<SPListItem, object>> expr);
+        XElement TranslateJoin(Expression<Func<ListItem, object>> expr, JoinType type);
+        XElement TranslateProjectedField(Expression<Func<ListItem, object>> expr);
 	}
 }

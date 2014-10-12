@@ -7,6 +7,7 @@ using System.Text;
 using CamlexNET.Impl.Factories;
 using CamlexNET.Impl.Operations.Join;
 using Microsoft.SharePoint;
+using Microsoft.SharePoint.Client;
 using NUnit.Framework;
 
 namespace CamlexNET.UnitTests.Operations.Join
@@ -18,7 +19,7 @@ namespace CamlexNET.UnitTests.Operations.Join
         public void test_THAT_join_with_foreign_list_IS_valid()
         {
             var a = new JoinAnalyzer(null, null);
-            Expression<Func<SPListItem, object>> expr = x => x["test"].ForeignList("foo");
+            Expression<Func<ListItem, object>> expr = x => x["test"].ForeignList("foo");
             Assert.IsTrue(a.IsValid(expr));
         }
 
@@ -26,7 +27,7 @@ namespace CamlexNET.UnitTests.Operations.Join
         public void test_THAT_join_with_foreign_and_primary_lists_IS_valid()
         {
             var a = new JoinAnalyzer(null, null);
-            Expression<Func<SPListItem, object>> expr = x => x["test"].PrimaryList("foo").ForeignList("bar");
+            Expression<Func<ListItem, object>> expr = x => x["test"].PrimaryList("foo").ForeignList("bar");
             Assert.IsTrue(a.IsValid(expr));
         }
 
@@ -35,7 +36,7 @@ namespace CamlexNET.UnitTests.Operations.Join
         {
             Func<string> f = () => "foo";
             var a = new JoinAnalyzer(null, null);
-            Expression<Func<SPListItem, object>> expr = x => x[f()].PrimaryList(f()).ForeignList(f());
+            Expression<Func<ListItem, object>> expr = x => x[f()].PrimaryList(f()).ForeignList(f());
             Assert.IsTrue(a.IsValid(expr));
         }
     }

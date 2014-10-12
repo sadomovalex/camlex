@@ -38,7 +38,7 @@ namespace CamlexNET.Interfaces
 		IQuery WhereAll(IEnumerable<Expression<Func<ListItem, bool>>> expressions);
 		IQuery WhereAll(string existingWhere, Expression<Func<ListItem, bool>> expression);
 		IQuery WhereAll(string existingWhere, IEnumerable<Expression<Func<ListItem, bool>>> expressions);
-                IQuery WhereAll(IEnumerable<string> expressions);
+        IQuery WhereAll(IEnumerable<string> expressions);
 		IQuery WhereAny(IEnumerable<Expression<Func<ListItem, bool>>> expressions);
 		IQuery WhereAny(string existingWhere, Expression<Func<ListItem, bool>> expression);
 		IQuery WhereAny(string existingWhere, IEnumerable<Expression<Func<ListItem, bool>>> expressions);
@@ -59,26 +59,16 @@ namespace CamlexNET.Interfaces
 		IQuery Take(int count);
 
         IQuery ViewFields(Expression<Func<ListItem, object>> expr);
-//        IQuery ViewFields(Expression<Func<ListItem, object>> expr, bool includeViewFieldsTag);
         IQuery ViewFields(Expression<Func<ListItem, object[]>> expr);
-//        IQuery ViewFields(Expression<Func<ListItem, object[]>> expr, bool includeViewFieldsTag);
-
         IQuery ViewFields(string existingViewFields, Expression<Func<ListItem, object>> expr);
-//        IQuery ViewFields(string existingViewFields, Expression<Func<ListItem, object>> expr, bool includeViewFieldsTag);
         IQuery ViewFields(string existingViewFields, Expression<Func<ListItem, object[]>> expr);
-//        IQuery ViewFields(string existingViewFields, Expression<Func<ListItem, object[]>> expr, bool includeViewFieldsTag);
-
         IQuery ViewFields(IEnumerable<string> titles);
-//        IQuery ViewFields(IEnumerable<string> titles, bool includeViewFieldsTag);
-//        IQuery ViewFields(IEnumerable<Guid> ids);
-//        IQuery ViewFields(IEnumerable<Guid> ids, bool includeViewFieldsTag);
-
         IQuery ViewFields(string existingViewFields, IEnumerable<string> titles);
-//        IQuery ViewFields(string existingViewFields, IEnumerable<string> titles, bool includeViewFieldsTag);
-//        IQuery ViewFields(string existingViewFields, IEnumerable<Guid> ids);
-//        IQuery ViewFields(string existingViewFields, IEnumerable<Guid> ids, bool includeViewFieldsTag);
-
 	    IQuery Scope(ViewScope scope);
+
+        IQuery LeftJoin(Expression<Func<ListItem, object>> expr);
+        IQuery InnerJoin(Expression<Func<ListItem, object>> expr);
+        IQuery ProjectedField(Expression<Func<ListItem, object>> expr);
 
 	    XElement[] ToCaml(bool includeViewTag);
 		string ToString();

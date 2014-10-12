@@ -1271,12 +1271,14 @@ namespace CamlexNET.UnitTests
             var caml = Camlex.Query().Where(x => (bool)x["foo"]).ToString();
 
             string expected =
+                "<Query>" +
                 "   <Where>" +
                 "       <Eq>" +
                 "           <FieldRef Name=\"foo\" />" +
                 "           <Value Type=\"Boolean\">1</Value>" +
                 "       </Eq>" +
-                "   </Where>";
+                "   </Where>" +
+                "</Query>";
 
             Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
         }
@@ -1287,12 +1289,14 @@ namespace CamlexNET.UnitTests
             var caml = Camlex.Query().Where(x => !(bool)x["foo"]).ToString();
 
             string expected =
+                "<Query>" +
                 "   <Where>" +
                 "       <Eq>" +
                 "           <FieldRef Name=\"foo\" />" +
                 "           <Value Type=\"Boolean\">0</Value>" +
                 "       </Eq>" +
-                "   </Where>";
+                "   </Where>" +
+                "</Query>";
 
             Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
         }

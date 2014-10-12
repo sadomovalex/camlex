@@ -25,6 +25,7 @@
 // -----------------------------------------------------------------------------
 #endregion
 using System;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Xml.Linq;
 using CamlexNET.Impl.Operations.Results;
@@ -117,7 +118,7 @@ namespace CamlexNET.Impl
             return (XElement)operationCaml;
 	    }
 
-        public XElement TranslateJoin(Expression<Func<SPListItem, object>> expr, JoinType type)
+        public XElement TranslateJoin(Expression<Func<ListItem, object>> expr, JoinType type)
         {
             if (!this.analyzer.IsValid(expr))
             {
@@ -142,7 +143,7 @@ namespace CamlexNET.Impl
             return element;
         }
 
-        public XElement TranslateProjectedField(Expression<Func<SPListItem, object>> expr)
+        public XElement TranslateProjectedField(Expression<Func<ListItem, object>> expr)
         {
             if (!this.analyzer.IsValid(expr))
             {

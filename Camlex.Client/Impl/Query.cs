@@ -47,6 +47,8 @@ namespace CamlexNET.Impl
         private XElement rowLimit;
         private XElement viewFields;
         private ViewScope viewScope;
+        private List<XElement> joins;
+        private List<XElement> projectedFields;
 
         public Query(ITranslatorFactory translatorFactory, IReTranslatorFactory reTranslatorFactory)
         {
@@ -387,10 +389,6 @@ namespace CamlexNET.Impl
 
         public IQuery Take(int count)
         {
-            //			if (count > -1)
-            //			{
-            //				this.rowLimit = new XElement(Tags.RowLimit, count);
-            //			}
             int c = count;
             Expression<Func<int>> expr = () => c;
             var translator = translatorFactory.Create(expr);
@@ -399,54 +397,24 @@ namespace CamlexNET.Impl
             return this;
         }
 
-        //        public IQuery ViewFields(Expression<Func<ListItem, object>> expr)
-        //		{
-        //			return ViewFields(expr, false);
-        //		}
-
         public IQuery ViewFields(Expression<Func<ListItem, object>> expr)
         {
             var lambda = this.createArrayExpression(expr);
             return ViewFields(lambda);
         }
 
-        //        public IQuery ViewFields(Expression<Func<ListItem, object[]>> expr)
-        //		{
-        //			return ViewFields(expr, false);
-        //		}
-
         public IQuery ViewFields(Expression<Func<ListItem, object[]>> expr)
         {
             var translator = translatorFactory.Create(expr);
             this.viewFields = translator.TranslateViewFields(expr);
-
-            //			if (!includeViewFieldsTag)
-            //			{
-            //				var elements = viewFields.Elements();
-            //				if (elements == null || !elements.Any())
-            //				{
-            //					return string.Empty;
-            //				}
-                return ConvertHelper.ConvertToString(elements.ToArray());
-            //			}
             return this;
         }
-
-        //        public IQuery ViewFields(string existingViewFields, Expression<Func<ListItem, object>> expr)
-        //		{
-        //			return ViewFields(existingViewFields, expr, false);
-        //		}
 
         public IQuery ViewFields(string existingViewFields, Expression<Func<ListItem, object>> expr)
         {
             var lambda = this.createArrayExpression(expr);
             return ViewFields(existingViewFields, lambda);
         }
-
-        //        public IQuery ViewFields(string existingViewFields, Expression<Func<ListItem, object[]>> expr)
-        //		{
-        //			return ViewFields(existingViewFields, expr, false);
-        //		}
 
         public IQuery ViewFields(string existingViewFields, Expression<Func<ListItem, object[]>> expr)
         {
@@ -455,11 +423,6 @@ namespace CamlexNET.Impl
             var resultExpr = this.createArrayExpression(exprs);
             return this.ViewFields(resultExpr);
         }
-
-        //        public IQuery ViewFields(IEnumerable<string> titles)
-        //		{
-        //			return this.ViewFields(titles, false);
-        //		}
 
         public IQuery ViewFields(IEnumerable<string> titles)
         {
@@ -470,26 +433,6 @@ namespace CamlexNET.Impl
 
             return this.ViewFields(this.createExpressionFromArray(titles));
         }
-
-        //        public IQuery ViewFields(IEnumerable<Guid> ids)
-        //		{
-        //			return this.ViewFields(ids, false);
-        //		}
-        //
-        //        public IQuery ViewFields(IEnumerable<Guid> ids, bool includeViewFieldsTag)
-        //		{
-        //			if (ids == null)
-        //			{
-        //				throw new ArgumentNullException();
-        //			}
-        //
-        //			return this.ViewFields(this.createExpressionFromArray(ids), includeViewFieldsTag);
-        //		}
-
-        //        public IQuery ViewFields(string existingViewFields, IEnumerable<string> titles)
-        //		{
-        //			return this.ViewFields(existingViewFields, titles, false);
-        //		}
 
         public IQuery ViewFields(string existingViewFields, IEnumerable<string> titles)
         {
@@ -507,23 +450,38 @@ namespace CamlexNET.Impl
             return this;
         }
 
-        
+        public IQuery LeftJoin(Expression<Func<ListItem, object>> expr)
+        {
+            var translator = translatorFactory.Create(expr);
+            if (this.joins == null)
+            {
+                this.joins = new List<XElement>();
+            }
+            this.joins.Add(translator.TranslateJoin(expr, JoinType.Left));
+            return this;
+        }
 
+        public IQuery InnerJoin(Expression<Func<ListItem, object>> expr)
+        {
+            var translator = translatorFactory.Create(expr);
+            if (this.joins == null)
+            {
+                this.joins = new List<XElement>();
+            }
+            this.joins.Add(translator.TranslateJoin(expr, JoinType.Inner));
+            return this;
+        }
 
-        //        public IQuery ViewFields(string existingViewFields, IEnumerable<Guid> ids)
-        //		{
-        //			return this.ViewFields(existingViewFields, ids, false);
-        //		}
-        //
-        //        public IQuery ViewFields(string existingViewFields, IEnumerable<Guid> ids, bool includeViewFieldsTag)
-        //		{
-        //			if (ids == null)
-        //			{
-        //				throw new ArgumentNullException();
-        //			}
-        //
-        //			return this.ViewFields(existingViewFields, this.createExpressionFromArray(ids), includeViewFieldsTag);
-        //		}
+        public IQuery ProjectedField(Expression<Func<ListItem, object>> expr)
+        {
+            var translator = translatorFactory.Create(expr);
+            if (this.projectedFields == null)
+            {
+                this.projectedFields = new List<XElement>();
+            }
+            this.projectedFields.Add(translator.TranslateProjectedField(expr));
+            return this;
+        }
 
         private Expression<Func<ListItem, object[]>> createExpressionFromArray<T>(IEnumerable<T> items)
         {
@@ -535,27 +493,6 @@ namespace CamlexNET.Impl
                                              typeof(ListItem).GetMethod(ReflectionHelper.IndexerMethodName, new[] { typeof(T) }),
                                              new[] { Expression.Constant(t) })).ToArray()),
                 Expression.Parameter(typeof(ListItem), ReflectionHelper.CommonParameterName));
-        }
-
-        public XElement[] ToCaml(bool includeViewTag)
-        {
-            var elements = new List<XElement>();
-
-            // Return <View><Query> ... </Query></View>
-            if (includeViewTag)
-            {
-                var viewTag = new XElement(Tags.View);
-
-                // Set scope (e.g. RecursiveAll)
-                if (this.viewScope != ViewScope.DefaultValue)
-            var joins = new List<XElement>();
-            return new Join(this.translatorFactory, joins);
-        }
-
-        public IProjectedField ProjectedFields()
-        {
-            var fields = new List<XElement>();
-            return new ProjectedField(this.translatorFactory, fields);
         }
 
         public XElement[] ToCaml(bool includeViewTag)
@@ -591,6 +528,20 @@ namespace CamlexNET.Impl
                     viewTag.Add(this.rowLimit);
                 }
 
+                if (this.joins != null)
+                {
+                    var joinsTag = new XElement(Tags.Joins);
+                    joinsTag.Add(this.joins);
+                    viewTag.Add(joinsTag);
+                }
+
+                if (this.projectedFields != null)
+                {
+                    var projectedFieldsTag = new XElement(Tags.ProjectedFields);
+                    projectedFieldsTag.Add(this.projectedFields);
+                    viewTag.Add(projectedFieldsTag);
+                }
+
                 elements.Add(viewTag);
             }
             else
@@ -623,6 +574,20 @@ namespace CamlexNET.Impl
                 {
                     elements.Add(this.rowLimit);
                 }
+
+                if (this.joins != null)
+                {
+                    var joinsTag = new XElement(Tags.Joins);
+                    joinsTag.Add(this.joins);
+                    elements.Add(joinsTag);
+                }
+
+                if (this.projectedFields != null)
+                {
+                    var projectedFieldsTag = new XElement(Tags.ProjectedFields);
+                    projectedFieldsTag.Add(this.projectedFields);
+                    elements.Add(projectedFieldsTag);
+                }
             }
 
             return elements.ToArray();
@@ -642,13 +607,6 @@ namespace CamlexNET.Impl
         {
             var elements = this.ToCaml(includeViewTag);
             return ConvertHelper.ConvertToString(elements);
-        }
-
-        public SPQuery ToSPQuery()
-        {
-            var query = new SPQuery();
-            query.Query = this.ToString(false);
-            return query;
         }
 
         public static implicit operator string(Query query)
