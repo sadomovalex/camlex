@@ -40,6 +40,7 @@ namespace CamlexNET.Impl.Operands
         protected string fieldName;
         protected Guid? id;
         private List<KeyValuePair<string, string>> attributes;
+        private string tagName;
 
         public string FieldName
         {
@@ -66,6 +67,18 @@ namespace CamlexNET.Impl.Operands
             set
             {
                 this.attributes = value;
+            }
+        }
+
+        public string TagName
+        {
+            get
+            {
+                return tagName;
+            }
+            set
+            {
+                tagName = value;
             }
         }
 
@@ -109,13 +122,14 @@ namespace CamlexNET.Impl.Operands
         public virtual XElement ToCaml()
         {
             XElement element;
+            string tag = this.tagName ?? Tags.FieldRef;
             if (this.id != null)
             {
-                element = new XElement(Tags.FieldRef, new XAttribute(CamlexNET.Attributes.ID, this.id.Value));
+                element = new XElement(tag, new XAttribute(CamlexNET.Attributes.ID, this.id.Value));
             }
             else if (!string.IsNullOrEmpty(this.fieldName))
             {
-                element = new XElement(Tags.FieldRef, new XAttribute(CamlexNET.Attributes.Name, this.fieldName));
+                element = new XElement(tag, new XAttribute(CamlexNET.Attributes.Name, this.fieldName));
             }
             else
             {

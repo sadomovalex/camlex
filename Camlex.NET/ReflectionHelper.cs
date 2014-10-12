@@ -64,7 +64,7 @@ namespace CamlexNET
         public const string PrimaryListMethodName = "PrimaryList";
         public const string ForeignListMethodName = "ForeignList";
         public const string ListMethodName = "List";
-        public const string ShowFieldMethodName = "ShowFieldList";
+        public const string ShowFieldMethodName = "ShowField";
 
 //        public static IEnumerable<ParameterExpression> GetExpressionParameters(ParameterInfo[] parameterInfos)
 //        {

@@ -503,7 +503,8 @@ namespace CamlexNET.Impl
 
         public IProjectedField ProjectedFields()
         {
-            throw new NotImplementedException();
+            var fields = new List<XElement>();
+            return new ProjectedField(this.translatorFactory, fields);
         }
 
         private Expression<Func<SPListItem, object[]>> createExpressionFromArray<T>(IEnumerable<T> items)

@@ -24,25 +24,37 @@
 // fitness for a particular purpose and non-infringement.
 // -----------------------------------------------------------------------------
 #endregion
+
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
+using System.Reflection;
+using System.Xml.Linq;
+using CamlexNET.Impl.Factories;
+using CamlexNET.Impl.Operands;
+using CamlexNET.Interfaces;
 
-namespace CamlexNET.Interfaces
+namespace CamlexNET.Impl.Operations.ProjectedField
 {
-    internal interface IOperandBuilder
+    internal class ProjectedFieldOperation : BinaryOperationBase
     {
-        IOperand CreateFieldRefOperand(Expression expr, IOperand valueOperand);
-        IOperand CreateFieldRefOperandWithOrdering(Expression expr, Camlex.OrderDirection orderDirection);
-        IOperand CreateFieldRefOperandForJoin(Expression expr);
-        IOperand CreateFieldRefOperandForJoin(Expression expr, Expression primaryListExpr);
-        IOperand CreateFieldRefOperandForProjectedField(Expression expr, Expression listExpr, Expression showFieldExpr);
-        IOperand CreateValueOperandForNativeSyntax(Expression expr);
-        IOperand CreateValueOperandForNativeSyntax(Expression expr, Type explicitOperandType);
-        IOperand CreateValueOperandForStringBasedSyntax(Expression expr);
-        IOperand CreateValuesValueOperand(Expression expr);
+        public ProjectedFieldOperation(IOperationResultBuilder operationResultBuilder,
+            IOperand fieldRefOperand)
+            : base(operationResultBuilder, fieldRefOperand, null)
+        {
+        }
+
+        public override IOperationResult ToResult()
+        {
+            var primaryElement = this.fieldRefOperand.ToCaml();
+            return this.operationResultBuilder.CreateResult(primaryElement);
+        }
+
+        public override Expression ToExpression()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
+
+
