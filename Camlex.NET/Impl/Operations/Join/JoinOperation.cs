@@ -47,27 +47,34 @@ namespace CamlexNET.Impl.Operations.Join
         public override IOperationResult ToResult()
         {
             var primaryElement = this.fieldRefOperand.ToCaml();
-            //this.replaceNameWithList(primaryElement);
-            primaryElement.SetAttributeValue(Attributes.RefType, Values.Id);
+            this.sortAttributes(primaryElement);
 
-            string foreignList = ((FieldRefOperand)this.valueOperand).FieldName;
             var foreignElement = this.valueOperand.ToCaml();
-            this.replaceNameWithList(foreignElement);
-            foreignElement.SetAttributeValue(Attributes.Name, Values.Id);
+            this.sortAttributes(foreignElement);
+
+            string foreignList = string.Empty;
+            if (foreignElement.HasAttributes)
+            {
+                var listAttr = foreignElement.Attributes().FirstOrDefault(a => a.Name == Attributes.List);
+                if (listAttr != null)
+                {
+                    foreignList = listAttr.Value;
+                }
+            }
 
             var result = new XElement(Tags.Join, new XAttribute(Attributes.ListAlias, foreignList), new XElement(Tags.Eq, primaryElement, foreignElement));
             return this.operationResultBuilder.CreateResult(result);
         }
 
-        private void replaceNameWithList(XElement e)
+        private void sortAttributes(XElement e)
         {
-            var nameAttr = e.Attributes().FirstOrDefault(a => a.Name == Attributes.Name);
-            if (nameAttr != null)
+            if (!e.HasAttributes)
             {
-                string val = nameAttr.Value;
-                e.RemoveAttributes();
-                e.SetAttributeValue(Attributes.List, val);
+                return;
             }
+            var attributes = e.Attributes().ToList().OrderBy(a => a.Name.LocalName);
+            e.RemoveAttributes();
+            e.Add(attributes);
         }
 
         public override Expression ToExpression()
