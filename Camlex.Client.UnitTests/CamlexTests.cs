@@ -1346,5 +1346,40 @@ namespace CamlexNET.UnitTests
 
             Assert.That(caml.ViewXml, Is.EqualTo(expected).Using(new CamlComparer()));
         }
+
+        [Test]
+        public void test_THAT_query_with_where_and_join_IS_created_successfully()
+        {
+            var caml = Camlex.Query()
+                .Where(x => (string)x["Title"] == "test")
+                .LeftJoin(x => x["test"].PrimaryList("parent").ForeignList("foreign"))
+                .ProjectedField(x => x["test"].List("parent").ShowField("testfoo"))
+                .ToString(true);
+
+            const string expected =
+                "<View>" +
+                "  <Query>" +
+                "    <Where>" +
+                "      <Eq>" +
+                "        <FieldRef Name=\"Title\" />" +
+                "        <Value Type=\"Text\">test</Value>" +
+                "       </Eq>" +
+                "    </Where>" +
+                "  </Query>" +
+               "  <Joins>" +
+               "    <Join Type=\"LEFT\" ListAlias=\"foreign\">" +
+               "      <Eq>" +
+               "        <FieldRef List=\"parent\" Name=\"test\" RefType=\"Id\" />" +
+               "        <FieldRef List=\"foreign\" Name=\"Id\" />" +
+               "      </Eq>" +
+               "    </Join>" +
+               "  </Joins>" +
+               "  <ProjectedFields>" +
+               "    <Field Name=\"test\" Type=\"Lookup\" List=\"parent\" ShowField=\"testfoo\" />" +
+               "  </ProjectedFields>" +
+               "</View>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
 	}
 }
