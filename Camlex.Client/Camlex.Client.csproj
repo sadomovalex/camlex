@@ -74,10 +74,8 @@
     <Compile Include="Impl\CompositeOperationBase.cs" />
     <Compile Include="Impl\Operations\ProjectedField\ProjectedFieldAnalyzer.cs" />
     <Compile Include="Impl\Operations\ProjectedField\ProjectedFieldOperation.cs" />
-    <Compile Include="Impl\ProjectedField.cs" />
     <Compile Include="Impl\Helpers\ConvertHelper.cs" />
     <Compile Include="Impl\Helpers\ExpressionsHelper.cs" />
-    <Compile Include="Impl\Join.cs" />
     <Compile Include="Impl\Operands\BooleanValueOperand.cs" />
     <Compile Include="Impl\Operands\ConstantOperand.cs" />
     <Compile Include="Impl\Operands\ValuesValueOperand.cs" />
@@ -169,10 +167,8 @@
     <Compile Include="Impl\Operations\OrElse\OrElseOperation.cs" />
     <Compile Include="Impl\Operations\Results\XElementArrayOperationResult.cs" />
     <Compile Include="Impl\Operations\Results\XElementOperationResult.cs" />
-    <Compile Include="Interfaces\IProjectedField.cs" />
     <Compile Include="Interfaces\IAnalyzer.cs" />
     <Compile Include="Interfaces\IAnalyzerFactory.cs" />
-    <Compile Include="Interfaces\IJoin.cs" />
     <Compile Include="Interfaces\IOperand.cs" />
     <Compile Include="Interfaces\IOperandBuilder.cs" />
     <Compile Include="Interfaces\IOperation.cs" />

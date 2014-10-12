@@ -37,7 +37,7 @@ namespace CamlexNET.Impl.Operands
 	{
 		protected string fieldName;
 		protected Guid? id;
-		private readonly List<KeyValuePair<string, string>> attributes;
+		private List<KeyValuePair<string, string>> attributes;
         private string tagName;
 
 		public string FieldName

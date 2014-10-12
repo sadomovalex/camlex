@@ -139,6 +139,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
         public void test_THAT_true_boolean_expression_IS_translated_successfully()
         {
             var xml =
+                "<View>" +
                 "<Query>" +
                 "  <Where>" +
                 "    <Eq>" +
@@ -146,7 +147,8 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
                 "      <Value Type=\"Boolean\">1</Value>" +
                 "    </Eq>" +
                 "  </Where>" +
-                "</Query>";
+                "</Query>" +
+                "</View>";
 
             var expr = Camlex.QueryFromString(xml).ToExpression();
             Assert.That(expr.ToString(), Is.EqualTo("Query().Where(x => Convert(x.get_Item(\"foo\")))"));
@@ -156,6 +158,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
         public void test_THAT_false_boolean_expression_IS_translated_successfully()
         {
             var xml =
+                "<View>" +
                 "<Query>" +
                 "  <Where>" +
                 "    <Eq>" +
@@ -163,7 +166,8 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
                 "      <Value Type=\"Boolean\">0</Value>" +
                 "    </Eq>" +
                 "  </Where>" +
-                "</Query>";
+                "</Query>" +
+                "</View>";
 
             var expr = Camlex.QueryFromString(xml).ToExpression();
             Assert.That(expr.ToString(), Is.EqualTo("Query().Where(x => Not(Convert(x.get_Item(\"foo\"))))"));
@@ -173,6 +177,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
         public void test_THAT_mixed_boolean_expression_IS_translated_successfully()
         {
             var xml =
+                "<View>" +
                 "<Query>" +
                 "   <Where>" +
                 "       <Or>" +
@@ -192,7 +197,8 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
                 "           </Eq>" +
                 "       </Or>" +
                 "   </Where>" +
-                "</Query>";
+                "</Query>" +
+                "</View>";
 
             var expr = Camlex.QueryFromString(xml).ToExpression();
             Assert.That(expr.ToString(), Is.EqualTo("Query().Where(x => ((Convert(x.get_Item(\"foo1\")) && Not(Convert(x.get_Item(\"foo2\")))) || Convert(x.get_Item(\"foo3\"))))"));

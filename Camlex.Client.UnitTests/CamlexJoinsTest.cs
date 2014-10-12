@@ -479,6 +479,7 @@ namespace CamlexNET.UnitTests
             string caml = Camlex.Query().WhereAll(expressions).ToString();
 
             string expected =
+                "<Query>" +
                 "   <Where>" +
                 "       <And>" +
                 "           <And>" +
@@ -496,7 +497,8 @@ namespace CamlexNET.UnitTests
                 "               <Value Type=\"Boolean\">1</Value>" +
                 "           </Eq>" +
                 "       </And>" +
-                "   </Where>";
+                "   </Where>" +
+                "</Query>";
 
             Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
         }
@@ -510,6 +512,7 @@ namespace CamlexNET.UnitTests
             string caml = Camlex.Query().WhereAll(expressions).ToString();
 
             string expected =
+                "<Query>" +
                 "   <Where>" +
                 "       <And>" +
                 "           <And>" +
@@ -527,7 +530,8 @@ namespace CamlexNET.UnitTests
                 "               <Value Type=\"Boolean\">0</Value>" +
                 "           </Eq>" +
                 "       </And>" +
-                "   </Where>";
+                "   </Where>" +
+                "</Query>";
 
             Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
         }
@@ -538,6 +542,7 @@ namespace CamlexNET.UnitTests
             string caml = Camlex.Query().Where(x => ((bool)x["foo1"] && !(bool)x["foo2"]) || (bool)x["foo3"]).ToString();
 
             string expected =
+                "<Query>" +
                 "   <Where>" +
                 "       <Or>" +
                 "           <And>" +
@@ -555,7 +560,8 @@ namespace CamlexNET.UnitTests
                 "               <Value Type=\"Boolean\">1</Value>" +
                 "           </Eq>" +
                 "       </Or>" +
-                "   </Where>";
+                "   </Where>" +
+                "</Query>";
 
             Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
         }
