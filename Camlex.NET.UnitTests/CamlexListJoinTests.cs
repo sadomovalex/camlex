@@ -146,7 +146,7 @@ namespace CamlexNET.UnitTests
         [Test]
         public void test_THAT_single_projected_field_IS_translated_properly()
         {
-            string caml = Camlex.Query().ProjectedFields(x => x["test"].List("foo").ShowField("Title"));
+            string caml = Camlex.Query().ProjectedFields().Field(x => x["test"].List("foo").ShowField("Title")).ToString();
             string expected = "<Field Name=\"test\" Type=\"Lookup\" List=\"foo\" ShowField=\"Title\" />";
 
             Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
