@@ -65,6 +65,7 @@
     <Compile Include="Impl\BinaryOperationBase.cs" />
     <Compile Include="Impl\CompositeExpressionBaseAnalyzer.cs" />
     <Compile Include="Impl\CompositeOperationBase.cs" />
+    <Compile Include="Impl\ProjectedField.cs" />
     <Compile Include="Impl\Helpers\ConvertHelper.cs" />
     <Compile Include="Impl\Helpers\ExpressionsHelper.cs" />
     <Compile Include="Impl\Join.cs" />
@@ -155,6 +156,7 @@
     <Compile Include="Impl\Operations\OrElse\OrElseOperation.cs" />
     <Compile Include="Impl\Operations\Results\XElementArrayOperationResult.cs" />
     <Compile Include="Impl\Operations\Results\XElementOperationResult.cs" />
+    <Compile Include="Interfaces\IProjectedField.cs" />
     <Compile Include="Interfaces\IAnalyzer.cs" />
     <Compile Include="Interfaces\IAnalyzerFactory.cs" />
     <Compile Include="Interfaces\IJoin.cs" />

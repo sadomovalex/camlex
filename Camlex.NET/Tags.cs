@@ -59,5 +59,7 @@ namespace CamlexNET
         public const string Values = "Values";
         public const string Joins = "Joins";
         public const string Join = "Join";
+        public const string ProjectedFields = "ProjectedFields";
+        public const string Field = "Field";
     }
 }

@@ -501,12 +501,7 @@ namespace CamlexNET.Impl
             return new Join(this.translatorFactory, joins);
         }
 
-        public string ProjectedFields(Expression<Func<SPListItem, object>> expr)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string ProjectedFields(Expression<Func<SPListItem, object[]>> expr)
+        public IProjectedField ProjectedFields()
         {
             throw new NotImplementedException();
         }

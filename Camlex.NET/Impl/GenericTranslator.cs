@@ -134,5 +134,17 @@ namespace CamlexNET.Impl
             }
             return element;
         }
+
+        public XElement TranslateProjectedField(Expression<Func<SPListItem, object>> expr)
+        {
+            if (!this.analyzer.IsValid(expr))
+            {
+                throw new NonSupportedExpressionException(expr);
+            }
+
+            var operation = this.analyzer.GetOperation(expr);
+            var result = operation.ToResult();
+            return (XElement)result.Value;
+        }
     }
 }
