@@ -33,6 +33,7 @@ using System.Xml.Linq;
 using CamlexNET.Impl.Factories;
 using CamlexNET.Impl.Operands;
 using CamlexNET.Interfaces;
+using Microsoft.SharePoint;
 
 namespace CamlexNET.Impl.Operations.Join
 {
@@ -79,7 +80,72 @@ namespace CamlexNET.Impl.Operations.Join
 
         public override Expression ToExpression()
         {
-            throw new NotImplementedException();
+            var op1 = this.fieldRefOperand as FieldRefOperand;
+            if (op1 == null)
+            {
+                throw new NullReferenceException("fieldRefOperand is null");
+            }
+
+            var op2 = this.valueOperand as FieldRefOperand;
+            if (op2 == null)
+            {
+                throw new NullReferenceException("valueOperand is null");
+            }
+
+            var attrs1 = op1.Attributes;
+            if (attrs1 == null)
+            {
+                throw new NullReferenceException("fieldRefOperand.Attributes are null");
+            }
+
+            var attrs2 = op2.Attributes;
+            if (attrs2 == null)
+            {
+                throw new NullReferenceException("valueOperand.Attributes are null");
+            }
+
+            var primaryListMethodInfo = ReflectionHelper.GetExtensionMethods(typeof(Camlex).Assembly, typeof(object)).FirstOrDefault(
+                m => m.Name == ReflectionHelper.PrimaryListMethodName);
+            var foreignListMethodInfo = ReflectionHelper.GetExtensionMethods(typeof(Camlex).Assembly, typeof(object)).FirstOrDefault(
+                m => m.Name == ReflectionHelper.ForeignListMethodName);
+
+            string fieldName = op1.FieldName;
+            if (string.IsNullOrEmpty(fieldName))
+            {
+                throw new Exception("Name is empty");
+            }
+
+            if (!attrs2.Any(a => a.Key == Attributes.List))
+            {
+                throw new Exception("List attribute is not specified");
+            }
+            string foreignListName = attrs2.First(a => a.Key == Attributes.List).Value;
+            if (string.IsNullOrEmpty(fieldName))
+            {
+                throw new Exception("List is empty");
+            }
+
+            string primaryListName = string.Empty;
+            if (attrs1.Any(a => a.Key == Attributes.List))
+            {
+                primaryListName = attrs1.First(a => a.Key == Attributes.List).Value;
+            }
+
+            var listItemIndexerMethodInfo = typeof(SPListItem).GetProperty(ReflectionHelper.Item, typeof(object), new[] { typeof(string) }, null).GetGetMethod();
+            var fieldRefExpr = Expression.Call(Expression.Parameter(typeof(SPListItem), ReflectionHelper.CommonParameterName),
+                listItemIndexerMethodInfo, new[] { Expression.Constant(fieldName) });
+
+            Expression ex = null;
+            if (string.IsNullOrEmpty(primaryListName))
+            {
+                ex = Expression.Call(null, foreignListMethodInfo, fieldRefExpr, Expression.Constant(foreignListName));
+            }
+            else
+            {
+                var internalExpr = Expression.Call(null, primaryListMethodInfo, fieldRefExpr, Expression.Constant(primaryListName));
+                ex = Expression.Call(null, foreignListMethodInfo, internalExpr, Expression.Constant(foreignListName));
+            }
+            return ex;
         }
     }
 }

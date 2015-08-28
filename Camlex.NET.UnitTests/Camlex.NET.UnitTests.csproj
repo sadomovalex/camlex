@@ -235,6 +235,7 @@
     <Compile Include="ReverseEngeneering\Operations\ArrayOperationTests.cs" />
     <Compile Include="ReverseEngeneering\Operations\BeginsWithOperationTests.cs" />
     <Compile Include="ReverseEngeneering\Operations\ContainsOperationTests.cs" />
+    <Compile Include="ReverseEngeneering\Operations\JoinOperationTests.cs" />
     <Compile Include="ReverseEngeneering\Operations\DateRangesOverlapOperationTests.cs" />
     <Compile Include="ReverseEngeneering\Operations\InOperationTests.cs" />
     <Compile Include="ReverseEngeneering\Operations\OrElseOperationTests.cs" />
