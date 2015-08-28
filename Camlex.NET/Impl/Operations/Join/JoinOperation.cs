@@ -104,11 +104,6 @@ namespace CamlexNET.Impl.Operations.Join
                 throw new NullReferenceException("valueOperand.Attributes are null");
             }
 
-            var primaryListMethodInfo = ReflectionHelper.GetExtensionMethods(typeof(Camlex).Assembly, typeof(object)).FirstOrDefault(
-                m => m.Name == ReflectionHelper.PrimaryListMethodName);
-            var foreignListMethodInfo = ReflectionHelper.GetExtensionMethods(typeof(Camlex).Assembly, typeof(object)).FirstOrDefault(
-                m => m.Name == ReflectionHelper.ForeignListMethodName);
-
             string fieldName = op1.FieldName;
             if (string.IsNullOrEmpty(fieldName))
             {
@@ -120,7 +115,7 @@ namespace CamlexNET.Impl.Operations.Join
                 throw new Exception("List attribute is not specified");
             }
             string foreignListName = attrs2.First(a => a.Key == Attributes.List).Value;
-            if (string.IsNullOrEmpty(fieldName))
+            if (string.IsNullOrEmpty(foreignListName))
             {
                 throw new Exception("List is empty");
             }
@@ -131,6 +126,10 @@ namespace CamlexNET.Impl.Operations.Join
                 primaryListName = attrs1.First(a => a.Key == Attributes.List).Value;
             }
 
+            var primaryListMethodInfo = ReflectionHelper.GetExtensionMethods(typeof(Camlex).Assembly, typeof(object)).FirstOrDefault(
+                m => m.Name == ReflectionHelper.PrimaryListMethodName);
+            var foreignListMethodInfo = ReflectionHelper.GetExtensionMethods(typeof(Camlex).Assembly, typeof(object)).FirstOrDefault(
+                m => m.Name == ReflectionHelper.ForeignListMethodName);
             var listItemIndexerMethodInfo = typeof(SPListItem).GetProperty(ReflectionHelper.Item, typeof(object), new[] { typeof(string) }, null).GetGetMethod();
             var fieldRefExpr = Expression.Call(Expression.Parameter(typeof(SPListItem), ReflectionHelper.CommonParameterName),
                 listItemIndexerMethodInfo, new[] { Expression.Constant(fieldName) });

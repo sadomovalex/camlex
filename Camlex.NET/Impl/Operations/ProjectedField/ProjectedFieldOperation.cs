@@ -33,6 +33,7 @@ using System.Xml.Linq;
 using CamlexNET.Impl.Factories;
 using CamlexNET.Impl.Operands;
 using CamlexNET.Interfaces;
+using Microsoft.SharePoint;
 
 namespace CamlexNET.Impl.Operations.ProjectedField
 {
@@ -52,7 +53,55 @@ namespace CamlexNET.Impl.Operations.ProjectedField
 
         public override Expression ToExpression()
         {
-            throw new NotImplementedException();
+            var op = this.fieldRefOperand as FieldRefOperand;
+            if (op == null)
+            {
+                throw new NullReferenceException("fieldRefOperand is null");
+            }
+
+            var attrs = op.Attributes;
+            if (attrs == null)
+            {
+                throw new NullReferenceException("fieldRefOperand.Attributes are null");
+            }
+
+            string fieldName = op.FieldName;
+            if (string.IsNullOrEmpty(fieldName))
+            {
+                throw new Exception("Name is empty");
+            }
+
+            if (!attrs.Any(a => a.Key == Attributes.List))
+            {
+                throw new Exception("List attribute is not specified");
+            }
+            string listName = attrs.First(a => a.Key == Attributes.List).Value;
+            if (string.IsNullOrEmpty(listName))
+            {
+                throw new Exception("List is empty");
+            }
+
+            if (!attrs.Any(a => a.Key == Attributes.List))
+            {
+                throw new Exception("List attribute is not specified");
+            }
+            string showField = attrs.First(a => a.Key == Attributes.ShowField).Value;
+            if (string.IsNullOrEmpty(showField))
+            {
+                throw new Exception("ShowField is empty");
+            }
+
+            var listMethodInfo = ReflectionHelper.GetExtensionMethods(typeof(Camlex).Assembly, typeof(object)).FirstOrDefault(
+                m => m.Name == ReflectionHelper.ListMethodName);
+            var showFieldMethodInfo = ReflectionHelper.GetExtensionMethods(typeof(Camlex).Assembly, typeof(object)).FirstOrDefault(
+                m => m.Name == ReflectionHelper.ShowFieldMethodName);
+            var listItemIndexerMethodInfo = typeof(SPListItem).GetProperty(ReflectionHelper.Item, typeof(object), new[] { typeof(string) }, null).GetGetMethod();
+            var fieldRefExpr = Expression.Call(Expression.Parameter(typeof(SPListItem), ReflectionHelper.CommonParameterName),
+                listItemIndexerMethodInfo, new[] { Expression.Constant(fieldName) });
+
+            var internalExpr = Expression.Call(null, listMethodInfo, fieldRefExpr, Expression.Constant(listName));
+            var ex = Expression.Call(null, showFieldMethodInfo, internalExpr, Expression.Constant(showField));
+            return ex;
         }
     }
 }
