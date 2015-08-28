@@ -48,13 +48,15 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Factories
             var orderBy = this.createForTag(input, Tags.OrderBy);
             var groupBy = this.createForTag(input, Tags.GroupBy);
             var viewFields = this.createForTag(input, Tags.ViewFields);
+            var joins = this.createForTag(input, Tags.Joins);
 
             var analyzerForWhere = where != null ? this.analyzerFactory.Create(where) : null;
             var analyzerForOrderBy = orderBy != null ? this.analyzerFactory.Create(orderBy) : null;
             var analyzerForGroupBy = groupBy != null ? this.analyzerFactory.Create(groupBy) : null;
             var analyzerForViewFields = viewFields != null ? this.analyzerFactory.Create(viewFields) : null;
+            var analyzerForJoins = joins != null ? this.analyzerFactory.Create(joins) : null;
 
-            return new ReTranslatorFromCaml(analyzerForWhere, analyzerForOrderBy, analyzerForGroupBy, analyzerForViewFields);
+            return new ReTranslatorFromCaml(analyzerForWhere, analyzerForOrderBy, analyzerForGroupBy, analyzerForViewFields, analyzerForJoins);
         }
 
         private XElement createForTag(string input, string tag)

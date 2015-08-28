@@ -199,6 +199,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReverseEngeneering\Analyzers\ReJoinAnalyzerTest.cs" />
     <Compile Include="ReverseEngeneering\Analyzers\ReInAnalyzerTest.cs" />
     <Compile Include="ReverseEngeneering\Analyzers\ReAndAlsoAnalyzerTest.cs" />
     <Compile Include="ReverseEngeneering\Analyzers\ReBeginsWithAnalyzerTest.cs" />
@@ -217,6 +218,7 @@
     <Compile Include="ReverseEngeneering\Analyzers\TestBase\ReCompositeExpressionTestBase.cs" />
     <Compile Include="ReverseEngeneering\Analyzers\ReDateRangesOverlapAnalyzerTest.cs" />
     <Compile Include="ReverseEngeneering\Analyzers\TestBase\ReUnaryExpressionTestBase.cs" />
+    <Compile Include="ReverseEngeneering\ReJoinTests.cs" />
     <Compile Include="ReverseEngeneering\Factories\ReAnalyzerFromCamlFactoryTests.cs" />
     <Compile Include="ReverseEngeneering\Factories\ReOperandBuilderFromCamlTests.cs" />
     <Compile Include="ReverseEngeneering\Factories\ReTranslatorFromCamlFactoryTests.cs" />

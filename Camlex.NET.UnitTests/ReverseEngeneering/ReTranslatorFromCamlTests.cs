@@ -23,7 +23,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
                 "       </Eq>";
 
             var b = new ReOperandBuilderFromCaml();
-            var t = new ReTranslatorFromCaml(new ReEqAnalyzer(XmlHelper.Get(xml), b), null, null, null);
+            var t = new ReTranslatorFromCaml(new ReEqAnalyzer(XmlHelper.Get(xml), b), null, null, null, null);
             var expr = t.TranslateWhere();
             Assert.That(expr.ToString(), Is.EqualTo("x => (Convert(x.get_Item(\"Title\")) = \"testValue\")"));
         }
@@ -37,7 +37,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
                 "  </OrderBy>";
 
             var b = new ReOperandBuilderFromCaml();
-            var t = new ReTranslatorFromCaml(null, new ReArrayAnalyzer(XmlHelper.Get(xml), b), null, null);
+            var t = new ReTranslatorFromCaml(null, new ReArrayAnalyzer(XmlHelper.Get(xml), b), null, null, null);
             var expr = t.TranslateOrderBy();
             Assert.That(expr.ToString(), Is.EqualTo("x => (x.get_Item(\"Modified\") As Desc)"));
         }
@@ -51,7 +51,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
                 "  </GroupBy>";
 
             var b = new ReOperandBuilderFromCaml();
-            var t = new ReTranslatorFromCaml(null, null, new ReArrayAnalyzer(XmlHelper.Get(xml), b), null);
+            var t = new ReTranslatorFromCaml(null, null, new ReArrayAnalyzer(XmlHelper.Get(xml), b), null, null);
             var g = new GroupByParams();
             var expr = t.TranslateGroupBy(out g);
             Assert.That(expr.ToString(), Is.EqualTo("x => x.get_Item(\"field1\")"));
@@ -68,9 +68,55 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
                 "</ViewFields>";
 
             var b = new ReOperandBuilderFromCaml();
-            var t = new ReTranslatorFromCaml(null, null, null, new ReArrayAnalyzer(XmlHelper.Get(xml), b));
+            var t = new ReTranslatorFromCaml(null, null, null, new ReArrayAnalyzer(XmlHelper.Get(xml), b), null);
             var expr = t.TranslateViewFields();
             Assert.That(expr.ToString(), Is.EqualTo("x => x.get_Item(\"Title\")"));
+        }
+
+        [Test]
+        public void test_THAT_1_join_ARE_translated_correctly()
+        {
+            string xml =
+                  "<Joins>" +
+                    "<Join Type=\"LEFT\" ListAlias=\"Customers\">" +
+                      "<Eq>" +
+                        "<FieldRef Name=\"CustomerName\" RefType=\"Id\" />" +
+                        "<FieldRef List=\"Customers\" Name=\"Id\" />" +
+                      "</Eq>" +
+                    "</Join>" +
+                  "</Joins>";
+
+            var b = new ReOperandBuilderFromCaml();
+            var t = new ReTranslatorFromCaml(null, null, null, null, new ReJoinAnalyzer(XmlHelper.Get(xml), b));
+            var expr = t.TranslateJoins();
+            Assert.That(expr[0].ToString(), Is.EqualTo("x => x.get_Item(\"CustomerName\").ForeignList(\"Customers\")"));
+        }
+
+        [Test]
+        public void test_THAT_2_joins_ARE_translated_correctly()
+        {
+            string xml =
+                  "<Joins>" +
+                    "<Join Type=\"LEFT\" ListAlias=\"Customers\">" +
+                      "<Eq>" +
+                        "<FieldRef Name=\"CustomerName\" RefType=\"Id\" />" +
+                        "<FieldRef List=\"Customers\" Name=\"Id\" />" +
+                      "</Eq>" +
+                    "</Join>" +
+                    "<Join Type=\"LEFT\" ListAlias=\"CustomerCities\">" +
+                      "<Eq>" +
+                        "<FieldRef List=\"Customers\" Name=\"CityName\" RefType=\"Id\" />" +
+                        "<FieldRef List=\"CustomerCities\" Name=\"Id\" />" +
+                      "</Eq>" +
+                    "</Join>" +
+                  "</Joins>";
+
+            var b = new ReOperandBuilderFromCaml();
+            var t = new ReTranslatorFromCaml(null, null, null, null, new ReJoinAnalyzer(XmlHelper.Get(xml), b));
+            var expr = t.TranslateJoins();
+            Assert.That(expr.Count, Is.EqualTo(2));
+            Assert.That(expr[0].ToString(), Is.EqualTo("x => x.get_Item(\"CustomerName\").ForeignList(\"Customers\")"));
+            Assert.That(expr[1].ToString(), Is.EqualTo("x => x.get_Item(\"CityName\").PrimaryList(\"Customers\").ForeignList(\"CustomerCities\")"));
         }
     }
 }

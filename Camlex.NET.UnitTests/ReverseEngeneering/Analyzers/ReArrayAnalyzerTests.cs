@@ -42,14 +42,14 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers
     public class ReArrayAnalyzerTests
     {
         [Test]
-        public void test_WHEN_xml_is_null_THEN_extression_is_not_valid()
+        public void test_WHEN_xml_is_null_THEN_expression_is_not_valid()
         {
             var analyzer = new ReArrayAnalyzer(null, null);
             Assert.IsFalse(analyzer.IsValid());
         }
 
         [Test]
-        public void test_WHEN_no_field_refs_specified_THEN_extression_is_not_valid()
+        public void test_WHEN_no_field_refs_specified_THEN_expression_is_not_valid()
         {
             var xml =
                 "  <OrderBy>" +
@@ -60,7 +60,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers
         }
 
         [Test]
-        public void test_WHEN_1_field_ref_specified_THEN_extression_is_valid()
+        public void test_WHEN_1_field_ref_specified_THEN_expression_is_valid()
         {
             var xml =
                 "  <OrderBy>" +
@@ -72,7 +72,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers
         }
 
         [Test]
-        public void test_WHEN_2_field_refs_specified_THEN_extression_is_valid()
+        public void test_WHEN_2_field_refs_specified_THEN_expression_is_valid()
         {
             var xml =
                 "  <OrderBy>" +

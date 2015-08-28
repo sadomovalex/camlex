@@ -54,9 +54,10 @@ namespace CamlexNET.Impl.ReverseEngeneering
             GroupByParams groupByParams;
             var groupBy = translator.TranslateGroupBy(out groupByParams);
             var viewFields = translator.TranslateViewFields();
+            var joins = translator.TranslateJoins();
 
             var linker = this.linkerFactory.Create(translator);
-            return linker.Link(where, orderBy, groupBy, viewFields, groupByParams);
+            return linker.Link(where, orderBy, groupBy, viewFields, joins, groupByParams);
         }
     }
 

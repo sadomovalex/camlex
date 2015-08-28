@@ -74,6 +74,23 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Factories
         }
 
         [Test]
+        public void test_THAT_for_joins_corrects_analyzer_IS_returned()
+        {
+            var xml =
+                  "<Joins>" +
+                    "<Join Type=\"LEFT\" ListAlias=\"Customers\">" +
+                      "<Eq>" +
+                        "<FieldRef Name=\"CustomerName\" RefType=\"Id\" />" +
+                        "<FieldRef List=\"Customers\" Name=\"Id\" />" +
+                      "</Eq>" +
+                    "</Join>" +
+                  "</Joins>";
+
+            var f = new ReAnalyzerFromCamlFactory(null);
+            Assert.IsInstanceOf<ReJoinAnalyzer>(f.Create(XmlHelper.Get(xml)));
+        }
+
+        [Test]
         [ExpectedException(typeof(CamlAnalysisException))]
         public void test_WHEN_where_is_empty_THEN_exception_is_thrown()
         {

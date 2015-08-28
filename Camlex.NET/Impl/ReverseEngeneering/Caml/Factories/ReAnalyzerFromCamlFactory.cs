@@ -58,6 +58,10 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Factories
             {
                 return this.getAnalyzerForAray(el);
             }
+            if (el.Name == Tags.Joins)
+            {
+                return this.getAnalyzerForJoins(el);
+            }
             var reAnalyzer = getAnalyzer(el);
             if (reAnalyzer == null)
             {
@@ -85,6 +89,11 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Factories
         private IReAnalyzer getAnalyzerForAray(XElement el)
         {
             return new ReArrayAnalyzer(el, this.operandBuilder);
+        }
+
+        private IReAnalyzer getAnalyzerForJoins(XElement el)
+        {
+            return new ReJoinAnalyzer(el, this.operandBuilder);
         }
 
         private IReAnalyzer getAnalyzer(XElement el)

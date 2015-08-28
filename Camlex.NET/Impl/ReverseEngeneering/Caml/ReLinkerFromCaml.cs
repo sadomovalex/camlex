@@ -39,10 +39,11 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml
 {
     internal class ReLinkerFromCaml : IReLinker
     {
-        private XElement where;
-        private XElement orderBy;
-        private XElement groupBy;
-        private XElement viewFields;
+        private readonly XElement where;
+        private readonly XElement orderBy;
+        private readonly XElement groupBy;
+        private readonly XElement viewFields;
+        private readonly XElement joins;
 
         private class MethodInfoWithParams
         {
@@ -55,16 +56,17 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml
             }
         }
 
-        public ReLinkerFromCaml(XElement where, XElement orderBy, XElement groupBy, XElement viewFields)
+        public ReLinkerFromCaml(XElement @where, XElement orderBy, XElement groupBy, XElement viewFields, XElement joins)
         {
             this.where = where;
             this.viewFields = viewFields;
+            this.joins = joins;
             this.groupBy = groupBy;
             this.orderBy = orderBy;
         }
 
         public Expression Link(LambdaExpression where, LambdaExpression orderBy, LambdaExpression groupBy,
-            LambdaExpression viewFields, GroupByParams groupByParams)
+            LambdaExpression viewFields, List<LambdaExpression> joins, GroupByParams groupByParams)
         {
             // list of fluent calls
             var listFluent = new List<KeyValuePair<string, LambdaExpression>>();
@@ -72,7 +74,7 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml
             listFluent.Add(new KeyValuePair<string, LambdaExpression>(ReflectionHelper.OrderByMethodName, orderBy));
             listFluent.Add(new KeyValuePair<string, LambdaExpression>(ReflectionHelper.GroupByMethodName, groupBy));
 
-            // view fields is not fluent
+            // view fields are not fluent
             var listViewFields = new List<KeyValuePair<string, LambdaExpression>>();
             listViewFields.Add(new KeyValuePair<string, LambdaExpression>(ReflectionHelper.ViewFieldsMethodName, viewFields));
 
