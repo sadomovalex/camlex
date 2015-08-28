@@ -25,6 +25,7 @@
 // -----------------------------------------------------------------------------
 #endregion
 
+using System.Collections.Generic;
 using System.Linq.Expressions;
 
 namespace CamlexNET.Interfaces.ReverseEngeneering
@@ -32,6 +33,6 @@ namespace CamlexNET.Interfaces.ReverseEngeneering
     internal interface IReLinker
     {
         Expression Link(LambdaExpression where, LambdaExpression orderBy, LambdaExpression groupBy,
-            LambdaExpression viewFields, GroupByParams groupByParams);
+            LambdaExpression viewFields, List<LambdaExpression> joins, GroupByParams groupByParams);
     }
 }

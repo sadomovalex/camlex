@@ -25,6 +25,7 @@
 // -----------------------------------------------------------------------------
 #endregion
 
+using System.Collections.Generic;
 using System.Linq.Expressions;
 
 namespace CamlexNET.Interfaces.ReverseEngeneering
@@ -43,5 +44,6 @@ namespace CamlexNET.Interfaces.ReverseEngeneering
         LambdaExpression TranslateOrderBy();
         LambdaExpression TranslateGroupBy(out GroupByParams groupByParams);
         LambdaExpression TranslateViewFields();
+        List<LambdaExpression> TranslateJoins();
     }
 }

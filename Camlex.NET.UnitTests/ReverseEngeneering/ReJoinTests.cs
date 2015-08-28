@@ -24,18 +24,39 @@
 // fitness for a particular purpose and non-infringement.
 // -----------------------------------------------------------------------------
 #endregion
-
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
-using System.Xml.Linq;
+using System.Text;
+using CamlexNET.Impl.ReverseEngeneering;
+using CamlexNET.Interfaces;
+using CamlexNET.Interfaces.ReverseEngeneering;
+using NUnit.Framework;
+using Rhino.Mocks;
 
-namespace CamlexNET.Interfaces.ReverseEngeneering
+namespace CamlexNET.UnitTests.ReverseEngeneering
 {
-    internal interface IReAnalyzer
+    [TestFixture]
+    public class ReJoinTests
     {
-        XElement Element { get; }
-        bool IsValid();
-        IOperation GetOperation();
-        List<IOperation> GetOperations();
+        [Test]
+        public void test_THAT_left_join_IS_translated_sucessfully()
+        {
+            string xml =
+                "<Query>" +
+                  "<Joins>" +
+                    "<Join Type=\"LEFT\" ListAlias=\"Customers\">" +
+                      "<Eq>" +
+                        "<FieldRef Name=\"CustomerName\" RefType=\"Id\" />" +
+                        "<FieldRef List=\"Customers\" Name=\"Id\" />" +
+                      "</Eq>" +
+                    "</Join>" +
+                  "</Joins>" +
+                "</Query>";
+
+            var expr = Camlex.QueryFromString(xml).ToExpression();
+            Assert.That(expr.ToString(), Is.EqualTo("Query().Joins().Left(x => (x.get_Item(\"CustomerName\").ForeignList(\"Customers\")))"));
+        }
     }
 }

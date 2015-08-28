@@ -26,6 +26,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Xml.Linq;
 using CamlexNET.Interfaces;
 using CamlexNET.Interfaces.ReverseEngeneering;
@@ -53,6 +54,11 @@ namespace CamlexNET.Impl.ReverseEngeneering
             return (this.el != null);
         }
         public abstract IOperation GetOperation();
+
+        public virtual List<IOperation> GetOperations()
+        {
+            return new List<IOperation>(new[]{ this.GetOperation() });
+        }
 
         protected bool isOperationComparison(XElement operationElement)
         {
