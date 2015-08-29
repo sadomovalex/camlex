@@ -46,7 +46,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Operations
         {
             var op1 = new FieldRefOperand("CustomerName", (new[]{ new KeyValuePair<string, string>(Attributes.RefType, "Id") }).ToList());
             var op2 = new FieldRefOperand("Id", (new[] { new KeyValuePair<string, string>(Attributes.List, "Customers") }).ToList());
-            var op = new JoinOperation(null, op1, op2);
+            var op = new JoinOperation(null, op1, op2, JoinType.Inner);
             Expression expr = op.ToExpression();
             Assert.That(expr.ToString(), Is.EqualTo("x.get_Item(\"CustomerName\").ForeignList(\"Customers\")"));
         }
@@ -56,7 +56,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Operations
         {
             var op1 = new FieldRefOperand("CityName", (new[] { new KeyValuePair<string, string>(Attributes.List, "Customers"), new KeyValuePair<string, string>(Attributes.RefType, "Id") }).ToList());
             var op2 = new FieldRefOperand("Id", (new[] { new KeyValuePair<string, string>(Attributes.List, "CustomerCities") }).ToList());
-            var op = new JoinOperation(null, op1, op2);
+            var op = new JoinOperation(null, op1, op2, JoinType.Inner);
             Expression expr = op.ToExpression();
             Assert.That(expr.ToString(), Is.EqualTo("x.get_Item(\"CityName\").PrimaryList(\"Customers\").ForeignList(\"CustomerCities\")"));
         }

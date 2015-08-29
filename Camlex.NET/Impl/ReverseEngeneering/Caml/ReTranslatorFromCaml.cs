@@ -30,6 +30,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Xml.Linq;
 using CamlexNET.Impl.Operations.Array;
+using CamlexNET.Impl.Operations.Join;
 using CamlexNET.Interfaces.ReverseEngeneering;
 using Microsoft.SharePoint;
 
@@ -168,7 +169,7 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml
             return this.translateArrayOperation(this.analyzerForViewFields, Tags.ViewFields);
         }
 
-        public List<LambdaExpression> TranslateJoins()
+        public List<KeyValuePair<LambdaExpression, JoinType>> TranslateJoins()
         {
             if (analyzerForJoins == null)
             {
@@ -181,13 +182,14 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml
             var operations = analyzerForJoins.GetOperations();
             if (operations == null)
             {
-                return new List<LambdaExpression>();
+                return new List<KeyValuePair<LambdaExpression, JoinType>>();
             }
-            var result = new List<LambdaExpression>();
+            var result = new List<KeyValuePair<LambdaExpression, JoinType>>();
             foreach (var operation in operations)
             {
                 var expr = operation.ToExpression();
-                result.Add(Expression.Lambda(expr, Expression.Parameter(typeof(SPListItem), ReflectionHelper.CommonParameterName)));
+                result.Add(new KeyValuePair<LambdaExpression, JoinType>(Expression.Lambda(expr, Expression.Parameter(typeof(SPListItem), ReflectionHelper.CommonParameterName)),
+                    ((JoinOperation)operation).Type));
             }
             return result;
         }

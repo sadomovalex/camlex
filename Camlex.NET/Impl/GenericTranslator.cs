@@ -117,21 +117,21 @@ namespace CamlexNET.Impl
                 throw new NonSupportedExpressionException(expr);
             }
 
-            var operation = this.analyzer.GetOperation(expr);
+            var operation = this.analyzer.GetOperation(expr, type);
             var result = operation.ToResult();
             var element = (XElement)result.Value;
 
-            if (element.HasAttributes)
-            {
-                var attributes = element.Attributes().ToList();
-                attributes.Insert(0, new XAttribute(Attributes.Type, type.ToString().ToUpper()));
-                element.RemoveAttributes();
-                element.Add(attributes);
-            }
-            else
-            {
-                element.SetAttributeValue(Attributes.Type, type.ToString().ToUpper());
-            }
+//            if (element.HasAttributes)
+//            {
+//                var attributes = element.Attributes().ToList();
+//                attributes.Insert(0, new XAttribute(Attributes.Type, type.ToString().ToUpper()));
+//                element.RemoveAttributes();
+//                element.Add(attributes);
+//            }
+//            else
+//            {
+//                element.SetAttributeValue(Attributes.Type, type.ToString().ToUpper());
+//            }
             return element;
         }
 

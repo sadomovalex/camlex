@@ -37,5 +37,6 @@ namespace CamlexNET.Interfaces
     {
         bool IsValid(LambdaExpression expr);
         IOperation GetOperation(LambdaExpression expr);
+        IOperation GetOperation(LambdaExpression expr, object param);
     }
 }

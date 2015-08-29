@@ -33,6 +33,6 @@ namespace CamlexNET.Interfaces.ReverseEngeneering
     internal interface IReLinker
     {
         Expression Link(LambdaExpression where, LambdaExpression orderBy, LambdaExpression groupBy,
-            LambdaExpression viewFields, List<LambdaExpression> joins, GroupByParams groupByParams);
+            LambdaExpression viewFields, List<KeyValuePair<LambdaExpression, JoinType>> joins, GroupByParams groupByParams);
     }
 }
