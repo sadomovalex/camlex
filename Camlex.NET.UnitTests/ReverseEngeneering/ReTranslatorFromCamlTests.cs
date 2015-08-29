@@ -89,7 +89,8 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
             var b = new ReOperandBuilderFromCaml();
             var t = new ReTranslatorFromCaml(null, null, null, null, new ReJoinAnalyzer(XmlHelper.Get(xml), b));
             var expr = t.TranslateJoins();
-            Assert.That(expr[0].ToString(), Is.EqualTo("x => x.get_Item(\"CustomerName\").ForeignList(\"Customers\")"));
+            Assert.That(expr[0].Key.ToString(), Is.EqualTo("x => x.get_Item(\"CustomerName\").ForeignList(\"Customers\")"));
+            Assert.That(expr[0].Value, Is.EqualTo(JoinType.Left));
         }
 
         [Test]
@@ -115,8 +116,10 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
             var t = new ReTranslatorFromCaml(null, null, null, null, new ReJoinAnalyzer(XmlHelper.Get(xml), b));
             var expr = t.TranslateJoins();
             Assert.That(expr.Count, Is.EqualTo(2));
-            Assert.That(expr[0].ToString(), Is.EqualTo("x => x.get_Item(\"CustomerName\").ForeignList(\"Customers\")"));
-            Assert.That(expr[1].ToString(), Is.EqualTo("x => x.get_Item(\"CityName\").PrimaryList(\"Customers\").ForeignList(\"CustomerCities\")"));
+            Assert.That(expr[0].Key.ToString(), Is.EqualTo("x => x.get_Item(\"CustomerName\").ForeignList(\"Customers\")"));
+            Assert.That(expr[0].Value, Is.EqualTo(JoinType.Left));
+            Assert.That(expr[1].Key.ToString(), Is.EqualTo("x => x.get_Item(\"CityName\").PrimaryList(\"Customers\").ForeignList(\"CustomerCities\")"));
+            Assert.That(expr[1].Value, Is.EqualTo(JoinType.Left));
         }
     }
 }

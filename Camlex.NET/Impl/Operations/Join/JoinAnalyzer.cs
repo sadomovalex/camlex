@@ -123,13 +123,18 @@ namespace CamlexNET.Impl.Operations.Join
 
         public override IOperation GetOperation(LambdaExpression expr)
         {
+            throw new NotSupportedException();
+        }
+
+        public override IOperation GetOperation(LambdaExpression expr, object param)
+        {
             if (!IsValid(expr))
             {
                 throw new NonSupportedExpressionException(expr);
             }
             var fieldRefOperand = this.getFieldRefOperand(expr);
             var valueOperand = this.getValueOperand(expr);
-            return new JoinOperation(operationResultBuilder, fieldRefOperand, valueOperand);
+            return new JoinOperation(operationResultBuilder, fieldRefOperand, valueOperand, (JoinType)param);
         }
 
         private IOperand getValueOperand(LambdaExpression expr)

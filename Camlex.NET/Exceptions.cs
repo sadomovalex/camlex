@@ -207,7 +207,7 @@ namespace CamlexNET
     internal class OnlyOnePartOfQueryShouldBeNotNullException : Exception
     {
         public OnlyOnePartOfQueryShouldBeNotNullException() :
-            base(string.Format("Only one part of query can be not null: ({0}, {1}, {2}) or {3}", Tags.Where, Tags.OrderBy, Tags.GroupBy, Tags.ViewFields))
+            base(string.Format("Only one part of query can be not null: ({0}, {1}, {2}), {3} or {4}", Tags.Where, Tags.OrderBy, Tags.GroupBy, Tags.ViewFields, Tags.Joins))
         {
         }
     }

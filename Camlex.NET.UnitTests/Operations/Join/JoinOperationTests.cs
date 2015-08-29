@@ -24,12 +24,12 @@ namespace CamlexNET.UnitTests.Operations.Join
 
             f.Stub(o => o.ToCaml()).Return(new XElement("fieldRefOperandStub"));
             v.Stub(o => o.ToCaml()).Return(new XElement("valueOperandStub"));
-            var op = new JoinOperation(new OperationResultBuilder(), f, v);
+            var op = new JoinOperation(new OperationResultBuilder(), f, v, JoinType.Inner);
 
             string caml = op.ToResult().ToString();
 
             string expected =
-                "<Join ListAlias=\"\">" +
+                "<Join Type=\"INNER\" ListAlias=\"\">" +
                 "  <Eq>" +
                 "    <fieldRefOperandStub />" +
                 "    <valueOperandStub />" +

@@ -39,10 +39,17 @@ namespace CamlexNET.Impl.Operations.Join
 {
     internal class JoinOperation : BinaryOperationBase
     {
+        private readonly JoinType type;
+        public JoinType Type
+        {
+            get { return type; }
+        }
+
         public JoinOperation(IOperationResultBuilder operationResultBuilder,
-            IOperand fieldRefOperand, IOperand valueOperand)
+            IOperand fieldRefOperand, IOperand valueOperand, JoinType type)
             : base(operationResultBuilder, fieldRefOperand, valueOperand)
         {
+            this.type = type;
         }
 
         public override IOperationResult ToResult()
@@ -63,7 +70,8 @@ namespace CamlexNET.Impl.Operations.Join
                 }
             }
 
-            var result = new XElement(Tags.Join, new XAttribute(Attributes.ListAlias, foreignList), new XElement(Tags.Eq, primaryElement, foreignElement));
+            var result = new XElement(Tags.Join, new XAttribute(Attributes.Type, this.Type.ToString().ToUpper()), new XAttribute(Attributes.ListAlias, foreignList),
+                new XElement(Tags.Eq, primaryElement, foreignElement));
             return this.operationResultBuilder.CreateResult(result);
         }
 

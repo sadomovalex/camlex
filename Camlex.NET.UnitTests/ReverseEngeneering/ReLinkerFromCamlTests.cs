@@ -277,8 +277,36 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
             var g = new GroupByParams();
 
             Expression<Func<SPListItem, object>> ex = x => x["CustomerName"].ForeignList("Customers");
-            var expr = l.Link(null, null, null, null, (new[]{Expression.Lambda(ex)}).ToList(), g);
-            Assert.That(expr.ToString(), Is.EqualTo("Query().Joins().Left(x => (x.get_Item(\"CustomerName\").ForeignList(\"Customers\")))"));
+            var expr = l.Link(null, null, null, null, (new[] { new KeyValuePair<LambdaExpression, JoinType>(ex, JoinType.Left) }).ToList(), g);
+            Assert.That(expr.ToString(), Is.EqualTo("Query().Joins().Left(x => x.get_Item(\"CustomerName\").ForeignList(\"Customers\"))"));
+        }
+
+        [Test]
+        public void test_WHEN_2_joins_are_specified_THEN_expressions_are_linked_correctly()
+        {
+            string xml =
+                  "<Joins>" +
+                    "<Join Type=\"LEFT\" ListAlias=\"Customers\">" +
+                      "<Eq>" +
+                        "<FieldRef Name=\"CustomerName\" RefType=\"Id\" />" +
+                        "<FieldRef List=\"Customers\" Name=\"Id\" />" +
+                      "</Eq>" +
+                    "</Join>" +
+                    "<Join Type=\"INNER\" ListAlias=\"CustomerCities\">" +
+                      "<Eq>" +
+                        "<FieldRef List=\"Customers\" Name=\"CityName\" RefType=\"Id\" />" +
+                        "<FieldRef List=\"CustomerCities\" Name=\"Id\" />" +
+                      "</Eq>" +
+                    "</Join>" +
+                  "</Joins>";
+
+            var l = new ReLinkerFromCaml(null, null, null, null, XmlHelper.Get(xml));
+            var g = new GroupByParams();
+
+            Expression<Func<SPListItem, object>> ex1 = x => x["CustomerName"].ForeignList("Customers");
+            Expression<Func<SPListItem, object>> ex2 = x => x["CityName"].PrimaryList("Customers").ForeignList("CustomerCities");
+            var expr = l.Link(null, null, null, null, (new[] { new KeyValuePair<LambdaExpression, JoinType>(ex1, JoinType.Left), new KeyValuePair<LambdaExpression, JoinType>(ex2, JoinType.Inner) }).ToList(), g);
+            Assert.That(expr.ToString(), Is.EqualTo("Query().Joins().Left(x => x.get_Item(\"CustomerName\").ForeignList(\"Customers\")).Inner(x => x.get_Item(\"CityName\").PrimaryList(\"Customers\").ForeignList(\"CustomerCities\"))"));
         }
     }
 }

@@ -45,6 +45,10 @@ namespace CamlexNET.Impl
 
         public abstract bool IsValid(LambdaExpression expr);
         public abstract IOperation GetOperation(LambdaExpression expr);
+        public virtual IOperation GetOperation(LambdaExpression expr, object param)
+        {
+            return this.GetOperation(expr);
+        }
 
         protected bool isValidEvaluableExpression(Expression expr)
         {

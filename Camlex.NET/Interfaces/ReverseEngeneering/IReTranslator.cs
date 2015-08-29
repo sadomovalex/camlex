@@ -44,6 +44,6 @@ namespace CamlexNET.Interfaces.ReverseEngeneering
         LambdaExpression TranslateOrderBy();
         LambdaExpression TranslateGroupBy(out GroupByParams groupByParams);
         LambdaExpression TranslateViewFields();
-        List<LambdaExpression> TranslateJoins();
+        List<KeyValuePair<LambdaExpression, JoinType>> TranslateJoins();
     }
 }

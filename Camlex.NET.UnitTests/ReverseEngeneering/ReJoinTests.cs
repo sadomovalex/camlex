@@ -56,7 +56,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
                 "</Query>";
 
             var expr = Camlex.QueryFromString(xml).ToExpression();
-            Assert.That(expr.ToString(), Is.EqualTo("Query().Joins().Left(x => (x.get_Item(\"CustomerName\").ForeignList(\"Customers\")))"));
+            Assert.That(expr.ToString(), Is.EqualTo("Query().Joins().Left(x => x.get_Item(\"CustomerName\").ForeignList(\"Customers\"))"));
         }
     }
 }

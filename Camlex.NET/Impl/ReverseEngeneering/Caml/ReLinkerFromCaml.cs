@@ -66,7 +66,7 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml
         }
 
         public Expression Link(LambdaExpression where, LambdaExpression orderBy, LambdaExpression groupBy,
-            LambdaExpression viewFields, List<LambdaExpression> joins, GroupByParams groupByParams)
+            LambdaExpression viewFields, List<KeyValuePair<LambdaExpression, JoinType>> joins, GroupByParams groupByParams)
         {
             // list of fluent calls
             var listFluent = new List<KeyValuePair<string, LambdaExpression>>();
@@ -78,22 +78,43 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml
             var listViewFields = new List<KeyValuePair<string, LambdaExpression>>();
             listViewFields.Add(new KeyValuePair<string, LambdaExpression>(ReflectionHelper.ViewFieldsMethodName, viewFields));
 
-            if (listFluent.Any(kv => kv.Value != null) && listViewFields.Any(kv => kv.Value != null))
+            // joins are not fluent
+            var listJoins = new List<KeyValuePair<string, LambdaExpression>>();
+            //listViewFields.Add(new KeyValuePair<string, LambdaExpression>(ReflectionHelper.ViewFieldsMethodName, viewFields));
+            if (joins != null)
+            {
+                foreach (var kv in joins)
+                {
+                    listJoins.Add(new KeyValuePair<string, LambdaExpression>(
+                        (kv.Value == JoinType.Inner ? ReflectionHelper.InnerJoinMethodName : ReflectionHelper.LeftJoinMethodName), kv.Key));
+                }
+            }
+
+            int parts = 0;
+            if (listFluent.Any(kv => kv.Value != null)) parts++;
+            if (listViewFields.Any(kv => kv.Value != null)) parts++;
+            if (listJoins.Any(kv => kv.Value != null)) parts++;
+            if (parts > 1)
             {
                 throw new OnlyOnePartOfQueryShouldBeNotNullException();
             }
-
-            var list = listFluent.Any(kv => kv.Value != null) ? listFluent : listViewFields;
-            if (list.All(kv => kv.Value == null))
+            else if (parts == 0)
             {
                 throw new AtLeastOneCamlPartShouldNotBeEmptyException();
             }
 
+            var list = listFluent.Any(kv => kv.Value != null) ? listFluent : (listViewFields.Any(kv => kv.Value != null) ? listViewFields : listJoins);
 
             var queryMi = ReflectionHelper.GetMethodInfo(typeof (Camlex), ReflectionHelper.QueryMethodName);
             var queryCall = Expression.Call(queryMi);
 
             var expr = queryCall;
+            if (list == listJoins)
+            {
+                // for joins need to call Query().Joins() first
+                var joinsMethodInfo = ReflectionHelper.GetMethodInfo(typeof (IQueryEx), ReflectionHelper.JoinsMethodName);
+                expr = Expression.Call(queryCall, joinsMethodInfo);
+            }
             for (int i = 0; i < list.Count; i++)
             {
                 var kv = list[i];
@@ -136,7 +157,27 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml
             {
                 return this.getViewFieldsMethodInfo();
             }
+            if (methodName == ReflectionHelper.LeftJoinMethodName)
+            {
+                return this.getLeftJoinMethodInfo();
+            }
+            if (methodName == ReflectionHelper.InnerJoinMethodName)
+            {
+                return this.getInnerJoinMethodInfo();
+            }
             return null;
+        }
+
+        private MethodInfoWithParams getLeftJoinMethodInfo()
+        {
+            var mi = typeof(IJoin).GetMethod(ReflectionHelper.LeftJoinMethodName, new[] { typeof(Expression<Func<SPListItem, object>>) });
+            return new MethodInfoWithParams(mi, null);
+        }
+
+        private MethodInfoWithParams getInnerJoinMethodInfo()
+        {
+            var mi = typeof(IJoin).GetMethod(ReflectionHelper.InnerJoinMethodName, new[] { typeof(Expression<Func<SPListItem, object>>) });
+            return new MethodInfoWithParams(mi, null);
         }
 
         private MethodInfoWithParams getViewFieldsMethodInfo()

@@ -67,6 +67,20 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Analyzers
             {
                 return false;
             }
+            if (!el.Attributes().Any(a => a.Name == Attributes.Type) || string.IsNullOrEmpty(el.Attributes().First(a => a.Name == Attributes.Type).Value))
+            {
+                return false;
+            }
+            var typeStr = el.Attributes().First(a => a.Name == Attributes.Type).Value;
+            //if (!Enum.IsDefined(typeof (JoinType), typeStr))
+            if (!Enum.GetNames(typeof(JoinType)).Any(t => string.Compare(t.ToString(), typeStr, true) == 0))
+            {
+                return false;
+            }
+            if (!el.Attributes().Any(a => a.Name == Attributes.ListAlias) || string.IsNullOrEmpty(el.Attributes().First(a => a.Name == Attributes.ListAlias).Value))
+            {
+                return false;
+            }
 
             var eq = el.Elements();
             if (eq.Count() != 1 || eq.ElementAt(0).Name != Tags.Eq)
@@ -127,8 +141,9 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Analyzers
             var result = new List<IOperation>();
             foreach (var child in el.Elements())
             {
+                var typeStr = child.Attributes().First(a => a.Name == Attributes.Type).Value;
                 var operands = this.getFieldRefOperands(child);
-                result.Add(new JoinOperation(null, operands[0], operands[1]));
+                result.Add(new JoinOperation(null, operands[0], operands[1], (JoinType)Enum.Parse(typeof(JoinType), typeStr, true)));
             }
             return result;
         }
