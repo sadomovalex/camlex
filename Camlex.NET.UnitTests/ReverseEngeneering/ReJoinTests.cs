@@ -58,5 +58,39 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
             var expr = Camlex.QueryFromString(xml).ToExpression();
             Assert.That(expr.ToString(), Is.EqualTo("Query().Joins().Left(x => x.get_Item(\"CustomerName\").ForeignList(\"Customers\"))"));
         }
+
+        [Test]
+        public void test_THAT_inner_join_IS_translated_sucessfully()
+        {
+            string xml =
+                "<Query>" +
+                  "<Joins>" +
+                    "<Join Type=\"INNER\" ListAlias=\"Customers\">" +
+                      "<Eq>" +
+                        "<FieldRef Name=\"CustomerName\" RefType=\"Id\" />" +
+                        "<FieldRef List=\"Customers\" Name=\"Id\" />" +
+                      "</Eq>" +
+                    "</Join>" +
+                  "</Joins>" +
+                "</Query>";
+
+            var expr = Camlex.QueryFromString(xml).ToExpression();
+            Assert.That(expr.ToString(), Is.EqualTo("Query().Joins().Inner(x => x.get_Item(\"CustomerName\").ForeignList(\"Customers\"))"));
+        }
+
+        [Test]
+        public void test_THAT_projected_fields_ARE_translated_sucessfully()
+        {
+            string xml =
+                "<Query>" +
+                  "<ProjectedFields>" +
+                    "<Field Name=\"test1\" Type=\"Lookup\" List=\"foo1\" ShowField=\"bar1\" />" +
+                    "<Field Name=\"test2\" Type=\"Lookup\" List=\"foo2\" ShowField=\"bar2\" />" +
+                  "</ProjectedFields>" +
+                "</Query>";
+
+            var expr = Camlex.QueryFromString(xml).ToExpression();
+            Assert.That(expr.ToString(), Is.EqualTo("Query().ProjectedFields().Field(x => x.get_Item(\"test1\").List(\"foo1\").ShowField(\"bar1\")).Field(x => x.get_Item(\"test2\").List(\"foo2\").ShowField(\"bar2\"))"));
+        }
     }
 }

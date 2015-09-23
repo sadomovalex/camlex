@@ -48,7 +48,7 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Factories
                 throw new LinkerFromCamlRequiresTranslatorFromCamlException(translator.GetType());
             }
             return new ReLinkerFromCaml(translatorFromCaml.Where, translatorFromCaml.OrderBy,
-                translatorFromCaml.GroupBy, translatorFromCaml.ViewFields, translatorFromCaml.Joins);
+                translatorFromCaml.GroupBy, translatorFromCaml.ViewFields, translatorFromCaml.Joins, translatorFromCaml.ProjectedFields);
         }
     }
 }

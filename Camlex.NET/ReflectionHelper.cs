@@ -68,6 +68,8 @@ namespace CamlexNET
         public const string JoinsMethodName = "Joins";
         public const string LeftJoinMethodName = "Left";
         public const string InnerJoinMethodName = "Inner";
+        public const string FieldMethodName = "Field";
+        public const string ProjectedFieldsMethodName = "ProjectedFields";
 
 //        public static IEnumerable<ParameterExpression> GetExpressionParameters(ParameterInfo[] parameterInfos)
 //        {

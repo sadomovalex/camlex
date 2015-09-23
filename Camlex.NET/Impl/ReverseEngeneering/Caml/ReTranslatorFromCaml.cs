@@ -43,26 +43,29 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml
         private readonly IReAnalyzer analyzerForGroupBy;
         private readonly IReAnalyzer analyzerForViewFields;
         private readonly IReAnalyzer analyzerForJoins;
+        private readonly IReAnalyzer analyzerForProjectedFields;
 
         public XElement Where { get { return this.getElement(this.analyzerForWhere); } }
         public XElement OrderBy { get { return this.getElement(this.analyzerForOrderBy); } }
         public XElement GroupBy { get { return this.getElement(this.analyzerForGroupBy); } }
         public XElement ViewFields { get { return this.getElement(this.analyzerForViewFields); } }
         public XElement Joins { get { return this.getElement(this.analyzerForJoins); } }
+        public XElement ProjectedFields { get { return this.getElement(this.analyzerForProjectedFields); } }
 
         private XElement getElement(IReAnalyzer analyzer)
         {
             return (analyzer == null ? null : analyzer.Element);
         }
 
-        public ReTranslatorFromCaml(IReAnalyzer analyzerForWhere, IReAnalyzer analyzerForOrderBy, IReAnalyzer analyzerForGroupBy,
-            IReAnalyzer analyzerForViewFields, IReAnalyzer analyzerForJoins)
+        public ReTranslatorFromCaml(IReAnalyzer analyzerForWhere, IReAnalyzer analyzerForOrderBy, IReAnalyzer analyzerForGroupBy, IReAnalyzer analyzerForViewFields,
+            IReAnalyzer analyzerForJoins, IReAnalyzer analyzerForProjectedFields)
         {
             this.analyzerForWhere = analyzerForWhere;
             this.analyzerForOrderBy = analyzerForOrderBy;
             this.analyzerForGroupBy = analyzerForGroupBy;
             this.analyzerForViewFields = analyzerForViewFields;
             this.analyzerForJoins = analyzerForJoins;
+            this.analyzerForProjectedFields = analyzerForProjectedFields;
         }
 
         public LambdaExpression TranslateWhere()
@@ -190,6 +193,30 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml
                 var expr = operation.ToExpression();
                 result.Add(new KeyValuePair<LambdaExpression, JoinType>(Expression.Lambda(expr, Expression.Parameter(typeof(SPListItem), ReflectionHelper.CommonParameterName)),
                     ((JoinOperation)operation).Type));
+            }
+            return result;
+        }
+
+        public List<LambdaExpression> TranslateProjectedFields()
+        {
+            if (analyzerForProjectedFields == null)
+            {
+                return null;
+            }
+            if (!analyzerForProjectedFields.IsValid())
+            {
+                throw new IncorrectCamlException(Tags.ProjectedFields);
+            }
+            var operations = analyzerForProjectedFields.GetOperations();
+            if (operations == null)
+            {
+                return new List<LambdaExpression>();
+            }
+            var result = new List<LambdaExpression>();
+            foreach (var operation in operations)
+            {
+                var expr = operation.ToExpression();
+                result.Add(Expression.Lambda(expr, Expression.Parameter(typeof(SPListItem), ReflectionHelper.CommonParameterName)));
             }
             return result;
         }
