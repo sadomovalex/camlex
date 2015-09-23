@@ -55,7 +55,7 @@ namespace CamlexNET.Impl.ReverseEngeneering
             var projectedFields = translator.TranslateProjectedFields();
 
             var linker = this.linkerFactory.Create(translator);
-            return linker.Link(where, orderBy, groupBy, viewFields, joins, projectedFields groupByParams, rowLimit);
+            return linker.Link(where, orderBy, groupBy, viewFields, joins, projectedFields, groupByParams, rowLimit);
         }
     }
 }

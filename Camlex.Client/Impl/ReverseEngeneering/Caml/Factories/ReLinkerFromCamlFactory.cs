@@ -45,7 +45,7 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Factories
 			}
 
 			return new ReLinkerFromCaml(translatorFromCaml.Where, translatorFromCaml.OrderBy,
-                translatorFromCaml.GroupBy, translatorFromCaml.ViewFields, translatorFromCaml.Joins, translatorFromCaml.ProjectedFields);
+                translatorFromCaml.GroupBy, translatorFromCaml.ViewFields, translatorFromCaml.Joins, translatorFromCaml.ProjectedFields, translatorFromCaml.RowLimit);
 		}
 	}
 }

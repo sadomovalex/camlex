@@ -34,6 +34,7 @@ using CamlexNET.Impl.Factories;
 using CamlexNET.Impl.Operands;
 using CamlexNET.Interfaces;
 using Microsoft.SharePoint;
+using Microsoft.SharePoint.Client;
 
 namespace CamlexNET.Impl.Operations.ProjectedField
 {
@@ -95,8 +96,8 @@ namespace CamlexNET.Impl.Operations.ProjectedField
                 m => m.Name == ReflectionHelper.ListMethodName);
             var showFieldMethodInfo = ReflectionHelper.GetExtensionMethods(typeof(Camlex).Assembly, typeof(object)).FirstOrDefault(
                 m => m.Name == ReflectionHelper.ShowFieldMethodName);
-            var listItemIndexerMethodInfo = typeof(SPListItem).GetProperty(ReflectionHelper.Item, typeof(object), new[] { typeof(string) }, null).GetGetMethod();
-            var fieldRefExpr = Expression.Call(Expression.Parameter(typeof(SPListItem), ReflectionHelper.CommonParameterName),
+            var listItemIndexerMethodInfo = typeof(ListItem).GetProperty(ReflectionHelper.Item, typeof(object), new[] { typeof(string) }, null).GetGetMethod();
+            var fieldRefExpr = Expression.Call(Expression.Parameter(typeof(ListItem), ReflectionHelper.CommonParameterName),
                 listItemIndexerMethodInfo, new[] { Expression.Constant(fieldName) });
 
             var internalExpr = Expression.Call(null, listMethodInfo, fieldRefExpr, Expression.Constant(listName));

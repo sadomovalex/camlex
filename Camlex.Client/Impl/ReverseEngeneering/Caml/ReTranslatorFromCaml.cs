@@ -54,13 +54,8 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml
         public XElement Joins { get { return this.getElement(this.analyzerForJoins); } }
         public XElement ProjectedFields { get { return this.getElement(this.analyzerForProjectedFields); } }
 
-        private XElement getElement(IReAnalyzer analyzer)
-        {
-            return (analyzer == null ? null : analyzer.Element);
-        }
-
 	    public ReTranslatorFromCaml(IReAnalyzer analyzerForWhere, IReAnalyzer analyzerForOrderBy,
-			IReAnalyzer analyzerForGroupBy, IReAnalyzer analyzerForViewFields, IReAnalyzer analyzerForRowLimit, IReAnalyzer analyzerForJoins, IReAnalyzer analyzerForProjectedFields)
+            IReAnalyzer analyzerForGroupBy, IReAnalyzer analyzerForViewFields, IReAnalyzer analyzerForJoins, IReAnalyzer analyzerForProjectedField, IReAnalyzer analyzerForRowLimits)
         {
             this.analyzerForWhere = analyzerForWhere;
             this.analyzerForOrderBy = analyzerForOrderBy;
@@ -217,7 +212,7 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml
             foreach (var operation in operations)
             {
                 var expr = operation.ToExpression();
-                result.Add(new KeyValuePair<LambdaExpression, JoinType>(Expression.Lambda(expr, Expression.Parameter(typeof(SPListItem), ReflectionHelper.CommonParameterName)),
+                result.Add(new KeyValuePair<LambdaExpression, JoinType>(Expression.Lambda(expr, Expression.Parameter(typeof(ListItem), ReflectionHelper.CommonParameterName)),
                     ((JoinOperation)operation).Type));
             }
             return result;
@@ -242,7 +237,7 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml
             foreach (var operation in operations)
             {
                 var expr = operation.ToExpression();
-                result.Add(Expression.Lambda(expr, Expression.Parameter(typeof(SPListItem), ReflectionHelper.CommonParameterName)));
+                result.Add(Expression.Lambda(expr, Expression.Parameter(typeof(ListItem), ReflectionHelper.CommonParameterName)));
             }
             return result;
         }
