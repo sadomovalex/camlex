@@ -23,7 +23,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
                 "       </Eq>";
 
             var b = new ReOperandBuilderFromCaml();
-            var t = new ReTranslatorFromCaml(new ReEqAnalyzer(XmlHelper.Get(xml), b), null, null, null, null);
+            var t = new ReTranslatorFromCaml(new ReEqAnalyzer(XmlHelper.Get(xml), b), null, null, null, null, null);
             var expr = t.TranslateWhere();
             Assert.That(expr.ToString(), Is.EqualTo("x => (Convert(x.get_Item(\"Title\")) = \"testValue\")"));
         }
@@ -37,7 +37,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
                 "  </OrderBy>";
 
             var b = new ReOperandBuilderFromCaml();
-            var t = new ReTranslatorFromCaml(null, new ReArrayAnalyzer(XmlHelper.Get(xml), b), null, null, null);
+            var t = new ReTranslatorFromCaml(null, new ReArrayAnalyzer(XmlHelper.Get(xml), b), null, null, null, null);
             var expr = t.TranslateOrderBy();
             Assert.That(expr.ToString(), Is.EqualTo("x => (x.get_Item(\"Modified\") As Desc)"));
         }
@@ -51,7 +51,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
                 "  </GroupBy>";
 
             var b = new ReOperandBuilderFromCaml();
-            var t = new ReTranslatorFromCaml(null, null, new ReArrayAnalyzer(XmlHelper.Get(xml), b), null, null);
+            var t = new ReTranslatorFromCaml(null, null, new ReArrayAnalyzer(XmlHelper.Get(xml), b), null, null, null);
             var g = new GroupByParams();
             var expr = t.TranslateGroupBy(out g);
             Assert.That(expr.ToString(), Is.EqualTo("x => x.get_Item(\"field1\")"));
@@ -68,7 +68,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
                 "</ViewFields>";
 
             var b = new ReOperandBuilderFromCaml();
-            var t = new ReTranslatorFromCaml(null, null, null, new ReArrayAnalyzer(XmlHelper.Get(xml), b), null);
+            var t = new ReTranslatorFromCaml(null, null, null, new ReArrayAnalyzer(XmlHelper.Get(xml), b), null, null);
             var expr = t.TranslateViewFields();
             Assert.That(expr.ToString(), Is.EqualTo("x => x.get_Item(\"Title\")"));
         }
@@ -87,7 +87,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
                   "</Joins>";
 
             var b = new ReOperandBuilderFromCaml();
-            var t = new ReTranslatorFromCaml(null, null, null, null, new ReJoinAnalyzer(XmlHelper.Get(xml), b));
+            var t = new ReTranslatorFromCaml(null, null, null, null, new ReJoinAnalyzer(XmlHelper.Get(xml), b), null);
             var expr = t.TranslateJoins();
             Assert.That(expr[0].Key.ToString(), Is.EqualTo("x => x.get_Item(\"CustomerName\").ForeignList(\"Customers\")"));
             Assert.That(expr[0].Value, Is.EqualTo(JoinType.Left));
@@ -113,7 +113,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
                   "</Joins>";
 
             var b = new ReOperandBuilderFromCaml();
-            var t = new ReTranslatorFromCaml(null, null, null, null, new ReJoinAnalyzer(XmlHelper.Get(xml), b));
+            var t = new ReTranslatorFromCaml(null, null, null, null, new ReJoinAnalyzer(XmlHelper.Get(xml), b), null);
             var expr = t.TranslateJoins();
             Assert.That(expr.Count, Is.EqualTo(2));
             Assert.That(expr[0].Key.ToString(), Is.EqualTo("x => x.get_Item(\"CustomerName\").ForeignList(\"Customers\")"));

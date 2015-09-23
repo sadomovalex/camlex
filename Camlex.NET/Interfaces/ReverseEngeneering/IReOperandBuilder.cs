@@ -39,5 +39,6 @@ namespace CamlexNET.Interfaces.ReverseEngeneering
 //        IOperand CreateValueOperandForNativeSyntax(string input, Type explicitOperandType);
 //        IOperand CreateValueOperand(XElement operationElement);
         IOperand CreateValueOperand(XElement operationElement, bool isComparision);
+        IOperand CreateFieldRefOperandForProjectedField(XElement el);
     }
 }

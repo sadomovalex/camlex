@@ -24,42 +24,35 @@
 // fitness for a particular purpose and non-infringement.
 // -----------------------------------------------------------------------------
 #endregion
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
+using System.Xml.Linq;
+using CamlexNET.Impl.Operations.Eq;
+using CamlexNET.Impl.ReverseEngeneering.Caml.Analyzers;
 using CamlexNET.Interfaces.ReverseEngeneering;
+using CamlexNET.UnitTests.ReverseEngeneering.Analyzers.TestBase;
+using NUnit.Framework;
 
-namespace CamlexNET.Impl.ReverseEngeneering
+namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers
 {
-    internal class ReQuery : IReQuery
+    internal class ReProjectedFieldsAnalyzerTest
     {
-        private IReTranslatorFactory translatorFactory;
-        private IReLinkerFactory linkerFactory;
-        private string input;
-
-        public ReQuery(IReTranslatorFactory translatorFactory, IReLinkerFactory linkerFactory, string input)
+        [Test]
+        public void test_WHEN_xml_is_null_THEN_expression_is_not_valid()
         {
-            this.translatorFactory = translatorFactory;
-            this.linkerFactory = linkerFactory;
-            this.input = input;
+            var analyzer = new ReProjectedFieldsAnalyzer(null, null);
+            Assert.IsFalse(analyzer.IsValid());
         }
 
-        public Expression ToExpression()
+        [Test]
+        public void test_WHEN_xml_with_1_projected_field_is_correct_THEN_expression_is_valid()
         {
-            var translator = this.translatorFactory.Create(input);
-            var where = translator.TranslateWhere();
-            var orderBy = translator.TranslateOrderBy();
-            GroupByParams groupByParams;
-            var groupBy = translator.TranslateGroupBy(out groupByParams);
-            var viewFields = translator.TranslateViewFields();
-            var joins = translator.TranslateJoins();
-            var projectedFields = translator.TranslateProjectedFields();
-
-            var linker = this.linkerFactory.Create(translator);
-            return linker.Link(where, orderBy, groupBy, viewFields, joins, projectedFields, groupByParams);
+            var xml =
+                  "<ProjectedFields>" +
+                    "<Field Name=\"test\" Type=\"Lookup\" List=\"foo\" ShowField=\"bar\" />" +
+                  "</ProjectedFields>";
+            var analyzer = new ReProjectedFieldsAnalyzer(XmlHelper.Get(xml), null);
+            Assert.IsTrue(analyzer.IsValid());
         }
     }
-
 }

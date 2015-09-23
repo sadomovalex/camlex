@@ -35,7 +35,7 @@ using NUnit.Framework;
 
 namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers
 {
-    internal class ReJoinAnalyzerTest : ReBinaryExpressionTestBase<ReEqAnalyzer, EqOperation>
+    internal class ReJoinAnalyzerTest
     {
         [Test]
         public void test_WHEN_xml_is_null_THEN_expression_is_not_valid()

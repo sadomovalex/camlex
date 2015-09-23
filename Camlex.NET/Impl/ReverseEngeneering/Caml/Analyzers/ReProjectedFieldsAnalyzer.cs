@@ -31,14 +31,15 @@ using System.Linq;
 using System.Xml.Linq;
 using CamlexNET.Impl.Operations.Eq;
 using CamlexNET.Impl.Operations.Join;
+using CamlexNET.Impl.Operations.ProjectedField;
 using CamlexNET.Interfaces;
 using CamlexNET.Interfaces.ReverseEngeneering;
 
 namespace CamlexNET.Impl.ReverseEngeneering.Caml.Analyzers
 {
-    internal class ReJoinAnalyzer : ReBaseAnalyzer
+    internal class ReProjectedFieldsAnalyzer : ReBaseAnalyzer
     {
-        public ReJoinAnalyzer(XElement el, IReOperandBuilder operandBuilder) :
+        public ReProjectedFieldsAnalyzer(XElement el, IReOperandBuilder operandBuilder) :
             base(el, operandBuilder)
         {
         }
@@ -46,7 +47,7 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Analyzers
         public override bool IsValid()
         {
             if (!base.IsValid()) return false;
-            if (el.Name != Tags.Joins) return false;
+            if (el.Name != Tags.ProjectedFields) return false;
             foreach (var child in el.Elements())
             {
                 if (!this.isValid(child))
@@ -63,7 +64,11 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Analyzers
             {
                 return false;
             }
-            if (el.Name != Tags.Join)
+            if (el.Name != Tags.Field)
+            {
+                return false;
+            }
+            if (!el.Attributes().Any(a => a.Name == Attributes.Name) || string.IsNullOrEmpty(el.Attributes().First(a => a.Name == Attributes.Name).Value))
             {
                 return false;
             }
@@ -71,63 +76,15 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Analyzers
             {
                 return false;
             }
-            var typeStr = el.Attributes().First(a => a.Name == Attributes.Type).Value;
-            //if (!Enum.IsDefined(typeof (JoinType), typeStr))
-            if (!Enum.GetNames(typeof(JoinType)).Any(t => string.Compare(t.ToString(), typeStr, true) == 0))
+            if (!el.Attributes().Any(a => a.Name == Attributes.List) || string.IsNullOrEmpty(el.Attributes().First(a => a.Name == Attributes.List).Value))
             {
                 return false;
             }
-            if (!el.Attributes().Any(a => a.Name == Attributes.ListAlias) || string.IsNullOrEmpty(el.Attributes().First(a => a.Name == Attributes.ListAlias).Value))
-            {
-                return false;
-            }
-
-            var eq = el.Elements();
-            if (eq.Count() != 1 || eq.ElementAt(0).Name != Tags.Eq)
+            if (!el.Attributes().Any(a => a.Name == Attributes.ShowField) || string.IsNullOrEmpty(el.Attributes().First(a => a.Name == Attributes.ShowField).Value))
             {
                 return false;
             }
 
-            var childs = eq.Elements();
-            if (childs.Count() != 2)
-            {
-                return false;
-            }
-
-            if (!this.isChildElemValid(childs.ElementAt(0), Attributes.Name, Attributes.RefType))
-            {
-                return false;
-            }
-
-            if (!this.isChildElemValid(childs.ElementAt(1), Attributes.Name, Attributes.List))
-            {
-                return false;
-            }
-            return true;
-        }
-
-        private bool isChildElemValid(XElement el, string attr1, string attr2)
-        {
-            if (el == null)
-            {
-                return false;
-            }
-            if (el.Name != Tags.FieldRef)
-            {
-                return false;
-            }
-            if (!el.HasAttributes)
-            {
-                return false;
-            }
-            if (!el.Attributes().Any(a => a.Name == attr1) || string.IsNullOrEmpty(el.Attributes().First(a => a.Name == attr1).Value))
-            {
-                return false;
-            }
-            if (!el.Attributes().Any(a => a.Name == attr2) || string.IsNullOrEmpty(el.Attributes().First(a => a.Name == attr2).Value))
-            {
-                return false;
-            }
             return true;
         }
 
@@ -141,33 +98,33 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Analyzers
             if (!this.IsValid())
             {
                 throw new CamlAnalysisException(string.Format(
-                    "Can't create {0} from the following xml: {1}", typeof(JoinOperation).Name, el));
+                    "Can't create {0} from the following xml: {1}", typeof(ProjectedFieldOperation).Name, el));
+            }
+            
+            var operands = this.getOperands();
+            if (operands == null)
+            {
+                return new List<IOperation>();
             }
 
             var result = new List<IOperation>();
-            foreach (var child in el.Elements())
+            foreach (var operand in operands)
             {
-                var typeStr = child.Attributes().First(a => a.Name == Attributes.Type).Value;
-                var operands = this.getFieldRefOperands(child);
-                result.Add(new JoinOperation(null, operands[0], operands[1], (JoinType)Enum.Parse(typeof(JoinType), typeStr, true)));
+                result.Add(new ProjectedFieldOperation(null, operand));
             }
             return result;
         }
 
-        private IOperand[] getFieldRefOperands(XElement el)
+        private List<IOperand> getOperands()
         {
             var operands = new List<IOperand>();
-            var eq = el.Element(Tags.Eq);
-            eq.Elements(Tags.FieldRef).ToList().ForEach(
+            el.Elements(Tags.Field).ToList().ForEach(
                 e =>
                 {
-                    var operand = this.operandBuilder.CreateFieldRefOperand(e);
-                    if (operand != null)
-                    {
-                        operands.Add(operand);
-                    }
+                    var operand = this.operandBuilder.CreateFieldRefOperandForProjectedField(e);
+                    operands.Add(operand);
                 });
-            return operands.ToArray();
+            return operands;
         }
     }
 }

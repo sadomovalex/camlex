@@ -62,6 +62,10 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Factories
             {
                 return this.getAnalyzerForJoins(el);
             }
+            if (el.Name == Tags.ProjectedFields)
+            {
+                return this.getAnalyzerForProjectedFields(el);
+            }
             var reAnalyzer = getAnalyzer(el);
             if (reAnalyzer == null)
             {
@@ -94,6 +98,11 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Factories
         private IReAnalyzer getAnalyzerForJoins(XElement el)
         {
             return new ReJoinAnalyzer(el, this.operandBuilder);
+        }
+
+        private IReAnalyzer getAnalyzerForProjectedFields(XElement el)
+        {
+            return new ReProjectedFieldsAnalyzer(el, this.operandBuilder);
         }
 
         private IReAnalyzer getAnalyzer(XElement el)

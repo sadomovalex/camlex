@@ -122,6 +122,26 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Factories
             return new ValuesValueOperand(values);
         }
 
+        public IOperand CreateFieldRefOperandForProjectedField(XElement el)
+        {
+            var attributes = new List<KeyValuePair<string, string>>();
+
+            Func<IEnumerable<XAttribute>, string, string> getAttr =
+                (attrs, name) =>
+                {
+                    return el.Attributes().Any(a => a.Name == name) ? el.Attributes().FirstOrDefault(a => a.Name == name).Value : string.Empty;
+                };
+
+            attributes.Add(new KeyValuePair<string, string>(Attributes.Type, getAttr(el.Attributes(), Attributes.Type)));
+            attributes.Add(new KeyValuePair<string, string>(Attributes.List, getAttr(el.Attributes(), Attributes.List)));
+            attributes.Add(new KeyValuePair<string, string>(Attributes.ShowField, getAttr(el.Attributes(), Attributes.ShowField)));
+
+            var fieldRef = (FieldRefOperand)this.CreateFieldRefOperand(el);
+            fieldRef.TagName = Tags.Field;
+            fieldRef.Attributes = attributes;
+            return fieldRef;
+        }
+
         private IOperand createValueOperand(XElement operationElement, XElement valueElement, bool isComparision)
         {
             if (operationElement == null)

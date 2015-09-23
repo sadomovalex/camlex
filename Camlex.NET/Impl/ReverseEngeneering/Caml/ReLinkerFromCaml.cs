@@ -44,6 +44,7 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml
         private readonly XElement groupBy;
         private readonly XElement viewFields;
         private readonly XElement joins;
+        private readonly XElement projectedFields;
 
         private class MethodInfoWithParams
         {
@@ -56,17 +57,18 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml
             }
         }
 
-        public ReLinkerFromCaml(XElement @where, XElement orderBy, XElement groupBy, XElement viewFields, XElement joins)
+        public ReLinkerFromCaml(XElement @where, XElement orderBy, XElement groupBy, XElement viewFields, XElement joins, XElement projectedFields)
         {
             this.where = where;
             this.viewFields = viewFields;
             this.joins = joins;
             this.groupBy = groupBy;
             this.orderBy = orderBy;
+            this.projectedFields = projectedFields;
         }
 
-        public Expression Link(LambdaExpression where, LambdaExpression orderBy, LambdaExpression groupBy,
-            LambdaExpression viewFields, List<KeyValuePair<LambdaExpression, JoinType>> joins, GroupByParams groupByParams)
+        public Expression Link(LambdaExpression @where, LambdaExpression orderBy, LambdaExpression groupBy, LambdaExpression viewFields,
+            List<KeyValuePair<LambdaExpression, JoinType>> joins, List<LambdaExpression> projectedFields, GroupByParams groupByParams)
         {
             // list of fluent calls
             var listFluent = new List<KeyValuePair<string, LambdaExpression>>();
@@ -80,7 +82,6 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml
 
             // joins are not fluent
             var listJoins = new List<KeyValuePair<string, LambdaExpression>>();
-            //listViewFields.Add(new KeyValuePair<string, LambdaExpression>(ReflectionHelper.ViewFieldsMethodName, viewFields));
             if (joins != null)
             {
                 foreach (var kv in joins)
@@ -90,10 +91,21 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml
                 }
             }
 
+            // projected fields are not fluent
+            var listProjectedFields = new List<KeyValuePair<string, LambdaExpression>>();
+            if (projectedFields != null)
+            {
+                foreach (var pr in projectedFields)
+                {
+                    listProjectedFields.Add(new KeyValuePair<string, LambdaExpression>(ReflectionHelper.FieldMethodName, pr));
+                }
+            }
+
             int parts = 0;
             if (listFluent.Any(kv => kv.Value != null)) parts++;
             if (listViewFields.Any(kv => kv.Value != null)) parts++;
             if (listJoins.Any(kv => kv.Value != null)) parts++;
+            if (listProjectedFields.Any(kv => kv.Value != null)) parts++;
             if (parts > 1)
             {
                 throw new OnlyOnePartOfQueryShouldBeNotNullException();
@@ -103,7 +115,7 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml
                 throw new AtLeastOneCamlPartShouldNotBeEmptyException();
             }
 
-            var list = listFluent.Any(kv => kv.Value != null) ? listFluent : (listViewFields.Any(kv => kv.Value != null) ? listViewFields : listJoins);
+            var list = listFluent.Any(kv => kv.Value != null) ? listFluent : (listViewFields.Any(kv => kv.Value != null) ? listViewFields : (listJoins.Any(kv => kv.Value != null) ? listJoins : listProjectedFields));
 
             var queryMi = ReflectionHelper.GetMethodInfo(typeof (Camlex), ReflectionHelper.QueryMethodName);
             var queryCall = Expression.Call(queryMi);
@@ -113,6 +125,12 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml
             {
                 // for joins need to call Query().Joins() first
                 var joinsMethodInfo = ReflectionHelper.GetMethodInfo(typeof (IQueryEx), ReflectionHelper.JoinsMethodName);
+                expr = Expression.Call(queryCall, joinsMethodInfo);
+            }
+            if (list == listProjectedFields)
+            {
+                // for joins need to call Query().ProjectedFields() first
+                var joinsMethodInfo = ReflectionHelper.GetMethodInfo(typeof(IQueryEx), ReflectionHelper.ProjectedFieldsMethodName);
                 expr = Expression.Call(queryCall, joinsMethodInfo);
             }
             for (int i = 0; i < list.Count; i++)
@@ -165,7 +183,17 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml
             {
                 return this.getInnerJoinMethodInfo();
             }
+            if (methodName == ReflectionHelper.FieldMethodName)
+            {
+                return this.getFieldMethodInfo();
+            }
             return null;
+        }
+
+        private MethodInfoWithParams getFieldMethodInfo()
+        {
+            var mi = typeof(IProjectedField).GetMethod(ReflectionHelper.FieldMethodName, new[] { typeof(Expression<Func<SPListItem, object>>) });
+            return new MethodInfoWithParams(mi, null);
         }
 
         private MethodInfoWithParams getLeftJoinMethodInfo()

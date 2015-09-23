@@ -199,6 +199,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReverseEngeneering\Analyzers\ReProjectedFieldsAnalyzerTest.cs" />
     <Compile Include="ReverseEngeneering\Analyzers\ReJoinAnalyzerTest.cs" />
     <Compile Include="ReverseEngeneering\Analyzers\ReInAnalyzerTest.cs" />
     <Compile Include="ReverseEngeneering\Analyzers\ReAndAlsoAnalyzerTest.cs" />
