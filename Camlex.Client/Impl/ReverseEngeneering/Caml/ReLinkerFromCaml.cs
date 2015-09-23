@@ -57,7 +57,7 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml
 			}
 		}
 
-		public ReLinkerFromCaml(XElement where, XElement orderBy, XElement groupBy, XElement viewFields, XElement rowLimit, XElement joins, XElement projectedFields)
+        public ReLinkerFromCaml(XElement where, XElement orderBy, XElement groupBy, XElement viewFields, XElement joins, XElement projectedFields, XElement rowLimit)
 		{
 			this.where = where;
 			this.viewFields = viewFields;
@@ -70,7 +70,7 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml
 		}
 
 		public Expression Link(LambdaExpression where, LambdaExpression orderBy, LambdaExpression groupBy,
-			LambdaExpression viewFields, List<KeyValuePair<LambdaExpression, JoinType>> joins, List<LambdaExpression> projectedField,
+			LambdaExpression viewFields, List<KeyValuePair<LambdaExpression, JoinType>> joins, List<LambdaExpression> projectedFields,
 			GroupByParams groupByParams, Expression rowLimit)
 		{
 			// list of fluent calls
@@ -83,16 +83,10 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml
 				new KeyValuePair<string, Expression>(ReflectionHelper.RowLimitMethodName, rowLimit)
 			};
 
-			// view fields is not fluent
-//			var listViewFields = new List<KeyValuePair<string, LambdaExpression>>
-//			{
-//				new KeyValuePair<string, LambdaExpression>(ReflectionHelper.ViewFieldsMethodName, viewFields)
-//			};
-
-//			if (listFluent.Any(kv => kv.Value != null) && listViewFields.Any(kv => kv.Value != null))
-//			{
-//				throw new OnlyOnePartOfQueryShouldBeNotNullException();
-//			}
+            // joins are not fluent
+            var listJoins = new List<KeyValuePair<string, LambdaExpression>>();
+            if (joins != null)
+            {
                 foreach (var kv in joins)
                 {
                     listJoins.Add(new KeyValuePair<string, LambdaExpression>(
@@ -110,52 +104,31 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml
                 }
             }
 
-            int parts = 0;
-            if (listFluent.Any(kv => kv.Value != null)) parts++;
-            if (listViewFields.Any(kv => kv.Value != null)) parts++;
-            if (listJoins.Any(kv => kv.Value != null)) parts++;
-            if (listProjectedFields.Any(kv => kv.Value != null)) parts++;
-            if (parts > 1)
+            if (listFluent.All(kv => kv.Value == null))
             {
-                throw new OnlyOnePartOfQueryShouldBeNotNullException();
+                throw new AtLeastOneCamlPartShouldNotBeEmptyException();
             }
-            else if (parts == 0)
-			{
-				throw new AtLeastOneCamlPartShouldNotBeEmptyException();
-			}
 
-            var list = listFluent.Any(kv => kv.Value != null) ? listFluent : (listViewFields.Any(kv => kv.Value != null) ? listViewFields : (listJoins.Any(kv => kv.Value != null) ? listJoins : listProjectedFields));
-
-            var queryMi = ReflectionHelper.GetMethodInfo(typeof (Camlex), ReflectionHelper.QueryMethodName);
+            var queryMi = ReflectionHelper.GetMethodInfo(typeof(Camlex), ReflectionHelper.QueryMethodName);
             var queryCall = Expression.Call(queryMi);
 
-			var expr = queryCall;
-            if (list == listJoins)
+            var expr = queryCall;
+            for (int i = 0; i < listFluent.Count; i++)
             {
-                // for joins need to call Query().Joins() first
-                var joinsMethodInfo = ReflectionHelper.GetMethodInfo(typeof (IQueryEx), ReflectionHelper.JoinsMethodName);
-                expr = Expression.Call(queryCall, joinsMethodInfo);
-            }
-            if (list == listProjectedFields)
-            {
-                // for joins need to call Query().ProjectedFields() first
-                var joinsMethodInfo = ReflectionHelper.GetMethodInfo(typeof(IQueryEx), ReflectionHelper.ProjectedFieldsMethodName);
-                expr = Expression.Call(queryCall, joinsMethodInfo);
-            }
-            for (int i = 0; i < list.Count; i++)
-            {
-                var kv = list[i];
+                var kv = listFluent[i];
                 if (kv.Value != null)
                 {
                     var mi = this.getMethodInfo(kv.Key, groupByParams);
                     if (mi != null && mi.MethodInfo != null)
                     {
-                        var args = new List<Expression>();
-                        // 1st param is always lambda expression
-                        args.Add(kv.Value);
+                        var args = new List<Expression>
+						{
+							kv.Value // 1st param is always lambda expression
+						};
+
                         if (mi.Params != null && mi.Params.Count > 0)
                         {
-                            mi.Params.ForEach(p => args.Add(p));
+                            mi.Params.ForEach(args.Add);
                         }
                         // as we use fluent interfaces we just pass on next step value which we got from prev step
                         expr = Expression.Call(expr, mi.MethodInfo, args);
@@ -163,7 +136,6 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml
                 }
             }
             return expr;
-
         }
 
 		private MethodInfoWithParams getMethodInfo(string methodName, GroupByParams groupByParams)
@@ -207,19 +179,19 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml
 
         private MethodInfoWithParams getFieldMethodInfo()
         {
-            var mi = typeof(IProjectedField).GetMethod(ReflectionHelper.FieldMethodName, new[] { typeof(Expression<Func<SPListItem, object>>) });
+            var mi = typeof(IQuery).GetMethod(ReflectionHelper.FieldMethodName, new[] { typeof(Expression<Func<ListItem, object>>) });
             return new MethodInfoWithParams(mi, null);
         }
 
         private MethodInfoWithParams getLeftJoinMethodInfo()
         {
-            var mi = typeof(IJoin).GetMethod(ReflectionHelper.LeftJoinMethodName, new[] { typeof(Expression<Func<SPListItem, object>>) });
+            var mi = typeof(IQuery).GetMethod(ReflectionHelper.LeftJoinMethodName, new[] { typeof(Expression<Func<ListItem, object>>) });
             return new MethodInfoWithParams(mi, null);
         }
 
         private MethodInfoWithParams getInnerJoinMethodInfo()
         {
-            var mi = typeof(IJoin).GetMethod(ReflectionHelper.InnerJoinMethodName, new[] { typeof(Expression<Func<SPListItem, object>>) });
+            var mi = typeof(IQuery).GetMethod(ReflectionHelper.InnerJoinMethodName, new[] { typeof(Expression<Func<ListItem, object>>) });
             return new MethodInfoWithParams(mi, null);
 		}
 

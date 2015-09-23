@@ -48,6 +48,7 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Factories
             var orderBy = this.createForTag(input, Tags.OrderBy);
             var groupBy = this.createForTag(input, Tags.GroupBy);
             var viewFields = this.createForTag(input, Tags.ViewFields);
+            var rowLimit = this.createForTag(input, Tags.RowLimit);
             var joins = this.createForTag(input, Tags.Joins);
             var projectedFields = this.createForTag(input, Tags.ProjectedFields);
 
@@ -55,10 +56,11 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Factories
             var analyzerForOrderBy = orderBy != null ? this.analyzerFactory.Create(orderBy) : null;
             var analyzerForGroupBy = groupBy != null ? this.analyzerFactory.Create(groupBy) : null;
             var analyzerForViewFields = viewFields != null ? this.analyzerFactory.Create(viewFields) : null;
+            var analyzerForRowLimit = rowLimit != null ? this.analyzerFactory.Create(rowLimit) : null;
             var analyzerForJoins = joins != null ? this.analyzerFactory.Create(joins) : null;
             var analyzerForProjectedFields = projectedFields != null ? this.analyzerFactory.Create(projectedFields) : null;
 
-            return new ReTranslatorFromCaml(analyzerForWhere, analyzerForOrderBy, analyzerForGroupBy, analyzerForViewFields, analyzerForJoins, analyzerForProjectedFields);
+            return new ReTranslatorFromCaml(analyzerForWhere, analyzerForOrderBy, analyzerForGroupBy, analyzerForViewFields, analyzerForJoins, analyzerForProjectedFields, analyzerForRowLimit);
         }
 
         private XElement createForTag(string input, string tag)
