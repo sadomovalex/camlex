@@ -176,8 +176,8 @@ namespace CamlexNET
     internal class AtLeastOneCamlPartShouldNotBeEmptyException : Exception
     {
         public AtLeastOneCamlPartShouldNotBeEmptyException()
-            : base(string.Format("At least one part for the CAML should not be empty: {0}, {1}, {2}, {3}",
-                Tags.Where, Tags.OrderBy, Tags.GroupBy, Tags.ViewFields))
+            : base(string.Format("At least one part for the CAML should not be empty: {0}, {1}, {2}, {3}, {4}, {5}",
+                Tags.Where, Tags.OrderBy, Tags.GroupBy, Tags.ViewFields, Tags.Joins, Tags.ProjectedFields))
         {}
     }
 
