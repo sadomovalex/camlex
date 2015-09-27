@@ -55,7 +55,7 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml
         public XElement ProjectedFields { get { return this.getElement(this.analyzerForProjectedFields); } }
 
 	    public ReTranslatorFromCaml(IReAnalyzer analyzerForWhere, IReAnalyzer analyzerForOrderBy,
-            IReAnalyzer analyzerForGroupBy, IReAnalyzer analyzerForViewFields, IReAnalyzer analyzerForJoins, IReAnalyzer analyzerForProjectedField, IReAnalyzer analyzerForRowLimits)
+            IReAnalyzer analyzerForGroupBy, IReAnalyzer analyzerForViewFields, IReAnalyzer analyzerForJoins, IReAnalyzer analyzerForProjectedFields, IReAnalyzer analyzerForRowLimit)
         {
             this.analyzerForWhere = analyzerForWhere;
             this.analyzerForOrderBy = analyzerForOrderBy;
