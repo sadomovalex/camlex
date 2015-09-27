@@ -83,24 +83,20 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml
 				new KeyValuePair<string, Expression>(ReflectionHelper.RowLimitMethodName, rowLimit)
 			};
 
-            // joins are not fluent
-            var listJoins = new List<KeyValuePair<string, LambdaExpression>>();
             if (joins != null)
             {
                 foreach (var kv in joins)
                 {
-                    listJoins.Add(new KeyValuePair<string, LambdaExpression>(
+                    listFluent.Add(new KeyValuePair<string, Expression>(
                         (kv.Value == JoinType.Inner ? ReflectionHelper.InnerJoinMethodName : ReflectionHelper.LeftJoinMethodName), kv.Key));
                 }
             }
 
-            // projected fields are not fluent
-            var listProjectedFields = new List<KeyValuePair<string, LambdaExpression>>();
             if (projectedFields != null)
             {
                 foreach (var pr in projectedFields)
                 {
-                    listProjectedFields.Add(new KeyValuePair<string, LambdaExpression>(ReflectionHelper.FieldMethodName, pr));
+                    listFluent.Add(new KeyValuePair<string, Expression>(ReflectionHelper.FieldMethodName, pr));
                 }
             }
 

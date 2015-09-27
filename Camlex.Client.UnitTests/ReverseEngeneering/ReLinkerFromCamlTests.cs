@@ -285,7 +285,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
 
             Expression<Func<ListItem, object>> ex = x => x["CustomerName"].ForeignList("Customers");
             var expr = l.Link(null, null, null, null, (new[] { new KeyValuePair<LambdaExpression, JoinType>(ex, JoinType.Left) }).ToList(), null, g, null);
-            Assert.That(expr.ToString(), Is.EqualTo("Query().Joins().Left(x => x.get_Item(\"CustomerName\").ForeignList(\"Customers\"))"));
+            Assert.That(expr.ToString(), Is.EqualTo("Query().LeftJoin(x => x.get_Item(\"CustomerName\").ForeignList(\"Customers\"))"));
         }
 
         [Test]
@@ -313,7 +313,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
             Expression<Func<ListItem, object>> ex1 = x => x["CustomerName"].ForeignList("Customers");
             Expression<Func<ListItem, object>> ex2 = x => x["CityName"].PrimaryList("Customers").ForeignList("CustomerCities");
             var expr = l.Link(null, null, null, null, (new[] { new KeyValuePair<LambdaExpression, JoinType>(ex1, JoinType.Left), new KeyValuePair<LambdaExpression, JoinType>(ex2, JoinType.Inner) }).ToList(), null, g, null);
-            Assert.That(expr.ToString(), Is.EqualTo("Query().Joins().Left(x => x.get_Item(\"CustomerName\").ForeignList(\"Customers\")).Inner(x => x.get_Item(\"CityName\").PrimaryList(\"Customers\").ForeignList(\"CustomerCities\"))"));
+            Assert.That(expr.ToString(), Is.EqualTo("Query().LeftJoin(x => x.get_Item(\"CustomerName\").ForeignList(\"Customers\")).InnerJoin(x => x.get_Item(\"CityName\").PrimaryList(\"Customers\").ForeignList(\"CustomerCities\"))"));
         }
 
         [Test]
@@ -329,7 +329,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
 
             Expression<Func<ListItem, object>> ex = x => x["test"].List("foo").ShowField("bar");
             var expr = l.Link(null, null, null, null, null, (new[] { (LambdaExpression)ex }).ToList(), g, null);
-            Assert.That(expr.ToString(), Is.EqualTo("Query().ProjectedFields().Field(x => x.get_Item(\"test\").List(\"foo\").ShowField(\"bar\"))"));
+            Assert.That(expr.ToString(), Is.EqualTo("Query().ProjectedField(x => x.get_Item(\"test\").List(\"foo\").ShowField(\"bar\"))"));
         }
 
         [Test]
@@ -347,7 +347,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
             Expression<Func<ListItem, object>> ex1 = x => x["test1"].List("foo1").ShowField("bar1");
             Expression<Func<ListItem, object>> ex2 = x => x["test2"].List("foo2").ShowField("bar2");
             var expr = l.Link(null, null, null, null, null, (new[] { (LambdaExpression)ex1, (LambdaExpression)ex2 }).ToList(), g, null);
-            Assert.That(expr.ToString(), Is.EqualTo("Query().ProjectedFields().Field(x => x.get_Item(\"test1\").List(\"foo1\").ShowField(\"bar1\")).Field(x => x.get_Item(\"test2\").List(\"foo2\").ShowField(\"bar2\"))"));
+            Assert.That(expr.ToString(), Is.EqualTo("Query().ProjectedField(x => x.get_Item(\"test1\").List(\"foo1\").ShowField(\"bar1\")).ProjectedField(x => x.get_Item(\"test2\").List(\"foo2\").ShowField(\"bar2\"))"));
 	}
     }
 }

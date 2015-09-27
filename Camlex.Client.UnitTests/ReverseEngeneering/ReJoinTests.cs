@@ -44,7 +44,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
         public void test_THAT_left_join_IS_translated_sucessfully()
         {
             string xml =
-                "<Query>" +
+                "<View>" +
                   "<Joins>" +
                     "<Join Type=\"LEFT\" ListAlias=\"Customers\">" +
                       "<Eq>" +
@@ -53,17 +53,17 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
                       "</Eq>" +
                     "</Join>" +
                   "</Joins>" +
-                "</Query>";
+                "</View>";
 
             var expr = Camlex.QueryFromString(xml).ToExpression();
-            Assert.That(expr.ToString(), Is.EqualTo("Query().Joins().Left(x => x.get_Item(\"CustomerName\").ForeignList(\"Customers\"))"));
+            Assert.That(expr.ToString(), Is.EqualTo("Query().LeftJoin(x => x.get_Item(\"CustomerName\").ForeignList(\"Customers\"))"));
         }
 
         [Test]
         public void test_THAT_inner_join_IS_translated_sucessfully()
         {
             string xml =
-                "<Query>" +
+                "<View>" +
                   "<Joins>" +
                     "<Join Type=\"INNER\" ListAlias=\"Customers\">" +
                       "<Eq>" +
@@ -72,25 +72,25 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
                       "</Eq>" +
                     "</Join>" +
                   "</Joins>" +
-                "</Query>";
+                "</View>";
 
             var expr = Camlex.QueryFromString(xml).ToExpression();
-            Assert.That(expr.ToString(), Is.EqualTo("Query().Joins().Inner(x => x.get_Item(\"CustomerName\").ForeignList(\"Customers\"))"));
+            Assert.That(expr.ToString(), Is.EqualTo("Query().InnerJoin(x => x.get_Item(\"CustomerName\").ForeignList(\"Customers\"))"));
         }
 
         [Test]
         public void test_THAT_projected_fields_ARE_translated_sucessfully()
         {
             string xml =
-                "<Query>" +
+                "<View>" +
                   "<ProjectedFields>" +
                     "<Field Name=\"test1\" Type=\"Lookup\" List=\"foo1\" ShowField=\"bar1\" />" +
                     "<Field Name=\"test2\" Type=\"Lookup\" List=\"foo2\" ShowField=\"bar2\" />" +
                   "</ProjectedFields>" +
-                "</Query>";
+                "</View>";
 
             var expr = Camlex.QueryFromString(xml).ToExpression();
-            Assert.That(expr.ToString(), Is.EqualTo("Query().ProjectedFields().Field(x => x.get_Item(\"test1\").List(\"foo1\").ShowField(\"bar1\")).Field(x => x.get_Item(\"test2\").List(\"foo2\").ShowField(\"bar2\"))"));
+            Assert.That(expr.ToString(), Is.EqualTo("Query().ProjectedField(x => x.get_Item(\"test1\").List(\"foo1\").ShowField(\"bar1\")).ProjectedField(x => x.get_Item(\"test2\").List(\"foo2\").ShowField(\"bar2\"))"));
         }
     }
 }
