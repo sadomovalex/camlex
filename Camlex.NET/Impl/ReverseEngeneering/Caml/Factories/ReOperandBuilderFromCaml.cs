@@ -198,6 +198,24 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Factories
                     }
                 }
             }
+            //The same applies for LookupMulti
+            if (type == typeof(DataTypes.LookupMulti))
+            {
+                type = typeof(DataTypes.LookupMultiValue);
+                var fieldRefElement = operationElement.Elements(Tags.FieldRef).FirstOrDefault();
+                if (fieldRefElement != null)
+                {
+                    var lookupIdAttr = fieldRefElement.Attributes().FirstOrDefault(a => a.Name == Attributes.LookupId);
+                    if (lookupIdAttr != null)
+                    {
+                        bool isLookupId = false;
+                        if (bool.TryParse(lookupIdAttr.Value, out isLookupId) && isLookupId)
+                        {
+                            type = typeof(DataTypes.LookupMultiId);
+                        }
+                    }
+                }
+            }
 
             // The same about User and UserId. In direct-way translation, the developer should use either User or User ID,
             // but in referese-way translation, it should be determioned by LookupID="True" attribute
@@ -222,7 +240,7 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Factories
             if (type == typeof(DataTypes.Integer))
             {
                 // DataTypes.Integer also can be used for <UserID />. See http://sadomovalex.blogspot.com/2011/08/camlexnet-24-is-released.html
-                isIntegerForUserId =  valueElement.Elements().Count() == 1 && valueElement.Elements().Any(e => e.Name == ReflectionHelper.UserID);
+                isIntegerForUserId = valueElement.Elements().Count() == 1 && valueElement.Elements().Any(e => e.Name == ReflectionHelper.UserID);
             }
 
             bool includeTimeValue = false;
@@ -265,7 +283,7 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Factories
             }
             if (type == typeof(DataTypes.Integer))
             {
-                return typeof (int);
+                return typeof(int);
             }
             if (type == typeof(DataTypes.Boolean))
             {

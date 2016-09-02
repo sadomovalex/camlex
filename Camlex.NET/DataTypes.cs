@@ -73,7 +73,7 @@ namespace CamlexNET
         public class Guid : BaseFieldType { }
         public class Integer : BaseFieldTypeWithOperators { }
         public class Invalid : BaseFieldType { }
-        
+
         // Lookup class is made internal. LookupValue and LookupId should be used instead
         internal class Lookup : BaseFieldType { }
 
@@ -90,6 +90,11 @@ namespace CamlexNET
 //            }
         }
         public class LookupValue : BaseFieldType { }
+        internal class LookupMulti : BaseFieldType { }
+        // Same thing as Lookup. LookupMultiId and LookupMultiValue are not datatypes in CAML.
+        public class LookupMultiId : BaseFieldTypeWithOperators { }
+        public class LookupMultiValue : BaseFieldType { }
+
 
         public class MaxItems : BaseFieldType { }
         public class ModStat : BaseFieldType { }
