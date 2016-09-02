@@ -84,5 +84,52 @@ namespace CamlexNET.UnitTests
 
             Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
         }
+        [Test]
+        public void test_THAT_lookup_multi_id_field_ref_with_name_IS_translated_successfully()
+        {
+            string caml = Camlex.Query().Where(x => x["Ref"] == (DataTypes.LookupMultiId)"123").ToString();
+
+            string expected =
+                "   <Where>" +
+                "       <Eq>" +
+                "           <FieldRef Name=\"Ref\" LookupId=\"True\" />" +
+                "           <Value Type=\"LookupMulti\">123</Value>" +
+                "       </Eq>" +
+                "   </Where>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        [Test]
+        public void test_THAT_lookup_multi_id_field_ref_with_guid_IS_translated_successfully()
+        {
+            var guid = new Guid("{4feaf1f3-5b04-4d93-b0fc-4e48d0c60eed}");
+            string caml = Camlex.Query().Where(x => x[guid] == (DataTypes.LookupMultiId)"123").ToString();
+
+            string expected =
+                "   <Where>" +
+                "       <Eq>" +
+                "           <FieldRef ID=\"4feaf1f3-5b04-4d93-b0fc-4e48d0c60eed\" LookupId=\"True\" />" +
+                "           <Value Type=\"LookupMulti\">123</Value>" +
+                "       </Eq>" +
+                "   </Where>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+        [Test]
+        public void test_THAT_lookup_multi_value_IS_translated_successfully()
+        {
+            string caml = Camlex.Query().Where(x => x["Ref"] == (DataTypes.LookupMultiValue)"123").ToString();
+
+            string expected =
+                "   <Where>" +
+                "       <Eq>" +
+                "           <FieldRef Name=\"Ref\" />" +
+                "           <Value Type=\"LookupMulti\">123</Value>" +
+                "       </Eq>" +
+                "   </Where>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
     }
 }

@@ -103,7 +103,8 @@ namespace CamlexNET.Impl.Factories
         private List<KeyValuePair<string, string>> getAdditionalAttributesForFieldRefOperands(IOperand valueOperand)
         {
             if (valueOperand is LookupIdValueOperand ||
-                valueOperand is UserIdValueOperand)
+                valueOperand is UserIdValueOperand ||
+                valueOperand is LookupMultiIdValueOperand)
             {
                 var attrs = new List<KeyValuePair<string, string>>();
                 attrs.Add(new KeyValuePair<string, string>(Attributes.LookupId, true.ToString()));
@@ -129,13 +130,13 @@ namespace CamlexNET.Impl.Factories
             string list = string.Empty;
             if (expr is ConstantExpression)
             {
-                list = (string) (expr as ConstantExpression).Value;
+                list = (string)(expr as ConstantExpression).Value;
             }
             else
             {
-                list = (string) this.evaluateExpression(expr);
+                list = (string)this.evaluateExpression(expr);
             }
-            return new FieldRefOperand(Values.Id, new List<KeyValuePair<string, string>>(new[]{new KeyValuePair<string, string>(Attributes.List, list)}));
+            return new FieldRefOperand(Values.Id, new List<KeyValuePair<string, string>>(new[] { new KeyValuePair<string, string>(Attributes.List, list) }));
         }
 
         public IOperand CreateFieldRefOperandForJoin(Expression expr, Expression primaryListExpr)
@@ -143,11 +144,11 @@ namespace CamlexNET.Impl.Factories
             string list = string.Empty;
             if (primaryListExpr is ConstantExpression)
             {
-                list = (string) (primaryListExpr as ConstantExpression).Value;
+                list = (string)(primaryListExpr as ConstantExpression).Value;
             }
             else
             {
-                list = (string) this.evaluateExpression(primaryListExpr);
+                list = (string)this.evaluateExpression(primaryListExpr);
             }
 
             var attributes = new List<KeyValuePair<string, string>>();
@@ -304,7 +305,7 @@ namespace CamlexNET.Impl.Factories
             {
                 if (type.IsSubclassOf(typeof(BaseFieldTypeWithOperators)))
                 {
-                    return new GenericStringBasedValueOperand(type, (string) value);
+                    return new GenericStringBasedValueOperand(type, (string)value);
                 }
                 // native operands are also supported. Several native operands are compirable
                 if (type != typeof(DateTime) &&
@@ -340,7 +341,7 @@ namespace CamlexNET.Impl.Factories
 
                 if (value.GetType() == typeof(int))
                 {
-                    return new IntegerValueOperand((int) value);
+                    return new IntegerValueOperand((int)value);
                 }
                 if (value.GetType() == typeof(string))
                 {
@@ -392,15 +393,24 @@ namespace CamlexNET.Impl.Factories
                 {
                     return new LookupIdValueOperand((string)value);
                 }
+
                 else if (type == typeof(DataTypes.LookupValue))
                 {
                     return new LookupValueValueOperand((string)value);
+                }
+                else if (type == typeof(DataTypes.LookupMultiId))
+                {
+                    return new LookupMultiIdValueOperand((string)value);
+                }
+                else if (type == typeof(DataTypes.LookupMultiValue))
+                {
+                    return new LookupMultiValueValueOperand((string)value);
                 }
                 else if (type == typeof(DataTypes.UserId))
                 {
                     return new UserIdValueOperand((string)value);
                 }
-                return new GenericStringBasedValueOperand(type, (string) value);
+                return new GenericStringBasedValueOperand(type, (string)value);
             }
             throw new NonSupportedOperandTypeException(type);
         }

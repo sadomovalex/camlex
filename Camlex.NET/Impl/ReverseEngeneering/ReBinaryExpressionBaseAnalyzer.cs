@@ -36,7 +36,7 @@ namespace CamlexNET.Impl.ReverseEngeneering
 {
     internal abstract class ReBinaryExpressionBaseAnalyzer : ReBaseAnalyzer
     {
-        protected ReBinaryExpressionBaseAnalyzer(XElement el, IReOperandBuilder operandBuilder) 
+        protected ReBinaryExpressionBaseAnalyzer(XElement el, IReOperandBuilder operandBuilder)
             : base(el, operandBuilder)
         {
         }
@@ -95,7 +95,7 @@ namespace CamlexNET.Impl.ReverseEngeneering
 //            var isLookupId = fieldRefElement.Attributes()
 //                .Any(a => a.Name == Attributes.LookupId);
 
-            bool isIntegerForUserId = typeAttribute.Value == typeof (DataTypes.Integer).Name &&
+            bool isIntegerForUserId = typeAttribute.Value == typeof(DataTypes.Integer).Name &&
                                       valueElement.Elements().Count() == 1 &&
                                       valueElement.Elements().Any(e => e.Name == ReflectionHelper.UserID);
 
@@ -116,6 +116,7 @@ namespace CamlexNET.Impl.ReverseEngeneering
             if (valueType == typeof(DataTypes.Computed).Name) return true;
             if (valueType == typeof(DataTypes.GridChoice).Name) return true;
             if (valueType == typeof(DataTypes.LookupValue).Name) return true;
+            if (valueType == typeof(DataTypes.LookupMultiValue).Name) return true;
             if (valueType == typeof(DataTypes.MultiChoice).Name) return true;
             if (valueType == typeof(DataTypes.Note).Name) return true;
             if (valueType == typeof(DataTypes.Text).Name) return true;
@@ -132,25 +133,25 @@ namespace CamlexNET.Impl.ReverseEngeneering
             try
             {
                 //if (valueType == typeof(DataTypes.AllDayEvent).Name) new BooleanValueOperand(value);
-                if (valueType == typeof(DataTypes.AllDayEvent).Name) {}
+                if (valueType == typeof(DataTypes.AllDayEvent).Name) { }
                 //else if (valueType == typeof(DataTypes.Attachments).Name) new BooleanValueOperand(value);
-                else if (valueType == typeof(DataTypes.Attachments).Name) {}
+                else if (valueType == typeof(DataTypes.Attachments).Name) { }
                 else if (valueType == typeof(DataTypes.Boolean).Name) new BooleanValueOperand(value);
                 else if (valueType == typeof(DataTypes.Calculated).Name) { }
                 else if (valueType == typeof(DataTypes.Choice).Name) { }
                 else if (valueType == typeof(DataTypes.Computed).Name) { }
                 //else if (valueType == typeof(DataTypes.ContentTypeId).Name) new SPContentTypeId(value);
-                else if (valueType == typeof(DataTypes.ContentTypeId).Name) {}
+                else if (valueType == typeof(DataTypes.ContentTypeId).Name) { }
                 //else if (valueType == typeof(DataTypes.Counter).Name) new IntegerValueOperand(value);
-                else if (valueType == typeof(DataTypes.Counter).Name) {}
+                else if (valueType == typeof(DataTypes.Counter).Name) { }
                 //else if (valueType == typeof(DataTypes.CrossProjectLink).Name) new BooleanValueOperand(value);
-                else if (valueType == typeof(DataTypes.CrossProjectLink).Name) {}
+                else if (valueType == typeof(DataTypes.CrossProjectLink).Name) { }
                 //else if (valueType == typeof(DataTypes.Currency).Name) new IntegerValueOperand(value);
-                else if (valueType == typeof(DataTypes.Currency).Name) {}
+                else if (valueType == typeof(DataTypes.Currency).Name) { }
                 //else if (valueType == typeof(DataTypes.DateTime).Name) new DateTimeValueOperand(value, false);
-                else if (valueType == typeof(DataTypes.DateTime).Name) {}
+                else if (valueType == typeof(DataTypes.DateTime).Name) { }
                 //else if (valueType == typeof(DataTypes.Error).Name) return false; // NOT SUPPORTED
-                else if (valueType == typeof(DataTypes.Error).Name) {}
+                else if (valueType == typeof(DataTypes.Error).Name) { }
                 else if (valueType == typeof(DataTypes.File).Name) { }
                 else if (valueType == typeof(DataTypes.GridChoice).Name) { }
                 else if (valueType == typeof(DataTypes.Guid).Name) new GuidValueOperand(value);
@@ -163,30 +164,30 @@ namespace CamlexNET.Impl.ReverseEngeneering
                     }
                 }
                 //else if (valueType == typeof(DataTypes.Invalid).Name) return false; // NOT SUPPORTED
-                else if (valueType == typeof(DataTypes.Invalid).Name) {}
-//                else if (valueType == typeof(DataTypes.LookupId).Name) new LookupIdValueOperand(value);
-//                else if (valueType == typeof(DataTypes.LookupValue).Name) new LookupValueValueOperand(value);
-                else if (valueType == typeof(DataTypes.Lookup).Name) {}
+                else if (valueType == typeof(DataTypes.Invalid).Name) { }
+                //                else if (valueType == typeof(DataTypes.LookupId).Name) new LookupIdValueOperand(value);
+                //                else if (valueType == typeof(DataTypes.LookupValue).Name) new LookupValueValueOperand(value);
+                else if (valueType == typeof(DataTypes.Lookup).Name) { }
                 //else if (valueType == typeof(DataTypes.MaxItems).Name) new IntegerValueOperand(value);
-                else if (valueType == typeof(DataTypes.MaxItems).Name) {}
-//                else if (valueType == typeof(DataTypes.ModStat).Name)
-//                {
-//                    if (!IsEnumValueValid(typeof(SPModerationStatusType), value)) return false;
-//                }
-                else if (valueType == typeof(DataTypes.ModStat).Name) {}
+                else if (valueType == typeof(DataTypes.MaxItems).Name) { }
+                //                else if (valueType == typeof(DataTypes.ModStat).Name)
+                //                {
+                //                    if (!IsEnumValueValid(typeof(SPModerationStatusType), value)) return false;
+                //                }
+                else if (valueType == typeof(DataTypes.ModStat).Name) { }
                 else if (valueType == typeof(DataTypes.MultiChoice).Name) { }
                 else if (valueType == typeof(DataTypes.Note).Name) { }
                 //else if (valueType == typeof(DataTypes.Number).Name) new IntegerValueOperand(value);
-                else if (valueType == typeof(DataTypes.Number).Name) {}
+                else if (valueType == typeof(DataTypes.Number).Name) { }
                 //else if (valueType == typeof(DataTypes.PageSeparator).Name) return false; // NOT SUPPORTED
-                else if (valueType == typeof(DataTypes.PageSeparator).Name) {}
+                else if (valueType == typeof(DataTypes.PageSeparator).Name) { }
                 //else if (valueType == typeof(DataTypes.Recurrence).Name) new BooleanValueOperand(value);
-                else if (valueType == typeof(DataTypes.Recurrence).Name) {}
+                else if (valueType == typeof(DataTypes.Recurrence).Name) { }
                 else if (valueType == typeof(DataTypes.Text).Name) { }
                 //else if (valueType == typeof(DataTypes.ThreadIndex).Name) new IntegerValueOperand(value);
-                else if (valueType == typeof(DataTypes.ThreadIndex).Name) {}
+                else if (valueType == typeof(DataTypes.ThreadIndex).Name) { }
                 //else if (valueType == typeof(DataTypes.Threading).Name) new BooleanValueOperand(value);
-                else if (valueType == typeof(DataTypes.Threading).Name) {}
+                else if (valueType == typeof(DataTypes.Threading).Name) { }
                 else if (valueType == typeof(DataTypes.URL).Name) { }
 //                else if (valueType == typeof(DataTypes.User).Name)
 //                {
@@ -204,7 +205,7 @@ namespace CamlexNET.Impl.ReverseEngeneering
 //                }
                 else if (valueType == typeof(DataTypes.WorkflowStatus).Name) {}
                 else return false;
-           }
+            }
             catch (InvalidValueForOperandTypeException) { return false; }
             return true;
         }
@@ -215,7 +216,7 @@ namespace CamlexNET.Impl.ReverseEngeneering
             if (!this.IsValid())
             {
                 throw new CamlAnalysisException(string.Format(
-                    "Can't create {0} from the following xml: {1}", typeof (T).Name, el));
+                    "Can't create {0} from the following xml: {1}", typeof(T).Name, el));
             }
 
             var fieldRefElement = el.Elements(Tags.FieldRef).First();

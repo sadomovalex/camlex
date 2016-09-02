@@ -24,43 +24,27 @@
 // fitness for a particular purpose and non-infringement.
 // -----------------------------------------------------------------------------
 #endregion
-
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Xml.Linq;
-using CamlexNET.Interfaces.ReverseEngeneering;
 
-namespace CamlexNET.Impl.ReverseEngeneering
+namespace CamlexNET.Impl.Operands
 {
-    // base class for Geq, Gt, Leq, Lt analyzers
-    internal abstract class ReComparisonBaseAnalyzer : ReBinaryExpressionBaseAnalyzer
+    internal class LookupMultiValueValueOperand : GenericStringBasedValueOperand
     {
-        protected ReComparisonBaseAnalyzer(XElement el, IReOperandBuilder operandBuilder) :
-            base(el, operandBuilder)
+        public LookupMultiValueValueOperand(string value)
+            : base(typeof(DataTypes.LookupMultiValue), value)
         {
         }
 
-        protected override bool isValueValid(string valueType, string value, bool isLookupId)
+        public override XElement ToCaml()
         {
-            if (!this.isOperationComparison(this.el))
-            {
-                return false;
-            }
-            // comparision is valid only for types which inherit BaseFieldTypeWithOperators
-            if (valueType != typeof(DataTypes.Calculated).Name &&
-                valueType != typeof(DataTypes.Computed).Name &&
-                valueType != typeof(DataTypes.Counter).Name &&
-                valueType != typeof(DataTypes.Currency).Name &&
-                valueType != typeof(DataTypes.DateTime).Name &&
-                valueType != typeof(DataTypes.Integer).Name &&
-                valueType != typeof(DataTypes.LookupId).Name &&
-                valueType != typeof(DataTypes.LookupMultiId).Name &&
-                valueType != typeof(DataTypes.Note).Name &&
-                valueType != typeof(DataTypes.Number).Name &&
-                valueType != typeof(DataTypes.Text).Name &&
-                valueType != typeof(DataTypes.ThreadIndex).Name)
-            {
-                return false;
-            }
-            return base.isValueValid(valueType, value, isLookupId);
+            // use Lookup type both for LookupValue operand and LookupId operand
+            return
+                new XElement(Tags.Value, new XAttribute(Attributes.Type, typeof(DataTypes.LookupMulti).Name),
+                    new XText(this.Value));
         }
     }
 }

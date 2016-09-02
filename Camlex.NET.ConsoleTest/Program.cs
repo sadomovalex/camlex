@@ -42,15 +42,16 @@ namespace CamlexNET.ConsoleTest
     {
         static void Main(string[] args)
         {
-            Scenario1();
-            Scenario2();
-            Scenario3();
-            Scenario4();
-            Scenario5();
-            Scenario6();
-            Scenario7();
-            Scenario8();
-            Scenario9();
+            //Scenario1();
+            //Scenario2();
+            //Scenario3();
+            //Scenario4();
+            //Scenario5();
+            //Scenario6();
+            //Scenario7();
+            //Scenario8();
+            //Scenario9();
+            Scenario20();
         }
 
         // Scenario 1. Simple query.
@@ -68,7 +69,7 @@ namespace CamlexNET.ConsoleTest
         {
             string caml =
                 Camlex.Query()
-                    .Where(x => (string) x["Status"] == "Completed").ToString();
+                    .Where(x => (string)x["Status"] == "Completed").ToString();
             Console.WriteLine(caml);
         }
 
@@ -261,6 +262,27 @@ namespace CamlexNET.ConsoleTest
                 Camlex.Query()
                     .Where(x => Camlex.DateRangesOverlap(
                         x["StartField"], x["StopField"], x["RecurrenceID"], (DataTypes.DateTime)Camlex.Month)).ToString();
+            Console.WriteLine(caml);
+        }
+        // Scenario 20. LookupMulti and LookupMultiID
+        // <Where>
+        //  <And>
+        //    <Eq>
+        //      <FieldRef Name = "Title" LookupId="True" />
+        //      <Value Type = "LookupMulti" > 5 </ Value >
+        //    </ Eq >
+        //    < Eq >
+        //      < FieldRef Name="LookupMulti" />
+        //      <Value Type = "LookupMulti" > Martin </ Value >
+        //    </ Eq >
+        //  </ And >
+        //</ Where >
+        public static void Scenario20()
+        {
+            var caml =
+                Camlex.Query()
+                    .Where(x => x["Title"] > (DataTypes.LookupMultiId)"5"
+                    && x["LookupMulti"] == (DataTypes.LookupMultiValue)"Martin").ToString();
             Console.WriteLine(caml);
         }
     }
