@@ -166,5 +166,73 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
             var expr = Camlex.QueryFromString(xml).ToExpression();
             Assert.That(expr.ToString(), Is.EqualTo("Query().Where(x => ((Convert(x.get_Item(\"foo1\")) && Not(Convert(x.get_Item(\"foo2\")))) || Convert(x.get_Item(\"foo3\"))))"));
         }
+
+        [Test]
+        public void test_THAT_expression_with_lookup_id_IS_translated_successfully()
+        {
+            var xml =
+                "<Query>" +
+                "  <Where>" +
+                "    <Eq>" +
+                "      <FieldRef Name=\"Title\" LookupId=\"True\" />" +
+                "      <Value Type=\"Lookup\">5</Value>" +
+                "    </Eq>" +
+                "  </Where>" +
+                "</Query>";
+
+            var expr = Camlex.QueryFromString(xml).ToExpression();
+            Assert.That(expr.ToString(), Is.EqualTo("Query().Where(x => (x.get_Item(\"Title\") = Convert(Convert(\"5\"))))"));
+        }
+
+        [Test]
+        public void test_THAT_expression_with_lookup_value_IS_translated_successfully()
+        {
+            var xml =
+                "<Query>" +
+                "  <Where>" +
+                "    <Eq>" +
+                "      <FieldRef Name=\"Title\" />" +
+                "      <Value Type=\"Lookup\">5</Value>" +
+                "    </Eq>" +
+                "  </Where>" +
+                "</Query>";
+
+            var expr = Camlex.QueryFromString(xml).ToExpression();
+            Assert.That(expr.ToString(), Is.EqualTo("Query().Where(x => (x.get_Item(\"Title\") = Convert(Convert(\"5\"))))"));
+        }
+
+        [Test]
+        public void test_THAT_expression_with_lookup_multi_id_IS_translated_successfully()
+        {
+            var xml =
+                "<Query>" +
+                "  <Where>" +
+                "    <Eq>" +
+                "      <FieldRef Name=\"Title\" LookupId=\"True\" />" +
+                "      <Value Type=\"LookupMulti\">5</Value>" +
+                "    </Eq>" +
+                "  </Where>" +
+                "</Query>";
+
+            var expr = Camlex.QueryFromString(xml).ToExpression();
+            Assert.That(expr.ToString(), Is.EqualTo("Query().Where(x => (x.get_Item(\"Title\") = Convert(Convert(\"5\"))))"));
+        }
+
+        [Test]
+        public void test_THAT_expression_with_lookup_multi_value_IS_translated_successfully()
+        {
+            var xml =
+                "<Query>" +
+                "  <Where>" +
+                "    <Eq>" +
+                "      <FieldRef Name=\"Title\" />" +
+                "      <Value Type=\"LookupMulti\">5</Value>" +
+                "    </Eq>" +
+                "  </Where>" +
+                "</Query>";
+
+            var expr = Camlex.QueryFromString(xml).ToExpression();
+            Assert.That(expr.ToString(), Is.EqualTo("Query().Where(x => (x.get_Item(\"Title\") = Convert(Convert(\"5\"))))"));
+        }
     }
 }

@@ -165,15 +165,16 @@ namespace CamlexNET.Impl.ReverseEngeneering
                 }
                 //else if (valueType == typeof(DataTypes.Invalid).Name) return false; // NOT SUPPORTED
                 else if (valueType == typeof(DataTypes.Invalid).Name) { }
-                //                else if (valueType == typeof(DataTypes.LookupId).Name) new LookupIdValueOperand(value);
-                //                else if (valueType == typeof(DataTypes.LookupValue).Name) new LookupValueValueOperand(value);
+                //else if (valueType == typeof(DataTypes.LookupId).Name) new LookupIdValueOperand(value);
+                //else if (valueType == typeof(DataTypes.LookupValue).Name) new LookupValueValueOperand(value);
                 else if (valueType == typeof(DataTypes.Lookup).Name) { }
+                else if (valueType == typeof(DataTypes.LookupMulti).Name) { }
                 //else if (valueType == typeof(DataTypes.MaxItems).Name) new IntegerValueOperand(value);
                 else if (valueType == typeof(DataTypes.MaxItems).Name) { }
-                //                else if (valueType == typeof(DataTypes.ModStat).Name)
-                //                {
-                //                    if (!IsEnumValueValid(typeof(SPModerationStatusType), value)) return false;
-                //                }
+                //else if (valueType == typeof(DataTypes.ModStat).Name)
+                //{
+                //    if (!IsEnumValueValid(typeof(SPModerationStatusType), value)) return false;
+                //}
                 else if (valueType == typeof(DataTypes.ModStat).Name) { }
                 else if (valueType == typeof(DataTypes.MultiChoice).Name) { }
                 else if (valueType == typeof(DataTypes.Note).Name) { }
@@ -189,20 +190,20 @@ namespace CamlexNET.Impl.ReverseEngeneering
                 //else if (valueType == typeof(DataTypes.Threading).Name) new BooleanValueOperand(value);
                 else if (valueType == typeof(DataTypes.Threading).Name) { }
                 else if (valueType == typeof(DataTypes.URL).Name) { }
-//                else if (valueType == typeof(DataTypes.User).Name)
-//                {
-//                    if (isLookupId) new UserIdValueOperand(value);
-//                }
+                //else if (valueType == typeof(DataTypes.User).Name)
+                //{
+                //    if (isLookupId) new UserIdValueOperand(value);
+                //}
                 else if (valueType == typeof(DataTypes.User).Name) {}
-//                else if (valueType == typeof(DataTypes.WorkflowEventType).Name)
-//                {
-//                    if (!IsEnumValueValid(typeof(SPWorkflowHistoryEventType), value)) return false;
-//                }
+                //else if (valueType == typeof(DataTypes.WorkflowEventType).Name)
+                //{
+                //    if (!IsEnumValueValid(typeof(SPWorkflowHistoryEventType), value)) return false;
+                //}
                 else if (valueType == typeof(DataTypes.WorkflowEventType).Name) {}
-//                else if (valueType == typeof(DataTypes.WorkflowStatus).Name)
-//                {
-//                    if (!IsEnumValueValid(typeof(SPWorkflowStatus), value)) return false;
-//                }
+                //else if (valueType == typeof(DataTypes.WorkflowStatus).Name)
+                //{
+                //    if (!IsEnumValueValid(typeof(SPWorkflowStatus), value)) return false;
+                //}
                 else if (valueType == typeof(DataTypes.WorkflowStatus).Name) {}
                 else return false;
             }
