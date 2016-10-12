@@ -334,10 +334,10 @@ namespace CamlexNET.ConsoleTest
         // Scenario 11. LookupMulti and LookupMultiID
         //<Where>
         //  <And>
-        //    <Lt>
+        //    <Gt>
         //      <FieldRef Name="Title" LookupId="True" />
         //      <Value Type="LookupMulti">5</Value>
-        //    </Lt>
+        //    </Gt>
         //    <Eq>
         //      <FieldRef Name="Author" />
         //      <Value Type="LookupMulti">Martin</Value>
