@@ -42,16 +42,17 @@ namespace CamlexNET.ConsoleTest
     {
         static void Main(string[] args)
         {
-            //Scenario1();
-            //Scenario2();
-            //Scenario3();
-            //Scenario4();
-            //Scenario5();
-            //Scenario6();
-            //Scenario7();
-            //Scenario8();
-            //Scenario9();
-            Scenario20();
+            Scenario1();
+            Scenario2();
+            Scenario3();
+            Scenario4();
+            Scenario5();
+            Scenario6();
+            Scenario7();
+            Scenario8();
+            Scenario9();
+            Scenario10();
+            Scenario11();
         }
 
         // Scenario 1. Simple query.
@@ -264,25 +265,91 @@ namespace CamlexNET.ConsoleTest
                         x["StartField"], x["StopField"], x["RecurrenceID"], (DataTypes.DateTime)Camlex.Month)).ToString();
             Console.WriteLine(caml);
         }
-        // Scenario 20. LookupMulti and LookupMultiID
+        // Scenario 10. List joins and fields projections
+        // Query:
         // <Where>
+        //   <And>
+        //     <Eq>
+        //       <FieldRef Name="CustomerCity" />
+        //       <Value Type="Text">London</Value>
+        //     </Eq>
+        //     <Eq>
+        //       <FieldRef Name="CustomerCityState" />
+        //       <Value Type="Text">UK</Value>
+        //     </Eq>
+        //   </And>
+        // </Where>
+        //
+        // Joins:
+        // <Join Type="LEFT" ListAlias="Customers">
+        //   <Eq>
+        //     <FieldRef Name="CustomerName" RefType="Id" />
+        //     <FieldRef List="Customers" Name="Id" />
+        //   </Eq>
+        // </Join>
+        // <Join Type="LEFT" ListAlias="CustomerCities">
+        //   <Eq>
+        //     <FieldRef List="Customers" Name="CityName" RefType="Id" />
+        //     <FieldRef List="CustomerCities" Name="Id" />
+        //   </Eq>
+        // </Join>
+        // <Join Type="LEFT" ListAlias="CustomerCityStates">
+        //   <Eq>
+        //     <FieldRef List="CustomerCities" Name="StateName" RefType="Id" />
+        //     <FieldRef List="CustomerCityStates" Name="Id" />
+        //   </Eq>
+        // </Join>
+        //
+        // ProjectedFields:
+        // <Field Name="CustomerCity" Type="Lookup" List="CustomerCities" ShowField="Title" />
+        // <Field Name="CustomerCityState" Type="Lookup" List="CustomerCityStates" ShowField="Title" />
+        //
+        // ViewFields:
+        // <FieldRef Name="CustomerCity" />
+        // <FieldRef Name="CustomerCityState" />
+        public static void Scenario10()
+        {
+            string query = Camlex.Query().Where(x => (string)x["CustomerCity"] == "London" &&
+                (string)x["CustomerCityState"] == "UK").ToString();
+
+            string joins = Camlex.Query().Joins()
+                .Left(x => x["CustomerName"].ForeignList("Customers"))
+                .Left(x => x["CityName"].PrimaryList("Customers").ForeignList("CustomerCities"))
+                .Left(x => x["StateName"].PrimaryList("CustomerCities").ForeignList("CustomerCityStates"))
+                .ToString();
+
+            string projectedFields = Camlex.Query().ProjectedFields()
+                .Field(x => x["CustomerCity"].List("CustomerCities").ShowField("Title"))
+                .Field(x => x["CustomerCityState"].List("CustomerCityStates").ShowField("Title"))
+                .ToString();
+
+            string viewFields = Camlex.Query().ViewFields(x => new[] {x["CustomerCity"],
+                x["CustomerCityState"]});
+
+            Console.WriteLine(query);
+            Console.WriteLine(joins);
+            Console.WriteLine(projectedFields);
+            Console.WriteLine(viewFields);
+        }
+        // Scenario 11. LookupMulti and LookupMultiID
+        //<Where>
         //  <And>
         //    <Eq>
-        //      <FieldRef Name = "Title" LookupId="True" />
-        //      <Value Type = "LookupMulti" > 5 </ Value >
-        //    </ Eq >
-        //    < Eq >
-        //      < FieldRef Name="LookupMulti" />
-        //      <Value Type = "LookupMulti" > Martin </ Value >
-        //    </ Eq >
-        //  </ And >
-        //</ Where >
-        public static void Scenario20()
+        //      <FieldRef Name="Title" LookupId="True" />
+        //      <Value Type="LookupMulti">5</Value>
+        //    </Eq>
+        //    <Eq>
+        //      <FieldRef Name="Author" />
+        //      <Value Type="LookupMulti">Martin</Value>
+        //    </Eq>
+        //  </And>
+        //</Where>
+        public static void Scenario11()
         {
             var caml =
                 Camlex.Query()
                     .Where(x => x["Title"] > (DataTypes.LookupMultiId)"5"
-                    && x["LookupMulti"] == (DataTypes.LookupMultiValue)"Martin").ToString();
+                    && x["Author"] == (DataTypes.LookupMultiValue)"Martin").ToString();
             Console.WriteLine(caml);
         }
     }
