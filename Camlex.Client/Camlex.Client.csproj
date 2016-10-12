@@ -1,0 +1,210 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{99FC65CD-823C-47AA-9D68-0BB9F31CDC72}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CamlexNET</RootNamespace>
+    <AssemblyName>Camlex.Client</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>Camlex.NET.snk</AssemblyOriginatorKeyFile>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.SharePoint.Client, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Windows\assembly\GAC_MSIL\Microsoft.SharePoint.Client\14.0.0.0__71e9bce111e9429c\Microsoft.SharePoint.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client.Runtime, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Windows\assembly\GAC_MSIL\Microsoft.SharePoint.Client.Runtime\14.0.0.0__71e9bce111e9429c\Microsoft.SharePoint.Client.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Attributes.cs" />
+    <Compile Include="Camlex.cs" />
+    <Compile Include="DataTypes.cs" />
+    <Compile Include="ErrorMessages.cs" />
+    <Compile Include="Exceptions.cs" />
+    <Compile Include="ExtensionMethods.cs" />
+    <Compile Include="Impl\BaseAnalyzer.cs" />
+    <Compile Include="Impl\BinaryExpressionBaseAnalyzer.cs" />
+    <Compile Include="Impl\BinaryOperationBase.cs" />
+    <Compile Include="Impl\CompositeExpressionBaseAnalyzer.cs" />
+    <Compile Include="Impl\CompositeOperationBase.cs" />
+    <Compile Include="Impl\Operands\LookupMultiValueValueOperand.cs" />
+    <Compile Include="Impl\Operands\LookupMultiIdValueOperand.cs" />
+    <Compile Include="Impl\Operations\ProjectedField\ProjectedFieldAnalyzer.cs" />
+    <Compile Include="Impl\Operations\ProjectedField\ProjectedFieldOperation.cs" />
+    <Compile Include="Impl\Helpers\ConvertHelper.cs" />
+    <Compile Include="Impl\Helpers\ExpressionsHelper.cs" />
+    <Compile Include="Impl\Operands\BooleanValueOperand.cs" />
+    <Compile Include="Impl\Operands\ConstantOperand.cs" />
+    <Compile Include="Impl\Operands\ValuesValueOperand.cs" />
+    <Compile Include="Impl\Operands\NumberValueOperand.cs" />
+    <Compile Include="Impl\Operands\UserIdConstValueOperand.cs" />
+    <Compile Include="Impl\Operands\UserIdValueOperand.cs" />
+    <Compile Include="Impl\Operands\LookupValueValueOperand.cs" />
+    <Compile Include="Impl\Operands\GuidValueOperand.cs" />
+    <Compile Include="Impl\Operands\DateTimeValueOperand.cs" />
+    <Compile Include="Impl\Operands\GenericStringBasedValueOperand.cs" />
+    <Compile Include="Impl\Operands\LookupIdValueOperand.cs" />
+    <Compile Include="Impl\Operations\BeginsWith\BeginsWithAnalyzer.cs" />
+    <Compile Include="Impl\Operations\BeginsWith\BeginsWithOperation.cs" />
+    <Compile Include="Impl\Operations\Constant\ConstantAnalyzer.cs" />
+    <Compile Include="Impl\Operations\Constant\ConstantOperation.cs" />
+    <Compile Include="Impl\Operations\Contains\ContainsAnalyzer.cs" />
+    <Compile Include="Impl\Operations\Contains\ContainsOperation.cs" />
+    <Compile Include="Impl\Operations\DateRangesOverlap\DateRangesOverlapAnalyzer.cs" />
+    <Compile Include="Impl\Operations\DateRangesOverlap\DateRangesOverlapOperation.cs" />
+    <Compile Include="Impl\Operations\In\InAnalyzer.cs" />
+    <Compile Include="Impl\Operations\In\InOperation.cs" />
+    <Compile Include="Impl\Operations\Join\JoinOperation.cs" />
+    <Compile Include="Impl\Operations\Join\JoinAnalyzer.cs" />
+    <Compile Include="Impl\Query.cs" />
+    <Compile Include="Impl\ReverseEngeneering\Caml\Analyzers\ReConstantAnalyzer.cs" />
+    <Compile Include="Impl\ReverseEngeneering\Caml\Analyzers\ReProjectedFieldsAnalyzer.cs" />
+    <Compile Include="Impl\ReverseEngeneering\Caml\Analyzers\ReJoinAnalyzer.cs" />
+    <Compile Include="Impl\ReverseEngeneering\Caml\Analyzers\ReInAnalyzer.cs" />
+    <Compile Include="Impl\ReverseEngeneering\Caml\Analyzers\ReAndAlsoAnalyzer.cs" />
+    <Compile Include="Impl\ReverseEngeneering\Caml\Analyzers\ReBeginsWithAnalyzer.cs" />
+    <Compile Include="Impl\ReverseEngeneering\Caml\Analyzers\ReContainsAnalyzer.cs" />
+    <Compile Include="Impl\ReverseEngeneering\Caml\Analyzers\ReDateRangesOverlapAnalyzer.cs" />
+    <Compile Include="Impl\ReverseEngeneering\Caml\Analyzers\ReIsNotNullAnalyzer.cs" />
+    <Compile Include="Impl\ReverseEngeneering\Caml\Analyzers\ReIsNullAnalyzer.cs" />
+    <Compile Include="Impl\ReverseEngeneering\Caml\Analyzers\ReGeqAnalyzer.cs" />
+    <Compile Include="Impl\ReverseEngeneering\Caml\Analyzers\ReGtAnalyzer.cs" />
+    <Compile Include="Impl\ReverseEngeneering\Caml\Analyzers\ReLeqAnalyzer.cs" />
+    <Compile Include="Impl\ReverseEngeneering\Caml\Analyzers\ReLtAnalyzer.cs" />
+    <Compile Include="Impl\ReverseEngeneering\Caml\Analyzers\ReNeqAnalyzer.cs" />
+    <Compile Include="Impl\ReverseEngeneering\Caml\Analyzers\ReOrElseAnalyzer.cs" />
+    <Compile Include="Impl\ReverseEngeneering\ReComparisonBaseAnalyzer.cs" />
+    <Compile Include="Impl\ReverseEngeneering\ReCompositeExpressionBaseAnalyzer.cs" />
+    <Compile Include="Impl\ReverseEngeneering\ReNullabilityBaseAnalyzer.cs" />
+    <Compile Include="Impl\ReverseEngeneering\ReBinaryExpressionBaseAnalyzer.cs" />
+    <Compile Include="Impl\ReverseEngeneering\Caml\Analyzers\ReArrayAnalyzer.cs" />
+    <Compile Include="Impl\ReverseEngeneering\Caml\Analyzers\ReEqAnalyzer.cs" />
+    <Compile Include="Impl\ReverseEngeneering\ReBaseAnalyzer.cs" />
+    <Compile Include="Impl\ReverseEngeneering\Caml\Factories\ReAnalyzerFromCamlFactory.cs" />
+    <Compile Include="Impl\ReverseEngeneering\Caml\Factories\ReLinkerFromCamlFactory.cs" />
+    <Compile Include="Impl\ReverseEngeneering\Caml\Factories\ReOperandBuilderFromCaml.cs" />
+    <Compile Include="Impl\ReverseEngeneering\Caml\Factories\ReTranslatorFromCamlFactory.cs" />
+    <Compile Include="Impl\ReverseEngeneering\Caml\ReLinkerFromCaml.cs" />
+    <Compile Include="Impl\ReverseEngeneering\ReQuery.cs" />
+    <Compile Include="Impl\ReverseEngeneering\Caml\ReTranslatorFromCaml.cs" />
+    <Compile Include="Impl\UnaryExpressionBaseAnalyzer.cs" />
+    <Compile Include="Impl\UnaryOperationBase.cs" />
+    <Compile Include="Impl\Factories\AnalyzerFactory.cs" />
+    <Compile Include="Impl\Factories\OperandBuilder.cs" />
+    <Compile Include="Impl\Factories\OperationResultBuilder.cs" />
+    <Compile Include="Impl\Factories\TranslatorFactory.cs" />
+    <Compile Include="Impl\NullabilityBaseAnalyzer.cs" />
+    <Compile Include="Impl\Operands\FieldRefOperandWithOrdering.cs" />
+    <Compile Include="Impl\Operands\NullValueOperand.cs" />
+    <Compile Include="Impl\Operands\TextValueOperand.cs" />
+    <Compile Include="Impl\Operands\IntegerValueOperand.cs" />
+    <Compile Include="Impl\Operands\FieldRefOperand.cs" />
+    <Compile Include="Impl\GenericTranslator.cs" />
+    <Compile Include="Impl\Operands\ValueOperand.cs" />
+    <Compile Include="Impl\Operations\AndAlso\AndAlsoAnalyzer.cs" />
+    <Compile Include="Impl\Operations\AndAlso\AndAlsoOperation.cs" />
+    <Compile Include="Impl\Operations\Array\ArrayAnalyzer.cs" />
+    <Compile Include="Impl\Operations\Array\ArrayOperation.cs" />
+    <Compile Include="Impl\Operations\Neq\NeqAnalyzer.cs" />
+    <Compile Include="Impl\Operations\Neq\NeqOperation.cs" />
+    <Compile Include="Impl\Operations\IsNull\IsNullAnalyzer.cs" />
+    <Compile Include="Impl\Operations\IsNull\IsNullOperation.cs" />
+    <Compile Include="Impl\Operations\IsNotNull\IsNotNullAnalyzer.cs" />
+    <Compile Include="Impl\Operations\IsNotNull\IsNotNullOperation.cs" />
+    <Compile Include="Impl\Operations\Lt\LtAnalyzer.cs" />
+    <Compile Include="Impl\Operations\Lt\LtOperation.cs" />
+    <Compile Include="Impl\Operations\Leq\LeqAnalyzer.cs" />
+    <Compile Include="Impl\Operations\Leq\LeqOperation.cs" />
+    <Compile Include="Impl\Operations\Gt\GtAnalyzer.cs" />
+    <Compile Include="Impl\Operations\Gt\GtOperation.cs" />
+    <Compile Include="Impl\Operations\Eq\EqAnalyzer.cs" />
+    <Compile Include="Impl\Operations\Eq\EqOperation.cs" />
+    <Compile Include="Impl\Operations\Geq\GeqAnalyzer.cs" />
+    <Compile Include="Impl\Operations\Geq\GeqOperation.cs" />
+    <Compile Include="Impl\OperationBase.cs" />
+    <Compile Include="Impl\Operations\OrElse\OrElseAnalyzer.cs" />
+    <Compile Include="Impl\Operations\OrElse\OrElseOperation.cs" />
+    <Compile Include="Impl\Operations\Results\XElementArrayOperationResult.cs" />
+    <Compile Include="Impl\Operations\Results\XElementOperationResult.cs" />
+    <Compile Include="Interfaces\IAnalyzer.cs" />
+    <Compile Include="Interfaces\IAnalyzerFactory.cs" />
+    <Compile Include="Interfaces\IOperand.cs" />
+    <Compile Include="Interfaces\IOperandBuilder.cs" />
+    <Compile Include="Interfaces\IOperation.cs" />
+    <Compile Include="Interfaces\IOperationResult.cs" />
+    <Compile Include="Interfaces\IOperationResultBuilder.cs" />
+    <Compile Include="Interfaces\IQuery.cs" />
+    <Compile Include="Interfaces\ITranslator.cs" />
+    <Compile Include="Interfaces\ITranslatorFactory.cs" />
+    <Compile Include="Interfaces\ReverseEngeneering\IReLinker.cs" />
+    <Compile Include="Interfaces\ReverseEngeneering\IReLinkerFactory.cs" />
+    <Compile Include="Interfaces\ReverseEngeneering\IReOperationResult.cs" />
+    <Compile Include="Interfaces\ReverseEngeneering\IReOperandBuilder.cs" />
+    <Compile Include="Interfaces\ReverseEngeneering\IReAnalyzer.cs" />
+    <Compile Include="Interfaces\ReverseEngeneering\IReAnalyzerFactory.cs" />
+    <Compile Include="Interfaces\ReverseEngeneering\IReQuery.cs" />
+    <Compile Include="Interfaces\ReverseEngeneering\IReTranslator.cs" />
+    <Compile Include="Interfaces\ReverseEngeneering\IReTranslatorFactory.cs" />
+    <Compile Include="JoinType.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReflectionHelper.cs" />
+    <Compile Include="Tags.cs" />
+    <Compile Include="Values.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Camlex.NET.snk" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
