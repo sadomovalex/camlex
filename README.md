@@ -6,4 +6,4 @@ Documentation can be found here: https://github.com/sadomovalex/camlex/blob/mast
 
 Project license: https://github.com/sadomovalex/camlex/blob/master/docs/license.md
 
-Migration of open issues and discussions is in progress, please be patience.
+Migration of open issues and discussions is in progress, please be patient.
