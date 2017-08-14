@@ -16,13 +16,13 @@ You can convert your existing CAML queries to C# code for Camlex.NET using onlin
 ## Installation Instructions
 In order to start working with Camlex.NET, please download and reference Camlex.NET.dll assembly in your project. After that you can create CAML queries using lambda expressions.
 Starting from version 3.0 you can install NuGet package for Camlex from online packages gallery:
-{{
+```
 Install-Package Camlex.NET.dll
-}}
+```
 or Client version:
-{{
+```
 Install-Package Camlex.Client.dll
-}}
+```
 
 ## Quick Start
 Camlex.NET is a new technique in Sharepoint development. It abstracts developers from syntax of CAML queries and helps them to concentrate on business tasks. With Camlex.NET developers could think about WHAT they need to do, instead of HOW to do it. It also brings the following advantages for Sharepoint developers:
