@@ -12,7 +12,6 @@ Version for Client object model is also available. It can be downloaded also fro
 
 ## Online version
 You can convert your existing CAML queries to C# code for Camlex.NET using online service powered by Camlex: [http://camlex-online.org](http://camlex-online.org).
-![powered by ndepend](Home_ndepend.png|http://www.ndepend.com)
 
 ## Installation Instructions
 In order to start working with Camlex.NET, please download and reference Camlex.NET.dll assembly in your project. After that you can create CAML queries using lambda expressions.
