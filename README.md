@@ -39,25 +39,25 @@ Now let's consider some basic scenarios:
 
 **Scenario 1. Simple query**
 Suppose that you need to select all items which have Status field set to Completed (following is the standard syntax of CAML):
-{code:xml}
+```xml
 <Where>
   <Eq>
     <FieldRef Name="Status" />
     <Value Type="Text">Completed</Value>
   </Eq>
 </Where>
-{code:xml}
+```
 This query can be made with Camlex using the following syntax:
-{code:c#}
+```csharp
 string caml =
     Camlex.Query()
         .Where(x => (string)x["Status"](_Status_) == "Completed").ToString();
-{code:c#}
+```
 Notice, other comparison operations like “<”, “<=”, “>”, “>=” are supported as well.
 
 **Scenario 2. Query with “and”/”or” conditions**
 Suppose that you need to select items which have ProductID = 1000 and IsCompleted set to false or null. Syntax of appropriate standard CAML query follows:
-{code:xml}
+```xml
 <Where>
   <And>
     <Eq>
@@ -75,35 +75,35 @@ Suppose that you need to select items which have ProductID = 1000 and IsComplete
     </Or>
   </And>
 </Where>
-{code:xml}
+```
 With help of Camlex it could be converted using following natural syntax:
-{code:c#}
+```csharp
 var caml =
     Camlex.Query()
         .Where(x => (int)x["ProductID"](_ProductID_) == 1000 && ((bool)x["IsCompleted"](_IsCompleted_)(_IsCompleted_) == false || x["IsCompleted"](_IsCompleted_)(_IsCompleted_) == null))
             .ToString();
-{code:c#}
+```
 
 **Scenario 3. Query with DateTime**
 Lets suppose that you need to retrieve items which were modified on 01-Jan-2010:
-{code:xml}
+```xml
 <Where>
   <Eq>
     <FieldRef Name="Modified" />
     <Value Type="DateTime">2010-01-01T12:00:00Z</Value>
   </Eq>
 </Where>
-{code:xml}
+```
 Using Camlex you can simply write:
-{code:c#}
+```csharp
 var caml =
     Camlex.Query()
         .Where(x => (DateTime)x["Modified"](_Modified_) == new DateTime(2010, 01, 01)).ToString();
-{code:c#}
+```
 
 **Scenario 4. Query with BeginsWith and Contains operations**
 Consider the query that should return items which Title field starts with “Task” and Project field contains “Camlex”:
-{code:xml}
+```xml
 <Where>
   <And>
     <BeginsWith>
@@ -116,36 +116,36 @@ Consider the query that should return items which Title field starts with “Tas
     </Contains>
   </And>
 </Where>
-{code:xml}
+```
 You can achieve result using the following natural syntax:
-{code:c#}
+```csharp
 var caml =
     Camlex.Query()
         .Where(x => ((string)x["Title"](_Title_)).StartsWith("Task") && ((string)x["Project"](_Project_)).Contains("Camlex"))
             .ToString();
-{code:c#}
+```
 
 **Scenario 5. Query with none C# native data types**
 Suppose that you need to retrieve all items modified by Administrator:
-{code:xml}
+```xml
 <Where>
   <Eq>
     <FieldRef Name="Editor" />
     <Value Type="User">Administrator</Value>
   </Eq>
 </Where>
-{code:xml}
+```
 Notice that value is of Sharepoint-specific User data type. You can easily achieve the result with alternative string-based syntax:
-{code:c#}
+```csharp
 var caml =
     Camlex.Query()
         .Where(x => x["Editor"](_Editor_) == (DataTypes.User)"Administrator")
                 .ToString();
-{code:c#}
+```
 
 **Scenario 6. Query with sorting (OrderBy)**
 Suppose that you need to select all items which have ID >= 5 and the result should be sorted by Modified field:
-{code:xml}
+```xml
 <Where>
   <Geq>
     <FieldRef Name="ID" />
@@ -155,18 +155,18 @@ Suppose that you need to select all items which have ID >= 5 and the result shou
 <OrderBy>
   <FieldRef Name="Modified" />
 </OrderBy>
-{code:xml}
+```
 You need to write the following Camlex expression in order to construct this query:
-{code:c#}
+```csharp
 var caml =
     Camlex.Query()
         .Where(x => (int)x["ID"](_ID_) >= 5)
         .OrderBy(x => x["Modified"](_Modified_)).ToString();
-{code:c#}
+```
 
 **Scenario 7. Query with grouping (GroupBy)**
 Suppose that we need to select items having not-null Status field and result set should be grouped by Author field:
-{code:xml}
+```xml
 <Where>
   <IsNotNull>
     <FieldRef Name="Status" />
@@ -175,48 +175,48 @@ Suppose that we need to select items having not-null Status field and result set
 <GroupBy>
   <FieldRef Name="Author" />
 </GroupBy>
-{code:xml}
+```
 With Camlex you could simply rewrite it as:
-{code:c#}
+```csharp
 var caml =
     Camlex.Query()
         .Where(x => x["Status"](_Status_) != null)
         .GroupBy(x => x["Author"](_Author_)).ToString();
-{code:c#}
+```
 
 **Scenario 8. Query with non-constant expressions in lvalue and rvalue**
 Non-constant expression gives you more control over CAML. Suppose that you need to select items depending on current locale: for English locale you need to select items which have TitleEng field set to “eng”; for non-English locale you need to select items which have Title field set to “non-eng”. I.e.:
 Query for English locale:
-{code:xml}
+```xml
 <Where>
   <Eq>
     <FieldRef Name="TitleEng" />
     <Value Type="Text">eng</Value>
   </Eq>
 </Where>
-{code:xml}
+```
 Query for non-English locale:
-{code:xml}
+```xml
 <Where>
   <Eq>
     <FieldRef Name="Title" />
     <Value Type="Text">non-eng</Value>
   </Eq>
 </Where>
-{code:xml}
+```
 It is not so hard with Camlex:
-{code:c#}
+```csharp
 bool isEng = true; // or false depending on Thread.CurrentThread.CurrentUICulture
 
 var caml =
     Camlex.Query()
-        .Where(x => (string)x[isEng ? "TitleEng" : "Title"](isEng-_-_TitleEng_-_-_Title_) == (isEng ? "eng" : "non-eng")).ToString();
-{code:c#}
+        .Where(x => (string)x[isEng ? "TitleEng" : "Title"] == (isEng ? "eng" : "non-eng")).ToString();
+```
 
 **Scenario 9. Dynamic filtering conditions**
 Starting with 2.0 version you can build dynamic filtering conditions and join them using WhereAll/WhereAny methods which use And/Or logical joins respectively.
 Suppose that we need to retrieve all items which contain at least one of the values {“hello”, “greeting”, “hi”} in Title field. I.e. we need to use the following CAML query:
-{code:xml}
+```xml
 <Where>
   <Or>
     <Or>
@@ -235,9 +235,9 @@ Suppose that we need to retrieve all items which contain at least one of the val
     </Contains>
   </Or>
 </Where>
-{code:xml}
+```
 With Camlex.NET 2.0 we can create lambda expression for each condition and pass them into new WhereAny method:
-{code:c#}
+```csharp
 // list of tokens
 var tokens = new List<string> { "hello", "greeting", "hi" };
 var expressions = new List<Expression<Func<SPListItem, bool>>>();
@@ -251,12 +251,12 @@ foreach (string t in tokens)
 
 // prepare query
 var caml = Camlex.Query().WhereAny(expressions).ToString();
-{code:c#}
+```
 
 **Note**: in the example above it is **important** to create local variable "string token" inside loop body and assign current token to it. Without it resulting query will use only last token for all conditions. This is because of lazy expressions implementation in .Net 3.5).
 
 Also it is possible to create more complex dynamic CAML queries using ExpressionsHelper class which allows to combine using Or or And operations other existing conditions:
-{code:c#}
+```csharp
 public static class ExpressionsHelper
 {
     public static Expression<Func<SPListItem, bool>> CombineAnd(
@@ -271,10 +271,10 @@ public static class ExpressionsHelper
         ...
     }
 }
-{code:c#}
+```
 
 It can be used like that:
-{code:c#}
+```csharp
 // Language = Russian or Language = English
 var languageConditions = new List<Expression<Func<SPListItem, bool>>>();
 languageConditions.Add(x => (string)x["Language"](_Language_) == "Russian");
@@ -298,10 +298,10 @@ expressions.Add(langExpr);
 expressions.Add(extExpr);
 
 string query = CamlexNET.Camlex.Query().WhereAll(expressions).ToString();
-{code:c#}
+```
 
 In result we will get the following CAML:
-{code:xml}
+```xml
 <Where>
   <And>
     <Or>
@@ -332,11 +332,11 @@ In result we will get the following CAML:
     </Or>
   </And>
 </Where>
-{code:xml}
+```
 
 **Scenario 10. List joins**
 Starting with version 4.0 (and Camlex.Client 2.0) it became possible to create list joins and fields projections:
-{code:c#}
+```csharp
 var query = new SPQuery();
  
 query.Query = Camlex.Query().Where(x => (string)x["CustomerCity"](_CustomerCity_) == "London" &&
@@ -355,11 +355,11 @@ query.ProjectedFields = Camlex.Query().ProjectedFields()
  
 query.ViewFields = Camlex.Query().ViewFields(x => new[]() {x["CustomerCity"](_CustomerCity_),
     x["CustomerCityState"](_CustomerCityState_)});
-{code:c#}
+```
 
 In this example we will get the following CAML for different SPQuery properties:
 Query:
-{code:xml}
+```xml
 <Where>
   <And>
     <Eq>
@@ -372,10 +372,10 @@ Query:
     </Eq>
   </And>
 </Where>
-{code:xml}
+```
 
 Joins:
-{code:xml}
+```xml
 <Join Type="LEFT" ListAlias="Customers">
   <Eq>
     <FieldRef Name="CustomerName" RefType="Id" />
@@ -394,31 +394,31 @@ Joins:
     <FieldRef List="CustomerCityStates" Name="Id" />
   </Eq>
 </Join>
-{code:xml}
+```
 
 ProjectedFields:
-{code:xml}
+```xml
 <Field Name="CustomerCity" Type="Lookup" List="CustomerCities" ShowField="Title" />
 <Field Name="CustomerCityState" Type="Lookup" List="CustomerCityStates" ShowField="Title" />
-{code:xml}
+```
 
 ViewFields:
-{code:xml}
+```xml
 <FieldRef Name="CustomerCity" />
 <FieldRef Name="CustomerCityState" />
-{code:xml}
+```
 
 **Scenario 11. Support for LookupMulti field type**
 Starting with version 4.2 (and Camlex.Client 2.2) LookupMulti field type is supported (with possibility to specify LookupId="True" in FieldRef):
-{code:c#}
+```csharp
 var caml =
     Camlex.Query()
         .Where(x => x["Title"](_Title_) > (DataTypes.LookupMultiId)"5"
         && x["Author"](_Author_) == (DataTypes.LookupMultiValue)"Martin").ToString();
-{code:c#}
+```
 
 This example will produce the following CAML:
-{code:xml}
+```xml
 <Where>
   <And>
     <Gt>
@@ -431,4 +431,4 @@ This example will produce the following CAML:
     </Eq>
   </And>
 </Where>
-{code:xml}
+```
