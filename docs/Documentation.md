@@ -9,7 +9,7 @@ Generally Camlex – is translator from lambda expression into CAML:
 ![](Documentation_architecture.jpg)
 It receives expression like
 ```csharp
-x => (int)x["ID"](_ID_) == 1
+x => (int)x["ID"] == 1
 ```
 on input and translate it to valid CAML query. The exact signature of lambda expressions depends on method call of Camlex public interface. The most important interface in Camlex.NET assembly is IQuery and its implementation – Query class:
 ```csharp
@@ -63,33 +63,19 @@ The list of operations available in CAML query can be found on [http://msdn.micr
 | CAML | C# | Example |
 -------|----|----------
 | And | && | {"Camlex.Query().Where(x => (string) x["Status"] == "Completed" && (int) x["ID"] == 1)"} |
--------|----|----------
-| Or | {"||"}  | {"Camlex.Query().Where(x => (string)x["Status"] != "Completed" || x["Status"] == null)"} |
--------|----|----------
+| Or |   | {"Camlex.Query().Where(x => (string)x["Status"] != "Completed" || x["Status"] == null)"} |
 | BeginsWith | String. StartsWith() | {"Camlex.Query().Where(x => ((string)x["Title"]).StartsWith("Camlex"))"} |
--------|----|----------
 | Contains | String. Contains() | {"Camlex.Query().Where(x => ((string)x["Title "]).Contains("Camlex"))"} |
--------|----|----------
 | Eq | == | {"Camlex.Query().Where(x => (string)x["Title"] == "Camlex")"} |
--------|----|----------
 | Neq | != | {"Camlex.Query().Where(x => (string)x["Status"] != "Completed")"} |
--------|----|----------
 | Geq | >= | {"Camlex.Query().Where(x => (int)x["ID"] >= 1)"} |
--------|----|----------
 | Gt | > | {"Camlex.Query().Where(x => (int)x["ID"] > 1)"} |
--------|----|----------
 | Leq | <= | {"Camlex.Query().Where(x => (int)x["ID"] <= 1)"} |
--------|----|----------
 | Lt | < | {"Camlex.Query().Where(x => (int)x["ID"] < 1)"} |
--------|----|----------
 | DateRangesOverlap | Camlex.DateRangesOverlap() | {"Camlex.Query().Where(x => Camlex.DateRangesOverlap(x["StartField"], x["StopField"], x["RecurrenceID"], (DataTypes.DateTime)Camlex.Month))"} |
--------|----|----------
 | IsNotNull | != null | {"Camlex.Query().Where(x => x["Status"] != null)"} |
--------|----|----------
 | IsNull | == null | {"Camlex.Query().Where(x => x["Title"] == null)"} |
--------|----|----------
 | OrderBy	 | IQuery.OrderBy() | {"Camlex.Query().Where(x => (string)x["Status"] == "Completed").OrderBy(x => x["Modified"] as Camlex.Desc)"} |
--------|----|----------
 | GroupBy | IQuery.GroupBy | {"Camlex.Query().Where(x => (string)x["Status"] == "Completed").GroupBy(x => new[]() { x["Modified"], x["Editor"] }, true, 10)"} |
 
 **IV. Non-constant expressions and runtime evaluation**
@@ -178,8 +164,8 @@ Notice that you can create various expressions – i.e. not necessary to create 
 It can be done using the following code:
 ```csharp
 var expressions = new List<Expression<Func<SPListItem, bool>>>();
-expressions.Add(x => (int)x["ID"](_ID_) == 1);
-expressions.Add(y => (string)y["Title"](_Title_) == "Hello world");
+expressions.Add(x => (int)x["ID"] == 1);
+expressions.Add(y => (string)y["Title"] == "Hello world");
 
 string caml = Camlex.Query().WhereAll(expressions).ToString();
 ```
