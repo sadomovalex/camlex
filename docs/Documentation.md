@@ -45,7 +45,7 @@ Internally Camlex uses expression trees in order to parse lambda expressions and
 # Native syntax:
 ```csharp
 x => (int)x["ID"] == 1
-```csharp
+```
 I.e. you write integer rvalue and cast lvalue to int
 # String based syntax:
 ```csharp
@@ -60,23 +60,24 @@ What happens if Camlex cannot parse lambda expression? As described above there 
 
 **III. Supported operations**
 The list of operations available in CAML query can be found on [http://msdn.microsoft.com/en-us/library/ms467521.aspx](http://msdn.microsoft.com/en-us/library/ms467521.aspx). Camlex supports all of them. The following table shows mapping from C# operations into CAML with examples:
+
 | CAML | C# | Example |
 -------|----|----------
-| And | && | {"Camlex.Query().Where(x => (string) x["Status"] == "Completed" && (int) x["ID"] == 1)"} |
-| Or |   | {"Camlex.Query().Where(x => (string)x["Status"] != "Completed" || x["Status"] == null)"} |
-| BeginsWith | String. StartsWith() | {"Camlex.Query().Where(x => ((string)x["Title"]).StartsWith("Camlex"))"} |
-| Contains | String. Contains() | {"Camlex.Query().Where(x => ((string)x["Title "]).Contains("Camlex"))"} |
-| Eq | == | {"Camlex.Query().Where(x => (string)x["Title"] == "Camlex")"} |
-| Neq | != | {"Camlex.Query().Where(x => (string)x["Status"] != "Completed")"} |
-| Geq | >= | {"Camlex.Query().Where(x => (int)x["ID"] >= 1)"} |
-| Gt | > | {"Camlex.Query().Where(x => (int)x["ID"] > 1)"} |
-| Leq | <= | {"Camlex.Query().Where(x => (int)x["ID"] <= 1)"} |
-| Lt | < | {"Camlex.Query().Where(x => (int)x["ID"] < 1)"} |
-| DateRangesOverlap | Camlex.DateRangesOverlap() | {"Camlex.Query().Where(x => Camlex.DateRangesOverlap(x["StartField"], x["StopField"], x["RecurrenceID"], (DataTypes.DateTime)Camlex.Month))"} |
-| IsNotNull | != null | {"Camlex.Query().Where(x => x["Status"] != null)"} |
-| IsNull | == null | {"Camlex.Query().Where(x => x["Title"] == null)"} |
-| OrderBy	 | IQuery.OrderBy() | {"Camlex.Query().Where(x => (string)x["Status"] == "Completed").OrderBy(x => x["Modified"] as Camlex.Desc)"} |
-| GroupBy | IQuery.GroupBy | {"Camlex.Query().Where(x => (string)x["Status"] == "Completed").GroupBy(x => new[]() { x["Modified"], x["Editor"] }, true, 10)"} |
+| And | && | ```Camlex.Query().Where(x => (string) x["Status"] == "Completed" && (int) x["ID"] == 1)``` |
+| Or | \|\|  | ```Camlex.Query().Where(x => (string)x["Status"] != "Completed" || x["Status"] == null)``` |
+| BeginsWith | String StartsWith() | ```Camlex.Query().Where(x => ((string)x["Title"]).StartsWith("Camlex"))``` |
+| Contains | String.Contains() | ```Camlex.Query().Where(x => ((string)x["Title "]).Contains("Camlex"))``` |
+| Eq | == | ```Camlex.Query().Where(x => (string)x["Title"] == "Camlex")``` |
+| Neq | != | ```Camlex.Query().Where(x => (string)x["Status"] != "Completed")``` |
+| Geq | >= | ```Camlex.Query().Where(x => (int)x["ID"] >= 1)``` |
+| Gt | > | ```Camlex.Query().Where(x => (int)x["ID"] > 1)``` |
+| Leq | <= | ```Camlex.Query().Where(x => (int)x["ID"] <= 1)``` |
+| Lt | < | ```Camlex.Query().Where(x => (int)x["ID"] < 1)``` |
+| DateRangesOverlap | Camlex.DateRangesOverlap() | ```Camlex.Query().Where(x => Camlex.DateRangesOverlap(x["StartField"], x["StopField"], x["RecurrenceID"], (DataTypes.DateTime)Camlex.Month))``` |
+| IsNotNull | != null | ```Camlex.Query().Where(x => x["Status"] != null)``` |
+| IsNull | == null | ```Camlex.Query().Where(x => x["Title"] == null)``` |
+| OrderBy	 | IQuery.OrderBy() | ```Camlex.Query().Where(x => (string)x["Status"] == "Completed").OrderBy(x => x["Modified"] as Camlex.Desc)``` |
+| GroupBy | IQuery.GroupBy | ```Camlex.Query().Where(x => (string)x["Status"] == "Completed").GroupBy(x => new[]() { x["Modified"], x["Editor"] }, true, 10)``` |
 
 **IV. Non-constant expressions and runtime evaluation**
 You can specify non-constant expressions both in indexer and in rvalue:
