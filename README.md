@@ -51,7 +51,7 @@ This query can be made with Camlex using the following syntax:
 ```csharp
 string caml =
     Camlex.Query()
-        .Where(x => (string)x["Status"](_Status_) == "Completed").ToString();
+        .Where(x => (string)x["Status"] == "Completed").ToString();
 ```
 Notice, other comparison operations like “<”, “<=”, “>”, “>=” are supported as well.
 
@@ -80,7 +80,7 @@ With help of Camlex it could be converted using following natural syntax:
 ```csharp
 var caml =
     Camlex.Query()
-        .Where(x => (int)x["ProductID"](_ProductID_) == 1000 && ((bool)x["IsCompleted"](_IsCompleted_)(_IsCompleted_) == false || x["IsCompleted"](_IsCompleted_)(_IsCompleted_) == null))
+        .Where(x => (int)x["ProductID"] == 1000 && ((bool)x["IsCompleted"] == false || x["IsCompleted"] == null))
             .ToString();
 ```
 
@@ -98,7 +98,7 @@ Using Camlex you can simply write:
 ```csharp
 var caml =
     Camlex.Query()
-        .Where(x => (DateTime)x["Modified"](_Modified_) == new DateTime(2010, 01, 01)).ToString();
+        .Where(x => (DateTime)x["Modified"] == new DateTime(2010, 01, 01)).ToString();
 ```
 
 **Scenario 4. Query with BeginsWith and Contains operations**
@@ -121,7 +121,7 @@ You can achieve result using the following natural syntax:
 ```csharp
 var caml =
     Camlex.Query()
-        .Where(x => ((string)x["Title"](_Title_)).StartsWith("Task") && ((string)x["Project"](_Project_)).Contains("Camlex"))
+        .Where(x => ((string)x["Title"]).StartsWith("Task") && ((string)x["Project"]).Contains("Camlex"))
             .ToString();
 ```
 
@@ -139,7 +139,7 @@ Notice that value is of Sharepoint-specific User data type. You can easily achie
 ```csharp
 var caml =
     Camlex.Query()
-        .Where(x => x["Editor"](_Editor_) == (DataTypes.User)"Administrator")
+        .Where(x => x["Editor"] == (DataTypes.User)"Administrator")
                 .ToString();
 ```
 
@@ -160,8 +160,8 @@ You need to write the following Camlex expression in order to construct this que
 ```csharp
 var caml =
     Camlex.Query()
-        .Where(x => (int)x["ID"](_ID_) >= 5)
-        .OrderBy(x => x["Modified"](_Modified_)).ToString();
+        .Where(x => (int)x["ID"] >= 5)
+        .OrderBy(x => x["Modified"]).ToString();
 ```
 
 **Scenario 7. Query with grouping (GroupBy)**
@@ -180,8 +180,8 @@ With Camlex you could simply rewrite it as:
 ```csharp
 var caml =
     Camlex.Query()
-        .Where(x => x["Status"](_Status_) != null)
-        .GroupBy(x => x["Author"](_Author_)).ToString();
+        .Where(x => x["Status"] != null)
+        .GroupBy(x => x["Author"]).ToString();
 ```
 
 **Scenario 8. Query with non-constant expressions in lvalue and rvalue**
@@ -246,7 +246,7 @@ var expressions = new List<Expression<Func<SPListItem, bool>>>();
 foreach (string t in tokens)
 {
     string token = t;
-   expressions.Add(x => ((string)x["Title"](_Title_)).Contains(token));
+   expressions.Add(x => ((string)x["Title"]).Contains(token));
 }
 
 // prepare query
@@ -277,8 +277,8 @@ It can be used like that:
 ```csharp
 // Language = Russian or Language = English
 var languageConditions = new List<Expression<Func<SPListItem, bool>>>();
-languageConditions.Add(x => (string)x["Language"](_Language_) == "Russian");
-languageConditions.Add(x => (string)x["Language"](_Language_) == "English");
+languageConditions.Add(x => (string)x["Language"] == "Russian");
+languageConditions.Add(x => (string)x["Language"] == "English");
 var langExpr = ExpressionsHelper.CombineOr(languageConditions);
  
 // FileLeafRef contains “.docx” or FileLeafRef contains “.xlsx” or ...
@@ -287,7 +287,7 @@ var extensions = new[]() {".docx", ".xlsx", ".pptx"};
 foreach (string e in extensions)
 {
     string ext = e;
-    extenssionsConditions.Add(x => ((string)x["FileLeafRef"](_FileLeafRef_)).Contains(ext));
+    extenssionsConditions.Add(x => ((string)x["FileLeafRef"]).Contains(ext));
 }
 var extExpr = ExpressionsHelper.CombineOr(extenssionsConditions);
  
@@ -339,22 +339,22 @@ Starting with version 4.0 (and Camlex.Client 2.0) it became possible to create l
 ```csharp
 var query = new SPQuery();
  
-query.Query = Camlex.Query().Where(x => (string)x["CustomerCity"](_CustomerCity_) == "London" &&
-    (string)x["CustomerCityState"](_CustomerCityState_) == "UK").ToString();
+query.Query = Camlex.Query().Where(x => (string)x["CustomerCity"] == "London" &&
+    (string)x["CustomerCityState"] == "UK").ToString();
  
 query.Joins = Camlex.Query().Joins()
-    .Left(x => x["CustomerName"](_CustomerName_).ForeignList("Customers"))
-    .Left(x => x["CityName"](_CityName_).PrimaryList("Customers").ForeignList("CustomerCities"))
-    .Left(x => x["StateName"](_StateName_).PrimaryList("CustomerCities").ForeignList("CustomerCityStates"))
+    .Left(x => x["CustomerName"].ForeignList("Customers"))
+    .Left(x => x["CityName"].PrimaryList("Customers").ForeignList("CustomerCities"))
+    .Left(x => x["StateName"].PrimaryList("CustomerCities").ForeignList("CustomerCityStates"))
     .ToString();
  
 query.ProjectedFields = Camlex.Query().ProjectedFields()
-    .Field(x => x["CustomerCity"](_CustomerCity_).List("CustomerCities").ShowField("Title"))
-    .Field(x => x["CustomerCityState"](_CustomerCityState_).List("CustomerCityStates").ShowField("Title"))
+    .Field(x => x["CustomerCity"].List("CustomerCities").ShowField("Title"))
+    .Field(x => x["CustomerCityState"].List("CustomerCityStates").ShowField("Title"))
     .ToString();
  
-query.ViewFields = Camlex.Query().ViewFields(x => new[]() {x["CustomerCity"](_CustomerCity_),
-    x["CustomerCityState"](_CustomerCityState_)});
+query.ViewFields = Camlex.Query().ViewFields(x => new[]() {x["CustomerCity"],
+    x["CustomerCityState"]});
 ```
 
 In this example we will get the following CAML for different SPQuery properties:
@@ -413,8 +413,8 @@ Starting with version 4.2 (and Camlex.Client 2.2) LookupMulti field type is supp
 ```csharp
 var caml =
     Camlex.Query()
-        .Where(x => x["Title"](_Title_) > (DataTypes.LookupMultiId)"5"
-        && x["Author"](_Author_) == (DataTypes.LookupMultiValue)"Martin").ToString();
+        .Where(x => x["Title"] > (DataTypes.LookupMultiId)"5"
+        && x["Author"] == (DataTypes.LookupMultiValue)"Martin").ToString();
 ```
 
 This example will produce the following CAML:
@@ -432,3 +432,5 @@ This example will produce the following CAML:
   </And>
 </Where>
 ```
+
+If you want to know more about Camlex internals, check [Documentation](https://github.com/sadomovalex/camlex/blob/master/docs/Documentation.md).
