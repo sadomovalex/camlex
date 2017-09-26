@@ -433,4 +433,4 @@ This example will produce the following CAML:
 </Where>
 ```
 
-If you want to know more about Camlex internals, check [Documentation](https://github.com/sadomovalex/camlex/blob/master/docs/Documentation.md).
+If you want to know more about Camlex internals, check [Wiki documentation](https://github.com/sadomovalex/camlex/wiki).
