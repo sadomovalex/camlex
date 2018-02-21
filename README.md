@@ -1,6 +1,6 @@
 # Camlex.Net - Home
 
-Project was moved from Codeplex as last one will be shut down in Dec 2017.
+Project was moved from CodePlex (which is closed since Dec 2017). All further Camlex development and discussions will be hosted here on GitHub.
 
 ## Project Description
 Camlex.NET simplifies creating of CAML queries for SharePoint (2007, 2010, 2013, 2016, Online) by using expression trees:
