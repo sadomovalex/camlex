@@ -5,11 +5,11 @@ Project was moved from Codeplex as last one will be shut down in Dec 2017.
 ## Project Description
 Camlex.NET simplifies creating of CAML queries for SharePoint (2007, 2010, 2013, 2016, Online) by using expression trees:
 
-![](https://github.com/sadomovalex/camlex/blob/master/docs/Documentation_mapping.jpg)
+![](https://github.com/sadomovalex/camlex/wiki/images/Documentation_mapping.jpg)
 
 Compiled binaries can be downloaded from Nuget: [Camlex.NET](https://www.nuget.org/packages/Camlex.NET.dll/)
 
-If you find Camlex.NET useful, you may support its development via ![](https://github.com/sadomovalex/camlex/blob/master/docs/Home_btn_donate_SM.gif) button on the online version http://camlex-online.org.
+If you find Camlex.NET useful, you may support its development via ![](https://github.com/sadomovalex/camlex/wiki/images/Home_btn_donate_SM.gif) button on the online version http://camlex-online.org.
 
 ## Client object model
 Version for Client object model is also available. It can be downloaded also from Nuget: [Camlex.Client](https://www.nuget.org/packages/Camlex.Client.dll/).
