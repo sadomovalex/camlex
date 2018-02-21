@@ -3,7 +3,7 @@
 Project was moved from Codeplex as last one will be shut down in Dec 2017.
 
 ## Project Description
-Camlex.NET simplifies creating of CAML queries for Windows SharePoint Services by using expression trees:
+Camlex.NET simplifies creating of CAML queries for SharePoint (2007, 2010, 2013, 2016, Online) by using expression trees:
 
 ![](https://github.com/sadomovalex/camlex/blob/master/docs/Documentation_mapping.jpg)
 
