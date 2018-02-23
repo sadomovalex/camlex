@@ -34,7 +34,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Camlex.Client")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Microsoft")]
+[assembly: AssemblyCompany("Alexey Sadomov, Vladimir Timashkov, Stef Heyenrath")]
 [assembly: AssemblyProduct("Camlex.Client")]
 [assembly: AssemblyCopyright("Copyright © Alexey Sadomov, Vladimir Timashkov, Stef Heyenrath")]
 [assembly: AssemblyTrademark("")]
