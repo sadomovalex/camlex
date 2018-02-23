@@ -285,6 +285,10 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Factories
             {
                 return typeof(int);
             }
+            if (type == typeof(DataTypes.Number))
+            {
+                return typeof(double);
+            }
             if (type == typeof(DataTypes.Boolean))
             {
                 return typeof(bool);

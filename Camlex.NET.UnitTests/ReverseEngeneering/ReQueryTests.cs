@@ -234,5 +234,22 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
             var expr = Camlex.QueryFromString(xml).ToExpression();
             Assert.That(expr.ToString(), Is.EqualTo("Query().Where(x => (x.get_Item(\"Title\") = Convert(Convert(\"5\"))))"));
         }
+
+        [Test]
+        public void test_THAT_expression_with_number_IS_translated_successfully()
+        {
+            var xml =
+                "<Query>" +
+                "  <Where>" +
+                "    <Eq>" +
+                "      <FieldRef Name=\"foo\" />" +
+                "      <Value Type=\"Number\">1.23</Value>" +
+                "    </Eq>" +
+                "  </Where>" +
+                "</Query>";
+
+            var expr = Camlex.QueryFromString(xml).ToExpression();
+            Assert.That(expr.ToString(), Is.EqualTo("Query().Where(x => (Convert(x.get_Item(\"foo\")) = 1.23))"));
+        }
     }
 }
