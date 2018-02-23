@@ -327,10 +327,16 @@ namespace CamlexNET.Impl.Factories
                 return new TextValueOperand((string)value);
             }
             //number operand can be native or string based
-            if (type == typeof(double) || type == typeof(DataTypes.Number))
+            if (type == typeof(double) || type == typeof(float) || type == typeof(decimal) || type == typeof(DataTypes.Number))
             {
                 if (value.GetType() == typeof(double))
                     return new NumberValueOperand((double)value);
+
+                if (value.GetType() == typeof(float))
+                    return new NumberValueOperand((double)(float)value);
+
+                if (value.GetType() == typeof(decimal))
+                    return new NumberValueOperand((double)(decimal)value);
 
                 if (value.GetType() == typeof(string))
                     return new NumberValueOperand((string)value);

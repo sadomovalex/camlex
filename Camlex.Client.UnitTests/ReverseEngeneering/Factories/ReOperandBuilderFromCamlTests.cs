@@ -167,6 +167,8 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Factories
                 Is.EqualTo("<Value Type=\"Text\">foo</Value>"));
             Assert.That(b.CreateValueOperand(XmlHelper.Get("<Operation><Value Type=\"Integer\">123</Value></Operation>"), false).ToCaml().ToString(),
                 Is.EqualTo("<Value Type=\"Integer\">123</Value>"));
+            Assert.That(b.CreateValueOperand(XmlHelper.Get("<Operation><Value Type=\"Number\">1.23</Value></Operation>"), false).ToCaml().ToString(),
+                Is.EqualTo("<Value Type=\"Number\">1.23</Value>"));
             Assert.That(b.CreateValueOperand(XmlHelper.Get("<Operation><Value Type=\"Boolean\">1</Value></Operation>"), false).ToCaml().ToString(),
                 Is.EqualTo("<Value Type=\"Boolean\">1</Value>"));
             Assert.That(b.CreateValueOperand(XmlHelper.Get("<Operation><Value Type=\"Boolean\">0</Value></Operation>"), false).ToCaml().ToString(),
