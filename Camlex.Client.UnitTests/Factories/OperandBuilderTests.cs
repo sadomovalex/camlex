@@ -443,7 +443,49 @@ namespace CamlexNET.UnitTests.Factories
             var operand = operandBuilder.CreateConstantOperand(10, "foo");
             Assert.IsInstanceOf<ConstantOperand>(operand);
         }
-	}
+
+        [Test]
+        public void test_WHEN_native_value_is_double_THEN_number_operand_is_created()
+        {
+            var operandBuilder = new OperandBuilder();
+            Expression<Func<ListItem, bool>> expr = x => (double)x["Foo"] == 1.5;
+            var operand = operandBuilder.CreateValueOperandForNativeSyntax(((BinaryExpression)expr.Body).Right);
+
+            Assert.That(operand, Is.InstanceOf<NumberValueOperand>());
+
+            var valueOperand = operand as NumberValueOperand;
+            Assert.That(valueOperand.Type, Is.EqualTo(typeof(DataTypes.Number)));
+            Assert.That(valueOperand.Value, Is.EqualTo(1.5));
+        }
+
+        [Test]
+        public void test_WHEN_native_value_is_float_THEN_number_operand_is_created()
+        {
+            var operandBuilder = new OperandBuilder();
+            Expression<Func<ListItem, bool>> expr = x => (float)x["Foo"] == 1.5f;
+            var operand = operandBuilder.CreateValueOperandForNativeSyntax(((BinaryExpression)expr.Body).Right);
+
+            Assert.That(operand, Is.InstanceOf<NumberValueOperand>());
+
+            var valueOperand = operand as NumberValueOperand;
+            Assert.That(valueOperand.Type, Is.EqualTo(typeof(DataTypes.Number)));
+            Assert.That(valueOperand.Value, Is.EqualTo(1.5));
+        }
+
+        [Test]
+        public void test_WHEN_native_value_is_decimal_THEN_number_operand_is_created()
+        {
+            var operandBuilder = new OperandBuilder();
+            Expression<Func<ListItem, bool>> expr = x => (decimal)x["Foo"] == 1.5m;
+            var operand = operandBuilder.CreateValueOperandForNativeSyntax(((BinaryExpression)expr.Body).Right);
+
+            Assert.That(operand, Is.InstanceOf<NumberValueOperand>());
+
+            var valueOperand = operand as NumberValueOperand;
+            Assert.That(valueOperand.Type, Is.EqualTo(typeof(DataTypes.Number)));
+            Assert.That(valueOperand.Value, Is.EqualTo(1.5));
+        }
+    }
 }
 
 

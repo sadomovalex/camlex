@@ -1381,5 +1381,59 @@ namespace CamlexNET.UnitTests
 
             Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
         }
-	}
+
+	    [Test]
+	    public void test_THAT_expression_with_double_IS_translated_sucessfully()
+	    {
+	        string caml = Camlex.Query().Where(x => (double)x["Foo"] == 1.5d).ToString();
+
+	        string expected =
+	            "<Query>" +
+                "   <Where>" +
+	            "       <Eq>" +
+	            "           <FieldRef Name=\"Foo\" />" +
+	            "           <Value Type=\"Number\">1.5</Value>" +
+	            "       </Eq>" +
+	            "   </Where>" +
+	            "</Query>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+	    }
+
+	    [Test]
+	    public void test_THAT_expression_with_float_IS_translated_sucessfully()
+	    {
+	        string caml = Camlex.Query().Where(x => (float)x["Foo"] == 1.5f).ToString();
+
+	        string expected =
+	            "<Query>" +
+                "   <Where>" +
+	            "       <Eq>" +
+	            "           <FieldRef Name=\"Foo\" />" +
+	            "           <Value Type=\"Number\">1.5</Value>" +
+	            "       </Eq>" +
+	            "   </Where>" +
+	            "</Query>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+	    }
+
+	    [Test]
+	    public void test_THAT_expression_with_decimal_IS_translated_sucessfully()
+	    {
+	        string caml = Camlex.Query().Where(x => (decimal)x["Foo"] == 1.5m).ToString();
+
+	        string expected =
+	            "<Query>" +
+                "   <Where>" +
+	            "       <Eq>" +
+	            "           <FieldRef Name=\"Foo\" />" +
+	            "           <Value Type=\"Number\">1.5</Value>" +
+	            "       </Eq>" +
+	            "   </Where>" +
+	            "</Query>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+	    }
+    }
 }
