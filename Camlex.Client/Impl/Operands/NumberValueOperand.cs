@@ -24,6 +24,8 @@
 // fitness for a particular purpose and non-infringement.
 // -----------------------------------------------------------------------------
 #endregion
+
+using System.Globalization;
 using System.Linq.Expressions;
 using System.Xml.Linq;
 
@@ -49,7 +51,7 @@ namespace CamlexNET.Impl.Operands
         {
             return
                 new XElement(Tags.Value, new XAttribute(Attributes.Type, TypeName),
-                             new XText(Value.ToString()));
+                             new XText(Value.ToString(CultureInfo.InvariantCulture)));
         }
 
         public override Expression ToExpression()

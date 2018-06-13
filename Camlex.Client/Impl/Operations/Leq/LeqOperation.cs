@@ -25,10 +25,8 @@
 // -----------------------------------------------------------------------------
 #endregion
 
-using System;
 using System.Linq.Expressions;
 using System.Xml.Linq;
-using CamlexNET.Impl.Factories;
 using CamlexNET.Interfaces;
 
 namespace CamlexNET.Impl.Operations.Leq

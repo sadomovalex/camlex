@@ -24,14 +24,10 @@
 // fitness for a particular purpose and non-infringement.
 // -----------------------------------------------------------------------------
 #endregion
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+
 using CamlexNET.Impl.Operands;
 using CamlexNET.Impl.Operations.Array;
 using CamlexNET.Impl.ReverseEngeneering.Caml.Analyzers;
-using CamlexNET.Interfaces;
 using CamlexNET.Interfaces.ReverseEngeneering;
 using NUnit.Framework;
 using Rhino.Mocks;

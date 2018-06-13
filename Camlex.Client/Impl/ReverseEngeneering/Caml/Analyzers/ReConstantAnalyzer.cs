@@ -25,14 +25,9 @@
 // -----------------------------------------------------------------------------
 #endregion
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Xml.Linq;
-using CamlexNET.Impl.Operands;
-using CamlexNET.Impl.Operations.Array;
 using CamlexNET.Impl.Operations.BeginsWith;
-using CamlexNET.Impl.Operations.Eq;
 using CamlexNET.Interfaces;
 using CamlexNET.Interfaces.ReverseEngeneering;
 

@@ -27,7 +27,6 @@
 
 using CamlexNET.Impl.Operands;
 using CamlexNET.Impl.Operations.DateRangesOverlap;
-using CamlexNET.Impl.ReverseEngeneering;
 using CamlexNET.Impl.ReverseEngeneering.Caml.Analyzers;
 using CamlexNET.Impl.ReverseEngeneering.Caml.Factories;
 using CamlexNET.Interfaces.ReverseEngeneering;

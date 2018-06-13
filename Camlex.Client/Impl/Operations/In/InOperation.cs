@@ -25,12 +25,10 @@
 // -----------------------------------------------------------------------------
 #endregion
 
-using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Xml.Linq;
-using CamlexNET.Impl.Factories;
 using CamlexNET.Impl.Operands;
 using CamlexNET.Interfaces;
 

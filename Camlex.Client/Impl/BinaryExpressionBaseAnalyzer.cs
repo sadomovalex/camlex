@@ -25,14 +25,9 @@
 // -----------------------------------------------------------------------------
 #endregion
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using CamlexNET.Impl.Helpers;
-using CamlexNET.Impl.Operands;
 using CamlexNET.Interfaces;
-using Microsoft.SharePoint;
 
 namespace CamlexNET.Impl
 {

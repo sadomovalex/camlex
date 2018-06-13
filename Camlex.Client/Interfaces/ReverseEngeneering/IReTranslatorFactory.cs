@@ -25,8 +25,6 @@
 // -----------------------------------------------------------------------------
 #endregion
 
-using System.Linq.Expressions;
-
 namespace CamlexNET.Interfaces.ReverseEngeneering
 {
     internal interface IReTranslatorFactory

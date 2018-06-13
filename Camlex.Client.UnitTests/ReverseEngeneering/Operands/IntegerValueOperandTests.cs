@@ -24,12 +24,8 @@
 // fitness for a particular purpose and non-infringement.
 // -----------------------------------------------------------------------------
 #endregion
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+
 using CamlexNET.Impl.Operands;
-using CamlexNET.UnitTests.Helpers;
 using NUnit.Framework;
 
 namespace CamlexNET.UnitTests.ReverseEngeneering.Operands

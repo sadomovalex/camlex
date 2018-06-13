@@ -28,7 +28,6 @@ using System.Xml.Linq;
 using CamlexNET.Impl.Factories;
 using CamlexNET.Impl.Operands;
 using CamlexNET.Impl.Operations.IsNotNull;
-using CamlexNET.Impl.Operations.Lt;
 using CamlexNET.UnitTests.Helpers;
 using NUnit.Framework;
 using Rhino.Mocks;

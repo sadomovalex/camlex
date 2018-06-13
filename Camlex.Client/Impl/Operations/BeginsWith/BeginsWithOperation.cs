@@ -25,9 +25,7 @@
 // -----------------------------------------------------------------------------
 #endregion
 
-using System;
 using System.Linq.Expressions;
-using System.Reflection;
 using System.Xml.Linq;
 using CamlexNET.Impl.Operands;
 using CamlexNET.Interfaces;

@@ -24,7 +24,7 @@
 // fitness for a particular purpose and non-infringement.
 // -----------------------------------------------------------------------------
 #endregion
-using System;
+
 using CamlexNET.Impl.Operands;
 using CamlexNET.Impl.Operations.AndAlso;
 using CamlexNET.Impl.Operations.Eq;

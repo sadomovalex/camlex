@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using CamlexNET.Impl.Factories;
 using CamlexNET.Impl.Operations.In;
 using Microsoft.SharePoint.Client;

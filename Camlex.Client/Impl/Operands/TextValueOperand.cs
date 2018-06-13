@@ -24,10 +24,9 @@
 // fitness for a particular purpose and non-infringement.
 // -----------------------------------------------------------------------------
 #endregion
-using System;
+
 using System.Linq.Expressions;
 using System.Xml.Linq;
-using CamlexNET.Interfaces;
 
 namespace CamlexNET.Impl.Operands
 {

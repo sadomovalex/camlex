@@ -26,7 +26,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using CamlexNET.Impl.Operands;
 using NUnit.Framework;
 

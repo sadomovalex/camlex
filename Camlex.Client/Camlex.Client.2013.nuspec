@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Camlex.Client.2013.dll</id>
+    <version>2.3.0</version>
+    <authors>Alexey Sadomov,Vladimir Timashkov,Stef Heyenrath</authors>
+    <owners>Alexey Sadomov</owners>
+    <licenseUrl>https://github.com/sadomovalex/camlex/blob/master/license.txt</licenseUrl>
+    <projectUrl>https://github.com/sadomovalex/camlex</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Camlex.NET for client object model. Camlex.NET simplifies creating of CAML queries for SharePoint 2013 by using C# and lambda expressions</description>
+    <releaseNotes>Support for native float and decimal types</releaseNotes>
+    <copyright>Copyright 2018</copyright>
+    <tags>CAML lambda expressions csharp client object model CSOM 2013</tags>
+    <dependencies>
+      <dependency id="Microsoft.SharePoint2013.CSOM" version="15.0.4711.1000"/>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="bin\Release-SP2013\Camlex.Client.dll" target="lib\net45" />
+  </files>
+</package>

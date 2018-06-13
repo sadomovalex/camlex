@@ -29,7 +29,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
-using CamlexNET.Impl.Operations.Eq;
 using CamlexNET.Impl.Operations.Join;
 using CamlexNET.Interfaces;
 using CamlexNET.Interfaces.ReverseEngeneering;

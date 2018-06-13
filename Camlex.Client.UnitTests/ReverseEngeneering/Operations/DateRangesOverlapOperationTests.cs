@@ -26,10 +26,7 @@
 #endregion
 using System;
 using CamlexNET.Impl.Operands;
-using CamlexNET.Impl.Operations.AndAlso;
 using CamlexNET.Impl.Operations.DateRangesOverlap;
-using CamlexNET.Impl.Operations.Eq;
-using CamlexNET.Impl.Operations.OrElse;
 using NUnit.Framework;
 
 namespace CamlexNET.UnitTests.ReverseEngeneering.Operations

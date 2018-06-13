@@ -25,9 +25,6 @@
 // -----------------------------------------------------------------------------
 #endregion
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using CamlexNET.Impl.Operands;
 using CamlexNET.Impl.ReverseEngeneering.Caml.Factories;
 using CamlexNET.UnitTests.Helpers;

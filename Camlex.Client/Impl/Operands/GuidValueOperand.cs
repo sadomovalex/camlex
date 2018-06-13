@@ -27,7 +27,6 @@
 using System;
 using System.Linq.Expressions;
 using System.Xml.Linq;
-using CamlexNET.Interfaces;
 
 namespace CamlexNET.Impl.Operands
 {

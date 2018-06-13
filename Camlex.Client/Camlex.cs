@@ -25,18 +25,12 @@
 // -----------------------------------------------------------------------------
 #endregion
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Xml.Linq;
 using CamlexNET.Impl;
 using CamlexNET.Impl.Factories;
 using CamlexNET.Impl.ReverseEngeneering;
 using CamlexNET.Impl.ReverseEngeneering.Caml.Factories;
 using CamlexNET.Interfaces;
 using CamlexNET.Interfaces.ReverseEngeneering;
-using Microsoft.SharePoint;
 
 namespace CamlexNET
 {

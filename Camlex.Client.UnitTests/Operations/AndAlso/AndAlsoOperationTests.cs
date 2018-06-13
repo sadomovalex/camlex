@@ -29,7 +29,6 @@ using CamlexNET.Impl.Factories;
 using CamlexNET.Impl.Operations.AndAlso;
 using CamlexNET.Impl.Operations.Eq;
 using CamlexNET.Impl.Operations.Results;
-using CamlexNET.Interfaces;
 using CamlexNET.UnitTests.Helpers;
 using NUnit.Framework;
 using Rhino.Mocks;

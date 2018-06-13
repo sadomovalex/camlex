@@ -25,12 +25,7 @@
 // -----------------------------------------------------------------------------
 #endregion
 
-using System;
-using System.Xml.Linq;
-using CamlexNET.Impl.Operations.Eq;
 using CamlexNET.Impl.ReverseEngeneering.Caml.Analyzers;
-using CamlexNET.Interfaces.ReverseEngeneering;
-using CamlexNET.UnitTests.ReverseEngeneering.Analyzers.TestBase;
 using NUnit.Framework;
 
 namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers

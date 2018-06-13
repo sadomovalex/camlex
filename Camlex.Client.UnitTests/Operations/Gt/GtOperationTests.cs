@@ -27,7 +27,6 @@
 using System.Xml.Linq;
 using CamlexNET.Impl.Factories;
 using CamlexNET.Impl.Operands;
-using CamlexNET.Impl.Operations.Geq;
 using CamlexNET.Impl.Operations.Gt;
 using CamlexNET.UnitTests.Helpers;
 using NUnit.Framework;

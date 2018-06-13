@@ -24,11 +24,8 @@
 // fitness for a particular purpose and non-infringement.
 // -----------------------------------------------------------------------------
 #endregion
-using System;
-using System.Collections.Generic;
-using System.Linq;
+
 using System.Linq.Expressions;
-using System.Text;
 using CamlexNET.Interfaces;
 
 namespace CamlexNET.Impl.Operations.DateRangesOverlap

@@ -1,16 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using CamlexNET.Impl.Factories;
+﻿using CamlexNET.Impl.Factories;
 using CamlexNET.Impl.Operands;
 using CamlexNET.Impl.Operations.BeginsWith;
-using CamlexNET.Impl.Operations.Constant;
-using CamlexNET.Interfaces;
-using Microsoft.SharePoint.Client;
 using NUnit.Framework;
-using Rhino.Mocks;
 
 namespace CamlexNET.UnitTests.Operations.Constant
 {

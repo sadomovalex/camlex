@@ -24,12 +24,9 @@
 // fitness for a particular purpose and non-infringement.
 // -----------------------------------------------------------------------------
 #endregion
-using System;
+
 using CamlexNET.Impl.Operands;
-using CamlexNET.Impl.Operations.Array;
-using CamlexNET.Impl.Operations.BeginsWith;
 using CamlexNET.Impl.Operations.Contains;
-using CamlexNET.Impl.Operations.Eq;
 using NUnit.Framework;
 
 namespace CamlexNET.UnitTests.ReverseEngeneering.Operations

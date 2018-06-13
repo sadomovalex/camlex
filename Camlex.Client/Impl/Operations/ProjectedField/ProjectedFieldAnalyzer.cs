@@ -25,11 +25,7 @@
 // -----------------------------------------------------------------------------
 #endregion
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq.Expressions;
-using CamlexNET.Impl.Operands;
 using CamlexNET.Interfaces;
 
 namespace CamlexNET.Impl.Operations.ProjectedField

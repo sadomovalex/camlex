@@ -27,7 +27,6 @@
 
 using System.Linq;
 using System.Xml.Linq;
-using CamlexNET.Impl.Operations.Contains;
 using CamlexNET.Impl.Operations.In;
 using CamlexNET.Interfaces;
 using CamlexNET.Interfaces.ReverseEngeneering;
