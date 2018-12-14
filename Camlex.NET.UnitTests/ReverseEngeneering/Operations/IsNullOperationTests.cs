@@ -44,7 +44,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Operations
             var op1 = new FieldRefOperand("Count");
             var op = new IsNullOperation(null, op1);
             var expr = op.ToExpression();
-            Assert.That(expr.ToString(), Is.EqualTo("(x.get_Item(\"Count\") = null)"));
+            Assert.That(expr.ToString(), Is.EqualTo("(x.get_Item(\"Count\") == null)"));
         }
     }
 }

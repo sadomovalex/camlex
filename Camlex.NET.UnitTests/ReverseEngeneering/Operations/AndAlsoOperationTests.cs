@@ -49,7 +49,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Operations
             var op = new AndAlsoOperation(null, op1, op2);
 
             var expr = op.ToExpression();
-            Assert.That(expr.ToString(), Is.EqualTo("(Convert(x.get_Item(\"Status\")) && Not(Convert(x.get_Item(\"Status\"))))"));
+            Assert.That(expr.ToString(), Is.EqualTo("(Convert(x.get_Item(\"Status\")) AndAlso Not(Convert(x.get_Item(\"Status\"))))"));
         }
     }
 }

@@ -164,7 +164,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
                 "</Query>";
 
             var expr = Camlex.QueryFromString(xml).ToExpression();
-            Assert.That(expr.ToString(), Is.EqualTo("Query().Where(x => ((Convert(x.get_Item(\"foo1\")) && Not(Convert(x.get_Item(\"foo2\")))) || Convert(x.get_Item(\"foo3\"))))"));
+            Assert.That(expr.ToString(), Is.EqualTo("Query().Where(x => ((Convert(x.get_Item(\"foo1\")) AndAlso Not(Convert(x.get_Item(\"foo2\")))) OrElse Convert(x.get_Item(\"foo3\"))))"));
         }
 
         [Test]
@@ -181,7 +181,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
                 "</Query>";
 
             var expr = Camlex.QueryFromString(xml).ToExpression();
-            Assert.That(expr.ToString(), Is.EqualTo("Query().Where(x => (x.get_Item(\"Title\") = Convert(Convert(\"5\"))))"));
+            Assert.That(expr.ToString(), Is.EqualTo("Query().Where(x => (x.get_Item(\"Title\") == Convert(Convert(\"5\"))))"));
         }
 
         [Test]
@@ -198,7 +198,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
                 "</Query>";
 
             var expr = Camlex.QueryFromString(xml).ToExpression();
-            Assert.That(expr.ToString(), Is.EqualTo("Query().Where(x => (x.get_Item(\"Title\") = Convert(Convert(\"5\"))))"));
+            Assert.That(expr.ToString(), Is.EqualTo("Query().Where(x => (x.get_Item(\"Title\") == Convert(Convert(\"5\"))))"));
         }
 
         [Test]
@@ -215,7 +215,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
                 "</Query>";
 
             var expr = Camlex.QueryFromString(xml).ToExpression();
-            Assert.That(expr.ToString(), Is.EqualTo("Query().Where(x => (x.get_Item(\"Title\") = Convert(Convert(\"5\"))))"));
+            Assert.That(expr.ToString(), Is.EqualTo("Query().Where(x => (x.get_Item(\"Title\") == Convert(Convert(\"5\"))))"));
         }
 
         [Test]
@@ -232,7 +232,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
                 "</Query>";
 
             var expr = Camlex.QueryFromString(xml).ToExpression();
-            Assert.That(expr.ToString(), Is.EqualTo("Query().Where(x => (x.get_Item(\"Title\") = Convert(Convert(\"5\"))))"));
+            Assert.That(expr.ToString(), Is.EqualTo("Query().Where(x => (x.get_Item(\"Title\") == Convert(Convert(\"5\"))))"));
         }
 
         [Test]
@@ -249,7 +249,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
                 "</Query>";
 
             var expr = Camlex.QueryFromString(xml).ToExpression();
-            Assert.That(expr.ToString(), Is.EqualTo("Query().Where(x => (Convert(x.get_Item(\"foo\")) = 1.23))"));
+            Assert.That(expr.ToString(), Is.EqualTo("Query().Where(x => (Convert(x.get_Item(\"foo\")) == 1.23))"));
         }
     }
 }

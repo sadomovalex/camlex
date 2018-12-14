@@ -25,7 +25,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
             var b = new ReOperandBuilderFromCaml();
             var t = new ReTranslatorFromCaml(new ReEqAnalyzer(XmlHelper.Get(xml), b), null, null, null, null, null);
             var expr = t.TranslateWhere();
-            Assert.That(expr.ToString(), Is.EqualTo("x => (Convert(x.get_Item(\"Title\")) = \"testValue\")"));
+            Assert.That(expr.ToString(), Is.EqualTo("x => (Convert(x.get_Item(\"Title\")) == \"testValue\")"));
         }
 
         [Test]

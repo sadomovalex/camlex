@@ -48,7 +48,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
             var analyzer = new ReEqAnalyzer(XmlHelper.Get(xml), operandBuilder);
             var operation = (EqOperation)analyzer.GetOperation();
             Assert.That(operation.ToExpression().ToString(), Is.EqualTo(
-                "(x.get_Item(\"foo\") = Convert(Convert(\"Test User\")))"));
+                "(x.get_Item(\"foo\") == Convert(Convert(\"Test User\")))"));
         }
 
         [Test]
@@ -64,7 +64,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
             var analyzer = new ReEqAnalyzer(XmlHelper.Get(xml), operandBuilder);
             var operation = (EqOperation)analyzer.GetOperation();
             Assert.That(operation.ToExpression().ToString(), Is.EqualTo(
-                "(x.get_Item(\"foo\") = Convert(Convert(\"123\")))"));
+                "(x.get_Item(\"foo\") == Convert(Convert(\"123\")))"));
         }
 
         [Test]
@@ -80,7 +80,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
             var analyzer = new ReEqAnalyzer(XmlHelper.Get(xml), operandBuilder);
             var operation = (EqOperation)analyzer.GetOperation();
             Assert.That(operation.ToExpression().ToString(), Is.EqualTo(
-                "(x.get_Item(\"foo\") = Convert(Convert(Camlex.UserID)))"));
+                "(x.get_Item(\"foo\") == Convert(Convert(Camlex.UserID)))"));
         }
     }
 }

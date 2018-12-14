@@ -39,7 +39,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers
         private readonly Func<XElement, IReOperandBuilder, IReAnalyzerFactory, ReAndAlsoAnalyzer>
             ANALYZER_CONSTRUCTOR = (el, operandBuilder, analyzerFactory) => new ReAndAlsoAnalyzer(el, operandBuilder, analyzerFactory);
         private const string OPERATION_NAME = Tags.And;
-        private const string OPERATION_SYMBOL = "&&";
+        private const string OPERATION_SYMBOL = "AndAlso";
 
         [Test]
         public void test_WHEN_xml_is_null_THEN_expression_is_not_valid()

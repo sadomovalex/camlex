@@ -1,9 +1,9 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2027
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Camlex.NET", "Camlex.NET\Camlex.NET.csproj", "{99FC65CD-823C-47AA-9D68-0BB9F31CDC72}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Camlex.NET.ConsoleTest", "Camlex.NET.ConsoleTest\Camlex.NET.ConsoleTest.csproj", "{C1B2AC84-A5C7-4F5B-819D-DDABF223B45E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Camlex.NET.UnitTests", "Camlex.NET.UnitTests\Camlex.NET.UnitTests.csproj", "{298ACD3C-082D-406B-B4BB-8B8CAD5B18A6}"
 EndProject
@@ -17,10 +17,6 @@ Global
 		{99FC65CD-823C-47AA-9D68-0BB9F31CDC72}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{99FC65CD-823C-47AA-9D68-0BB9F31CDC72}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{99FC65CD-823C-47AA-9D68-0BB9F31CDC72}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C1B2AC84-A5C7-4F5B-819D-DDABF223B45E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C1B2AC84-A5C7-4F5B-819D-DDABF223B45E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C1B2AC84-A5C7-4F5B-819D-DDABF223B45E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C1B2AC84-A5C7-4F5B-819D-DDABF223B45E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{298ACD3C-082D-406B-B4BB-8B8CAD5B18A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{298ACD3C-082D-406B-B4BB-8B8CAD5B18A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{298ACD3C-082D-406B-B4BB-8B8CAD5B18A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -28,6 +24,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E6C907E1-CB3D-41FC-9853-89FEE5299B0C}
 	EndGlobalSection
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
