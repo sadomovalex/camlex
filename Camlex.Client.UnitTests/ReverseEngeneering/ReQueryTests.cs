@@ -201,7 +201,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
                 "</View>";
 
             var expr = Camlex.QueryFromString(xml).ToExpression();
-            Assert.That(expr.ToString(), Is.EqualTo("Query().Where(x => ((Convert(x.get_Item(\"foo1\")) AndAlso Not(Convert(x.get_Item(\"foo2\")))) || Convert(x.get_Item(\"foo3\"))))"));
+            Assert.That(expr.ToString(), Is.EqualTo("Query().Where(x => ((Convert(x.get_Item(\"foo1\")) AndAlso Not(Convert(x.get_Item(\"foo2\")))) OrElse Convert(x.get_Item(\"foo3\"))))"));
         }
 
         [Test]
