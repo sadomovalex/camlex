@@ -168,7 +168,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers.TestBase
             Assert.IsInstanceOf<TOperation>(operation);
             var operationT = (TOperation)operation;
             Assert.That(operationT.ToExpression().ToString(), Is.EqualTo(
-                string.Format("((Convert(x.get_Item(\"Title\")) = \"testValue\") {0} (Convert(x.get_Item(\"Title\")) = \"testValue\"))", operationSymbol)));
+                string.Format("((Convert(x.get_Item(\"Title\")) == \"testValue\") {0} (Convert(x.get_Item(\"Title\")) == \"testValue\"))", operationSymbol)));
         }
    }
 }

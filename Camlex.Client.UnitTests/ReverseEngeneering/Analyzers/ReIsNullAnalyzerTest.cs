@@ -40,7 +40,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers
         private readonly Func<XElement, IReOperandBuilder, ReIsNullAnalyzer>
             ANALYZER_CONSTRUCTOR = (el, operandBuilder) => new ReIsNullAnalyzer(el, operandBuilder);
         private const string OPERATION_NAME = Tags.IsNull;
-        private const string OPERATION_SYMBOL = "= null";
+        private const string OPERATION_SYMBOL = "== null";
 
         [Test]
         public void test_WHEN_xml_is_null_THEN_expression_is_not_valid()

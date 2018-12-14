@@ -44,7 +44,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
 			var l = new ReLinkerFromCaml(null, null, null, null, null, null, null);
 			var g = new GroupByParams();
             var expr = l.Link((Expression<Func<ListItem, bool>>)(x => (int)x["foo"] == 1), null, null, null, null, null, g, null);
-			Assert.That(expr.ToString(), Is.EqualTo("Query().Where(x => (Convert(x.get_Item(\"foo\")) = 1))"));
+			Assert.That(expr.ToString(), Is.EqualTo("Query().Where(x => (Convert(x.get_Item(\"foo\")) == 1))"));
 		}
 
 		[Test]
@@ -110,7 +110,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
             var l = new ReLinkerFromCaml(null, XmlHelper.Get(orderBy), null, null, null, null, null);
 			var g = new GroupByParams();
             var expr = l.Link((Expression<Func<ListItem, bool>>)(x => (int)x["foo"] == 1), (Expression<Func<ListItem, object>>)(x => x["Title"] as Camlex.Asc), null, null, null, null, g, null);
-			Assert.That(expr.ToString(), Is.EqualTo("Query().Where(x => (Convert(x.get_Item(\"foo\")) = 1)).OrderBy(x => (x.get_Item(\"Title\") As Asc))"));
+			Assert.That(expr.ToString(), Is.EqualTo("Query().Where(x => (Convert(x.get_Item(\"foo\")) == 1)).OrderBy(x => (x.get_Item(\"Title\") As Asc))"));
 		}
 
 		[Test]

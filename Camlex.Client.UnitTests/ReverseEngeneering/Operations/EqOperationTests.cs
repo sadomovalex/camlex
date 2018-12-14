@@ -50,9 +50,9 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Operations
 
         [Test]
         [SetCulture("ru-RU")]
-        [TestCase(1, "(Convert(x.get_Item(\"Status\")) = 1)")]
-        [TestCase(-1, "(Convert(x.get_Item(\"Status\")) = -1)")]
-        [TestCase(-1.45, "(Convert(x.get_Item(\"Status\")) = -1,45)")]
+        [TestCase(1, "(Convert(x.get_Item(\"Status\")) == 1)")]
+        [TestCase(-1, "(Convert(x.get_Item(\"Status\")) == -1)")]
+        [TestCase(-1.45, "(Convert(x.get_Item(\"Status\")) == -1,45)")]
         public void test_THAT_eq_operation_with_double_IS_converted_to_expression_correctly(double value, string result)
         {
             var op1 = new FieldRefOperand("Status");
@@ -69,12 +69,12 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Operations
             var op2 = new GenericStringBasedValueOperand(typeof (DataTypes.Text), "foo");
             var op = new EqOperation(null, op1, op2);
             Expression expr = op.ToExpression();
-            Assert.That(expr.ToString(), Is.EqualTo("(x.get_Item(\"Title\") = Convert(Convert(\"foo\")))"));
+            Assert.That(expr.ToString(), Is.EqualTo("(x.get_Item(\"Title\") == Convert(Convert(\"foo\")))"));
         }
 
         [Test]
-        [TestCase(1, "(Convert(x.get_Item(\"Status\")) = 1)")]
-        [TestCase(-1, "(Convert(x.get_Item(\"Status\")) = -1)")]
+        [TestCase(1, "(Convert(x.get_Item(\"Status\")) == 1)")]
+        [TestCase(-1, "(Convert(x.get_Item(\"Status\")) == -1)")]
         public void test_THAT_eq_operation_with_int_IS_converted_to_expression_correctly(int value, string result)
         {
             var op1 = new FieldRefOperand("Status");
@@ -91,7 +91,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Operations
             var op2 = new LookupIdValueOperand("1");
             var op = new EqOperation(null, op1, op2);
             Expression expr = op.ToExpression();
-            Assert.That(expr.ToString(), Is.EqualTo("(x.get_Item(\"Title\") = Convert(Convert(\"1\")))"));
+            Assert.That(expr.ToString(), Is.EqualTo("(x.get_Item(\"Title\") == Convert(Convert(\"1\")))"));
         }
 
         [Test]
@@ -101,7 +101,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Operations
             var op2 = new LookupValueValueOperand("foo");
             var op = new EqOperation(null, op1, op2);
             Expression expr = op.ToExpression();
-            Assert.That(expr.ToString(), Is.EqualTo("(x.get_Item(\"Title\") = Convert(Convert(\"foo\")))"));
+            Assert.That(expr.ToString(), Is.EqualTo("(x.get_Item(\"Title\") == Convert(Convert(\"foo\")))"));
         }
 
         [Test]
@@ -113,7 +113,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Operations
             var op2 = new DateTimeValueOperand(dt, false);
             var op = new EqOperation(null, op1, op2);
             Expression expr = op.ToExpression();
-            Assert.That(expr.ToString(), Is.EqualTo(string.Format("(Convert(x.get_Item(\"Modified\")) = {0})", dt)));
+            Assert.That(expr.ToString(), Is.EqualTo(string.Format("(Convert(x.get_Item(\"Modified\")) == {0})", dt)));
         }
 
         [Test]
@@ -126,7 +126,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Operations
             var op = new EqOperation(null, op1, op2);
             Expression expr = op.ToExpression();
             Assert.That(expr.ToString(),
-                        Is.EqualTo(string.Format("(Convert(x.get_Item(\"Modified\")) = {0}.IncludeTimeValue())", dt)));
+                        Is.EqualTo(string.Format("(Convert(x.get_Item(\"Modified\")) == {0}.IncludeTimeValue())", dt)));
         }
 
         [Test]
@@ -137,7 +137,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Operations
             var op2 = new DateTimeValueOperand(Camlex.Now, false);
             var op = new EqOperation(null, op1, op2);
             Expression expr = op.ToExpression();
-            Assert.That(expr.ToString(), Is.EqualTo("(x.get_Item(\"Modified\") = Convert(Convert(Camlex.Now)))"));
+            Assert.That(expr.ToString(), Is.EqualTo("(x.get_Item(\"Modified\") == Convert(Convert(Camlex.Now)))"));
         }
 
         [Test]
@@ -149,7 +149,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Operations
             var op = new EqOperation(null, op1, op2);
             Expression expr = op.ToExpression();
             Assert.That(expr.ToString(),
-                        Is.EqualTo("(x.get_Item(\"Modified\") = Convert(Convert(Camlex.Now)).IncludeTimeValue())"));
+                        Is.EqualTo("(x.get_Item(\"Modified\") == Convert(Convert(Camlex.Now)).IncludeTimeValue())"));
         }
     }
 }

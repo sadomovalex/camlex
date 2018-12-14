@@ -40,7 +40,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers
         private readonly Func<XElement, IReOperandBuilder, ReEqAnalyzer> 
             ANALYZER_CONSTRUCTOR = (el, operandBuilder) => new ReEqAnalyzer(el, operandBuilder);
         private const string OPERATION_NAME = Tags.Eq;
-        private const string OPERATION_SYMBOL = "=";
+        private const string OPERATION_SYMBOL = "==";
 
         [Test]
         public void test_WHEN_xml_is_null_THEN_expression_is_not_valid()
