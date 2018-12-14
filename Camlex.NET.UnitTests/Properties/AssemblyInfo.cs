@@ -34,9 +34,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Camlex.NET.UnitTests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Microsoft")]
+[assembly: AssemblyCompany("Alexey Sadomov, Vladimir Timashkov")]
 [assembly: AssemblyProduct("Camlex.NET.UnitTests")]
-[assembly: AssemblyCopyright("Copyright © Microsoft 2009")]
+[assembly: AssemblyCopyright("Copyright © Alexey Sadomov, Vladimir Timashkov 2009")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
