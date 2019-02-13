@@ -143,6 +143,12 @@ namespace CamlexNET.Impl.Factories
                 return includesAnalyzer;
             }
 
+            var notIncludesAnalyzer = new IncludesAnalyzer(operationResultBuilder, operandBuilder);
+            if (notIncludesAnalyzer.IsValid(expr))
+            {
+                return notIncludesAnalyzer;
+            }
+
             var dateRangesOverlapAnalyzer = new DateRangesOverlapAnalyzer(operationResultBuilder, operandBuilder);
             if (dateRangesOverlapAnalyzer.IsValid(expr))
             {
