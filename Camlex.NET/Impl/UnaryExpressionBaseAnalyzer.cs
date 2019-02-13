@@ -52,27 +52,55 @@ namespace CamlexNET.Impl
             }
             var body = expr.Body as MethodCallExpression;
 
-            // --- check for object ---
-
-            // left operand for string based syntax should be convert of indexer
-            if (!(body.Object is UnaryExpression) || body.Object.NodeType != ExpressionType.Convert)
+            if (body.NodeType != ExpressionType.Call)
             {
                 return false;
             }
-            var methodCallExpression = ((UnaryExpression)body.Object).Operand;
+
+            Expression obj = null;
+            if (body.Object != null)
+            {
+                obj = body.Object;
+            }
+            else
+            {
+                // "Includes" extension method
+                if (body.Method.Name != ReflectionHelper.IncludesMethodName)
+                {
+                    return false;
+                }
+                if (body.Arguments.Count != 2 && body.Arguments.Count != 3)
+                {
+                    return false;
+                }
+
+                obj = body.Arguments[0];
+            }
+
+            // --- check for object ---
+            // left operand for string based syntax should be convert of indexer
+            if (!(obj is UnaryExpression) || obj.NodeType != ExpressionType.Convert)
+            {
+                return false;
+            }
+
+            var methodCallExpression = ((UnaryExpression) obj).Operand;
             if (!(methodCallExpression is MethodCallExpression))
             {
                 return false;
             }
-            var objectExpression = (MethodCallExpression)methodCallExpression;
+
+            var objectExpression = (MethodCallExpression) methodCallExpression;
             if (objectExpression.Method.Name != ReflectionHelper.IndexerMethodName)
             {
                 return false;
             }
+
             if (objectExpression.Arguments.Count != 1)
             {
                 return false;
             }
+
             // currently only constants are supported as indexer's argument
 //            if (!(objectExpression.Arguments[0] is ConstantExpression))
 //            {
@@ -86,11 +114,31 @@ namespace CamlexNET.Impl
             // --- check for function ---
 
             // right expression should be constant, variable or method call
-            if (body.Arguments == null || body.Arguments.Count != 1)
+            Expression parameterExpression = null;
+            if (body.Object != null)
             {
-                return false;
+                if (body.Arguments.Count != 1)
+                {
+                    return false;
+                }
+
+                parameterExpression = body.Arguments[0];
             }
-            var parameterExpression = body.Arguments[0];
+            else
+            {
+                // "Includes" extension method
+                if (body.Method.Name != ReflectionHelper.IncludesMethodName)
+                {
+                    return false;
+                }
+                if (body.Arguments.Count != 2 && body.Arguments.Count != 3)
+                {
+                    return false;
+                }
+
+                parameterExpression = body.Arguments[1];
+            }
+
 //            if (parameterExpression is ConstantExpression)
 //            {
 //                return true;
@@ -112,6 +160,7 @@ namespace CamlexNET.Impl
             {
                 return false;
             }
+
             return true;
         }
 
@@ -130,7 +179,16 @@ namespace CamlexNET.Impl
                 throw new NonSupportedExpressionException(expr);
             }
             var body = expr.Body as MethodCallExpression;
-            return operandBuilder.CreateFieldRefOperand(body.Object, null);
+            Expression obj = null;
+            if (body.Object != null)
+            {
+                obj = body.Object;
+            }
+            else
+            {
+                obj = body.Arguments[0];
+            }
+            return operandBuilder.CreateFieldRefOperand(obj, null);
         }
 
         protected IOperand getValueOperand(LambdaExpression expr)
@@ -140,7 +198,16 @@ namespace CamlexNET.Impl
                 throw new NonSupportedExpressionException(expr);
             }
             var body = expr.Body as MethodCallExpression;
-            var valueType = body.Object.Type;
+            Expression obj = null;
+            if (body.Object != null)
+            {
+                obj = body.Object;
+            }
+            else
+            {
+                obj = body.Arguments[0];
+            }
+            var valueType = obj.Type;
             var parameterExpression = body.Arguments[0];
             return operandBuilder.CreateValueOperandForNativeSyntax(parameterExpression, valueType);
         }

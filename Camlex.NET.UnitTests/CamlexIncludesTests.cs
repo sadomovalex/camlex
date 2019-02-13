@@ -55,7 +55,7 @@ namespace CamlexNET.UnitTests
         [Test]
         public void test_THAT_expresstion_with_includes_string_based_syntax_IS_translated_successfully()
         {
-            string caml = Camlex.Query().Where(x => x["Foo"].Includes((DataTypes.Integer)"1")).ToString();
+            string caml = Camlex.Query().Where(x => ((DataTypes.Integer)x["Foo"]).Includes("1")).ToString();
 
             string expected =
                 "   <Where>" +
@@ -87,7 +87,7 @@ namespace CamlexNET.UnitTests
         [Test]
         public void test_THAT_expresstion_with_includes_string_based_syntax_and_lookup_id_IS_translated_successfully()
         {
-            string caml = Camlex.Query().Where(x => x["Foo"].Includes((DataTypes.LookupMulti)"1", true)).ToString();
+            string caml = Camlex.Query().Where(x => ((DataTypes.LookupMulti)x["Foo"]).Includes("1", true)).ToString();
 
             string expected =
                 "   <Where>" +
@@ -119,7 +119,7 @@ namespace CamlexNET.UnitTests
         [Test]
         public void test_THAT_expresstion_with_not_includes_string_based_syntax_IS_translated_successfully()
         {
-            string caml = Camlex.Query().Where(x => !x["Foo"].Includes((DataTypes.Integer)"1")).ToString();
+            string caml = Camlex.Query().Where(x => !((DataTypes.Integer)x["Foo"]).Includes("1")).ToString();
 
             string expected =
                 "   <Where>" +
@@ -151,7 +151,7 @@ namespace CamlexNET.UnitTests
         [Test]
         public void test_THAT_expresstion_with_not_includes_string_based_syntax_and_lookup_id_IS_translated_successfully()
         {
-            string caml = Camlex.Query().Where(x => !x["Foo"].Includes((DataTypes.LookupMulti)"1", true)).ToString();
+            string caml = Camlex.Query().Where(x => !((DataTypes.LookupMulti)x["Foo"]).Includes("1", true)).ToString();
 
             string expected =
                 "   <Where>" +

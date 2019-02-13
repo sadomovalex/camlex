@@ -52,6 +52,7 @@ namespace CamlexNET
         public const string IsNull = "IsNull";
         public const string BeginsWith = "BeginsWith";
         public const string Contains = "Contains";
+        public const string Includes = "Includes";
         public const string DateRangesOverlap = "DateRangesOverlap";
         public const string ViewFields = "ViewFields";
         public const string UserID = "UserID";

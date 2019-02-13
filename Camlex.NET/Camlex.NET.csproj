@@ -70,6 +70,8 @@
     <Compile Include="Impl\CompositeOperationBase.cs" />
     <Compile Include="Impl\Operands\LookupMultiValueValueOperand.cs" />
     <Compile Include="Impl\Operands\LookupMultiIdValueOperand.cs" />
+    <Compile Include="Impl\Operations\Includes\IncludesAnalyzer.cs" />
+    <Compile Include="Impl\Operations\Includes\IncludesOperation.cs" />
     <Compile Include="Impl\Operations\ProjectedField\ProjectedFieldAnalyzer.cs" />
     <Compile Include="Impl\Operations\ProjectedField\ProjectedFieldOperation.cs" />
     <Compile Include="Impl\ProjectedField.cs" />
