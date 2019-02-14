@@ -53,6 +53,22 @@ namespace CamlexNET.UnitTests
         }
 
         [Test]
+        public void test_THAT_expresstion_with_includes_native_syntax_explicit_cast_IS_translated_successfully()
+        {
+            string caml = Camlex.Query().Where(x => ((int)x["Foo"]).Includes(1)).ToString();
+
+            string expected =
+                "   <Where>" +
+                "       <Includes>" +
+                "           <FieldRef Name=\"Foo\" />" +
+                "           <Value Type=\"Integer\">1</Value>" +
+                "       </Includes>" +
+                "   </Where>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        [Test]
         public void test_THAT_expresstion_with_includes_string_based_syntax_IS_translated_successfully()
         {
             string caml = Camlex.Query().Where(x => ((DataTypes.Integer)x["Foo"]).Includes("1")).ToString();
