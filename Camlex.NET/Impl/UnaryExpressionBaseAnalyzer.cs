@@ -172,7 +172,7 @@ namespace CamlexNET.Impl
 
         //-----------------------------------
 
-        protected IOperand getFieldRefOperand(LambdaExpression expr)
+        protected virtual IOperand getFieldRefOperand(LambdaExpression expr)
         {
             if (!IsValid(expr))
             {
@@ -191,7 +191,7 @@ namespace CamlexNET.Impl
             return operandBuilder.CreateFieldRefOperand(obj, null);
         }
 
-        protected IOperand getValueOperand(LambdaExpression expr)
+        protected virtual IOperand getValueOperand(LambdaExpression expr)
         {
             if (!IsValid(expr))
             {

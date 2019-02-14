@@ -120,8 +120,9 @@ namespace CamlexNET.UnitTests.Operations.NotIncludes
             // arrange
             Expression<Func<SPListItem, bool>> expr = x => !((string)x["Count"]).Includes("foo");
             var operandBuilder = MockRepository.GenerateStub<IOperandBuilder>();
-            operandBuilder.Stub(b => b.CreateFieldRefOperand(((MethodCallExpression)expr.Body).Object, null)).Return(null);
-            operandBuilder.Stub(b => b.CreateValueOperandForNativeSyntax(((MethodCallExpression)expr.Body).Arguments[0])).Return(null);
+            Expression subExpr = (expr.Body as UnaryExpression).Operand;
+            operandBuilder.Stub(b => b.CreateFieldRefOperand(((MethodCallExpression)subExpr).Object, null)).Return(null);
+            operandBuilder.Stub(b => b.CreateValueOperandForNativeSyntax(((MethodCallExpression)subExpr).Arguments[0])).Return(null);
             var analyzer = new NotIncludesAnalyzer(null, operandBuilder);
 
             // act
@@ -137,8 +138,9 @@ namespace CamlexNET.UnitTests.Operations.NotIncludes
             // arrange
             Expression<Func<SPListItem, bool>> expr = x => !((DataTypes.Note)x["Count"]).Includes("foo");
             var operandBuilder = MockRepository.GenerateStub<IOperandBuilder>();
-            operandBuilder.Stub(b => b.CreateFieldRefOperand(((MethodCallExpression)expr.Body).Object, null)).Return(null);
-            operandBuilder.Stub(b => b.CreateValueOperandForNativeSyntax(((MethodCallExpression)expr.Body).Arguments[0])).Return(null);
+            Expression subExpr = (expr.Body as UnaryExpression).Operand;
+            operandBuilder.Stub(b => b.CreateFieldRefOperand(((MethodCallExpression)subExpr).Object, null)).Return(null);
+            operandBuilder.Stub(b => b.CreateValueOperandForNativeSyntax(((MethodCallExpression)subExpr).Arguments[0])).Return(null);
             var analyzer = new NotIncludesAnalyzer(null, operandBuilder);
 
             // act

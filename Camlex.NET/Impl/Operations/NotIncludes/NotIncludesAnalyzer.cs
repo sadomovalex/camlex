@@ -43,7 +43,7 @@ namespace CamlexNET.Impl.Operations.NotIncludes
                 return false;
             }
 
-            // NotIncludes is the same as Includes - with additional ! operand. So in order to check is it valid - create Includes expression with the same params
+            // NotIncludes is the same as Includes - with additional ! operand. So create Includes expression with the same params and reuse base code
             var subExpr = (expr.Body as UnaryExpression).Operand;
             if (!base.IsValid(Expression.Lambda(subExpr, expr.Parameters)))
             {
@@ -58,9 +58,33 @@ namespace CamlexNET.Impl.Operations.NotIncludes
             {
                 throw new NonSupportedExpressionException(expr);
             }
+
             var fieldRefOperand = getFieldRefOperand(expr);
             var valueOperand = getValueOperand(expr);
             return new NotIncludesOperation(operationResultBuilder, fieldRefOperand, valueOperand);
+        }
+
+        protected override IOperand getFieldRefOperand(LambdaExpression expr)
+        {
+            if (!IsValid(expr))
+            {
+                throw new NonSupportedExpressionException(expr);
+            }
+            var subExpr = (expr.Body as UnaryExpression).Operand;
+            var body = subExpr as MethodCallExpression;
+            return operandBuilder.CreateFieldRefOperand(body.Arguments[0], null);
+        }
+
+        protected override IOperand getValueOperand(LambdaExpression expr)
+        {
+            if (!IsValid(expr))
+            {
+                throw new NonSupportedExpressionException(expr);
+            }
+            var subExpr = (expr.Body as UnaryExpression).Operand;
+            var body = subExpr as MethodCallExpression;
+            Expression obj = body.Arguments[0];
+            return operandBuilder.CreateValueOperandForNativeSyntax(obj, obj.Type);
         }
     }
 }
