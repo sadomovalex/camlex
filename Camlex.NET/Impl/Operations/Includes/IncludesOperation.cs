@@ -35,6 +35,16 @@ namespace CamlexNET.Impl.Operations.Includes
 {
     internal class IncludesOperation : BinaryOperationBase
     {
+        public IOperand FieldRefOperand
+        {
+            get { return this.fieldRefOperand;  }
+        }
+
+        public IOperand ValueOperand
+        {
+            get { return this.valueOperand; }
+        }
+
         public IncludesOperation(IOperationResultBuilder operationResultBuilder,
             IOperand fieldRefOperand, IOperand valueOperand)
             : base(operationResultBuilder, fieldRefOperand, valueOperand)

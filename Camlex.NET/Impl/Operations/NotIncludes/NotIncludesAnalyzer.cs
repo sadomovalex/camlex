@@ -25,6 +25,7 @@
 // -----------------------------------------------------------------------------
 #endregion
 using System.Linq.Expressions;
+using CamlexNET.Impl.Operations.Includes;
 using CamlexNET.Interfaces;
 
 namespace CamlexNET.Impl.Operations.NotIncludes
@@ -38,13 +39,22 @@ namespace CamlexNET.Impl.Operations.NotIncludes
 
         public override bool IsValid(LambdaExpression expr)
         {
-            if (!(expr.Body is UnaryExpression) || expr.Body.NodeType != ExpressionType.Not)
+            // because of some reason sometimes !x[].Includes() is interpreted as x[].Includes() == False and sometimes as Not(x[])
+            if (!((expr.Body is UnaryExpression && expr.Body.NodeType == ExpressionType.Not) ||
+                (expr.Body is BinaryExpression && expr.Body.NodeType == ExpressionType.Equal && ((BinaryExpression)expr.Body).Left is MethodCallExpression &&
+                ((MethodCallExpression)((BinaryExpression)expr.Body).Left).Method.Name == ReflectionHelper.IncludesMethodName &&
+                ((BinaryExpression)expr.Body).Right is ConstantExpression && (bool)((ConstantExpression)((BinaryExpression)expr.Body).Right).Value == false)))
             {
                 return false;
             }
 
-            // NotIncludes is the same as Includes - with additional ! operand. So create Includes expression with the same params and reuse base code
-            var subExpr = (expr.Body as UnaryExpression).Operand;
+            var subExpr = this.getSubExpr(expr);
+            if (subExpr == null)
+            {
+                return false;
+            }
+
+            // NotIncludes is the same as Includes but with !. So create Includes expression and validate it
             if (!base.IsValid(Expression.Lambda(subExpr, expr.Parameters)))
             {
                 return false;
@@ -59,32 +69,49 @@ namespace CamlexNET.Impl.Operations.NotIncludes
                 throw new NonSupportedExpressionException(expr);
             }
 
-            var fieldRefOperand = getFieldRefOperand(expr);
-            var valueOperand = getValueOperand(expr);
-            return new NotIncludesOperation(operationResultBuilder, fieldRefOperand, valueOperand);
+//            var fieldRefOperand = getFieldRefOperand(expr);
+//            var valueOperand = getValueOperand(expr);
+//            return new NotIncludesOperation(operationResultBuilder, fieldRefOperand, valueOperand);
+            var subExpr = this.getSubExpr(expr);
+            var includesAnalyzer = new IncludesAnalyzer(this.operationResultBuilder, this.operandBuilder);
+            var includesOperation = (IncludesOperation)includesAnalyzer.GetOperation(Expression.Lambda(subExpr, expr.Parameters));
+            return new NotIncludesOperation(operationResultBuilder, includesOperation.FieldRefOperand, includesOperation.ValueOperand);
         }
 
-        protected override IOperand getFieldRefOperand(LambdaExpression expr)
-        {
-            if (!IsValid(expr))
-            {
-                throw new NonSupportedExpressionException(expr);
-            }
-            var subExpr = (expr.Body as UnaryExpression).Operand;
-            var body = subExpr as MethodCallExpression;
-            return operandBuilder.CreateFieldRefOperand(body.Arguments[0], null);
-        }
+//        protected override IOperand getFieldRefOperand(LambdaExpression expr)
+//        {
+//            if (!IsValid(expr))
+//            {
+//                throw new NonSupportedExpressionException(expr);
+//            }
+//            var subExpr = this.getSubExpr(expr);
+//            return base.getFieldRefOperand(Expression.Lambda(subExpr, expr.Parameters));
+//        }
+//
+//        protected override IOperand getValueOperand(LambdaExpression expr)
+//        {
+//            if (!IsValid(expr))
+//            {
+//                throw new NonSupportedExpressionException(expr);
+//            }
+//            var subExpr = (expr.Body as UnaryExpression).Operand;
+//            return base.getValueOperand(Expression.Lambda(subExpr, expr.Parameters));
+//        }
 
-        protected override IOperand getValueOperand(LambdaExpression expr)
+        private Expression getSubExpr(LambdaExpression expr)
         {
-            if (!IsValid(expr))
+            Expression subExpr = null;
+            if (expr.Body is UnaryExpression && expr.Body.NodeType == ExpressionType.Not)
             {
-                throw new NonSupportedExpressionException(expr);
+                // NotIncludes is the same as Includes - with additional ! operand. So create Includes expression with the same params and reuse base code
+                subExpr = (expr.Body as UnaryExpression).Operand;
             }
-            var subExpr = (expr.Body as UnaryExpression).Operand;
-            var body = subExpr as MethodCallExpression;
-            Expression obj = body.Arguments[0];
-            return operandBuilder.CreateValueOperandForNativeSyntax(obj, obj.Type);
+            else
+            {
+                subExpr = ((BinaryExpression)expr.Body).Left;
+            }
+
+            return subExpr;
         }
     }
 }

@@ -45,6 +45,7 @@ using CamlexNET.Impl.Operations.Join;
 using CamlexNET.Impl.Operations.Leq;
 using CamlexNET.Impl.Operations.Lt;
 using CamlexNET.Impl.Operations.Neq;
+using CamlexNET.Impl.Operations.NotIncludes;
 using CamlexNET.Impl.Operations.OrElse;
 using CamlexNET.Impl.Operations.ProjectedField;
 using CamlexNET.Interfaces;
@@ -95,6 +96,20 @@ namespace CamlexNET.Impl.Factories
                 return new LtAnalyzer(this.operationResultBuilder, this.operandBuilder);
             }
 
+            // it is important to check NotIncludes before Equality because sometimes !x[].Includes() is interpreted as x[].Includes() == False
+            // and sometimes as Not(x[])
+            var includesAnalyzer = new IncludesAnalyzer(operationResultBuilder, operandBuilder);
+            if (includesAnalyzer.IsValid(expr))
+            {
+                return includesAnalyzer;
+            }
+
+            var notIncludesAnalyzer = new NotIncludesAnalyzer(operationResultBuilder, operandBuilder);
+            if (notIncludesAnalyzer.IsValid(expr))
+            {
+                return notIncludesAnalyzer;
+            }
+
             // it is not enough to check ExpressionType for IsNull operation.
             // We need also to check that right operand is null
             IsNullAnalyzer isNullAnalyzer;
@@ -135,18 +150,6 @@ namespace CamlexNET.Impl.Factories
             if (containsAnalyzer.IsValid(expr))
             {
                 return containsAnalyzer;
-            }
-
-            var includesAnalyzer = new IncludesAnalyzer(operationResultBuilder, operandBuilder);
-            if (includesAnalyzer.IsValid(expr))
-            {
-                return includesAnalyzer;
-            }
-
-            var notIncludesAnalyzer = new IncludesAnalyzer(operationResultBuilder, operandBuilder);
-            if (notIncludesAnalyzer.IsValid(expr))
-            {
-                return notIncludesAnalyzer;
             }
 
             var dateRangesOverlapAnalyzer = new DateRangesOverlapAnalyzer(operationResultBuilder, operandBuilder);

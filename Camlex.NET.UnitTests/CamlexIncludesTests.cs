@@ -39,7 +39,7 @@ namespace CamlexNET.UnitTests
         [Test]
         public void test_THAT_expresstion_with_includes_native_syntax_IS_translated_successfully()
         {
-            string caml = Camlex.Query().Where(x => x["Foo"].Includes(1)).ToString();
+            string caml = Camlex.Query().Where(x => ((int)x["Foo"]).Includes(1)).ToString();
 
             string expected =
                 "   <Where>" +
@@ -53,15 +53,15 @@ namespace CamlexNET.UnitTests
         }
 
         [Test]
-        public void test_THAT_expresstion_with_includes_native_syntax_explicit_cast_IS_translated_successfully()
+        public void test_THAT_expresstion_with_includes_native_syntax_string_type_IS_translated_successfully()
         {
-            string caml = Camlex.Query().Where(x => ((int)x["Foo"]).Includes(1)).ToString();
+            string caml = Camlex.Query().Where(x => ((string)x["Foo"]).Includes("1")).ToString();
 
             string expected =
                 "   <Where>" +
                 "       <Includes>" +
                 "           <FieldRef Name=\"Foo\" />" +
-                "           <Value Type=\"Integer\">1</Value>" +
+                "           <Value Type=\"Text\">1</Value>" +
                 "       </Includes>" +
                 "   </Where>";
 
@@ -87,7 +87,7 @@ namespace CamlexNET.UnitTests
         [Test]
         public void test_THAT_expresstion_with_includes_native_syntax_and_lookup_id_IS_translated_successfully()
         {
-            string caml = Camlex.Query().Where(x => x["Foo"].Includes(1, true)).ToString();
+            string caml = Camlex.Query().Where(x => ((int)x["Foo"]).Includes(1, true)).ToString();
 
             string expected =
                 "   <Where>" +
@@ -119,13 +119,29 @@ namespace CamlexNET.UnitTests
         [Test]
         public void test_THAT_expresstion_with_not_includes_native_syntax_IS_translated_successfully()
         {
-            string caml = Camlex.Query().Where(x => !x["Foo"].Includes(1)).ToString();
+            string caml = Camlex.Query().Where(x => !((int)x["Foo"]).Includes(1)).ToString();
 
             string expected =
                 "   <Where>" +
                 "       <NotIncludes>" +
                 "           <FieldRef Name=\"Foo\" />" +
                 "           <Value Type=\"Integer\">1</Value>" +
+                "       </NotIncludes>" +
+                "   </Where>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        [Test]
+        public void test_THAT_expresstion_with_not_includes_native_syntax_string_type_IS_translated_successfully()
+        {
+            string caml = Camlex.Query().Where(x => !((string)x["Foo"]).Includes("1")).ToString();
+
+            string expected =
+                "   <Where>" +
+                "       <NotIncludes>" +
+                "           <FieldRef Name=\"Foo\" />" +
+                "           <Value Type=\"Text\">1</Value>" +
                 "       </NotIncludes>" +
                 "   </Where>";
 
@@ -151,7 +167,7 @@ namespace CamlexNET.UnitTests
         [Test]
         public void test_THAT_expresstion_with_not_includes_native_syntax_and_lookup_id_IS_translated_successfully()
         {
-            string caml = Camlex.Query().Where(x => !x["Foo"].Includes(1, true)).ToString();
+            string caml = Camlex.Query().Where(x => !((int)x["Foo"]).Includes(1, true)).ToString();
 
             string expected =
                 "   <Where>" +

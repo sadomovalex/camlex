@@ -29,6 +29,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using CamlexNET.Impl.Operands;
 using CamlexNET.Interfaces;
 
 namespace CamlexNET.Impl
@@ -57,24 +58,10 @@ namespace CamlexNET.Impl
                 return false;
             }
 
-            Expression obj = null;
-            if (body.Object != null)
+            var obj = this.getObjectExpression(expr);
+            if (obj == null)
             {
-                obj = body.Object;
-            }
-            else
-            {
-                // "Includes" extension method
-                if (body.Method.Name != ReflectionHelper.IncludesMethodName)
-                {
-                    return false;
-                }
-                if (body.Arguments.Count != 2 && body.Arguments.Count != 3)
-                {
-                    return false;
-                }
-
-                obj = body.Arguments[0];
+                return false;
             }
 
             // --- check for object ---
@@ -85,6 +72,12 @@ namespace CamlexNET.Impl
             }
 
             var methodCallExpression = ((UnaryExpression) obj).Operand;
+            if (methodCallExpression is UnaryExpression && methodCallExpression.NodeType == ExpressionType.Convert)
+            {
+                // for "Inlcudes" extension method - when value type is used for casting there is implicit 2nd convert to object
+                methodCallExpression = ((UnaryExpression) methodCallExpression).Operand;
+            }
+
             if (!(methodCallExpression is MethodCallExpression))
             {
                 return false;
@@ -178,17 +171,22 @@ namespace CamlexNET.Impl
             {
                 throw new NonSupportedExpressionException(expr);
             }
+
+            var obj = this.getObjectExpression(expr);
+
+            IOperand valueOperand = null;
             var body = expr.Body as MethodCallExpression;
-            Expression obj = null;
-            if (body.Object != null)
+            if (body.Method.Name == ReflectionHelper.IncludesMethodName && body.Arguments.Count == 3)
             {
-                obj = body.Object;
+                // for "Includes" extension method - when 2nd argument lookupId is provided need to add LookupId attribute to field ref operand
+                var lookupIdExpr = body.Arguments[2];
+                if (lookupIdExpr is ConstantExpression && (bool)((ConstantExpression)lookupIdExpr).Value)
+                {
+                    valueOperand = new LookupIdValueOperand("0");
+                }
             }
-            else
-            {
-                obj = body.Arguments[0];
-            }
-            return operandBuilder.CreateFieldRefOperand(obj, null);
+
+            return operandBuilder.CreateFieldRefOperand(obj, valueOperand);
         }
 
         protected virtual IOperand getValueOperand(LambdaExpression expr)
@@ -197,19 +195,46 @@ namespace CamlexNET.Impl
             {
                 throw new NonSupportedExpressionException(expr);
             }
+            
+            var obj = this.getObjectExpression(expr);
+            var valueType = obj.Type;
             var body = expr.Body as MethodCallExpression;
-            Expression obj = null;
-            if (body.Object != null)
+            Expression parameterExpression = null;
+            if (body.Method.Name == ReflectionHelper.IncludesMethodName)
             {
-                obj = body.Object;
+                parameterExpression = body.Arguments[1];
+                if (parameterExpression is UnaryExpression && ((UnaryExpression) parameterExpression).NodeType == ExpressionType.Convert)
+                {
+                    parameterExpression = ((UnaryExpression) parameterExpression).Operand;
+                }
             }
             else
             {
-                obj = body.Arguments[0];
+                parameterExpression = body.Arguments[0];
             }
-            var valueType = obj.Type;
-            var parameterExpression = body.Arguments[0];
+
             return operandBuilder.CreateValueOperandForNativeSyntax(parameterExpression, valueType);
+        }
+
+        private Expression getObjectExpression(LambdaExpression expr)
+        {
+            var body = expr.Body as MethodCallExpression;
+            Expression obj = null;
+            if (body.Method.Name == ReflectionHelper.IncludesMethodName)
+            {
+                obj = body.Arguments[0];
+                if (obj is UnaryExpression && ((UnaryExpression)obj).Operand is UnaryExpression)
+                {
+                    // for "Inlcudes" extension method - when value type is used for casting there is implicit 2nd convert to object
+                    obj = ((UnaryExpression)obj).Operand;
+                }
+            }
+            else
+            {
+                obj = body.Object;
+            }
+
+            return obj;
         }
     }
 }

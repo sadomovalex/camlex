@@ -46,6 +46,14 @@ namespace CamlexNET.UnitTests.Operations.Includes
         }
 
         [Test]
+        public void test_THAT_includes_expression_with_int_type_IS_valid()
+        {
+            var analyzer = new IncludesAnalyzer(null, null);
+            Expression<Func<SPListItem, bool>> expr = x => ((int)x["Count"]).Includes(1);
+            Assert.That(analyzer.IsValid(expr), Is.True);
+        }
+
+        [Test]
         public void test_THAT_includes_expression_with_string_type_and_lookupid_IS_valid()
         {
             var analyzer = new IncludesAnalyzer(null, null);
