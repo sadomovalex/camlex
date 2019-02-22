@@ -61,18 +61,7 @@ namespace CamlexNET.Impl.Operations.Includes
 
         public override Expression ToExpression()
         {
-            if (!(this.fieldRefOperand is FieldRefOperand))
-            {
-                throw new OperationShouldContainFieldRefOperandException();
-            }
-            if (!(this.valueOperand is TextValueOperand))
-            {
-                throw new OperationShouldContainTextValueOperandException();
-            }
-            var fieldRefExpr = this.getFieldRefOperandExpression();
-            var valueExpr = this.getValueOperandExpression();
-            var mi = typeof(string).GetMethod(ReflectionHelper.ContainsMethodName, new[] { typeof(string) });
-            return Expression.Call(fieldRefExpr, mi, valueExpr);
+            throw new NotImplementedException();
         }
     }
 }
