@@ -39,12 +39,14 @@ using CamlexNET.Impl.Operations.Eq;
 using CamlexNET.Impl.Operations.Geq;
 using CamlexNET.Impl.Operations.Gt;
 using CamlexNET.Impl.Operations.In;
+using CamlexNET.Impl.Operations.Includes;
 using CamlexNET.Impl.Operations.IsNotNull;
 using CamlexNET.Impl.Operations.IsNull;
 using CamlexNET.Impl.Operations.Join;
 using CamlexNET.Impl.Operations.Leq;
 using CamlexNET.Impl.Operations.Lt;
 using CamlexNET.Impl.Operations.Neq;
+using CamlexNET.Impl.Operations.NotIncludes;
 using CamlexNET.Impl.Operations.OrElse;
 using CamlexNET.Impl.Operations.ProjectedField;
 using CamlexNET.Interfaces;
@@ -103,6 +105,20 @@ namespace CamlexNET.Impl.Factories
                     // we need to pass tag for constant as the method parameter
                     return new ConstantAnalyzer(this.operationResultBuilder, this.operandBuilder, Tags.RowLimit);
                 }
+            }
+
+            // it is important to check NotIncludes before Equality because sometimes !x[].Includes() is interpreted as x[].Includes() == False
+            // and sometimes as Not(x[])
+            var includesAnalyzer = new IncludesAnalyzer(operationResultBuilder, operandBuilder);
+            if (includesAnalyzer.IsValid(expr))
+            {
+                return includesAnalyzer;
+            }
+
+            var notIncludesAnalyzer = new NotIncludesAnalyzer(operationResultBuilder, operandBuilder);
+            if (notIncludesAnalyzer.IsValid(expr))
+            {
+                return notIncludesAnalyzer;
             }
 
             // it is not enough to check ExpressionType for IsNull operation.

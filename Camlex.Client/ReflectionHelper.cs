@@ -43,6 +43,7 @@ namespace CamlexNET
         public const string IndexerMethodName = "get_Item";
         public const string StartsWithMethodName = "StartsWith";
         public const string ContainsMethodName = "Contains";
+        public const string IncludesMethodName = "Includes";
         public const string IncludeTimeValue = "IncludeTimeValue";
         public const string DateRangesOverlap = "DateRangesOverlap";
         public const string CommonParameterName = "x";

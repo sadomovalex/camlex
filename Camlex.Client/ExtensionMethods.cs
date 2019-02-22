@@ -45,5 +45,7 @@ namespace CamlexNET
         public static object ForeignList(this object val, string foreignListAlias) { return val; }
         public static object List(this object val, string foreignListAlias) { return val; }
         public static object ShowField(this object val, string fieldTitle) { return val; }
+        public static bool Includes(this object obj, object val) { return true; }
+        public static bool Includes(this object obj, object val, bool lookupId) { return true; }
     }
 }

@@ -39,11 +39,13 @@ using CamlexNET.Impl.Operations.Eq;
 using CamlexNET.Impl.Operations.Geq;
 using CamlexNET.Impl.Operations.Gt;
 using CamlexNET.Impl.Operations.In;
+using CamlexNET.Impl.Operations.Includes;
 using CamlexNET.Impl.Operations.IsNotNull;
 using CamlexNET.Impl.Operations.IsNull;
 using CamlexNET.Impl.Operations.Leq;
 using CamlexNET.Impl.Operations.Lt;
 using CamlexNET.Impl.Operations.Neq;
+using CamlexNET.Impl.Operations.NotIncludes;
 using CamlexNET.Impl.Operations.OrElse;
 using CamlexNET.Interfaces;
 using Microsoft.SharePoint.Client;
@@ -200,5 +202,66 @@ namespace CamlexNET.UnitTests.Factories
             var analyzer = analyzerFactory.Create(expr);
             Assert.That(analyzer, Is.InstanceOf<ConstantAnalyzer>());
         }
-	}
+
+        [Test]
+        public void test_WHEN_expression_is_includes_THEN_includes_analyzer_is_created()
+        {
+            Expression<Func<ListItem, bool>> expr = x => ((int)x["Count"]).Includes(1);
+            var operandBuilder = new OperandBuilder();
+            var analyzerFactory = new AnalyzerFactory(operandBuilder, null);
+            var analyzer = analyzerFactory.Create(expr);
+            Assert.That(analyzer, Is.InstanceOf<IncludesAnalyzer>());
+        }
+
+        [Test]
+        public void test_WHEN_expression_is_includes_with_lookupId_THEN_includes_analyzer_is_created()
+        {
+            Expression<Func<ListItem, bool>> expr = x => ((int)x["Count"]).Includes(1, true);
+            var operandBuilder = new OperandBuilder();
+            var analyzerFactory = new AnalyzerFactory(operandBuilder, null);
+            var analyzer = analyzerFactory.Create(expr);
+            Assert.That(analyzer, Is.InstanceOf<IncludesAnalyzer>());
+        }
+
+        [Test]
+        public void test_WHEN_expression_is_includes_explicit_cast_string_based_syntax_THEN_includes_analyzer_is_created()
+        {
+            Expression<Func<ListItem, bool>> expr = x => ((DataTypes.Integer)x["Count"]).Includes(1);
+            var operandBuilder = new OperandBuilder();
+            var analyzerFactory = new AnalyzerFactory(operandBuilder, null);
+            var analyzer = analyzerFactory.Create(expr);
+            Assert.That(analyzer, Is.InstanceOf<IncludesAnalyzer>());
+        }
+
+        [Test]
+        public void test_WHEN_expression_is_not_includes_explicit_cast_THEN_not_includes_analyzer_is_created()
+        {
+            Expression<Func<ListItem, bool>> expr = x => !((int)x["Count"]).Includes(1);
+            var operandBuilder = new OperandBuilder();
+            var analyzerFactory = new AnalyzerFactory(operandBuilder, null);
+            var analyzer = analyzerFactory.Create(expr);
+            Assert.That(analyzer, Is.InstanceOf<NotIncludesAnalyzer>());
+        }
+
+        [Test]
+        public void test_WHEN_expression_is_not_includes_with_lookupId_THEN_not_includes_analyzer_is_created()
+        {
+            Expression<Func<ListItem, bool>> expr = x => !((int)x["Count"]).Includes(1, true);
+            var operandBuilder = new OperandBuilder();
+            var analyzerFactory = new AnalyzerFactory(operandBuilder, null);
+            var analyzer = analyzerFactory.Create(expr);
+            Assert.That(analyzer, Is.InstanceOf<NotIncludesAnalyzer>());
+        }
+
+        [Test]
+        public void test_WHEN_expression_is_not_includes_explicit_cast_string_based_syntax_THEN_not_includes_analyzer_is_created()
+        {
+            Expression<Func<ListItem, bool>> expr = x => !((DataTypes.Integer)x["Count"]).Includes(1);
+            var operandBuilder = new OperandBuilder();
+            var analyzerFactory = new AnalyzerFactory(operandBuilder, null);
+            var analyzer = analyzerFactory.Create(expr);
+            Assert.That(analyzer, Is.InstanceOf<NotIncludesAnalyzer>());
+        }
+
+    }
 }
