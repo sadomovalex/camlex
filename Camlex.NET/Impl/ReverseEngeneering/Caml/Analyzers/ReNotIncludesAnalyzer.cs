@@ -25,38 +25,31 @@
 // -----------------------------------------------------------------------------
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
 using System.Xml.Linq;
-using CamlexNET.Impl.Operands;
-using CamlexNET.Impl.Operations.Includes;
+using CamlexNET.Impl.Operations.NotIncludes;
 using CamlexNET.Interfaces;
+using CamlexNET.Interfaces.ReverseEngeneering;
 
-namespace CamlexNET.Impl.Operations.NotIncludes
+namespace CamlexNET.Impl.ReverseEngeneering.Caml.Analyzers
 {
-    internal class NotIncludesOperation : IncludesOperationBase
+    internal class ReNotIncludesAnalyzer : ReBinaryExpressionBaseAnalyzer
     {
-        public NotIncludesOperation(IOperationResultBuilder operationResultBuilder,
-            IOperand fieldRefOperand, IOperand valueOperand)
-            : base(operationResultBuilder, fieldRefOperand, valueOperand)
+        public ReNotIncludesAnalyzer(XElement el, IReOperandBuilder operandBuilder) :
+            base(el, operandBuilder)
         {
         }
 
-        public override IOperationResult ToResult()
+        public override bool IsValid()
         {
-            var result = new XElement(Tags.NotIncludes,
-                             fieldRefOperand.ToCaml(),
-                             valueOperand.ToCaml());
-            return operationResultBuilder.CreateResult(result);
+            if (!base.IsValid()) return false;
+            if (el.Name != Tags.NotIncludes) return false;
+            return true;
         }
 
-        public override Expression ToExpression()
+        public override IOperation GetOperation()
         {
-            var expr = base.ToExpression();
-            return Expression.Not(expr);
+            return getOperation((fieldRefOperand, valueOperand) => 
+                new NotIncludesOperation(null, fieldRefOperand, valueOperand));
         }
     }
 }
