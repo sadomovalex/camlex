@@ -101,6 +101,7 @@
     <Compile Include="Impl\Operations\Join\JoinOperation.cs" />
     <Compile Include="Impl\Operations\Join\JoinAnalyzer.cs" />
     <Compile Include="Impl\Query.cs" />
+    <Compile Include="Impl\ReverseEngeneering\Caml\Analyzers\ReIncludesAnalyzer.cs" />
     <Compile Include="Impl\ReverseEngeneering\Caml\Analyzers\ReProjectedFieldsAnalyzer.cs" />
     <Compile Include="Impl\ReverseEngeneering\Caml\Analyzers\ReJoinAnalyzer.cs" />
     <Compile Include="Impl\ReverseEngeneering\Caml\Analyzers\ReInAnalyzer.cs" />

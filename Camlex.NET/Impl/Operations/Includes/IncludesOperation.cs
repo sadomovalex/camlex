@@ -26,7 +26,10 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Xml.Linq;
 using CamlexNET.Impl.Operands;
 using CamlexNET.Interfaces;
@@ -61,7 +64,41 @@ namespace CamlexNET.Impl.Operations.Includes
 
         public override Expression ToExpression()
         {
-            throw new NotImplementedException();
+            // in the field ref operand we don't know what type of the value it has. So perform
+            // conversion here
+            var fieldRef = this.getFieldRefOperandExpression();
+            var value = this.getValueOperandExpression();
+
+            bool hasLookupId = false;
+            List<KeyValuePair<string, string>> attrs = null;
+            if (this.FieldRefOperand is FieldRefOperand)
+            {
+                attrs = (this.FieldRefOperand as FieldRefOperand).Attributes;
+                if (attrs != null)
+                {
+                    hasLookupId = attrs.Any(a => a.Key == Attributes.LookupId);
+                }
+            }
+
+            MethodInfo mi = null;
+            if (hasLookupId)
+            {
+                mi = typeof(ExtensionMethods).GetMethod(ReflectionHelper.IncludesMethodName,
+                    new[]
+                    {
+                        typeof(object), typeof(object), typeof(bool)
+                    });
+            }
+            else
+            {
+                mi = typeof(ExtensionMethods).GetMethod(ReflectionHelper.IncludesMethodName,
+                    new[]
+                    {
+                        typeof(object), typeof(object)
+                    });
+            }
+
+            return Expression.Call(mi, fieldRef, value);
         }
     }
 }
