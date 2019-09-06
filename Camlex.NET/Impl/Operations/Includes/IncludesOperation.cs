@@ -69,6 +69,16 @@ namespace CamlexNET.Impl.Operations.Includes
             var fieldRef = this.getFieldRefOperandExpression();
             var value = this.getValueOperandExpression();
 
+            if (fieldRef.Type != typeof(object))
+            {
+                fieldRef = Expression.Convert(fieldRef, typeof(object));
+            }
+
+            if (value.Type != typeof(object))
+            {
+                value = Expression.Convert(value, typeof(object));
+            }
+
             bool hasLookupId = false;
             List<KeyValuePair<string, string>> attrs = null;
             if (this.FieldRefOperand is FieldRefOperand)
@@ -88,6 +98,7 @@ namespace CamlexNET.Impl.Operations.Includes
                     {
                         typeof(object), typeof(object), typeof(bool)
                     });
+                return Expression.Call(mi, fieldRef, value, Expression.Constant(true));
             }
             else
             {
@@ -96,9 +107,8 @@ namespace CamlexNET.Impl.Operations.Includes
                     {
                         typeof(object), typeof(object)
                     });
+                return Expression.Call(mi, fieldRef, value);
             }
-
-            return Expression.Call(mi, fieldRef, value);
         }
     }
 }

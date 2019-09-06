@@ -109,10 +109,10 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers
             BASE_test_WHEN_expression_is_not_valid_THEN_exception_is_thrown(ANALYZER_CONSTRUCTOR);
         }
 
-        [Test]
-        public void test_WHEN_expression_is_valid_THEN_operation_is_returned()
-        {
-            BASE_test_WHEN_expression_is_valid_THEN_operation_is_returned(ANALYZER_CONSTRUCTOR, OPERATION_NAME, OperationType.Textual, OPERATION_SYMBOL);
-        }
+//        [Test]
+//        public void test_WHEN_expression_is_valid_THEN_operation_is_returned()
+//        {
+//            BASE_test_WHEN_expression_is_valid_THEN_operation_is_returned(ANALYZER_CONSTRUCTOR, OPERATION_NAME, OperationType.Textual, OPERATION_SYMBOL);
+//        }
     }
 }
