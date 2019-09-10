@@ -77,6 +77,7 @@
     <Compile Include="Impl\Operands\LookupMultiIdValueOperand.cs" />
     <Compile Include="Impl\Operations\Includes\IncludesAnalyzer.cs" />
     <Compile Include="Impl\Operations\Includes\IncludesOperation.cs" />
+    <Compile Include="Impl\Operations\Includes\IncludesOperationBase.cs" />
     <Compile Include="Impl\Operations\NotIncludes\NotIncludesAnalyzer.cs" />
     <Compile Include="Impl\Operations\NotIncludes\NotIncludesOperation.cs" />
     <Compile Include="Impl\Operations\ProjectedField\ProjectedFieldAnalyzer.cs" />
@@ -108,6 +109,8 @@
     <Compile Include="Impl\Operations\Join\JoinAnalyzer.cs" />
     <Compile Include="Impl\Query.cs" />
     <Compile Include="Impl\ReverseEngeneering\Caml\Analyzers\ReConstantAnalyzer.cs" />
+    <Compile Include="Impl\ReverseEngeneering\Caml\Analyzers\ReIncludesAnalyzer.cs" />
+    <Compile Include="Impl\ReverseEngeneering\Caml\Analyzers\ReNotIncludesAnalyzer.cs" />
     <Compile Include="Impl\ReverseEngeneering\Caml\Analyzers\ReProjectedFieldsAnalyzer.cs" />
     <Compile Include="Impl\ReverseEngeneering\Caml\Analyzers\ReJoinAnalyzer.cs" />
     <Compile Include="Impl\ReverseEngeneering\Caml\Analyzers\ReInAnalyzer.cs" />

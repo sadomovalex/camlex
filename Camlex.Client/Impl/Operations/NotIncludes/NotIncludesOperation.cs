@@ -29,11 +29,12 @@ using System;
 using System.Linq.Expressions;
 using System.Xml.Linq;
 using CamlexNET.Impl.Operands;
+using CamlexNET.Impl.Operations.Includes;
 using CamlexNET.Interfaces;
 
 namespace CamlexNET.Impl.Operations.NotIncludes
 {
-    internal class NotIncludesOperation : BinaryOperationBase
+    internal class NotIncludesOperation : IncludesOperationBase
     {
         public NotIncludesOperation(IOperationResultBuilder operationResultBuilder,
             IOperand fieldRefOperand, IOperand valueOperand)
@@ -44,14 +45,15 @@ namespace CamlexNET.Impl.Operations.NotIncludes
         public override IOperationResult ToResult()
         {
             var result = new XElement(Tags.NotIncludes,
-                             fieldRefOperand.ToCaml(),
-                             valueOperand.ToCaml());
+                fieldRefOperand.ToCaml(),
+                valueOperand.ToCaml());
             return operationResultBuilder.CreateResult(result);
         }
 
         public override Expression ToExpression()
         {
-            throw new NotImplementedException();
+            var expr = base.ToExpression();
+            return Expression.Not(expr);
         }
     }
 }

@@ -33,11 +33,11 @@ using CamlexNET.Interfaces;
 
 namespace CamlexNET.Impl.Operations.Includes
 {
-    internal class IncludesOperation : BinaryOperationBase
+    internal class IncludesOperation : IncludesOperationBase
     {
         public IOperand FieldRefOperand
         {
-            get { return this.fieldRefOperand;  }
+            get { return this.fieldRefOperand; }
         }
 
         public IOperand ValueOperand
@@ -49,19 +49,6 @@ namespace CamlexNET.Impl.Operations.Includes
             IOperand fieldRefOperand, IOperand valueOperand)
             : base(operationResultBuilder, fieldRefOperand, valueOperand)
         {
-        }
-
-        public override IOperationResult ToResult()
-        {
-            var result = new XElement(Tags.Includes,
-                             fieldRefOperand.ToCaml(),
-                             valueOperand.ToCaml());
-            return operationResultBuilder.CreateResult(result);
-        }
-
-        public override Expression ToExpression()
-        {
-            throw new NotImplementedException();
         }
     }
 }

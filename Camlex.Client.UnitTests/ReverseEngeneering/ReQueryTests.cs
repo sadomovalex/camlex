@@ -298,5 +298,81 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
             var expr = Camlex.QueryFromString(xml).ToExpression();
             Assert.That(expr.ToString(), Is.EqualTo("Query().Where(x => (Convert(x.get_Item(\"foo\")) == 1.23))"));
         }
+
+        [Test]
+        public void test_THAT_expression_with_includes_IS_translated_successfully()
+        {
+            string xml =
+                "<View>" +
+                "<Query>" +
+                "   <Where>" +
+                "       <Includes>" +
+                "           <FieldRef Name=\"Foo\" />" +
+                "           <Value Type=\"Integer\">1</Value>" +
+                "       </Includes>" +
+                "   </Where>" +
+                "</Query>"+
+                "</View>";
+
+            var expr = Camlex.QueryFromString(xml).ToExpression();
+            Assert.That(expr.ToString(), Is.EqualTo("Query().Where(x => Convert(Convert(x.get_Item(\"Foo\"))).Includes(Convert(1)))"));
+        }
+
+        [Test]
+        public void test_THAT_expression_with_includes_with_lookup_id_IS_translated_successfully()
+        {
+            string xml =
+                "<View>" +
+                "<Query>" +
+                "   <Where>" +
+                "       <Includes>" +
+                "           <FieldRef Name=\"Foo\" LookupId=\"True\" />" +
+                "           <Value Type=\"Integer\">1</Value>" +
+                "       </Includes>" +
+                "   </Where>" +
+                "</Query>" +
+                "</View>";
+
+            var expr = Camlex.QueryFromString(xml).ToExpression();
+            Assert.That(expr.ToString(), Is.EqualTo("Query().Where(x => Convert(Convert(x.get_Item(\"Foo\"))).Includes(Convert(1), True))"));
+        }
+
+        [Test]
+        public void test_THAT_expression_with_not_includes_IS_translated_successfully()
+        {
+            string xml =
+                "<View>" +
+                "<Query>" +
+                "   <Where>" +
+                "       <NotIncludes>" +
+                "           <FieldRef Name=\"Foo\" />" +
+                "           <Value Type=\"Integer\">1</Value>" +
+                "       </NotIncludes>" +
+                "   </Where>" +
+                "</Query>" +
+                "</View>";
+
+            var expr = Camlex.QueryFromString(xml).ToExpression();
+            Assert.That(expr.ToString(), Is.EqualTo("Query().Where(x => Not(Convert(Convert(x.get_Item(\"Foo\"))).Includes(Convert(1))))"));
+        }
+
+        [Test]
+        public void test_THAT_expression_with_not_includes_with_lookup_id_IS_translated_successfully()
+        {
+            string xml =
+                "<View>" +
+                "<Query>" +
+                "   <Where>" +
+                "       <NotIncludes>" +
+                "           <FieldRef Name=\"Foo\" LookupId=\"True\" />" +
+                "           <Value Type=\"Integer\">1</Value>" +
+                "       </NotIncludes>" +
+                "   </Where>" +
+                "</Query>" +
+                "</View>";
+
+            var expr = Camlex.QueryFromString(xml).ToExpression();
+            Assert.That(expr.ToString(), Is.EqualTo("Query().Where(x => Not(Convert(Convert(x.get_Item(\"Foo\"))).Includes(Convert(1), True)))"));
+        }
     }
 }
