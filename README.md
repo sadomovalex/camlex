@@ -25,6 +25,7 @@ Install-Package Camlex.NET.dll
 ```
 
 There is also Camlex version which uses CSOM - Camlex.Client. Starting with version 4.0.0.0 there are separate Nuget packages for each Sharepoint version:
+
 **Sharepoint Online:**
 ```
 Install-Package Camlex.Client.dll
