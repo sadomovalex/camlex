@@ -25,7 +25,10 @@ Install-Package Camlex.NET.dll
 ```
 or Client version:
 ```
-Install-Package Camlex.Client.dll
+Sharepoint Online: Install-Package Camlex.Client.dll
+Sharepoint 2013 on-prem: Install-Package Camlex.Client.2013
+Sharepoint 2016 on-prem: Install-Package Camlex.Client.2016
+Sharepoint 2019 on-prem: Install-Package Camlex.Client.2019
 ```
 
 ## Quick Start
