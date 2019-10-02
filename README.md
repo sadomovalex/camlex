@@ -23,12 +23,23 @@ Starting from version 3.0 you can install NuGet package for Camlex from online p
 ```
 Install-Package Camlex.NET.dll
 ```
-or Client version:
+
+There is also Camlex version which uses CSOM - Camlex.Client. Starting with version 4.0.0.0 there are separate Nuget packages for each Sharepoint version:
+**Sharepoint Online:**
 ```
-Sharepoint Online: Install-Package Camlex.Client.dll
-Sharepoint 2013 on-prem: Install-Package Camlex.Client.2013
-Sharepoint 2016 on-prem: Install-Package Camlex.Client.2016
-Sharepoint 2019 on-prem: Install-Package Camlex.Client.2019
+Install-Package Camlex.Client.dll
+```
+**Sharepoint 2013 on-prem:**
+```
+Install-Package Camlex.Client.2013
+```
+**Sharepoint 2016 on-prem:**
+```
+Install-Package Camlex.Client.2016
+```
+**Sharepoint 2019 on-prem:**
+```
+Install-Package Camlex.Client.2016
 ```
 
 ## Quick Start
