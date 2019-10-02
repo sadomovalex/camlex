@@ -40,7 +40,7 @@ Install-Package Camlex.Client.2016
 ```
 **Sharepoint 2019 on-prem:**
 ```
-Install-Package Camlex.Client.2016
+Install-Package Camlex.Client.2019
 ```
 
 ## Quick Start
