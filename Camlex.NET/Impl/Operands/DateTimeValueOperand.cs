@@ -44,6 +44,7 @@ namespace CamlexNET.Impl.Operands
 
         public DateTimeValueMode Mode { get; set; }
         public bool IncludeTimeValue { get; set; }
+        public int OffsetDays { get; set; }
 
         public DateTimeValueOperand(DateTime value, bool includeTimeValue) :
             base(typeof(DataTypes.DateTime), value)
@@ -52,14 +53,20 @@ namespace CamlexNET.Impl.Operands
         }
 
         public DateTimeValueOperand(string value, bool includeTimeValue) :
-            this(value, includeTimeValue, false)
+            this(value, includeTimeValue, false, 0)
         {
         }
 
-        public DateTimeValueOperand(string value, bool includeTimeValue, bool parseExact) :
+        public DateTimeValueOperand(string value, bool includeTimeValue, int offsetDays) :
+            this(value, includeTimeValue, false, offsetDays)
+        {
+        }
+
+        public DateTimeValueOperand(string value, bool includeTimeValue, bool parseExact, int offsetDays) :
             base(typeof(DataTypes.DateTime), DateTime.MinValue)
         {
             IncludeTimeValue = includeTimeValue;
+            OffsetDays = offsetDays;
 
             if (value == Camlex.Now) Mode = DateTimeValueMode.Now;
             else if (value == Camlex.Today) Mode = DateTimeValueMode.Today;
@@ -92,8 +99,18 @@ namespace CamlexNET.Impl.Operands
         {
             object dateTime;
             if (Mode == DateTimeValueMode.Native)
+            {
                 dateTime = new XText(this.getStringFromDateTime(this.Value));
-            else dateTime = new XElement(Mode.ToString());
+            }
+            else if (Mode == DateTimeValueMode.Today && OffsetDays != 0)
+            {
+                dateTime = new XElement(Mode.ToString(),
+                                        new XAttribute(Attributes.OffsetDays, OffsetDays.ToString()));
+            }
+            else
+            {
+                dateTime = new XElement(Mode.ToString());
+            }
             
             if (IncludeTimeValue)
             {
@@ -134,16 +151,19 @@ namespace CamlexNET.Impl.Operands
                 var val = this.getExpressionByMode(this.Mode);
                 var expr = Expression.Convert(Expression.Convert(val, typeof(BaseFieldType)),
                                           typeof(DataTypes.DateTime));
-                if (this.IncludeTimeValue)
+                if (Mode == DateTimeValueMode.Today && OffsetDays != 0)
+                {
+                    var mi =
+                        typeof(DataTypes.DateTime).GetMethod(ReflectionHelper.OffsetDays);
+                    return Expression.Call(expr, mi, Expression.Constant(OffsetDays));
+                }
+                else if (this.IncludeTimeValue)
                 {
                     var mi =
                         typeof(DataTypes.DateTime).GetMethod(ReflectionHelper.IncludeTimeValue);
                     return Expression.Call(expr, mi);
                 }
-                else
-                {
-                    return expr;
-                }
+                return expr;
             }
         }
 

@@ -178,7 +178,7 @@ namespace CamlexNET.UnitTests.Factories
         }
 
         [Test]
-        public void test_WHEN_string_based_value_is_datetime_with_includedatetime_THEN_datetime_operand_is_created()
+        public void test_WHEN_string_based_value_is_datetime_with_includetimevalue_THEN_datetime_operand_is_created()
         {
             var operandBuilder = new OperandBuilder();
             Expression<Func<SPListItem, bool>> expr = x => x["Modified"] == ((DataTypes.DateTime)"02.01.2010 03:04:05").IncludeTimeValue();
@@ -191,6 +191,21 @@ namespace CamlexNET.UnitTests.Factories
             var expected = DateTime.Parse("02.01.2010 03:04:05");
             Assert.That(valueOperand.Value, Is.EqualTo(expected));
             Assert.That(valueOperand.IncludeTimeValue, Is.True);
+        }
+
+        [Test]
+        public void test_WHEN_string_based_value_is_datetime_with_today_and_offsetdays_THEN_datetime_operand_is_created()
+        {
+            var operandBuilder = new OperandBuilder();
+            Expression<Func<SPListItem, bool>> expr = x => x["Modified"] == ((DataTypes.DateTime)Camlex.Today).OffsetDays(3);
+            var operand = operandBuilder.CreateValueOperandForStringBasedSyntax(((BinaryExpression)expr.Body).Right);
+
+            Assert.That(operand, Is.InstanceOf<DateTimeValueOperand>());
+
+            var valueOperand = operand as DateTimeValueOperand;
+            Assert.That(valueOperand.Type, Is.EqualTo(typeof(DataTypes.DateTime)));
+            Assert.That(valueOperand.Mode, Is.EqualTo(DateTimeValueOperand.DateTimeValueMode.Today));
+            Assert.That(valueOperand.OffsetDays, Is.EqualTo(3));
         }
 
         [Test]

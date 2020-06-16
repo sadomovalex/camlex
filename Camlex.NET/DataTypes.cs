@@ -66,6 +66,8 @@ namespace CamlexNET
         public class DateTime : BaseFieldTypeWithOperators
         {
             public DateTime IncludeTimeValue() { return this; }
+
+            public DateTime OffsetDays(int offsetDays) { return this; }
         }
         public class Error : BaseFieldType { }
         public class File : BaseFieldType { }

@@ -139,9 +139,25 @@ namespace CamlexNET.Impl.Helpers
             return (expression is MethodCallExpression) && (((MethodCallExpression)expression).Method.Name == ReflectionHelper.IncludeTimeValue);
         }
 
+        internal static bool HasOffsetDays(Expression expression)
+        {
+            return (expression is MethodCallExpression && ((MethodCallExpression)expression).Method.Name == ReflectionHelper.OffsetDays);
+        }
+
         internal static Expression RemoveIncludeTimeValueMethodCallIfAny(Expression expression)
         {
             if (!IncludeTimeValue(expression)) return expression;
+            var methodCall = (MethodCallExpression)expression;
+
+            if (methodCall.Object != null) return methodCall.Object;
+            if (methodCall.Arguments.Count == 1) return methodCall.Arguments[0];
+
+            throw new NonSupportedExpressionException(expression); // it should not happen - either Object or Arguments  is not NULL
+        }
+
+        internal static Expression RemoveOffsetDaysMethodCallIfAny(Expression expression)
+        {
+            if (!HasOffsetDays(expression)) return expression;
             var methodCall = (MethodCallExpression)expression;
 
             if (methodCall.Object != null) return methodCall.Object;
