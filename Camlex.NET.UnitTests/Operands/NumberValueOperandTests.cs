@@ -56,13 +56,11 @@ namespace CamlexNET.UnitTests.Operands
         }
 
         [Test]
-        [ExpectedException(typeof (InvalidValueForOperandTypeException))]
         [TestCase("asdsad")]
         [TestCase("1.89")]
         public void test_WHEN_string_is_not_valid_number_THEN_exception_is_thrown(string input)
         {
-            var operand = new NumberValueOperand(input);
-            Assert.That(operand.Value, Is.EqualTo(1));
+            Assert.Throws<InvalidValueForOperandTypeException>(() => new NumberValueOperand(input));
         }
     }
 }

@@ -105,10 +105,9 @@ namespace CamlexNET.UnitTests.Operands
         }
 
         [Test]
-        [ExpectedException(typeof(InvalidValueForOperandTypeException))]
         public void test_WHEN_datetime_value_is_not_valid_datetime_THEN_exception_is_thrown()
         {
-            var operand = new DateTimeValueOperand("abc", true);
+            Assert.Throws<InvalidValueForOperandTypeException>(() => new DateTimeValueOperand("abc", true));
         }
     }
 }

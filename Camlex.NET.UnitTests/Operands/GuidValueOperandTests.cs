@@ -55,11 +55,9 @@ namespace CamlexNET.UnitTests.Operands
         }
 
         [Test]
-        [ExpectedException(typeof(InvalidValueForOperandTypeException))]
         public void test_WHEN_string_is_not_valid_guid_THEN_exception_is_thrown()
         {
-            var operand = new GuidValueOperand("asd");
-            var o = operand.Value;
+            Assert.Throws<InvalidValueForOperandTypeException>(() => new GuidValueOperand("asd"));
         }
     }
 }

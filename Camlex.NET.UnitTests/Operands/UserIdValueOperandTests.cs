@@ -45,11 +45,9 @@ namespace CamlexNET.UnitTests.Operands
         }
 
         [Test]
-        [ExpectedException(typeof(InvalidValueForOperandTypeException))]
         public void test_WHEN_string_is_not_valid_integer_THEN_exception_is_thrown()
         {
-            var operand = new UserIdValueOperand("asd");
-            Assert.That(operand.Value, Is.EqualTo(1));
+            Assert.Throws<InvalidValueForOperandTypeException>(() => new UserIdValueOperand("asd"));
         }
     }
 }

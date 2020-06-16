@@ -91,18 +91,16 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Factories
         }
 
         [Test]
-        [ExpectedException(typeof(CamlAnalysisException))]
         public void test_WHEN_where_is_empty_THEN_exception_is_thrown()
         {
             var xml =
                 "<Where>" +
                 "</Where>";
             var f = new ReAnalyzerFromCamlFactory(null);
-            f.Create(XmlHelper.Get(xml));
+            Assert.Throws<CamlAnalysisException>(() => f.Create(XmlHelper.Get(xml)));
         }
 
         [Test]
-        [ExpectedException(typeof(CamlAnalysisException))]
         public void test_WHEN_where_contains_unknown_child_THEN_exception_is_thrown()
         {
             var xml =
@@ -110,7 +108,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Factories
                 "<foo></foo>" +
                 "</Where>";
             var f = new ReAnalyzerFromCamlFactory(null);
-            f.Create(XmlHelper.Get(xml));
+            Assert.Throws<CamlAnalysisException>(() => f.Create(XmlHelper.Get(xml)));
         }
 
         [Test]
@@ -136,19 +134,17 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Factories
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void test_WHEN_null_is_specified_THEN_exception_is_thrown()
         {
             var f = new ReAnalyzerFromCamlFactory(null);
-            f.Create(null);
+            Assert.Throws<ArgumentNullException>(() => f.Create(null));
         }
 
         [Test]
-        [ExpectedException(typeof(CamlAnalysisException))]
         public void test_THAT_for_unknown_tag_exception_IS_thrown()
         {
             var f = new ReAnalyzerFromCamlFactory(null);
-            f.Create(XmlHelper.Get("<foo></foo>"));
+            Assert.Throws<CamlAnalysisException>(() => f.Create(XmlHelper.Get("<foo></foo>")));
         }
     }
 }

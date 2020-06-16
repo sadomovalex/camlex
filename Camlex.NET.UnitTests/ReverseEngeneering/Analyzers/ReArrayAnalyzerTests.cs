@@ -85,11 +85,10 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers
         }
 
         [Test]
-        [ExpectedException(typeof(CamlAnalysisException))]
         public void test_WHEN_expression_is_not_valid_THEN_exception_is_thrown()
         {
             var analyzer = new ReArrayAnalyzer(null, null);
-            analyzer.GetOperation();
+            Assert.Throws<CamlAnalysisException>(() => analyzer.GetOperation());
         }
 
         [Test]

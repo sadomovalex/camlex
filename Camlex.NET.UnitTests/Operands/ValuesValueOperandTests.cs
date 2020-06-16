@@ -13,17 +13,15 @@ namespace CamlexNET.UnitTests.Operands
     public class ValuesValueOperandTests
     {
         [Test]
-        [ExpectedException(typeof(CantCreateValuesValueOperandException))]
         public void test_WHEN_values_are_null_THEN_exception_is_thrown()
         {
-            new ValuesValueOperand(null);
+            Assert.Throws<CantCreateValuesValueOperandException>(() => new ValuesValueOperand(null));
         }
 
         [Test]
-        [ExpectedException(typeof(CantCreateValuesValueOperandException))]
         public void test_WHEN_values_are_empty_THEN_exception_is_thrown()
         {
-            new ValuesValueOperand(new List<IOperand>());
+            Assert.Throws<CantCreateValuesValueOperandException>(() => new ValuesValueOperand(new List<IOperand>()));
         }
 
         [Test]

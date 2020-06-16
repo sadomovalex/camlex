@@ -170,18 +170,16 @@ namespace CamlexNET.UnitTests
         }
 
         [Test]
-        [ExpectedException(typeof(EmptyExpressionsListException))]
         public void test_WHEN_expressions_list_is_empty_THEN_exception_is_thrown()
         {
             var expressions = new List<Expression<Func<SPListItem, bool>>>();
-            Camlex.Query().WhereAny(expressions).ToString();
+            Assert.Throws< EmptyExpressionsListException>(() =>  Camlex.Query().WhereAny(expressions).ToString());
         }
 
         [Test]
-        [ExpectedException(typeof(EmptyExpressionsListException))]
         public void test_WHEN_expressions_list_is_null_THEN_exception_is_thrown()
         {
-            Camlex.Query().WhereAny((IEnumerable<Expression<Func<SPListItem, bool>>>)null).ToString();
+            Assert.Throws<EmptyExpressionsListException>(() => Camlex.Query().WhereAny((IEnumerable<Expression<Func<SPListItem, bool>>>)null).ToString());
         }
 
         [Test]
@@ -429,17 +427,15 @@ namespace CamlexNET.UnitTests
         }
 
         [Test]
-        [ExpectedException(typeof(EmptyExpressionsListException))]
         public void test_WHEN_list_of_expressions_is_null_THEN_exception_is_thrown()
         {
-            Camlex.Query().WhereAny((IEnumerable<string>)null).ToString();
+            Assert.Throws< EmptyExpressionsListException>(() => Camlex.Query().WhereAny((IEnumerable<string>)null).ToString());
         }
 
         [Test]
-        [ExpectedException(typeof(EmptyExpressionsListException))]
         public void test_WHEN_list_of_expressions_is_empty_THEN_exception_is_thrown()
         {
-            Camlex.Query().WhereAny(new string[]{}).ToString();
+            Assert.Throws< EmptyExpressionsListException>(() => Camlex.Query().WhereAny(new string[]{}).ToString());
         }
 
         [Test]

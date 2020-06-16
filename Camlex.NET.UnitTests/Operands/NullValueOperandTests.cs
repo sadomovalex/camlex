@@ -37,11 +37,10 @@ namespace CamlexNET.UnitTests.Operands
     public class NullValueOperandTests
     {
         [Test]
-        [ExpectedException(typeof(NullValueOperandCannotBeTranslatedToCamlException))]
         public void test_WHEN_nullvalue_operand_is_rendered_to_caml_THEN_exception_is_thrown()
         {
             var operand = new NullValueOperand();
-            operand.ToCaml();
+            Assert.Throws<NullValueOperandCannotBeTranslatedToCamlException>(() => operand.ToCaml());
         }
     }
 }

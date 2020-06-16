@@ -119,11 +119,10 @@ namespace CamlexNET.UnitTests
         }
 
         [Test]
-        [ExpectedException(typeof(EmptyExpressionsListException))]
         public void test_WHEN_order_by_list_is_empty_THEN_exception_is_thrown()
         {
             var orderByList = new List<Expression<Func<SPListItem, object>>>();
-            var caml = Camlex.Query().OrderBy(orderByList).ToString();
+            Assert.Throws< EmptyExpressionsListException>(() => Camlex.Query().OrderBy(orderByList).ToString());
         }
 
         [Test]
