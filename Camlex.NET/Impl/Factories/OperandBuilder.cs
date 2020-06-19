@@ -84,12 +84,11 @@ namespace CamlexNET.Impl.Factories
         private IOperand createFieldRefOperandByNameOrId(string val, IOperand valueOperand)
         {
             // if string represents guid, then FieldRef with ID should be created
-            try
+            if (Guid.TryParse(val, out var guid))
             {
-                var guid = new Guid(val);
                 return this.createFieldRefOperand(guid, valueOperand);
             }
-            catch
+            else
             {
                 return this.createFieldRefOperand(val, valueOperand);
             }
