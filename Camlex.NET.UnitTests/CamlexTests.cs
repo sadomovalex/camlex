@@ -1310,5 +1310,37 @@ namespace CamlexNET.UnitTests
 
             Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
         }
+
+        [Test]
+        public void test_THAT_membership_expression_IS_translated_sucessfully()
+        {
+            var caml = Camlex.Query().Where(x => Camlex.Membership(
+                        x["Field"], new Camlex.CurrentUserGroups())).ToString();
+
+            var expected =
+                "  <Where>" +
+                "    <Membership Type=\"CurrentUserGroups\">" +
+                "      <FieldRef Name=\"Field\" />" +
+                "    </Membership>" +
+                "  </Where>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        [Test]
+        public void test_THAT_membership_expression_with_arguments_IS_translated_sucessfully()
+        {
+            var caml = Camlex.Query().Where(x => Camlex.Membership(
+                        x["Field"], new Camlex.SPGroup(3))).ToString();
+
+            var expected =
+                "  <Where>" +
+                "    <Membership Type=\"SPGroup\" ID=\"3\">" +
+                "      <FieldRef Name=\"Field\" />" +
+                "    </Membership>" +
+                "  </Where>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
     }
 }

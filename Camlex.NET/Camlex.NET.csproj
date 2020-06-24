@@ -71,6 +71,8 @@
     <Compile Include="Impl\Operands\LookupMultiValueValueOperand.cs" />
     <Compile Include="Impl\Operands\LookupMultiIdValueOperand.cs" />
     <Compile Include="Impl\Operations\Includes\IncludesOperationBase.cs" />
+    <Compile Include="Impl\Operations\Membership\MembershipAnalyzer.cs" />
+    <Compile Include="Impl\Operations\Membership\MembershipOpeartion.cs" />
     <Compile Include="Impl\Operations\NotIncludes\NotIncludesAnalyzer.cs" />
     <Compile Include="Impl\Operations\NotIncludes\NotIncludesOperation.cs" />
     <Compile Include="Impl\Operations\Includes\IncludesAnalyzer.cs" />
@@ -102,6 +104,7 @@
     <Compile Include="Impl\Operations\Join\JoinOperation.cs" />
     <Compile Include="Impl\Operations\Join\JoinAnalyzer.cs" />
     <Compile Include="Impl\Query.cs" />
+    <Compile Include="Impl\ReverseEngeneering\Caml\Analyzers\ReMembershipAnalyzer.cs" />
     <Compile Include="Impl\ReverseEngeneering\Caml\Analyzers\ReNotIncludesAnalyzer.cs" />
     <Compile Include="Impl\ReverseEngeneering\Caml\Analyzers\ReIncludesAnalyzer.cs" />
     <Compile Include="Impl\ReverseEngeneering\Caml\Analyzers\ReProjectedFieldsAnalyzer.cs" />
@@ -203,6 +206,7 @@
   <ItemGroup>
     <None Include="Camlex.NET.snk" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

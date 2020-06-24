@@ -127,6 +127,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Factories
             Assert.IsInstanceOf<ReBeginsWithAnalyzer>(f.Create(XmlHelper.Get("<Where><BeginsWith></BeginsWith></Where>")));
             Assert.IsInstanceOf<ReContainsAnalyzer>(f.Create(XmlHelper.Get("<Where><Contains></Contains></Where>")));
             Assert.IsInstanceOf<ReDateRangesOverlapAnalyzer>(f.Create(XmlHelper.Get("<Where><DateRangesOverlap></DateRangesOverlap></Where>")));
+            Assert.IsInstanceOf<ReMembershipAnalyzer>(f.Create(XmlHelper.Get("<Where><Membership></Membership></Where>")));
             Assert.IsInstanceOf<ReOrElseAnalyzer>(f.Create(XmlHelper.Get("<Where><Or></Or></Where>")));
             Assert.IsInstanceOf<ReInAnalyzer>(f.Create(XmlHelper.Get("<Where><In></In></Where>")));
             Assert.IsInstanceOf<ReIncludesAnalyzer>(f.Create(XmlHelper.Get("<Where><Includes></Includes></Where>")));

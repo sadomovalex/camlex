@@ -162,6 +162,8 @@
     <Compile Include="Operations\Gt\GtOperationTests.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Operations\Membership\MembershipAnalyzerTests.cs" />
+    <Compile Include="Operations\Membership\MembershipOperationTests.cs" />
     <Compile Include="Operations\NotIncludes\NotIncludesAnalyzerTests.cs" />
     <Compile Include="Operations\NotIncludes\NotIncludesOperationTests.cs" />
     <Compile Include="Operations\Includes\IncludesAnalyzerTests.cs" />
@@ -209,6 +211,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReverseEngeneering\Analyzers\ReINotncludesAnalyzerTest.cs" />
     <Compile Include="ReverseEngeneering\Analyzers\ReIncludesAnalyzerTest.cs" />
+    <Compile Include="ReverseEngeneering\Analyzers\ReMembershipAnalyzerTest.cs" />
     <Compile Include="ReverseEngeneering\Analyzers\ReProjectedFieldsAnalyzerTest.cs" />
     <Compile Include="ReverseEngeneering\Analyzers\ReJoinAnalyzerTest.cs" />
     <Compile Include="ReverseEngeneering\Analyzers\ReInAnalyzerTest.cs" />
@@ -230,6 +233,7 @@
     <Compile Include="ReverseEngeneering\Analyzers\ReDateRangesOverlapAnalyzerTest.cs" />
     <Compile Include="ReverseEngeneering\Analyzers\TestBase\ReUnaryExpressionTestBase.cs" />
     <Compile Include="ReverseEngeneering\Operations\IncludesOperationTests.cs" />
+    <Compile Include="ReverseEngeneering\Operations\MembershipOperationTests.cs" />
     <Compile Include="ReverseEngeneering\ReJoinTests.cs" />
     <Compile Include="ReverseEngeneering\Factories\ReAnalyzerFromCamlFactoryTests.cs" />
     <Compile Include="ReverseEngeneering\Factories\ReOperandBuilderFromCamlTests.cs" />

@@ -29,76 +29,74 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
-using CamlexNET.Impl.Operations.DateRangesOverlap;
+using CamlexNET.Impl.Operations.Membership;
 using CamlexNET.Interfaces;
 using Microsoft.SharePoint;
 using NUnit.Framework;
 using Rhino.Mocks;
 
-namespace CamlexNET.UnitTests.Operations.DateRangesOverlap
+namespace CamlexNET.UnitTests.Operations.Membership
 {
     [TestFixture]
-    public class DateRangesOverlapAnalyzerTests
+    public class MembershipAnalyzerTests
     {
         [Test]
-        public void test_THAT_daterangesoverlap_expression_with_native_constant_IS_valid()
+        public void test_THAT_membership_expression_with_spweballusers_IS_valid()
         {
-            var analyzer = new DateRangesOverlapAnalyzer(null, null);
-            Expression<Func<SPListItem, bool>> expr = x => Camlex.DateRangesOverlap(x["start"], x["stop"], x["recurrence"], DateTime.Now);
+            var analyzer = new MembershipAnalyzer(null, null);
+            Expression<Func<SPListItem, bool>> expr = x => Camlex.Membership(x["field"], new Camlex.SPWebAllUsers());
             Assert.That(analyzer.IsValid(expr), Is.True);
         }
 
         [Test]
-        public void test_THAT_daterangesoverlap_expression_with_native_variable_IS_valid()
+        public void test_THAT_membership_expression_with_spgroup_IS_valid()
         {
-            var analyzer = new DateRangesOverlapAnalyzer(null, null);
-            var now = DateTime.Now;
-            Expression<Func<SPListItem, bool>> expr = x => Camlex.DateRangesOverlap(x["start"], x["stop"], x["recurrence"], now);
+            var analyzer = new MembershipAnalyzer(null, null);
+            Expression<Func<SPListItem, bool>> expr = x => Camlex.Membership(x["field"], new Camlex.SPGroup(4));
             Assert.That(analyzer.IsValid(expr), Is.True);
         }
 
         [Test]
-        public void test_THAT_daterangesoverlap_expression_with_string_constant_IS_valid()
+        public void test_THAT_membership_expression_with_spwebgroups_IS_valid()
         {
-            var analyzer = new DateRangesOverlapAnalyzer(null, null);
-            Expression<Func<SPListItem, bool>> expr = x => Camlex.DateRangesOverlap(x["start"], x["stop"], x["recurrence"], ((DataTypes.DateTime)"02.01.2010 03:04:05"));
+            var analyzer = new MembershipAnalyzer(null, null);
+            Expression<Func<SPListItem, bool>> expr = x => Camlex.Membership(x["field"], new Camlex.SPWebGroups());
             Assert.That(analyzer.IsValid(expr), Is.True);
         }
 
         [Test]
-        public void test_THAT_daterangesoverlap_expression_with_string_variable_IS_valid()
+        public void test_THAT_membership_expression_with_currentusergroups_IS_valid()
         {
-            var analyzer = new DateRangesOverlapAnalyzer(null, null);
-            const string now = "02.01.2010 03:04:05";
-            Expression<Func<SPListItem, bool>> expr = x => Camlex.DateRangesOverlap(x["start"], x["stop"], x["recurrence"], ((DataTypes.DateTime)now));
+            var analyzer = new MembershipAnalyzer(null, null);
+            Expression<Func<SPListItem, bool>> expr = x => Camlex.Membership(x["field"], new Camlex.CurrentUserGroups());
             Assert.That(analyzer.IsValid(expr), Is.True);
         }
 
         [Test]
-        public void test_THAT_daterangesoverlap_expression_with_special_constant_IS_valid()
+        public void test_THAT_membership_expression_with_spwebusers_IS_valid()
         {
-            var analyzer = new DateRangesOverlapAnalyzer(null, null);
-            Expression<Func<SPListItem, bool>> expr = x => Camlex.DateRangesOverlap(x["start"], x["stop"], x["recurrence"], (DataTypes.DateTime)Camlex.Month);
+            var analyzer = new MembershipAnalyzer(null, null);
+            Expression<Func<SPListItem, bool>> expr = x => Camlex.Membership(x["field"], new Camlex.SPWebUsers());
             Assert.That(analyzer.IsValid(expr), Is.True);
         }
 
         [Test]
-        public void test_THAT_daterangesoverlap_expression_IS_determined_properly()
+        public void test_THAT_membership_expression_IS_determined_properly()
         {
             // arrange
-            Expression<Func<SPListItem, bool>> expr = x => Camlex.DateRangesOverlap(x["start"], x["stop"], x["recurrence"], DateTime.Now);
+            Expression<Func<SPListItem, bool>> expr = x => Camlex.Membership(x["field"], new Camlex.CurrentUserGroups());
 
             var operandBuilder = MockRepository.GenerateStub<IOperandBuilder>();
             operandBuilder.Stub(b => b.CreateFieldRefOperand(expr.Body, null)).Return(null);
             operandBuilder.Stub(b => b.CreateValueOperandForNativeSyntax(expr.Body)).Return(null);
 
-            var analyzer = new DateRangesOverlapAnalyzer(null, operandBuilder);
+            var analyzer = new MembershipAnalyzer(null, operandBuilder);
 
             // act
             var operation = analyzer.GetOperation(expr);
 
             //assert
-            Assert.That(operation, Is.InstanceOf<DateRangesOverlapOperation>());
+            Assert.That(operation, Is.InstanceOf<MembershipOpeartion>());
         }
     }
 }

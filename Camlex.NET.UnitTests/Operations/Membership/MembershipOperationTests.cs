@@ -24,45 +24,43 @@
 // fitness for a particular purpose and non-infringement.
 // -----------------------------------------------------------------------------
 #endregion
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Xml.Linq;
+using CamlexNET.Impl.Factories;
+using CamlexNET.Impl.Operands;
+using CamlexNET.Impl.Operations.Membership;
+using CamlexNET.UnitTests.Helpers;
+using NUnit.Framework;
+using Rhino.Mocks;
 
-namespace CamlexNET
+
+namespace CamlexNET.UnitTests.Operations.Membership
 {
-    internal static class Tags
+    [TestFixture]
+    public class MembershipOperationTests
     {
-        public const string Query = "Query";
-        public const string Where = "Where";
-        public const string OrderBy = "OrderBy";
-        public const string GroupBy = "GroupBy";
-        public const string FieldRef = "FieldRef";
-        public const string Value = "Value";
-        public const string And = "And";
-        public const string Or = "Or";
-        public const string Eq = "Eq";
-        public const string Neq = "Neq";
-        public const string Geq = "Geq";
-        public const string Gt = "Gt";
-        public const string Leq = "Leq";
-        public const string Lt = "Lt";
-        public const string IsNotNull = "IsNotNull";
-        public const string IsNull = "IsNull";
-        public const string BeginsWith = "BeginsWith";
-        public const string Contains = "Contains";
-        public const string Includes = "Includes";
-        public const string NotIncludes = "NotIncludes";
-        public const string DateRangesOverlap = "DateRangesOverlap";
-        public const string ViewFields = "ViewFields";
-        public const string UserID = "UserID";
-        public const string In = "In";
-        public const string Values = "Values";
-        public const string Joins = "Joins";
-        public const string Join = "Join";
-        public const string ProjectedFields = "ProjectedFields";
-        public const string Field = "Field";
-        public const string Membership = "Membership";
+        [Test]
+        public void test_THAT_membership_operation_IS_rendered_to_caml_properly()
+        {
+            // arrange
+            var fieldRefOperandStub = MockRepository.GenerateStub<FieldRefOperand>("");
+            var membershipTypeStub = MockRepository.GenerateStub<Camlex.MembershipType>();
+
+            fieldRefOperandStub.Stub(o => o.ToCaml()).Return(new XElement("fieldRefOperandStub"));
+            membershipTypeStub.Stub(o => o.ToString()).Return("membershipTypeStub");
+
+            var resultBuilder = new OperationResultBuilder();
+            var operation = new MembershipOpeartion(resultBuilder,
+                fieldRefOperandStub, membershipTypeStub);
+
+            // act
+            var caml = operation.ToResult().ToString();
+
+            // assert
+            const string expected =
+                @"<Membership Type=""membershipTypeStub"">
+                    <fieldRefOperandStub />
+                </Membership>";
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
     }
 }
