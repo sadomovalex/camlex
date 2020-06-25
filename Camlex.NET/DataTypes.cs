@@ -108,7 +108,7 @@ namespace CamlexNET
         public class Text : StringBasedFieldType { }
         public class ThreadIndex : BaseFieldTypeWithOperators { }
         public class Threading : BaseFieldType { }
-        public class URL : BaseFieldType { }
+        public class URL : StringBasedFieldType { }
         public class User : BaseFieldType { }
 
         // As with LookupId there is no such data type as UserId. It is introduced
