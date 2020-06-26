@@ -36,11 +36,10 @@ namespace CamlexNET.UnitTests.Operands
     public class FieldRefOperandWithOrderingTests
     {
         [Test]
-        [ExpectedException(typeof(FieldRefOperandShouldContainNameOrIdException))]
         public void test_WHEN_both_name_and_id_are_empty_THEN_exception_is_thrown_in_contructor()
         {
             var fr = new FieldRefOperand("");
-            var frOrder = new FieldRefOperandWithOrdering(fr, new Camlex.Asc());
+            Assert.Throws<FieldRefOperandShouldContainNameOrIdException>(() => new FieldRefOperandWithOrdering(fr, new Camlex.Asc()));
         }
 
         [Test]

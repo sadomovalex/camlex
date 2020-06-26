@@ -30,6 +30,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 using CamlexNET.Impl.Helpers;
 using CamlexNET.Impl.Operands;
@@ -83,12 +84,11 @@ namespace CamlexNET.Impl.Factories
         private IOperand createFieldRefOperandByNameOrId(string val, IOperand valueOperand)
         {
             // if string represents guid, then FieldRef with ID should be created
-            try
+            if (Guid.TryParse(val, out var guid))
             {
-                var guid = new Guid(val);
                 return this.createFieldRefOperand(guid, valueOperand);
             }
-            catch
+            else
             {
                 return this.createFieldRefOperand(val, valueOperand);
             }
@@ -223,6 +223,7 @@ namespace CamlexNET.Impl.Factories
         public IOperand CreateValueOperandForStringBasedSyntax(Expression expr)
         {
             var newExpr = ExpressionsHelper.RemoveIncludeTimeValueMethodCallIfAny(expr);
+            newExpr = ExpressionsHelper.RemoveOffsetDaysMethodCallIfAny(newExpr);
 
             // retrieve internal native expression from string based syntax
             var internalExpression = ((UnaryExpression)((UnaryExpression)newExpr).Operand).Operand;
@@ -288,11 +289,16 @@ namespace CamlexNET.Impl.Factories
         private IOperand createValueOperand(Type type, object value, Expression expr)
         {
             bool includeTimeValue = ExpressionsHelper.IncludeTimeValue(expr);
+            int offsetDays = 0;
+            if (ExpressionsHelper.HasOffsetDays(expr))
+            {
+                offsetDays = (int)this.evaluateExpression(((MethodCallExpression)expr).Arguments[0]);
+            }
             bool isIntegerForUserId = ExpressionsHelper.IsIntegerForUserId(expr);
-            return CreateValueOperand(type, value, includeTimeValue, false, false, isIntegerForUserId);
+            return CreateValueOperand(type, value, includeTimeValue, offsetDays, false, false, isIntegerForUserId);
         }
 
-        internal static IOperand CreateValueOperand(Type type, object value, bool includeTimeValue, bool parseExactDateTime, bool isComparisionOperation,
+        internal static IOperand CreateValueOperand(Type type, object value, bool includeTimeValue, int offsetDays, bool parseExactDateTime, bool isComparisionOperation,
             bool isIntegerForUserId)
         {
             // it is important to have check on NullValueOperand on 1st place
@@ -377,7 +383,7 @@ namespace CamlexNET.Impl.Factories
                 {
                     // for string based datetimes we need to specify additional parameter: should use ParseExact
                     // or simple Parse. Because from re it comes in sortable format ("s") and we need to use parse exact
-                    return new DateTimeValueOperand((string)value, includeTimeValue, parseExactDateTime);
+                    return new DateTimeValueOperand((string)value, includeTimeValue, parseExactDateTime, offsetDays);
                 }
             }
             // guid operand can be native or string based

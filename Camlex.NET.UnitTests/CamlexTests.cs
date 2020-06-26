@@ -94,11 +94,10 @@ namespace CamlexNET.UnitTests
         }
 
         [Test]
-        [ExpectedException(typeof(NullValueOperandCannotBeTranslatedToCamlException))]
         public void test_WHEN_eq_expression_with_null_variable_casted_to_string_based_syntax_THEN_exception_is_thrown()
         {
             string val = null;
-            Camlex.Query().Where(x => x["Title"] == (DataTypes.Text)val).ToString();
+            Assert.Throws< NullValueOperandCannotBeTranslatedToCamlException>(()=> Camlex.Query().Where(x => x["Title"] == (DataTypes.Text)val).ToString());
         }
 
         [Test]
@@ -674,10 +673,9 @@ namespace CamlexNET.UnitTests
         }
 
         [Test]
-        [ExpectedException(typeof(NonSupportedExpressionException))]
         public void test_WHEN_integer_indexer_param_is_used_THEN_exception_is_thrown()
         {
-            string caml = Camlex.Query().Where(x => (string)x[1] == "testValue").ToString();
+            Assert.Throws<NonSupportedExpressionException>(() => Camlex.Query().Where(x => (string)x[1] == "testValue").ToString());
         }
 
         [Test]
@@ -704,10 +702,9 @@ namespace CamlexNET.UnitTests
         }
 
         [Test]
-        [ExpectedException(typeof(InvalidOperationException))]
         public void test_WHEN_expression_with_nested_argument_THEN_exception_is_thrown()
         {
-            string caml = Camlex.Query().Where(x => (string) x[(string) x["Title"]] == "foo").ToString();
+            Assert.Throws<InvalidOperationException>(() => Camlex.Query().Where(x => (string) x[(string) x["Title"]] == "foo").ToString());
         }
 
         [Test]
@@ -1310,6 +1307,38 @@ namespace CamlexNET.UnitTests
                 "           <Value Type=\"Number\">1.5</Value>" +
                 "       </Eq>" +
                 "   </Where>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        [Test]
+        public void test_THAT_membership_expression_IS_translated_sucessfully()
+        {
+            var caml = Camlex.Query().Where(x => Camlex.Membership(
+                        x["Field"], new Camlex.CurrentUserGroups())).ToString();
+
+            var expected =
+                "  <Where>" +
+                "    <Membership Type=\"CurrentUserGroups\">" +
+                "      <FieldRef Name=\"Field\" />" +
+                "    </Membership>" +
+                "  </Where>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        [Test]
+        public void test_THAT_membership_expression_with_arguments_IS_translated_sucessfully()
+        {
+            var caml = Camlex.Query().Where(x => Camlex.Membership(
+                        x["Field"], new Camlex.SPGroup(3))).ToString();
+
+            var expected =
+                "  <Where>" +
+                "    <Membership Type=\"SPGroup\" ID=\"3\">" +
+                "      <FieldRef Name=\"Field\" />" +
+                "    </Membership>" +
+                "  </Where>";
 
             Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
         }

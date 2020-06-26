@@ -58,7 +58,6 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers
         }
 
         [Test]
-        [ExpectedException(typeof(CamlAnalysisException))]
         public void test_WHEN_expression_is_not_valid_THEN_operation_is_returned()
         {
             //BASE_test_WHEN_expression_is_valid_THEN_operation_is_returned(ANALYZER_CONSTRUCTOR, OPERATION_NAME, OperationType.Textual, OPERATION_SYMBOL);
@@ -71,7 +70,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Analyzers
                 "  </Values>" +
                 "</In>";
             var analyzer = new ReInAnalyzer(XmlHelper.Get(xml), new ReOperandBuilderFromCaml());
-            analyzer.GetOperation();
+            Assert.Throws<CamlAnalysisException>(() => analyzer.GetOperation());
         }
     }
 }

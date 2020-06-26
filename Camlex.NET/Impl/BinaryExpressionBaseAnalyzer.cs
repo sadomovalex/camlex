@@ -128,6 +128,9 @@ namespace CamlexNET.Impl
             // it is for case when right expression is a method call to IncludeTimeValue method
             rightExpression = ExpressionsHelper.RemoveIncludeTimeValueMethodCallIfAny(rightExpression);
 
+            // it is for case when right expression is a method call to OffsetDays method
+            rightExpression = ExpressionsHelper.RemoveOffsetDaysMethodCallIfAny(rightExpression);
+
             return (rightExpression.NodeType == ExpressionType.Convert &&
                 rightExpression.Type.IsSubclassOf(typeof(BaseFieldType)));
         }
@@ -197,6 +200,9 @@ namespace CamlexNET.Impl
         {
             // it is for case when right expression is a method call to IncludeTimeValue method
             rightExpression = ExpressionsHelper.RemoveIncludeTimeValueMethodCallIfAny(rightExpression);
+
+            // it is for case when right expression is a method call to OffsetDays method
+            rightExpression = ExpressionsHelper.RemoveOffsetDaysMethodCallIfAny(rightExpression);
 
             // 1st convertion is conversion to specific subclass of BaseFieldType
             if (!(rightExpression is UnaryExpression))

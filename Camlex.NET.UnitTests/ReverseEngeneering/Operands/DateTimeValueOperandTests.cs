@@ -110,5 +110,14 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Operands
             var expr = op.ToExpression();
             Assert.That(expr.ToString(), Is.EqualTo("Convert(Convert(Camlex.Now)).IncludeTimeValue()"));
         }
+
+        [Test]
+        public void test_THAT_string_based_operand_with_today_and_offsetdays_IS_conveted_to_expression_correctly()
+        {
+            var offsetDays = 3;
+            var op = new DateTimeValueOperand(Camlex.Today, false, offsetDays);
+            var expr = op.ToExpression();
+            Assert.That(expr.ToString(), Is.EqualTo("Convert(Convert(Camlex.Today)).OffsetDays(3)"));
+        }
     }
 }

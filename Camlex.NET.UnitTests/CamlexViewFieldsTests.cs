@@ -196,25 +196,22 @@ namespace CamlexNET.UnitTests
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void test_WHEN_array_of_names_is_null_THEN_exception_is_thrown()
         {
-            Camlex.Query().ViewFields((IEnumerable<string>)null);
+            Assert.Throws<ArgumentNullException>(() => Camlex.Query().ViewFields((IEnumerable<string>)null));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void test_WHEN_at_least_one_name_is_null_THEN_exception_is_thrown()
         {
             var items = new[] { "Title", null };
-            Camlex.Query().ViewFields(items);
+            Assert.Throws<ArgumentNullException>(() => Camlex.Query().ViewFields(items));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void test_WHEN_array_of_ids_is_null_THEN_exception_is_thrown()
         {
-            Camlex.Query().ViewFields((IEnumerable<Guid>)null);
+            Assert.Throws<ArgumentNullException>(() => Camlex.Query().ViewFields((IEnumerable<Guid>)null));
         }
     }
 }

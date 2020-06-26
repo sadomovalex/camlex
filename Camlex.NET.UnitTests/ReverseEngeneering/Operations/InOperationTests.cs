@@ -28,7 +28,6 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Operations
         }
 
         [Test]
-        [ExpectedException(typeof(CantDetermineValueTypeException))]
         public void test_WHEN_different_types_are_provided_THEN_exception_is_thrown()
         {
             var fieldRef = new FieldRefOperand("test");
@@ -38,7 +37,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Operations
             values.Add(new TextValueOperand("2"));
             var valuesOperand = new ValuesValueOperand(values);
             var operation = new InOperation(null, fieldRef, valuesOperand);
-            var expr = operation.ToExpression();
+            Assert.Throws<CantDetermineValueTypeException>(() => operation.ToExpression());
         }
     }
 }

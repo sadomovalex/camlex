@@ -194,7 +194,6 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
         }
 
         [Test]
-        [ExpectedException(typeof(IncorrectCamlException))]
         public void test_WHEN_where_is_not_provided_THEN_exception_is_thrown()
         {
             string existingQuery =
@@ -203,7 +202,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
                 "    <FieldRef Name=\"Modified\" Ascending=\"False\" />" +
                 "  </OrderBy>" +
                 "</Query>";
-            var query = Camlex.Query().WhereAll(existingQuery, x => (string) x["Title"] == "foo").ToString();
+            Assert.Throws<IncorrectCamlException>(() => Camlex.Query().WhereAll(existingQuery, x => (string)x["Title"] == "foo").ToString());
         }
 
         [Test]
@@ -290,7 +289,6 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
         }
 
         [Test]
-        [ExpectedException(typeof(IncorrectCamlException))]
         public void test_WHEN_order_by_is_not_provided_THEN_exception_is_thrown()
         {
             string existingQuery =
@@ -300,7 +298,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
                 "           <Value Type=\"Text\">testValue</Value>" +
                 "       </Eq>" +
                 "   </Where>";
-            var query = Camlex.Query().OrderBy(existingQuery, x => x["Title"]).ToString();
+            Assert.Throws<IncorrectCamlException>(() => Camlex.Query().OrderBy(existingQuery, x => x["Title"]).ToString());
         }
 
         [Test]
@@ -408,7 +406,6 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
 //        }
 
         [Test]
-        [ExpectedException(typeof(IncorrectCamlException))]
         public void test_WHEN_group_by_is_not_provided_THEN_exception_is_thrown()
         {
             string existingQuery =
@@ -418,7 +415,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
                 "           <Value Type=\"Text\">testValue</Value>" +
                 "       </Eq>" +
                 "   </Where>";
-            var query = Camlex.Query().GroupBy(existingQuery, x => x["Title"]).ToString();
+            Assert.Throws<IncorrectCamlException>(() => Camlex.Query().GroupBy(existingQuery, x => x["Title"]).ToString());
         }
 
         [Test]
@@ -552,7 +549,6 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
         }
 
         [Test]
-        [ExpectedException(typeof(IncorrectCamlException))]
         public void test_WHEN_view_fields_is_not_provided_THEN_exception_is_thrown()
         {
             string existingQuery =
@@ -562,7 +558,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
                 "           <Value Type=\"Text\">testValue</Value>" +
                 "       </Eq>" +
                 "   </Where>";
-            var query = Camlex.Query().ViewFields(existingQuery, x => x["Title"]).ToString();
+            Assert.Throws<IncorrectCamlException>(() => Camlex.Query().ViewFields(existingQuery, x => x["Title"]).ToString());
         }
     }
 }

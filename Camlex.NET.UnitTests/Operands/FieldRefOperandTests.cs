@@ -94,12 +94,11 @@ namespace CamlexNET.UnitTests.Operands
             Assert.That(caml, Is.EqualTo("<FieldRef Name=\"Title\" />"));
         }
 
-        [Test]
-        [ExpectedException(typeof(FieldRefOperandShouldContainNameOrIdException))]
+        [Test]        
         public void test_WHEN_both_name_and_id_are_empty_THEN_exception_is_thrown_during_translation_to_caml()
         {
             var fr = new FieldRefOperand("");
-            fr.ToCaml();
+            Assert.Throws<FieldRefOperandShouldContainNameOrIdException>(() => fr.ToCaml());
         }
     }
 }

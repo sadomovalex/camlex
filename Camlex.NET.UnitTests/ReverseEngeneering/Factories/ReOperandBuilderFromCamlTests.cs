@@ -39,41 +39,37 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Factories
     public class ReOperandBuilderFromCamlTests
     {
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void test_WHEN_xml_is_null_THEN_exception_is_thrown()
         {
             var b = new ReOperandBuilderFromCaml();
-            b.CreateFieldRefOperand(null);
+            Assert.Throws<ArgumentNullException>(() => b.CreateFieldRefOperand(null));
         }
 
         [Test]
-        [ExpectedException(typeof(CamlAnalysisException))]
         public void test_WHEN_id_is_not_correct_guid_THEN_exception_is_thrown()
         {
             var xml = "<FieldRef ID=\"foo\" />";
 
             var b = new ReOperandBuilderFromCaml();
-            b.CreateFieldRefOperand(XmlHelper.Get(xml));
+            Assert.Throws<CamlAnalysisException>(() => b.CreateFieldRefOperand(XmlHelper.Get(xml)));
         }
 
         [Test]
-        [ExpectedException(typeof(CamlAnalysisException))]
         public void test_WHEN_id_and_name_are_not_specified_THEN_exception_is_thrown()
         {
             var xml = "<FieldRef />";
 
             var b = new ReOperandBuilderFromCaml();
-            b.CreateFieldRefOperand(XmlHelper.Get(xml));
+            Assert.Throws<CamlAnalysisException>(() => b.CreateFieldRefOperand(XmlHelper.Get(xml)));
         }
 
         [Test]
-        [ExpectedException(typeof(CamlAnalysisException))]
         public void test_WHEN_both_id_and_name_are_specified_THEN_exception_is_thrown()
         {
             var xml = "<FieldRef ID=\"{7392DB71-A87B-41EC-8BC5-F0B8421B14FA}\" Name=\"Title\" />";
 
             var b = new ReOperandBuilderFromCaml();
-            b.CreateFieldRefOperand(XmlHelper.Get(xml));
+            Assert.Throws<CamlAnalysisException>(() => b.CreateFieldRefOperand(XmlHelper.Get(xml)));
         }
 
         [Test]
@@ -132,31 +128,28 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Factories
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void test_WHEN_xml_is_null_THEN_exception_is_thrown_for_create_value_operand()
         {
             var b = new ReOperandBuilderFromCaml();
-            b.CreateValueOperand(null, false);
+            Assert.Throws<ArgumentNullException>(() => b.CreateValueOperand(null, false));
         }
 
         [Test]
-        [ExpectedException(typeof(CamlAnalysisException))]
         public void test_WHEN_type_attr_is_missing_THEN_exception_is_thrown_for_create_value_operand()
         {
             var xml = "<Operation><Value>1</Value></Operation>";
 
             var b = new ReOperandBuilderFromCaml();
-            b.CreateValueOperand(XmlHelper.Get(xml), false);
+            Assert.Throws<CamlAnalysisException>(() => b.CreateValueOperand(XmlHelper.Get(xml), false));
         }
 
         [Test]
-        [ExpectedException(typeof(CamlAnalysisException))]
         public void test_WHEN_type_attr_has_incorrect_value_THEN_exception_is_thrown_for_create_value_operand()
         {
             var xml = "<Operation><Value Type=\"foo\">1</Value></Operation>";
 
             var b = new ReOperandBuilderFromCaml();
-            b.CreateValueOperand(XmlHelper.Get(xml), false);
+            Assert.Throws<CamlAnalysisException>(() => b.CreateValueOperand(XmlHelper.Get(xml), false));
         }
 
         [Test]
@@ -175,10 +168,14 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Factories
                 Is.EqualTo("<Value Type=\"Boolean\">0</Value>"));
             Assert.That(b.CreateValueOperand(XmlHelper.Get("<Operation><Value Type=\"DateTime\">2010-02-01T03:04:05Z</Value></Operation>"), false).ToCaml().ToString(),
                 Is.EqualTo("<Value Type=\"DateTime\">2010-02-01T03:04:05Z</Value>"));
+            Assert.That(b.CreateValueOperand(XmlHelper.Get("<Operation><Value Type=\"DateTime\" IncludeTimeValue=\"True\">2010-02-01T03:04:05Z</Value></Operation>"), false).ToCaml().ToString(),
+                Is.EqualTo("<Value Type=\"DateTime\" IncludeTimeValue=\"True\">2010-02-01T03:04:05Z</Value>"));
             Assert.That(b.CreateValueOperand(XmlHelper.Get("<Operation><Value Type=\"DateTime\"><Now /></Value></Operation>"), false).ToCaml().ToString(),
                 Is.EqualTo("<Value Type=\"DateTime\"><Now /></Value>").Using(new CamlComparer()));
             Assert.That(b.CreateValueOperand(XmlHelper.Get("<Operation><Value Type=\"DateTime\"><Today /></Value></Operation>"), false).ToCaml().ToString(),
                 Is.EqualTo("<Value Type=\"DateTime\"><Today /></Value>").Using(new CamlComparer()));
+            Assert.That(b.CreateValueOperand(XmlHelper.Get("<Operation><Value Type=\"DateTime\"><Today OffsetDays=\"5\" /></Value></Operation>"), false).ToCaml().ToString(),
+                Is.EqualTo("<Value Type=\"DateTime\"><Today OffsetDays=\"5\" /></Value>").Using(new CamlComparer()));
             Assert.That(b.CreateValueOperand(XmlHelper.Get("<Operation><Value Type=\"DateTime\"><Week /></Value></Operation>"), false).ToCaml().ToString(),
                 Is.EqualTo("<Value Type=\"DateTime\"><Week /></Value>").Using(new CamlComparer()));
             Assert.That(b.CreateValueOperand(XmlHelper.Get("<Operation><Value Type=\"DateTime\"><Month /></Value></Operation>"), false).ToCaml().ToString(),
@@ -209,13 +206,12 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Factories
         }
 
         [Test]
-        [ExpectedException(typeof(NonSupportedOperandTypeException))]
         public void test_WHEN_comparision_operation_but_type_is_not_compirable_THEN_exception_is_thrown_for_create_value_operand()
         {
             var xml = "<Operation><Value Type=\"Boolean\">True</Value></Operation>";
 
             var b = new ReOperandBuilderFromCaml();
-            b.CreateValueOperand(XmlHelper.Get(xml), true);
+            Assert.Throws<NonSupportedOperandTypeException>(() => b.CreateValueOperand(XmlHelper.Get(xml), true));
         }
 
         [Test]

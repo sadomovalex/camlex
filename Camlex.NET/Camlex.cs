@@ -48,11 +48,11 @@ namespace CamlexNET
         public const string Now = "Now";
         // Equivalent of DateTime.Today for string-based syntax
         public const string Today = "Today";
-        // Used only in DateRangeOverlar in string-based syntax
+        // Used only in DateRangeOverlap in string-based syntax
         public const string Week = "Week";
-        // Used only in DateRangeOverlar in string-based syntax
+        // Used only in DateRangeOverlap in string-based syntax
         public const string Month = "Month";
-        // Used only in DateRangeOverlar in string-based syntax
+        // Used only in DateRangeOverlap in string-based syntax
         public const string Year = "Year";
 
         // Function taking parameters needed for CAML's DateRangesOverlap function
@@ -68,8 +68,46 @@ namespace CamlexNET
         /// <param name="stopField">Field containing stop value of recurrent event</param>
         /// <param name="recurrenceField">Field containing recurrnec ID of recurrent event</param>
         /// <param name="dateTime">DateTime value which the ranges should contain</param>
-        /// <returns>Flag indicating whether date/time is inside ranfe</returns>
+        /// <returns>Flag indicating whether date/time is inside range</returns>
         public static bool DateRangesOverlap(object startField, object stopField, object recurrenceField, DataTypes.DateTime dateTime) { return false; }
+
+        #endregion
+
+        #region Membership
+
+        internal const string Membership_SPWebAllUsers = "SPWeb.AllUsers";
+        internal const string Membership_SPGroup = "SPGroup";
+        internal const string Membership_SPWebGroups = "SPWeb.Groups";
+        internal const string Membership_CurrentUserGroups = "CurrentUserGroups";
+        internal const string Membership_SPWebUsers = "SPWeb.Users";
+
+        public class MembershipType
+        {
+            public override string ToString() { return string.Empty; }
+        }
+        // Marker class representing SPWeb.AllUsers type for "Membership" functionality
+        public class SPWebAllUsers : MembershipType { public override string ToString() { return Membership_SPWebAllUsers; } }
+        // Marker class representing SPGroup type for "Membership" functionality
+        public class SPGroup : MembershipType {
+            public int GroupId { get; private set; }
+            public SPGroup(int groupId)
+            {
+                this.GroupId = groupId;
+            }
+
+            public override string ToString() { return Membership_SPGroup; } 
+        }
+        // Marker class representing SPWeb.Groups type for "Membership" functionality
+        public class SPWebGroups : MembershipType { public override string ToString() { return Membership_SPWebGroups; } }
+        // Marker class representing CurrentUserGroups type for "Membership" functionality
+        public class CurrentUserGroups : MembershipType { public override string ToString() { return Membership_CurrentUserGroups; } }
+        // Marker class representing SPWeb.Users type for "Membership" functionality
+        public class SPWebUsers : MembershipType { public override string ToString() { return Membership_SPWebUsers; } }
+
+        // Function taking parameters needed for CAML's Membership function
+        /// <param name="field">Field to check membership</param>
+        /// <param name="membershipType">Type of membership</param>
+        public static bool Membership(object field, MembershipType membershipType) { return false; }
 
         #endregion
 

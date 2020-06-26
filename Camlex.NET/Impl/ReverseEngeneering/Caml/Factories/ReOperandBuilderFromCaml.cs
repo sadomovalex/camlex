@@ -255,12 +255,25 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Factories
                 }
             }
 
+            int offsetDays = 0;            
             string value = valueElement.Value;
             if (type == typeof(DataTypes.DateTime) && valueElement.Descendants().Count() == 1)
             {
                 // for DateTime instead of real (Native) value there can be <Now />, <Today />, etc.
                 // See the full list from DateTimeValueOperand
                 value = valueElement.Descendants().First().Name.ToString();
+
+                //<Today /> can contains attribute OffsetDays
+                var offsetDaysAttr = valueElement.Descendants().First().Attributes().FirstOrDefault(a => a.Name == Attributes.OffsetDays);
+                if (offsetDaysAttr != null)
+                {
+                    if (!int.TryParse(offsetDaysAttr.Value, out offsetDays))
+                    {
+                        throw new CamlAnalysisException(
+                            string.Format(
+                                "Can't create value operand: attribute '{0}' has incorrect value '{1}'. It should have integer value", offsetDaysAttr.Name, offsetDaysAttr.Value));
+                    }
+                }
             }
 
             var convertedType = this.convertToNativeIfPossible(type);
@@ -268,7 +281,7 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Factories
             // currently only string-based value operand will be returned
             // todo: add support of native operands here (see OperandBuilder.CreateValueOperand() for details)
             return OperandBuilder.CreateValueOperand(
-                convertedType, value, includeTimeValue, true, isComparision, isIntegerForUserId);
+                convertedType, value, includeTimeValue, offsetDays, true, isComparision, isIntegerForUserId);
         }
 
         private Type convertToNativeIfPossible(Type type)

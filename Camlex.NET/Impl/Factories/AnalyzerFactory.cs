@@ -44,6 +44,7 @@ using CamlexNET.Impl.Operations.IsNull;
 using CamlexNET.Impl.Operations.Join;
 using CamlexNET.Impl.Operations.Leq;
 using CamlexNET.Impl.Operations.Lt;
+using CamlexNET.Impl.Operations.Membership;
 using CamlexNET.Impl.Operations.Neq;
 using CamlexNET.Impl.Operations.NotIncludes;
 using CamlexNET.Impl.Operations.OrElse;
@@ -156,6 +157,12 @@ namespace CamlexNET.Impl.Factories
             if (dateRangesOverlapAnalyzer.IsValid(expr))
             {
                 return dateRangesOverlapAnalyzer;
+            }
+
+            var membershipAnalyzer = new MembershipAnalyzer(operationResultBuilder, operandBuilder);
+            if (membershipAnalyzer.IsValid(expr))
+            {
+                return membershipAnalyzer;
             }
 
             var inAnalyzer = new InAnalyzer(operationResultBuilder, operandBuilder);
