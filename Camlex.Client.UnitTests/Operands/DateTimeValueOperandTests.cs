@@ -81,6 +81,15 @@ namespace CamlexNET.UnitTests.Operands
         }
 
         [Test]
+        public void test_THAT_datetime_value_of_today_and_offsetdays_IS_rendered_to_caml_properly()
+        {
+            int offsetDays = 4;
+            var operand = new DateTimeValueOperand(Camlex.Today, false, offsetDays);
+            var caml = operand.ToCaml().ToString();
+            Assert.That(caml, Is.EqualTo("<Value Type=\"DateTime\"><Today OffsetDays=\"" + offsetDays + "\" /></Value>").Using(new CamlComparer()));
+        }
+
+    [Test]
         public void test_THAT_datetime_value_of_week_IS_rendered_to_caml_properly()
         {
             var operand = new DateTimeValueOperand(Camlex.Week, false);
