@@ -47,6 +47,7 @@ namespace CamlexNET
         public const string IncludeTimeValue = "IncludeTimeValue";
         public const string OffsetDays = "OffsetDays";
         public const string DateRangesOverlap = "DateRangesOverlap";
+        public const string Membership = "Membership";
         public const string CommonParameterName = "x";
         public const string Item = "Item";
         public const string ToStringMethodName = "ToString";

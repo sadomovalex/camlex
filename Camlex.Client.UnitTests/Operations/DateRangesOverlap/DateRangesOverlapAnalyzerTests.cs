@@ -27,8 +27,10 @@
 using System;
 using System.Linq.Expressions;
 using CamlexNET.Impl.Operations.DateRangesOverlap;
+using CamlexNET.Interfaces;
 using Microsoft.SharePoint.Client;
 using NUnit.Framework;
+using Rhino.Mocks;
 
 namespace CamlexNET.UnitTests.Operations.DateRangesOverlap
 {
@@ -76,5 +78,24 @@ namespace CamlexNET.UnitTests.Operations.DateRangesOverlap
 			Expression<Func<ListItem, bool>> expr = x => Camlex.DateRangesOverlap(x["start"], x["stop"], x["recurrence"], (DataTypes.DateTime)Camlex.Month);
 			Assert.That(analyzer.IsValid(expr), Is.True);
 		}
-	}
+
+        [Test]
+        public void test_THAT_daterangesoverlap_expression_IS_determined_properly()
+        {
+            // arrange
+            Expression<Func<ListItem, bool>> expr = x => Camlex.DateRangesOverlap(x["start"], x["stop"], x["recurrence"], DateTime.Now);
+
+            var operandBuilder = MockRepository.GenerateStub<IOperandBuilder>();
+            operandBuilder.Stub(b => b.CreateFieldRefOperand(expr.Body, null)).Return(null);
+            operandBuilder.Stub(b => b.CreateValueOperandForNativeSyntax(expr.Body)).Return(null);
+
+            var analyzer = new DateRangesOverlapAnalyzer(null, operandBuilder);
+
+            // act
+            var operation = analyzer.GetOperation(expr);
+
+            //assert
+            Assert.That(operation, Is.InstanceOf<DateRangesOverlapOperation>());
+        }
+    }
 }
