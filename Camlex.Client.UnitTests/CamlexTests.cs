@@ -27,6 +27,7 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using CamlexNET.Impl.Operands;
 using CamlexNET.UnitTests.Helpers;
 using Microsoft.SharePoint.Client;
 using NUnit.Framework;
@@ -1435,6 +1436,26 @@ namespace CamlexNET.UnitTests
 
             Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
 	    }
+
+        [Test]
+        public void test_THAT_datetime_with_offsetdays_IS_translated_successfully()
+        {
+            string caml = Camlex.Query().Where(x => x["Created"] > ((DataTypes.DateTime)Camlex.Today).OffsetDays(-1)).ToString();
+
+            const string expected =
+                "<Query>" +
+                "  <Where>" +
+                "    <Gt>" +
+                "        <FieldRef Name=\"Created\" />" +
+                "        <Value Type=\"DateTime\">" +
+                "           <Today OffsetDays=\"-1\" />" +
+                "        </Value>" +
+                "    </Gt>" +
+                "  </Where>" +
+                "</Query>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
 
         [Test]
         public void test_THAT_membership_expression_with_SPWebAllUsers_IS_translated_successfully()
