@@ -1437,25 +1437,25 @@ namespace CamlexNET.UnitTests
 	    }
 
         [Test]
-        public void test_THAT_membership_expression_IS_translated_sucessfully()
+        public void test_THAT_membership_expression_with_SPWebAllUsers_IS_translated_successfully()
         {
             var caml = Camlex.Query().Where(x => Camlex.Membership(
-                x["Field"], new Camlex.CurrentUserGroups())).ToString();
+                x["Field"], new Camlex.SPWebAllUsers())).ToString();
 
             var expected =
                 "<Query>" +
                 "  <Where>" +
-                "    <Membership Type=\"CurrentUserGroups\">" +
+                "    <Membership Type=\"SPWeb.AllUsers\">" +
                 "      <FieldRef Name=\"Field\" />" +
                 "    </Membership>" +
-                "  </Where>" +
+                "   </Where>" +
                 "</Query>";
 
             Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
         }
 
         [Test]
-        public void test_THAT_membership_expression_with_arguments_IS_translated_sucessfully()
+        public void test_THAT_membership_expression_with_SPGroup_IS_translated_successfully()
         {
             var caml = Camlex.Query().Where(x => Camlex.Membership(
                 x["Field"], new Camlex.SPGroup(3))).ToString();
@@ -1466,7 +1466,61 @@ namespace CamlexNET.UnitTests
                 "    <Membership Type=\"SPGroup\" ID=\"3\">" +
                 "      <FieldRef Name=\"Field\" />" +
                 "    </Membership>" +
-                "  </Where>" +
+                "   </Where>" +
+                "</Query>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        [Test]
+        public void test_THAT_membership_expression_with_SPWebGroups_IS_translated_successfully()
+        {
+            var caml = Camlex.Query().Where(x => Camlex.Membership(
+                x["Field"], new Camlex.SPWebGroups())).ToString();
+
+            var expected =
+                "<Query>" +
+                "  <Where>" +
+                "    <Membership Type=\"SPWeb.Groups\">" +
+                "      <FieldRef Name=\"Field\" />" +
+                "    </Membership>" +
+                "   </Where>" +
+                "</Query>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        [Test]
+        public void test_THAT_membership_expression_with_CurrentUserGroups_IS_translated_successfully()
+        {
+            var caml = Camlex.Query().Where(x => Camlex.Membership(
+                        x["Field"], new Camlex.CurrentUserGroups())).ToString();
+
+            var expected =
+                "<Query>" +
+                "  <Where>" +
+                "    <Membership Type=\"CurrentUserGroups\">" +
+                "      <FieldRef Name=\"Field\" />" +
+                "    </Membership>" +
+                "   </Where>" +
+                "</Query>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        [Test]
+        public void test_THAT_membership_expression_with_SPWebUsers_IS_translated_successfully()
+        {
+            var caml = Camlex.Query().Where(x => Camlex.Membership(
+                x["Field"], new Camlex.SPWebUsers())).ToString();
+
+            var expected =
+                "<Query>" +
+                "  <Where>" +
+                "    <Membership Type=\"SPWeb.Users\">" +
+                "      <FieldRef Name=\"Field\" />" +
+                "    </Membership>" +
+                "   </Where>" +
                 "</Query>";
 
             Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
