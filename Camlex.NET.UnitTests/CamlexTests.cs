@@ -1312,6 +1312,24 @@ namespace CamlexNET.UnitTests
         }
 
         [Test]
+        public void test_THAT_datetime_with_offsetdays_IS_translated_successfully()
+        {
+            string caml = Camlex.Query().Where(x => x["Created"] > ((DataTypes.DateTime)Camlex.Today).OffsetDays(-1)).ToString();
+
+            const string expected =
+                "  <Where>" +
+                "    <Gt>" +
+                "        <FieldRef Name=\"Created\" />" +
+                "        <Value Type=\"DateTime\">" +
+                "           <Today OffsetDays=\"-1\" />" +
+                "        </Value>" +
+                "    </Gt>" +
+                "  </Where>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        [Test]
         public void test_THAT_membership_expression_with_SPWebAllUsers_IS_translated_successfully()
         {
             var caml = Camlex.Query().Where(x => Camlex.Membership(
