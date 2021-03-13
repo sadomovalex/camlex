@@ -1,0 +1,17 @@
+<Project>
+	<PropertyGroup>
+		<MsBuildAllProjects>$(MsBuildAllProjects);$(MsBuildThisFileFullPath)</MsBuildAllProjects>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<VersionPrefix>4.2.0</VersionPrefix>
+		<PackageProjectUrl>https://github.com/sadomovalex/camlex</PackageProjectUrl>
+		<PackageLicenseExpression>MS-PL</PackageLicenseExpression>
+		<RepositoryType>git</RepositoryType>
+		<RepositoryUrl>https://github.com/sadomovalex/camlex</RepositoryUrl>
+		<Copyright>Alexey Sadomov</Copyright>
+		<Company>Alexey Sadomov</Company>
+		<Authors>Alexey Sadomov, Vladimir Timashkov, Stef Heyenrath</Authors>
+		<PackageTags>CAML lambda expressions csharp client object model CSOM</PackageTags>
+	</PropertyGroup>
+</Project>
