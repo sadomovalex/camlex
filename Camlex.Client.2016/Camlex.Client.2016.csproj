@@ -1,28 +1,28 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-	<PropertyGroup>
-		<TargetFrameworks>net45;netcoreapp3.1;net5.0;netstandard2.0</TargetFrameworks>
-		<RootNamespace>Camlex.Client</RootNamespace>
-		<AssemblyName>Camlex.Client.2016.dll</AssemblyName>
-		<Description>Camlex.NET for client object model. Camlex.NET simplifies creating of CAML queries for SharePoint 2016 by using C# and lambda expressions.</Description>
-		<AssemblyOriginatorKeyFile>..\Camlex.Client\Camlex.NET.snk</AssemblyOriginatorKeyFile>
-	</PropertyGroup>
+  <PropertyGroup>
+    <TargetFrameworks>net45;netcoreapp3.1;net5.0;netstandard2.0</TargetFrameworks>
+    <RootNamespace>Camlex.Client</RootNamespace>
+    <AssemblyName>Camlex.Client.2016.dll</AssemblyName>
+    <Description>Camlex.NET for client object model. Camlex.NET simplifies creating of CAML queries for SharePoint 2016 by using C# and lambda expressions.</Description>
+    <AssemblyOriginatorKeyFile>..\Camlex.Client\Camlex.NET.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
 
-	<PropertyGroup Condition="'$(Configuration)' == 'Release'">
-		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-	</PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
 
-	<ItemGroup>
-		<Compile Include="..\Camlex.Client\*.cs;..\Camlex.Client\*\*.cs;..\Camlex.Client\*\*\*.cs;..\Camlex.Client\*\*\*\*.cs;..\Camlex.Client\*\*\*\*\*.cs" Exclude="..\Camlex.Client\*\Assembly*.cs;..\Camlex.Client\bin\**;..\Camlex.Client\obj\**" />
-	</ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Camlex.Client\*.cs;..\Camlex.Client\*\*.cs;..\Camlex.Client\*\*\*.cs;..\Camlex.Client\*\*\*\*.cs;..\Camlex.Client\*\*\*\*\*.cs" Exclude="..\Camlex.Client\*\Assembly*.cs;..\Camlex.Client\bin\**;..\Camlex.Client\obj\**" />
+  </ItemGroup>
 
-	<ItemGroup>
-		<Reference Include="Microsoft.SharePoint.Client">
-			<HintPath>..\Assemblies\16.1\Microsoft.SharePoint.Client.dll</HintPath>
-		</Reference>
-		<Reference Include="Microsoft.SharePoint.Client.Runtime">
-			<HintPath>..\Assemblies\16.1\Microsoft.SharePoint.Client.Runtime.dll</HintPath>
-		</Reference>
-	</ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.SharePoint.Client">
+      <HintPath>..\Assemblies\16\Microsoft.SharePoint.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client.Runtime">
+      <HintPath>..\Assemblies\16\Microsoft.SharePoint.Client.Runtime.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 
 </Project>
