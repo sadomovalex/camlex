@@ -130,6 +130,19 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Operations
         }
 
         [Test]
+        public void test_THAT_eq_operation_with_native_datetime_includetime_and_storagetz_IS_converted_to_expression_correctly()
+        {
+            var op1 = new FieldRefOperand("Modified");
+
+            var dt = new DateTime(2011, 4, 25, 19, 7, 00, 00);
+            var op2 = new DateTimeValueOperand(dt, true, true);
+            var op = new EqOperation(null, op1, op2);
+            Expression expr = op.ToExpression();
+            Assert.That(expr.ToString(),
+                        Is.EqualTo(string.Format("(Convert(x.get_Item(\"Modified\")) == {0}.IncludeTimeValue(True))", dt)));
+        }
+
+        [Test]
         public void test_THAT_eq_operation_with_string_based_datetime_IS_converted_to_expression_correctly()
         {
             var op1 = new FieldRefOperand("Modified");

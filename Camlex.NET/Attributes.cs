@@ -38,6 +38,7 @@ namespace CamlexNET
         public const string ID = "ID";
         public const string Type = "Type";
         public const string IncludeTimeValue = "IncludeTimeValue";
+        public const string StorageTZ = "StorageTZ";
         public const string OffsetDays = "OffsetDays";
         public const string Ascending = "Ascending";
         public const string Collapse = "Collapse";
