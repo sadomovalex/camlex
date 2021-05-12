@@ -57,6 +57,33 @@ namespace CamlexNET.UnitTests.Operands
         }
 
         [Test]
+        public void test_THAT_datetime_value_with_storagetz_IS_rendered_to_caml_properly()
+        {
+            var dateTime = DateTime.Now;
+            var operand = new DateTimeValueOperand(dateTime, false, true);
+            var caml = operand.ToCaml().ToString();
+            Assert.That(caml, Is.EqualTo("<Value Type=\"DateTime\" StorageTZ=\"True\">" + dateTime.ToString("s") + "Z</Value>").Using(new CamlComparer()));
+        }
+
+        [Test]
+        public void test_THAT_datetime_value_without_storagetz_IS_rendered_to_caml_properly()
+        {
+            var dateTime = DateTime.Now;
+            var operand = new DateTimeValueOperand(dateTime, false, false);
+            var caml = operand.ToCaml().ToString();
+            Assert.That(caml, Is.EqualTo("<Value Type=\"DateTime\">" + dateTime.ToString("s") + "Z</Value>").Using(new CamlComparer()));
+        }
+
+        [Test]
+        public void test_THAT_datetime_value_with_includetimevalue_and_storagetz_IS_rendered_to_caml_properly()
+        {
+            var dateTime = DateTime.Now;
+            var operand = new DateTimeValueOperand(dateTime, true, true);
+            var caml = operand.ToCaml().ToString();
+            Assert.That(caml, Is.EqualTo("<Value Type=\"DateTime\" IncludeTimeValue=\"True\" StorageTZ=\"True\">" + dateTime.ToString("s") + "Z</Value>").Using(new CamlComparer()));
+        }
+
+        [Test]
         public void test_THAT_datetime_value_IS_successfully_created_from_valid_string()
         {
             var operand = new DateTimeValueOperand("02.01.2010 03:04:05", true);

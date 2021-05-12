@@ -67,6 +67,8 @@ namespace CamlexNET
         {
             public DateTime IncludeTimeValue() { return this; }
 
+            public DateTime IncludeTimeValue(bool storageTZ) { return this; }
+
             public DateTime OffsetDays(int offsetDays) { return this; }
         }
         public class Error : BaseFieldType { }
