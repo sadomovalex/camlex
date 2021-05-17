@@ -255,6 +255,18 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Factories
                 }
             }
 
+            bool storageTZ = false;
+            var storageTZAttr = valueElement.Attributes().FirstOrDefault(a => a.Name == Attributes.StorageTZ);
+            if (storageTZAttr != null)
+            {
+                if (!bool.TryParse(storageTZAttr.Value, out storageTZ))
+                {
+                    throw new CamlAnalysisException(
+                        string.Format(
+                            "Can't create value operand: attribute '{0}' has incorrect value '{1}'. It should have boolean value", storageTZAttr.Name, storageTZAttr.Value));
+                }
+            }
+
             int offsetDays = 0;
             string value = valueElement.Value;
             if (type == typeof(DataTypes.DateTime) && valueElement.Descendants().Count() == 1)
@@ -281,7 +293,7 @@ namespace CamlexNET.Impl.ReverseEngeneering.Caml.Factories
             // currently only string-based value operand will be returned
             // todo: add support of native operands here (see OperandBuilder.CreateValueOperand() for details)
             return OperandBuilder.CreateValueOperand(
-                convertedType, value, includeTimeValue, offsetDays, true, isComparision, isIntegerForUserId);
+                convertedType, value, includeTimeValue, offsetDays, storageTZ, true, isComparision, isIntegerForUserId);
         }
 
         public IOperand CreateConstantOperand(XElement operationElement, Type type)

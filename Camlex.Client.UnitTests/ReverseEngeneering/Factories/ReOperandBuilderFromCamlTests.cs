@@ -177,6 +177,10 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Factories
                 Is.EqualTo("<Value Type=\"DateTime\">2010-02-01T03:04:05Z</Value>"));
             Assert.That(b.CreateValueOperand(XmlHelper.Get("<Operation><Value Type=\"DateTime\" IncludeTimeValue=\"True\">2010-02-01T03:04:05Z</Value></Operation>"), false).ToCaml().ToString(),
                 Is.EqualTo("<Value Type=\"DateTime\" IncludeTimeValue=\"True\">2010-02-01T03:04:05Z</Value>"));
+            Assert.That(b.CreateValueOperand(XmlHelper.Get("<Operation><Value Type=\"DateTime\" StorageTZ=\"True\">2010-02-01T03:04:05Z</Value></Operation>"), false).ToCaml().ToString(),
+                Is.EqualTo("<Value Type=\"DateTime\" StorageTZ=\"True\">2010-02-01T03:04:05Z</Value>"));
+            Assert.That(b.CreateValueOperand(XmlHelper.Get("<Operation><Value Type=\"DateTime\" IncludeTimeValue=\"True\" StorageTZ=\"True\">2010-02-01T03:04:05Z</Value></Operation>"), false).ToCaml().ToString(),
+                Is.EqualTo("<Value Type=\"DateTime\" IncludeTimeValue=\"True\" StorageTZ=\"True\">2010-02-01T03:04:05Z</Value>"));
             Assert.That(b.CreateValueOperand(XmlHelper.Get("<Operation><Value Type=\"DateTime\"><Now /></Value></Operation>"), false).ToCaml().ToString(),
                 Is.EqualTo("<Value Type=\"DateTime\"><Now /></Value>").Using(new CamlComparer()));
             Assert.That(b.CreateValueOperand(XmlHelper.Get("<Operation><Value Type=\"DateTime\"><Today /></Value></Operation>"), false).ToCaml().ToString(),

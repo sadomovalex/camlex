@@ -104,11 +104,28 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Operands
         }
 
         [Test]
+        public void test_THAT_native_operand_with_includetimevalue_and_storagetz_true_IS_conveted_to_expression_correctly()
+        {
+            var dt = new DateTime(2011, 4, 16, 22, 00, 00, 00);
+            var op = new DateTimeValueOperand(dt.ToString(), true, true);
+            var expr = op.ToExpression();
+            Assert.That(expr.ToString(), Is.EqualTo(dt + ".IncludeTimeValue(True)"));
+        }
+
+        [Test]
         public void test_THAT_string_based_operand_with_includetimevalue_IS_conveted_to_expression_correctly()
         {
             var op = new DateTimeValueOperand(Camlex.Now, true);
             var expr = op.ToExpression();
             Assert.That(expr.ToString(), Is.EqualTo("Convert(Convert(Camlex.Now)).IncludeTimeValue()"));
+        }
+
+        [Test]
+        public void test_THAT_string_based_operand_with_includetimevalue_and_storagetz_IS_conveted_to_expression_correctly()
+        {
+            var op = new DateTimeValueOperand(Camlex.Now, true, true);
+            var expr = op.ToExpression();
+            Assert.That(expr.ToString(), Is.EqualTo("Convert(Convert(Camlex.Now)).IncludeTimeValue(True)"));
         }
 
         [Test]

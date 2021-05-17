@@ -44,6 +44,7 @@ namespace CamlexNET.Impl.Operands
 
         public DateTimeValueMode Mode { get; set; }
         public bool IncludeTimeValue { get; set; }
+        public bool StorageTZ { get; set; }
         public int OffsetDays { get; set; }
 
         public DateTimeValueOperand(DateTime value, bool includeTimeValue) :
@@ -52,8 +53,20 @@ namespace CamlexNET.Impl.Operands
             IncludeTimeValue = includeTimeValue;
         }
 
+        public DateTimeValueOperand(DateTime value, bool includeTimeValue, bool storageTZ) :
+            base(typeof(DataTypes.DateTime), value)
+        {
+            IncludeTimeValue = includeTimeValue;
+            StorageTZ = storageTZ;
+        }
+
         public DateTimeValueOperand(string value, bool includeTimeValue) :
             this(value, includeTimeValue, false, 0)
+        {
+        }
+
+        public DateTimeValueOperand(string value, bool includeTimeValue, bool storageTZ) :
+            this(value, includeTimeValue, false, 0, storageTZ)
         {
         }
 
@@ -62,10 +75,22 @@ namespace CamlexNET.Impl.Operands
         {
         }
 
+        public DateTimeValueOperand(string value, bool includeTimeValue, int offsetDays, bool storageTZ) :
+            this(value, includeTimeValue, false, offsetDays, storageTZ)
+        {
+        }
+
         public DateTimeValueOperand(string value, bool includeTimeValue, bool parseExact, int offsetDays) :
+            this(value, includeTimeValue, parseExact, offsetDays, false)
+        {
+
+        }
+
+        public DateTimeValueOperand(string value, bool includeTimeValue, bool parseExact, int offsetDays, bool storageTZ) :
             base(typeof(DataTypes.DateTime), DateTime.MinValue)
         {
             IncludeTimeValue = includeTimeValue;
+            StorageTZ = storageTZ;
             OffsetDays = offsetDays;
 
             if (value == Camlex.Now) Mode = DateTimeValueMode.Now;
@@ -112,15 +137,21 @@ namespace CamlexNET.Impl.Operands
                 dateTime = new XElement(Mode.ToString());
             }
 
+            var attributes = new List<XAttribute>();
+            attributes.Add(new XAttribute(Attributes.Type, TypeName));
+
             if (IncludeTimeValue)
             {
-                return new XElement(Tags.Value,
-                    new XAttribute(Attributes.Type, TypeName),
-                    new XAttribute(Attributes.IncludeTimeValue, true.ToString()),
-                    dateTime);
+                attributes.Add(new XAttribute(Attributes.IncludeTimeValue, true.ToString()));
             }
+
+            if (StorageTZ)
+            {
+                attributes.Add(new XAttribute(Attributes.StorageTZ, true.ToString()));
+            }
+
             return new XElement(Tags.Value,
-                new XAttribute(Attributes.Type, TypeName),
+                attributes,
                 dateTime);
         }
 
@@ -136,10 +167,22 @@ namespace CamlexNET.Impl.Operands
                 var expr = Expression.Constant(this.Value);
                 if (this.IncludeTimeValue)
                 {
-                    var mi =
-                        ReflectionHelper.GetExtensionMethods(typeof(Camlex).Assembly, typeof(DateTime)).FirstOrDefault(
-                            m => m.Name == ReflectionHelper.IncludeTimeValue);
-                    return Expression.Call(mi, expr);
+                    if (StorageTZ)
+                    {
+                        var mi =
+                            ReflectionHelper.GetExtensionMethods(typeof(Camlex).Assembly, typeof(DateTime)).FirstOrDefault(
+                                m => m.Name == ReflectionHelper.IncludeTimeValue && m.GetParameters().Count() == 2);
+
+                        return Expression.Call(mi, expr, Expression.Constant(StorageTZ));
+                    }
+                    else
+                    {
+                        var mi =
+                            ReflectionHelper.GetExtensionMethods(typeof(Camlex).Assembly, typeof(DateTime)).FirstOrDefault(
+                                m => m.Name == ReflectionHelper.IncludeTimeValue && m.GetParameters().Count() == 1);
+
+                        return Expression.Call(mi, expr);
+                    }
                 }
                 else
                 {
@@ -159,9 +202,22 @@ namespace CamlexNET.Impl.Operands
                 }
                 else if (this.IncludeTimeValue)
                 {
-                    var mi =
-                        typeof(DataTypes.DateTime).GetMethod(ReflectionHelper.IncludeTimeValue);
-                    return Expression.Call(expr, mi);
+                    if (StorageTZ)
+                    {
+                        var mi =
+                            typeof(DataTypes.DateTime).GetMethods().FirstOrDefault(
+                                m => m.Name == ReflectionHelper.IncludeTimeValue && m.GetParameters().Count() == 1);
+
+                        return Expression.Call(expr, mi, Expression.Constant(StorageTZ));
+                    }
+                    else
+                    {
+                        var mi =
+                            typeof(DataTypes.DateTime).GetMethods().FirstOrDefault(
+                                m => m.Name == ReflectionHelper.IncludeTimeValue && m.GetParameters().Count() == 0);
+
+                        return Expression.Call(expr, mi);
+                    }
                 }
                 return expr;
             }

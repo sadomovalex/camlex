@@ -293,16 +293,29 @@ namespace CamlexNET.Impl.Factories
         private IOperand createValueOperand(Type type, object value, Expression expr)
         {
             bool includeTimeValue = ExpressionsHelper.IncludeTimeValue(expr);
+            var storageTZ = false;
+            if (includeTimeValue)
+            {
+                if (value.GetType() == typeof(DateTime) && ((MethodCallExpression)expr).Arguments.Count == 2)
+                {
+                    storageTZ = (bool)this.evaluateExpression(((MethodCallExpression)expr).Arguments[1]);
+                }
+                if (value.GetType() == typeof(string) && ((MethodCallExpression)expr).Arguments.Count == 1)
+                {
+                    storageTZ = (bool)this.evaluateExpression(((MethodCallExpression)expr).Arguments[0]);
+                }
+            }
+
             int offsetDays = 0;
             if (ExpressionsHelper.HasOffsetDays(expr))
             {
                 offsetDays = (int)this.evaluateExpression(((MethodCallExpression)expr).Arguments[0]);
             }
             bool isIntegerForUserId = ExpressionsHelper.IsIntegerForUserId(expr);
-            return CreateValueOperand(type, value, includeTimeValue, offsetDays, false, false, isIntegerForUserId);
+            return CreateValueOperand(type, value, includeTimeValue, offsetDays, storageTZ, false, false, isIntegerForUserId);
         }
 
-        internal static IOperand CreateValueOperand(Type type, object value, bool includeTimeValue, int offsetDays, bool parseExactDateTime, bool isComparisionOperation,
+        internal static IOperand CreateValueOperand(Type type, object value, bool includeTimeValue, int offsetDays, bool storageTZ, bool parseExactDateTime, bool isComparisionOperation,
             bool isIntegerForUserId)
         {
             // it is important to have check on NullValueOperand on 1st place
@@ -381,13 +394,13 @@ namespace CamlexNET.Impl.Factories
             {
                 if (value.GetType() == typeof(DateTime))
                 {
-                    return new DateTimeValueOperand((DateTime)value, includeTimeValue);
+                    return new DateTimeValueOperand((DateTime)value, includeTimeValue, storageTZ);
                 }
                 if (value.GetType() == typeof(string))
                 {
                     // for string based datetimes we need to specify additional parameter: should use ParseExact
                     // or simple Parse. Because from re it comes in sortable format ("s") and we need to use parse exact
-                    return new DateTimeValueOperand((string)value, includeTimeValue, parseExactDateTime, offsetDays);
+                    return new DateTimeValueOperand((string)value, includeTimeValue, parseExactDateTime, offsetDays, storageTZ);
                 }
             }
             // guid operand can be native or string based
