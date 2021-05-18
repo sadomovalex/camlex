@@ -1330,6 +1330,74 @@ namespace CamlexNET.UnitTests
         }
 
         [Test]
+        public void test_THAT_native_datetime_with_includetimevalue_IS_translated_successfully()
+        {
+            var now = new DateTime(2021, 5, 18, 17, 31, 18);
+            string caml = Camlex.Query().Where(x => (DateTime)x["Created"] > now.IncludeTimeValue()).ToString();
+
+            const string expected =
+                "  <Where>" +
+                "    <Gt>" +
+                "        <FieldRef Name=\"Created\" />" +
+                "        <Value Type=\"DateTime\" IncludeTimeValue=\"True\">2021-05-18T17:31:18Z</Value>" +
+                "    </Gt>" +
+                "  </Where>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        [Test]
+        public void test_THAT_native_datetime_with_includetimevalue_and_storagetz_IS_translated_successfully()
+        {
+            var now = new DateTime(2021, 5, 18, 17, 31, 18);
+            string caml = Camlex.Query().Where(x => (DateTime)x["Created"] > now.IncludeTimeValue(true)).ToString();
+
+            const string expected =
+                "  <Where>" +
+                "    <Gt>" +
+                "        <FieldRef Name=\"Created\" />" +
+                "        <Value Type=\"DateTime\" IncludeTimeValue=\"True\">2021-05-18T17:31:18Z</Value>" +
+                "    </Gt>" +
+                "  </Where>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        [Test]
+        public void test_THAT_string_based_datetime_with_includetimevalue_IS_translated_successfully()
+        {
+            var now = "2021-05-18T17:31:18Z";
+            string caml = Camlex.Query().Where(x => x["Created"] > ((DataTypes.DateTime)now).IncludeTimeValue()).ToString();
+
+            const string expected =
+                "  <Where>" +
+                "    <Gt>" +
+                "        <FieldRef Name=\"Created\" />" +
+                "        <Value Type=\"DateTime\" IncludeTimeValue=\"True\">2021-05-18T20:31:18Z</Value>" +
+                "    </Gt>" +
+                "  </Where>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        [Test]
+        public void test_THAT_string_based_datetime_with_includetimevalue_and_storagetz_IS_translated_successfully()
+        {
+            var now = "2021-05-18T17:31:18Z";
+            string caml = Camlex.Query().Where(x => x["Created"] > ((DataTypes.DateTime)now).IncludeTimeValue(true)).ToString();
+
+            const string expected =
+                "  <Where>" +
+                "    <Gt>" +
+                "        <FieldRef Name=\"Created\" />" +
+                "        <Value Type=\"DateTime\" IncludeTimeValue=\"True\" StorageTZ=\"True\">2021-05-18T20:31:18Z</Value>" +
+                "    </Gt>" +
+                "  </Where>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        [Test]
         public void test_THAT_membership_expression_with_SPWebAllUsers_IS_translated_successfully()
         {
             var caml = Camlex.Query().Where(x => Camlex.Membership(
