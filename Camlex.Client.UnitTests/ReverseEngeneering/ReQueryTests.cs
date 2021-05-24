@@ -374,5 +374,43 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
             var expr = Camlex.QueryFromString(xml).ToExpression();
             Assert.That(expr.ToString(), Is.EqualTo("Query().Where(x => Not(Convert(Convert(x.get_Item(\"Foo\"))).Includes(Convert(1), True)))"));
         }
+
+        [Test]
+        public void test_THAT_datetime_with_includetimevalue_IS_translated_sucessfully()
+        {
+            string xml =
+                "<View>" +
+                "<Query>" +
+                "  <Where>" +
+                "    <Gt>" +
+                "        <FieldRef Name=\"Created\" />" +
+                "        <Value Type=\"DateTime\" IncludeTimeValue=\"True\">2021-05-18T17:31:18Z</Value>" +
+                "    </Gt>" +
+                "  </Where>" +
+                "</Query>" +
+                "</View>";
+
+            var expr = Camlex.QueryFromString(xml).ToExpression();
+            Assert.That(expr.ToString(), Is.EqualTo("Query().Where(x => (Convert(x.get_Item(\"Created\")) > 5/18/2021 5:31:18 PM.IncludeTimeValue()))"));
+        }
+
+        [Test]
+        public void test_THAT_datetime_with_includetimevalue_and_storagetz_IS_translated_sucessfully()
+        {
+            string xml =
+                "<View>" +
+                "<Query>" +
+                "  <Where>" +
+                "    <Gt>" +
+                "        <FieldRef Name=\"Created\" />" +
+                "        <Value Type=\"DateTime\" IncludeTimeValue=\"True\" StorageTZ=\"True\">2021-05-18T17:31:18Z</Value>" +
+                "    </Gt>" +
+                "  </Where>" +
+                "</Query>" +
+                "</View>";
+
+            var expr = Camlex.QueryFromString(xml).ToExpression();
+            Assert.That(expr.ToString(), Is.EqualTo("Query().Where(x => (Convert(x.get_Item(\"Created\")) > 5/18/2021 5:31:18 PM.IncludeTimeValue(True)))"));
+        }
     }
 }
