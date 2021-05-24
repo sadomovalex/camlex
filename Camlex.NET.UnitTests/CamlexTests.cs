@@ -1356,7 +1356,7 @@ namespace CamlexNET.UnitTests
                 "  <Where>" +
                 "    <Gt>" +
                 "        <FieldRef Name=\"Created\" />" +
-                "        <Value Type=\"DateTime\" IncludeTimeValue=\"True\">2021-05-18T17:31:18Z</Value>" +
+                "        <Value Type=\"DateTime\" IncludeTimeValue=\"True\" StorageTZ=\"True\">2021-05-18T17:31:18Z</Value>" +
                 "    </Gt>" +
                 "  </Where>";
 

@@ -150,7 +150,7 @@ namespace CamlexNET.Impl.Helpers
             var methodCall = (MethodCallExpression)expression;
 
             if (methodCall.Object != null) return methodCall.Object;
-            if (methodCall.Arguments.Count == 1) return methodCall.Arguments[0];
+            if (methodCall.Arguments.Count == 1 || methodCall.Arguments.Count == 2) return methodCall.Arguments[0];
 
             throw new NonSupportedExpressionException(expression); // it should not happen - either Object or Arguments  is not NULL
         }
