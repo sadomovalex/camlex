@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31410.357
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Camlex.Client.UnitTests", "Camlex.Client.UnitTests\Camlex.Client.UnitTests.csproj", "{298ACD3C-082D-406B-B4BB-8B8CAD5B18A6}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Camlex.Client", "Camlex.Client\Camlex.Client.csproj", "{35EC77BD-0651-412C-8445-3A0F09557D0E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Camlex.Client.UnitTests", "Camlex.Client.UnitTests\Camlex.Client.UnitTests.csproj", "{298ACD3C-082D-406B-B4BB-8B8CAD5B18A6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,16 +19,6 @@ Global
 		Release19|Any CPU = Release19|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{298ACD3C-082D-406B-B4BB-8B8CAD5B18A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{298ACD3C-082D-406B-B4BB-8B8CAD5B18A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{298ACD3C-082D-406B-B4BB-8B8CAD5B18A6}.Debug15|Any CPU.ActiveCfg = Debug15|Any CPU
-		{298ACD3C-082D-406B-B4BB-8B8CAD5B18A6}.Debug16|Any CPU.ActiveCfg = Debug15|Any CPU
-		{298ACD3C-082D-406B-B4BB-8B8CAD5B18A6}.Debug19|Any CPU.ActiveCfg = Debug15|Any CPU
-		{298ACD3C-082D-406B-B4BB-8B8CAD5B18A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{298ACD3C-082D-406B-B4BB-8B8CAD5B18A6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{298ACD3C-082D-406B-B4BB-8B8CAD5B18A6}.Release15|Any CPU.ActiveCfg = Release|Any CPU
-		{298ACD3C-082D-406B-B4BB-8B8CAD5B18A6}.Release16|Any CPU.ActiveCfg = Release|Any CPU
-		{298ACD3C-082D-406B-B4BB-8B8CAD5B18A6}.Release19|Any CPU.ActiveCfg = Release|Any CPU
 		{35EC77BD-0651-412C-8445-3A0F09557D0E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{35EC77BD-0651-412C-8445-3A0F09557D0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{35EC77BD-0651-412C-8445-3A0F09557D0E}.Debug15|Any CPU.ActiveCfg = Debug15|Any CPU
@@ -45,6 +35,22 @@ Global
 		{35EC77BD-0651-412C-8445-3A0F09557D0E}.Release16|Any CPU.Build.0 = Release16|Any CPU
 		{35EC77BD-0651-412C-8445-3A0F09557D0E}.Release19|Any CPU.ActiveCfg = Release19|Any CPU
 		{35EC77BD-0651-412C-8445-3A0F09557D0E}.Release19|Any CPU.Build.0 = Release19|Any CPU
+		{298ACD3C-082D-406B-B4BB-8B8CAD5B18A6}.Debug|Any CPU.ActiveCfg = debug|Any CPU
+		{298ACD3C-082D-406B-B4BB-8B8CAD5B18A6}.Debug|Any CPU.Build.0 = debug|Any CPU
+		{298ACD3C-082D-406B-B4BB-8B8CAD5B18A6}.Debug15|Any CPU.ActiveCfg = Debug15|Any CPU
+		{298ACD3C-082D-406B-B4BB-8B8CAD5B18A6}.Debug15|Any CPU.Build.0 = Debug15|Any CPU
+		{298ACD3C-082D-406B-B4BB-8B8CAD5B18A6}.Debug16|Any CPU.ActiveCfg = Debug16|Any CPU
+		{298ACD3C-082D-406B-B4BB-8B8CAD5B18A6}.Debug16|Any CPU.Build.0 = Debug16|Any CPU
+		{298ACD3C-082D-406B-B4BB-8B8CAD5B18A6}.Debug19|Any CPU.ActiveCfg = Debug19|Any CPU
+		{298ACD3C-082D-406B-B4BB-8B8CAD5B18A6}.Debug19|Any CPU.Build.0 = Debug19|Any CPU
+		{298ACD3C-082D-406B-B4BB-8B8CAD5B18A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{298ACD3C-082D-406B-B4BB-8B8CAD5B18A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{298ACD3C-082D-406B-B4BB-8B8CAD5B18A6}.Release15|Any CPU.ActiveCfg = Release15|Any CPU
+		{298ACD3C-082D-406B-B4BB-8B8CAD5B18A6}.Release15|Any CPU.Build.0 = Release15|Any CPU
+		{298ACD3C-082D-406B-B4BB-8B8CAD5B18A6}.Release16|Any CPU.ActiveCfg = Release16|Any CPU
+		{298ACD3C-082D-406B-B4BB-8B8CAD5B18A6}.Release16|Any CPU.Build.0 = Release16|Any CPU
+		{298ACD3C-082D-406B-B4BB-8B8CAD5B18A6}.Release19|Any CPU.ActiveCfg = Release19|Any CPU
+		{298ACD3C-082D-406B-B4BB-8B8CAD5B18A6}.Release19|Any CPU.Build.0 = Release19|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

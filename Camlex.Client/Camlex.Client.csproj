@@ -1,16 +1,18 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>net45;netstandard2.0;net5.0</TargetFrameworks>
     <Company></Company>
     <Authors>Alexey Sadomov, Vladimir Timashkov, Stef Heyenrath</Authors>
     <Product>Camlex.Client</Product>
     <Copyright>Copyright © Alexey Sadomov, Vladimir Timashkov, Stef Heyenrath</Copyright>
-    <Version>4.3.0.0</Version>
+    <Version>5.0.0.0</Version>
     <PackageId>Camlex.Client</PackageId>
     <AssemblyName>Camlex.Client</AssemblyName>
     <RootNamespace>Camlex.Client</RootNamespace>
     <Configurations>Debug;Release;Debug15;Release15;Debug16;Release16;Debug19;Release19</Configurations>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>Camlex.NET.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
