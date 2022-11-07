@@ -87,6 +87,7 @@ namespace CamlexNET.Impl
         protected virtual Type getValueOperandType()
         {
             var valueOperandExpr = this.valueOperand.ToExpression();
+
             if (valueOperandExpr is ConstantExpression)
             {
                 return ((ConstantExpression)valueOperandExpr).Value.GetType();
