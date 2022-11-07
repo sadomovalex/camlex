@@ -60,5 +60,15 @@ namespace CamlexNET.UnitTests.ReverseEngeneering.Operations
             Expression expr = op.ToExpression();
             Assert.That(expr.ToString(), Is.EqualTo("(Convert(x.get_Item(\"Count\")) < 1)"));
         }
+
+        [Test]
+        public void test_THAT_lt_operation_with_string_IS_converted_to_expression_correctly()
+        {
+            var op1 = new FieldRefOperand("Title");
+            var op2 = new TextValueOperand("Test");
+            var op = new LtOperation(null, op1, op2);
+            Expression expr = op.ToExpression();
+            Assert.That(expr.ToString(), Is.EqualTo("(x.get_Item(\"Title\") < Convert(Convert(\"Test\")))"));
+        }
     }
 }
