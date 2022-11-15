@@ -27,8 +27,10 @@
 
 using System;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Xml.Linq;
 using CamlexNET.Impl.Factories;
+using CamlexNET.Impl.Operands;
 using CamlexNET.Interfaces;
 
 namespace CamlexNET.Impl.Operations.Gt
@@ -54,9 +56,17 @@ namespace CamlexNET.Impl.Operations.Gt
             var fieldRef = this.getFieldRefOperandExpression();
             var value = this.getValueOperandExpression();
 
-            if (!value.Type.IsSubclassOf(typeof(BaseFieldTypeWithOperators)))
+            if (!value.Type.IsSubclassOf(typeof(BaseFieldTypeWithOperators)) && this.valueOperand.GetType() != typeof(TextValueOperand))
             {
                 return Expression.GreaterThan(fieldRef, value);
+            }
+            else if (this.valueOperand.GetType() == typeof(TextValueOperand))
+            {
+                var methodInfo = typeof(BaseFieldTypeWithOperators).GetMethod(ReflectionHelper.GreaterThanMethodName);
+
+                var fieldRefExpr = this.fieldRefOperand.ToExpression();
+                var convertedValue = Expression.Convert(value, typeof(BaseFieldType));
+                return Expression.GreaterThan(fieldRefExpr, Expression.Convert(convertedValue, typeof(DataTypes.Text)), false, methodInfo);
             }
             else
             {

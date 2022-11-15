@@ -353,5 +353,73 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
             var expr = Camlex.QueryFromString(xml).ToExpression();
             Assert.That(expr.ToString(), Is.EqualTo("Query().Where(x => (Convert(x.get_Item(\"Created\")) > 5/18/2021 5:31:18 PM.IncludeTimeValue(True)))"));
         }
+
+        [Test]
+        public void test_THAT_expression_with_string_greater_IS_translated_successfully()
+        {
+            var xml =
+                "<Query>" +
+                "  <Where>" +
+                "    <Gt>" +
+                "      <FieldRef Name=\"Foo\" />" +
+                "      <Value Type=\"Text\">Test</Value>" +
+                "    </Gt>" +
+                "  </Where>" +
+                "</Query>";
+
+            var expr = Camlex.QueryFromString(xml).ToExpression();
+            Assert.That(expr.ToString(), Is.EqualTo("Query().Where(x => (x.get_Item(\"Foo\") > Convert(Convert(\"Test\"))))"));
+        }
+
+        [Test]
+        public void test_THAT_expression_with_string_greaterORequals_IS_translated_successfully()
+        {
+            var xml =
+                "<Query>" +
+                "  <Where>" +
+                "    <Geq>" +
+                "      <FieldRef Name=\"Foo\" />" +
+                "      <Value Type=\"Text\">Test</Value>" +
+                "    </Geq>" +
+                "  </Where>" +
+                "</Query>";
+
+            var expr = Camlex.QueryFromString(xml).ToExpression();
+            Assert.That(expr.ToString(), Is.EqualTo("Query().Where(x => (x.get_Item(\"Foo\") >= Convert(Convert(\"Test\"))))"));
+        }
+
+        [Test]
+        public void test_THAT_expression_with_string_less_IS_translated_successfully()
+        {
+            var xml =
+                "<Query>" +
+                "  <Where>" +
+                "    <Lt>" +
+                "      <FieldRef Name=\"Foo\" />" +
+                "      <Value Type=\"Text\">Test</Value>" +
+                "    </Lt>" +
+                "  </Where>" +
+                "</Query>";
+
+            var expr = Camlex.QueryFromString(xml).ToExpression();
+            Assert.That(expr.ToString(), Is.EqualTo("Query().Where(x => (x.get_Item(\"Foo\") < Convert(Convert(\"Test\"))))"));
+        }
+
+        [Test]
+        public void test_THAT_expression_with_string_lessORequals_IS_translated_successfully()
+        {
+            var xml =
+                "<Query>" +
+                "  <Where>" +
+                "    <Leq>" +
+                "      <FieldRef Name=\"Foo\" />" +
+                "      <Value Type=\"Text\">Test</Value>" +
+                "    </Leq>" +
+                "  </Where>" +
+                "</Query>";
+
+            var expr = Camlex.QueryFromString(xml).ToExpression();
+            Assert.That(expr.ToString(), Is.EqualTo("Query().Where(x => (x.get_Item(\"Foo\") <= Convert(Convert(\"Test\"))))"));
+        }
     }
 }
