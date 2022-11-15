@@ -417,6 +417,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
         public void test_THAT_expression_with_string_greater_IS_translated_successfully()
         {
             var xml =
+                "<View>" +
                 "<Query>" +
                 "  <Where>" +
                 "    <Gt>" +
@@ -424,7 +425,8 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
                 "      <Value Type=\"Text\">Test</Value>" +
                 "    </Gt>" +
                 "  </Where>" +
-                "</Query>";
+                "</Query>" +
+                "</View>";
 
             var expr = Camlex.QueryFromString(xml).ToExpression();
             Assert.That(expr.ToString(), Is.EqualTo("Query().Where(x => (x.get_Item(\"Foo\") > Convert(Convert(\"Test\"))))"));
@@ -434,6 +436,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
         public void test_THAT_expression_with_string_greaterORequals_IS_translated_successfully()
         {
             var xml =
+                "<View>" +
                 "<Query>" +
                 "  <Where>" +
                 "    <Geq>" +
@@ -441,7 +444,8 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
                 "      <Value Type=\"Text\">Test</Value>" +
                 "    </Geq>" +
                 "  </Where>" +
-                "</Query>";
+                "</Query>" +
+                "</View>";
 
             var expr = Camlex.QueryFromString(xml).ToExpression();
             Assert.That(expr.ToString(), Is.EqualTo("Query().Where(x => (x.get_Item(\"Foo\") >= Convert(Convert(\"Test\"))))"));
@@ -451,6 +455,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
         public void test_THAT_expression_with_string_less_IS_translated_successfully()
         {
             var xml =
+                "<View>" +
                 "<Query>" +
                 "  <Where>" +
                 "    <Lt>" +
@@ -458,7 +463,8 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
                 "      <Value Type=\"Text\">Test</Value>" +
                 "    </Lt>" +
                 "  </Where>" +
-                "</Query>";
+                "</Query>" +
+                "</View>";
 
             var expr = Camlex.QueryFromString(xml).ToExpression();
             Assert.That(expr.ToString(), Is.EqualTo("Query().Where(x => (x.get_Item(\"Foo\") < Convert(Convert(\"Test\"))))"));
@@ -468,6 +474,7 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
         public void test_THAT_expression_with_string_lessORequals_IS_translated_successfully()
         {
             var xml =
+                "<View>" +
                 "<Query>" +
                 "  <Where>" +
                 "    <Leq>" +
@@ -475,7 +482,8 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
                 "      <Value Type=\"Text\">Test</Value>" +
                 "    </Leq>" +
                 "  </Where>" +
-                "</Query>";
+                "</Query>" +
+                "</View>";
 
             var expr = Camlex.QueryFromString(xml).ToExpression();
             Assert.That(expr.ToString(), Is.EqualTo("Query().Where(x => (x.get_Item(\"Foo\") <= Convert(Convert(\"Test\"))))"));
