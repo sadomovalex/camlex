@@ -1622,5 +1622,41 @@ namespace CamlexNET.UnitTests
 
             Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
         }
+
+        [Test]
+        public void test_THAT_contenttypeid_with_startswith_IS_translated_successfully()
+        {
+            var caml = Camlex.Query().Where(x => ((DataTypes.ContentTypeId)x["ContentTypeId"]).StartsWith("0x123")).ToString();
+
+            var expected =
+                "<Query>" +
+                "<Where>" +
+                "  <BeginsWith>" +
+                "    <FieldRef Name=\"ContentTypeId\" />" +
+                "    <Value Type=\"ContentTypeId\">0x123</Value>" +
+                "  </BeginsWith>" +
+                "</Where>" +
+                "</Query>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
+
+        [Test]
+        public void test_THAT_contenttypeid_with_contains_IS_translated_successfully()
+        {
+            var caml = Camlex.Query().Where(x => ((DataTypes.ContentTypeId)x["ContentTypeId"]).Contains("0x123")).ToString();
+
+            var expected =
+                "<Query>" +
+                "<Where>" +
+                "  <Contains>" +
+                "    <FieldRef Name=\"ContentTypeId\" />" +
+                "    <Value Type=\"ContentTypeId\">0x123</Value>" +
+                "  </Contains>" +
+                "</Where>" +
+                "</Query>";
+
+            Assert.That(caml, Is.EqualTo(expected).Using(new CamlComparer()));
+        }
     }
 }

@@ -59,7 +59,8 @@ namespace CamlexNET
         public class Calculated : BaseFieldTypeWithOperators { }
         public class Choice : BaseFieldType { }
         public class Computed : BaseFieldTypeWithOperators { }
-        public class ContentTypeId : BaseFieldType { }
+        // ContentTypeId also can be used with string operators: https://github.com/sadomovalex/camlex/issues/107
+        public class ContentTypeId : StringBasedFieldType { }
         public class Counter : BaseFieldTypeWithOperators { }
         public class CrossProjectLink : BaseFieldType { }
         public class Currency : BaseFieldTypeWithOperators { }
