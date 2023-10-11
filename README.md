@@ -9,13 +9,13 @@ Camlex.NET simplifies creating of CAML queries for SharePoint (2007, 2010, 2013,
 
 Compiled binaries can be downloaded from Nuget: [Camlex.NET](https://www.nuget.org/packages/Camlex.NET.dll/)
 
-If you find Camlex.NET useful, you may support its development via ![](https://github.com/sadomovalex/camlex/wiki/images/Home_btn_donate_SM.gif) button on the online version http://camlex-online.org.
+If you find Camlex.NET useful, you may support its development via ![](https://github.com/sadomovalex/camlex/wiki/images/Home_btn_donate_SM.gif) button on the online version [http://camlex.ru.net](http://camlex.ru.net).
 
 ## Client object model
 Version for Client object model is also available. It can be downloaded also from Nuget: [Camlex.Client](https://www.nuget.org/packages/Camlex.Client.dll/).
 
 ## Online version
-You can convert your existing CAML queries to C# code for Camlex.NET using online service powered by Camlex: [http://camlex-online.org](http://camlex-online.org).
+You can convert your existing CAML queries to C# code for Camlex.NET using online service powered by Camlex: [http://camlex.ru.net](http://camlex.ru.net).
 
 ## Installation Instructions
 In order to start working with Camlex.NET, please download and reference Camlex.NET.dll assembly in your project. After that you can create CAML queries using lambda expressions.
