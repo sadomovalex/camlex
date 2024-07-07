@@ -338,6 +338,40 @@ namespace CamlexNET.UnitTests.ReverseEngeneering
         }
 
         [Test]
+        public void test_THAT_datetime_with_today_IS_translated_sucessfully()
+        {
+            string xml =
+                "<Query>" +
+                "  <Where>" +
+                "    <Gt>" +
+                "        <FieldRef Name=\"Created\" />" +
+                "        <Value Type=\"DateTime\"><Today /></Value>" +
+                "    </Gt>" +
+                "  </Where>" +
+            "</Query>";
+
+            var expr = Camlex.QueryFromString(xml).ToExpression();
+            Assert.That(expr.ToString(), Is.EqualTo("Query().Where(x => (x.get_Item(\"Created\") > Convert(Convert(Camlex.Today))))"));
+        }
+
+        [Test]
+        public void test_THAT_datetime_with_today_and_offsetdays_IS_translated_sucessfully()
+        {
+            string xml =
+                "<Query>" +
+                "  <Where>" +
+                "    <Gt>" +
+                "        <FieldRef Name=\"Created\" />" +
+                "        <Value Type=\"DateTime\"><Today OffsetDays=\"5\"/></Value>" +
+                "    </Gt>" +
+                "  </Where>" +
+            "</Query>";
+
+            var expr = Camlex.QueryFromString(xml).ToExpression();
+            Assert.That(expr.ToString(), Is.EqualTo("Query().Where(x => (x.get_Item(\"Created\") > Convert(Convert(Camlex.Today)).OffsetDays(5)))"));
+        }
+
+        [Test]
         public void test_THAT_datetime_with_includetimevalue_and_storagetz_IS_translated_sucessfully()
         {
             string xml =
