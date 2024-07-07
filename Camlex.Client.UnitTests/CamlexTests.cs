@@ -1499,14 +1499,15 @@ namespace CamlexNET.UnitTests
         public void test_THAT_string_based_datetime_with_includetimevalue_IS_translated_successfully()
         {
             var now = "2021-05-18T17:31:18Z";
+            var expectedNow = DateTime.Parse(now);
             string caml = Camlex.Query().Where(x => x["Created"] > ((DataTypes.DateTime)now).IncludeTimeValue()).ToString();
 
-            const string expected =
+            var expected =
                 "<Query>" +
                 "  <Where>" +
                 "    <Gt>" +
                 "        <FieldRef Name=\"Created\" />" +
-                "        <Value Type=\"DateTime\" IncludeTimeValue=\"True\">2021-05-18T20:31:18Z</Value>" +
+                $"        <Value Type=\"DateTime\" IncludeTimeValue=\"True\">{expectedNow.ToString("s")}Z</Value>" +
                 "    </Gt>" +
                 "  </Where>" +
                 "</Query>";
@@ -1518,14 +1519,15 @@ namespace CamlexNET.UnitTests
         public void test_THAT_string_based_datetime_with_includetimevalue_and_storagetz_IS_translated_successfully()
         {
             var now = "2021-05-18T17:31:18Z";
+            var expectedNow = DateTime.Parse(now);
             string caml = Camlex.Query().Where(x => x["Created"] > ((DataTypes.DateTime)now).IncludeTimeValue(true)).ToString();
 
-            const string expected =
+            var expected =
                 "<Query>" +
                 "  <Where>" +
                 "    <Gt>" +
                 "        <FieldRef Name=\"Created\" />" +
-                "        <Value Type=\"DateTime\" IncludeTimeValue=\"True\" StorageTZ=\"True\">2021-05-18T20:31:18Z</Value>" +
+                $"        <Value Type=\"DateTime\" IncludeTimeValue=\"True\" StorageTZ=\"True\">{expectedNow.ToString("s")}Z</Value>" +
                 "    </Gt>" +
                 "  </Where>" +
                 "</Query>";

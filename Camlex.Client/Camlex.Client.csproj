@@ -1,12 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net45;netstandard2.0;net5.0</TargetFrameworks>
+    <TargetFrameworks>net452;netstandard2.0;net5.0</TargetFrameworks>
     <Company></Company>
     <Authors>Alexey Sadomov, Vladimir Timashkov, Stef Heyenrath</Authors>
     <Product>Camlex.Client</Product>
     <Copyright>Copyright © Alexey Sadomov, Vladimir Timashkov, Stef Heyenrath</Copyright>
-    <Version>5.4.2.0</Version>
+    <Version>5.4.3.0</Version>
     <PackageId>Camlex.Client</PackageId>
     <AssemblyName>Camlex.Client</AssemblyName>
     <RootNamespace>Camlex.Client</RootNamespace>

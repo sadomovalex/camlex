@@ -121,6 +121,7 @@ namespace CamlexNET.Impl.ReverseEngeneering
             if (valueType == typeof(DataTypes.Note).Name) return true;
             if (valueType == typeof(DataTypes.Text).Name) return true;
             if (valueType == typeof(DataTypes.URL).Name) return true;
+            if (valueType == typeof(DataTypes.DateTime).Name) return true;
             return false;
         }
 
