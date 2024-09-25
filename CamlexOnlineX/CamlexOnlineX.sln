@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33424.131
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CamlexOnlineX", "CamlexOnlineX\CamlexOnlineX.csproj", "{1C0A3953-A77C-4489-942F-4494976418D4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CamlexOnlineX.Tests", "CamlexOnlineX.Tests\CamlexOnlineX.Tests.csproj", "{73905877-EA4A-40A9-A4E4-5AAF0CA4701C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1C0A3953-A77C-4489-942F-4494976418D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C0A3953-A77C-4489-942F-4494976418D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C0A3953-A77C-4489-942F-4494976418D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C0A3953-A77C-4489-942F-4494976418D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73905877-EA4A-40A9-A4E4-5AAF0CA4701C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73905877-EA4A-40A9-A4E4-5AAF0CA4701C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73905877-EA4A-40A9-A4E4-5AAF0CA4701C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73905877-EA4A-40A9-A4E4-5AAF0CA4701C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {46E662F8-372A-4A43-BC0D-45DBEA638059}
+	EndGlobalSection
+EndGlobal

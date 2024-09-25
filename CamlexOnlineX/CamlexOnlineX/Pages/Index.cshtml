@@ -1,0 +1,31 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center">
+    <p>Welcome to the Camlex Online - free service powered by <a href="https://github.com/sadomovalex/camlex">Camlex.NET</a> project. Enter the CAML string you want to convert to C# code and click "Convert to C#" link.</p>
+    
+    <br />
+    <form id="convert" method="post">
+        <span><b>Type your CAML query in the following field and click Convert to C# link below:</b></span><br/><br/>
+        @Html.TextAreaFor(m => m.Value, new { @class = "index-value", maxlength = IndexModel.MAX_VALUE_LEN })
+        <br />
+        <a href="" id="convert-link">Convert to C#</a>
+        <br />
+        <br />
+        @if (!string.IsNullOrEmpty(this.Model.Result))
+        {
+            <div class='@(this.Model.IsSuccess ? "index-result-success" : "index-result-error")'>
+                @this.Model.Result
+            </div>
+            if (!this.Model.IsSuccess)
+            {
+                <br />
+                <p>Post problem to the <a href="https://github.com/sadomovalex/camlex/issues">Issue Tracker</a>.</p>
+            }
+        }
+        <br />
+    </form>
+</div>
