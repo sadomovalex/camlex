@@ -1,15 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Camlex.Client.dll" Version="5.4.2" />
+    <PackageReference Include="Camlex.Client.dll" Version="5.4.3" />
     <PackageReference Include="ExpressionToCodeLib" Version="3.5.0" />
-    <PackageReference Include="Microsoft.SharePointOnline.CSOM" Version="16.1.24009.12000" />
+    <PackageReference Include="Microsoft.SharePointOnline.CSOM" Version="16.1.26712.12000" />
   </ItemGroup>
 
 </Project>
